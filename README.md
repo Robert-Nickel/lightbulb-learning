@@ -1,2 +1,2 @@
-# valexam
+# scalexam
 scaling education

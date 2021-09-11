@@ -1,0 +1,16 @@
+body {
+    background-color: #001733;
+    color: white;
+    font-family: "Montserrat", sans-serif;
+    padding: 1em;
+    margin: 0 auto;
+    max-width: 48em;
+}
+
+a {
+    color: white;
+}
+
+form {
+    width: 100%;
+}

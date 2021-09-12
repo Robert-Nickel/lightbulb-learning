@@ -2,7 +2,7 @@
 </script>
 
 <main>
-  <h1>Valexam</h1>
+  <h1>scalexam</h1>
   <p>Create and solve challenges!</p>
 </main>
 

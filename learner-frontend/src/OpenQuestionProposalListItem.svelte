@@ -8,6 +8,6 @@
     p {
         border: 1px solid white;
         border-radius: 8px;
-        padding: 1em;
+        padding: 0.5em;
     }
 </style>

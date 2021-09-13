@@ -15,14 +15,16 @@
 
     textarea {
         display: block;
-        font-family: "Montserrat", sans-serif;
+        box-sizing: inherit;
+        font-family: inherit;
         padding: 0.5em;
         height: 10em;
         resize: none;
         line-height: 1.6;
-        width: 100% !important;
+        width: 100%;
         font-size: inherit;
         border: 1px solid #ccc;
         border-radius: 8px;
+        margin: 0 auto;
     }
 </style>

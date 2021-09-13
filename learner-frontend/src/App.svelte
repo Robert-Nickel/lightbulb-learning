@@ -10,7 +10,7 @@
 </script>
 
 <main>
-  <h1>scalexam</h1>
+  <h2>scalexam</h2>
   <OpenQuestionProposalsOverview {openQuestionProposals} />
 
   <CreateOpenQuestionProposal
@@ -45,11 +45,7 @@
     max-width: 48em;
   }
 
-  h1 {
-    font-size: 4rem;
+  h2 {
     font-weight: 800;
-    line-height: 1.1;
-    margin: 2rem auto;
-    max-width: 14rem;
   }
 </style>

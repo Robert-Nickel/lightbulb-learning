@@ -1,10 +1,11 @@
 <script lang="ts">
-  import CreateOpenQuestionProposal from "./CreateOpenQuestionProposal.svelte";
+  import ProposeOpenQuestion from "./ProposeOpenQuestion.svelte";
   import OpenQuestionProposalsOverview from "./OpenQuestionProposalsOverview.svelte";
 
   let openQuestionProposals = [];
-  function handleOpenQuestionProposalCreated(event) {
-    openQuestionProposals.push({ text: event.detail.openQuestionText });
+  function handleOpenQuestionProposed(event) {
+    // TODO: somewhere here, create the open question proposal in the backend as well
+    openQuestionProposals.push({ text: event.detail.text });
     openQuestionProposals = openQuestionProposals;
   }
 </script>
@@ -13,10 +14,7 @@
   <h2>scalexam</h2>
   <OpenQuestionProposalsOverview {openQuestionProposals} />
 
-  <CreateOpenQuestionProposal
-    on:openQuestionProposalCreated={handleOpenQuestionProposalCreated}
-  />
-
+  <ProposeOpenQuestion on:openQuestionProposed={handleOpenQuestionProposed} />
 </main>
 
 <style>
@@ -24,6 +22,7 @@
     --dark-blue-color: #001733;
     --cyber-orange-color: #ffab40;
     --almost-white-color: #f4f4f4;
+    --disabled-gray-color: #b4b4b4;
     --danger-color: #dc3545;
     --success-color: #28a745;
 

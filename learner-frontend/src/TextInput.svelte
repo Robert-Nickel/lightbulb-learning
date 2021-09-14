@@ -3,10 +3,18 @@
     export let maxlength = 500;
     export let label = "";
     export let textInput = "";
+    export let validationError = "";
+
+    import { createEventDispatcher } from "svelte";
+    const dispatch = createEventDispatcher();
+
 </script>
 
 <p>{label}</p>
-<textarea {placeholder} {maxlength} bind:value={textInput} />
+<textarea {placeholder} {maxlength} bind:value={textInput} on:keyup="{e => dispatch('textInputChanged')}" />
+{#if validationError != "" && validationError != "initial"}
+    <p>{validationError}</p>
+{/if}
 
 <style>
     textarea:focus {

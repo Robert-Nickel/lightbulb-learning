@@ -1,17 +1,29 @@
 <script lang="ts">
     export let placeholder = "";
-    export let maxlength = 500;
     export let label = "";
-    export let textInput = "";
-    export let validationError = "";
+    export let value = "";
+    export let valid = false;
+    let maxlength = 500;
 
-    import { createEventDispatcher } from "svelte";
-    const dispatch = createEventDispatcher();
+    let validationError = "initial";
 
+    function showValidationErrorIfRequired() {
+        valid = checkValidity();
+        validationError = valid ? "" : "You have to enter some text.";
+    }
+
+    function checkValidity() {
+        return value.length > 0;
+    }
 </script>
 
 <p>{label}</p>
-<textarea {placeholder} {maxlength} bind:value={textInput} on:keyup="{e => dispatch('textInputChanged')}" />
+<textarea
+    {placeholder}
+    {maxlength}
+    bind:value
+    on:keyup={showValidationErrorIfRequired}
+/>
 {#if validationError != "" && validationError != "initial"}
     <p>{validationError}</p>
 {/if}

@@ -2,34 +2,22 @@
     import { createEventDispatcher } from "svelte";
     import TextInput from "./TextInput.svelte";
     import SubmitButton from "./SubmitButton.svelte";
-    let openQuestionText;
-    let validationError = "initial";
-    $: submitButtonDisabled = validationError != "";
 
+    let openQuestionProposal;
+    let submitButtonEnabled;
     const dispatch = createEventDispatcher();
 
     function submitQuestion() {
         dispatch("openQuestionProposed", {
-            text: openQuestionText,
+            text: openQuestionProposal,
         });
-    }
-
-    function isOpenQuestionTextValid() {
-        return openQuestionText.length > 0;
-    }
-
-    function showValidationErrorIfRequired() {
-        validationError = isOpenQuestionTextValid()
-            ? ""
-            : "You have to enter some text.";
     }
 </script>
 
 <TextInput
-    placeholder="Your question"
-    label="Create on open question"
-    bind:textInput={openQuestionText}
-    {validationError}
-    on:textInputChanged={showValidationErrorIfRequired}
+    placeholder="Type your open question here."
+    label="Propose on open question"
+    bind:value={openQuestionProposal}
+    bind:valid={submitButtonEnabled}
 />
-<SubmitButton on:buttonClicked={submitQuestion} disabled={submitButtonDisabled}/>
+<SubmitButton on:buttonClicked={submitQuestion} enabled={submitButtonEnabled} />

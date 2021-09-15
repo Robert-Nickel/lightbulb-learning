@@ -2,20 +2,16 @@
     import { createEventDispatcher } from "svelte";
     const dispatch = createEventDispatcher();
 
-    export let value = "Submit";
-    export let disabled = false;
+    let value = "Submit";
+    export let enabled = true;
 </script>
 
-{#if disabled}
-    <input
-        type="button"
-        on:click={(e) => dispatch("buttonClicked")}
-        {value}
-        disabled
-    />
-{:else}
-    <input type="button" on:click={(e) => dispatch("buttonClicked")} {value} />
-{/if}
+<input
+    type="button"
+    on:click={(e) => dispatch("buttonClicked")}
+    {value}
+    disabled={!enabled || undefined}
+/>
 
 <style>
     input {

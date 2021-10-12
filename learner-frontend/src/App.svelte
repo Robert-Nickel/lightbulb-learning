@@ -1,6 +1,8 @@
 <script lang="ts">
+  import { store } from "./stores/auth.js";
   import ProposeOpenQuestion from "./ProposeOpenQuestion.svelte";
   import OpenQuestionProposalsOverview from "./OpenQuestionProposalsOverview.svelte";
+  import Login from "./Login.svelte";
 
   let openQuestionProposals = [];
   function handleOpenQuestionProposed(event) {
@@ -8,13 +10,26 @@
     openQuestionProposals.push({ text: event.detail.text });
     openQuestionProposals = openQuestionProposals;
   }
+  function logout() {
+    $store = null;
+  }
 </script>
 
 <main>
   <h2>scalexam</h2>
-  <OpenQuestionProposalsOverview {openQuestionProposals} />
 
-  <ProposeOpenQuestion on:openQuestionProposed={handleOpenQuestionProposed} />
+  {#if $store != null}
+    <h2>
+      You are logged in <button type="button" on:click={logout}>Log Out</button>
+    </h2>
+    <pre>
+    {JSON.stringify($store, null, 2)}
+  </pre>
+    <!--<OpenQuestionProposalsOverview {openQuestionProposals} />
+    <ProposeOpenQuestion on:openQuestionProposed={handleOpenQuestionProposed} />-->
+  {:else}
+    <Login />
+  {/if}
 </main>
 
 <style>

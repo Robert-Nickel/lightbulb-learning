@@ -5,6 +5,7 @@ applications:
         preBuild:
           commands:
             - npm ci
+            - node console.log("this gets executed")
         build:
           commands:
             - npm run build

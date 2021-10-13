@@ -16,11 +16,11 @@ public class InfrastructureStack extends Stack {
     public InfrastructureStack(final Construct scope, final String id, final StackProps props) {
         super(scope, id, props);
 
-        final Function learnerGateway = Function.Builder
-        .create(this, "learner-gateway")
+        final Function someLambda = Function.Builder
+        .create(this, "some-lambda")
         .runtime(Runtime.JAVA_11)
         .timeout(Duration.seconds(30))
-        .code(Code.fromAsset("../learner-gateway/target/scala-3.0.1/lambda-scala-seed.jar"))
+        .code(Code.fromAsset("../some-lambda/target/scala-3.0.1/lambda-scala-seed.jar"))
         .handler("handler.Handler::handle")
         .build();
     }

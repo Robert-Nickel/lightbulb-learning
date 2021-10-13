@@ -1,20 +1,26 @@
 {
-  "prod": {
-    "awscloudformation": {
-      "AuthRoleName": "amplify-scalexamapp-prod-73712-authRole",
-      "UnauthRoleArn": "arn:aws:iam::532688539985:role/amplify-scalexamapp-prod-73712-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::532688539985:role/amplify-scalexamapp-prod-73712-authRole",
-      "Region": "eu-central-1",
-      "DeploymentBucketName": "amplify-scalexamapp-prod-73712-deployment",
-      "UnauthRoleName": "amplify-scalexamapp-prod-73712-unauthRole",
-      "StackName": "amplify-scalexamapp-prod-73712",
-      "StackId": "arn:aws:cloudformation:eu-central-1:532688539985:stack/amplify-scalexamapp-prod-73712/9f072c90-2be7-11ec-a579-0a0093447fa4",
-      "AmplifyAppId": "d2r7zlvowhc8k7"
-    },
-    "categories": {
-      "auth": {
-        "scalexamappeb09c7df": {}
-      }
+    "prod": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-scalexamapp-prod-73712-authRole",
+            "UnauthRoleArn": "arn:aws:iam::532688539985:role/amplify-scalexamapp-prod-73712-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::532688539985:role/amplify-scalexamapp-prod-73712-authRole",
+            "Region": "eu-central-1",
+            "DeploymentBucketName": "amplify-scalexamapp-prod-73712-deployment",
+            "UnauthRoleName": "amplify-scalexamapp-prod-73712-unauthRole",
+            "StackName": "amplify-scalexamapp-prod-73712",
+            "StackId": "arn:aws:cloudformation:eu-central-1:532688539985:stack/amplify-scalexamapp-prod-73712/9f072c90-2be7-11ec-a579-0a0093447fa4",
+            "AmplifyAppId": "d2r7zlvowhc8k7"
+        },
+        "categories": {
+            "auth": {
+                "scalexamappeb09c7df": {}
+            },
+            "hosting": {
+                "amplifyhosting": {
+                    "appId": "d2r7zlvowhc8k7",
+                    "type": "cicd"
+                }
+            }
+        }
     }
-  }
 }

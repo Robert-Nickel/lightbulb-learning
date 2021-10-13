@@ -1,5 +1,5 @@
 import { writable, get } from 'svelte/store';
-import amplify from 'aws-amplify'
+import Auth from '@aws-amplify/auth'
 
 let _user = localStorage.getItem('amplifyUser');
 export const store = writable(_user ? JSON.parse(_user) : null);
@@ -16,13 +16,13 @@ export const loginFormState = writable({
   confirmingUser: null
 });
 export async function signIn() {
-  return amplify.Auth.signIn(
+  return Auth.signIn(
     get(loginFormState).username,
     get(loginFormState).password
   ).then((data) => void store.set(data));
 }
 export async function signUp() {
-  return amplify.Auth.signUp({
+  return Auth.signUp({
     username: get(loginFormState).username,
     password: get(loginFormState).password,
     attributes: {
@@ -37,7 +37,7 @@ export async function confirmSignUp() {
     console.error({ loginFormState: get(loginFormState) });
     throw new Error('you should be confirming signup right after a signup');
   }
-  return amplify.Auth.confirmSignUp(
+  return Auth.confirmSignUp(
     get(loginFormState).username,
     get(loginFormState).confirmCode
   ).then((data) => {

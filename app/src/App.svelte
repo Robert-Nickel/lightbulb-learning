@@ -1,10 +1,30 @@
 <script lang="ts">
-	export let name: string;
+	import Login from "./Login.svelte";
+	import { store } from "./stores/auth.js";
+
+	function logout() {
+		$store = null;
+	}
 </script>
 
 <main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
+
+	<h2>scalexam</h2>
+
+	{#if $store != null}
+		<h2>
+			You are logged in <button type="button" on:click={logout}
+				>Log Out</button
+			>
+		</h2>
+		<pre>
+    {JSON.stringify($store, null, 2)}
+  </pre>
+		<!--<OpenQuestionProposalsOverview {openQuestionProposals} />
+    <ProposeOpenQuestion on:openQuestionProposed={handleOpenQuestionProposed} />-->
+	{:else}
+		<Login />
+	{/if}
 </main>
 
 <style>

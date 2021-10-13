@@ -8,7 +8,6 @@
 </script>
 
 <main>
-
 	<h2>scalexam</h2>
 
 	{#if $store != null}

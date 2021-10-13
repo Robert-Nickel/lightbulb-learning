@@ -1,29 +1,31 @@
 <script>
-
-
-
-  import { store, signUp, signIn, confirmSignUp, loginFormState } from './stores/auth.js'
-  let mode = localStorage.getItem('svelteLoginMode') || 'signup'
-  let isSigningIn = mode === 'signin'
-  let promise // nothing to start with
+  import {
+    store,
+    signUp,
+    signIn,
+    confirmSignUp,
+    loginFormState,
+  } from "./stores/auth.js";
+  let mode = localStorage.getItem("svelteLoginMode") || "signup";
+  let isSigningIn = mode === "signin";
+  let promise; // nothing to start with
   function toggleMode() {
-    if (mode === 'signup') mode = 'signin'
-    else mode = 'signup'
-    localStorage.setItem('svelteLoginMode', mode)
+    if (mode === "signup") mode = "signin";
+    else mode = "signup";
+    localStorage.setItem("svelteLoginMode", mode);
   }
   function handleSubmit() {
-    if (mode === 'signup') {
+    if (mode === "signup") {
       promise = signUp().then(() => {
-        mode = 'confirm'
-      })
-    } else if (mode === 'confirm') {
-      promise = confirmSignUp()
+        mode = "confirm";
+      });
+    } else if (mode === "confirm") {
+      promise = confirmSignUp();
     } else {
-      promise = signIn()
+      promise = signIn();
     }
   }
 </script>
-
 
 <div>
   {#await promise}
@@ -33,50 +35,65 @@
   {/await}
   <div class="SwitchContainer">
     <label class="switch">
-      <input type="checkbox" on:click={toggleMode} bind:checked={isSigningIn}>
-      <span class="slider round"></span>
+      <input type="checkbox" on:click={toggleMode} bind:checked={isSigningIn} />
+      <span class="slider round" />
     </label>
-    {#if mode === 'signin'}
-    Switch to Sign Up
+    {#if mode === "signin"}
+      Switch to Sign Up
     {:else}
-    Switch to Sign In
+      Switch to Sign In
     {/if}
   </div>
-  {#if mode === 'signin'}
+  {#if mode === "signin"}
     <h1>Sign In</h1>
-  {:else if mode === 'confirm'}
+  {:else if mode === "confirm"}
     <h1>Confirm Signup</h1>
   {:else}
     <h1>Sign Up</h1>
   {/if}
   <form on:submit|preventDefault={handleSubmit}>
-    {#if mode !== 'confirm'}
-    <label>
-      Username:
-      <input type="text" bind:value={$loginFormState.username} placeholder="your username"/>
-    </label>
-    <label>
-      Password:
-      <input type="password" bind:value={$loginFormState.password} />
-    </label>
-    {/if}
-    {#if mode === 'signup'}
+    {#if mode !== "confirm"}
       <label>
-        Email (for confirmation code):
-        <input type="email" bind:value={$loginFormState.email} placeholder="real@email.com"/>
+        Username:
+        <input
+          type="text"
+          bind:value={$loginFormState.username}
+          placeholder="your username"
+        />
+      </label>
+      <label>
+        Password:
+        <input type="password" bind:value={$loginFormState.password} />
       </label>
     {/if}
-    {#if mode === 'confirm'}
+    {#if mode === "signup"}
+      <label>
+        Email (for confirmation code):
+        <input
+          type="email"
+          bind:value={$loginFormState.email}
+          placeholder="real@email.com"
+        />
+      </label>
+    {/if}
+    {#if mode === "confirm"}
       <label>
         6 digit Confirmation:
-        <input type="text" bind:value={$loginFormState.confirmCode} placeholder="e.g. 123456"/>
+        <input
+          type="text"
+          bind:value={$loginFormState.confirmCode}
+          placeholder="e.g. 123456"
+        />
       </label>
     {/if}
     <button type="submit">Submit</button>
   </form>
 </div>
 
-
+<!--
+  References:
+  https://www.swyx.io/svelte-auth/
+-->
 
 <style>
   .errorMessage {
@@ -98,7 +115,7 @@
     justify-content: space-between;
   }
   button[type="submit"] {
-    grid-column: 1 / 3
+    grid-column: 1 / 3;
   }
   /* The switch - the box around the slider */
   .switch {
@@ -130,8 +147,8 @@
     right: 0;
     bottom: 0;
     background-color: #ccc;
-    -webkit-transition: .4s;
-    transition: .4s;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
   }
 
   .slider:before {
@@ -142,19 +159,19 @@
     left: 4px;
     bottom: 4px;
     background-color: white;
-    -webkit-transition: .4s;
-    transition: .4s;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
   }
 
-  input:checked+.slider {
-    background-color: #2196F3;
+  input:checked + .slider {
+    background-color: #2196f3;
   }
 
-  input:focus+.slider {
-    box-shadow: 0 0 1px #2196F3;
+  input:focus + .slider {
+    box-shadow: 0 0 1px #2196f3;
   }
 
-  input:checked+.slider:before {
+  input:checked + .slider:before {
     -webkit-transform: translateX(26px);
     -ms-transform: translateX(26px);
     transform: translateX(26px);
@@ -169,8 +186,3 @@
     border-radius: 50%;
   }
 </style>
-
-<!--
-  References:
-  https://www.swyx.io/svelte-auth/
--->

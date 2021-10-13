@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "scalexamappeb09c7df_identitypool_eb09c7df",
+    "identityPoolName": "scalexamappfb058476_identitypool_fb058476",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "scalexeb09c7df",
-    "userPoolName": "scalexamappeb09c7df_userpool_eb09c7df",
+    "resourceNameTruncated": "scalexfb058476",
+    "userPoolName": "scalexamappfb058476_userpool_fb058476",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -29,10 +29,10 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "scalexeb09c7df_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "scalexfb058476_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "eb09c7df",
-    "resourceName": "scalexamappeb09c7df",
+    "sharedId": "fb058476",
+    "resourceName": "scalexamappfb058476",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [

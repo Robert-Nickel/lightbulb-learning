@@ -1,6 +1,13 @@
 {
+  "hosting": {
+    "amplifyhosting": {
+      "service": "amplifyhosting",
+      "type": "cicd",
+      "lastPushTimeStamp": "2021-10-13T07:34:42.206Z"
+    }
+  },
   "auth": {
-    "scalexamappeb09c7df": {
+    "scalexamappfb058476": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
@@ -24,13 +31,6 @@
           "EMAIL"
         ]
       }
-    }
-  },
-  "hosting": {
-    "amplifyhosting": {
-      "service": "amplifyhosting",
-      "type": "cicd",
-      "lastPushTimeStamp": "2021-10-13T05:49:03.411Z"
     }
   }
 }

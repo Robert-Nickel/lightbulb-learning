@@ -4,10 +4,10 @@ import { schema } from './schema';
 
 
 
-const { Blog, Post, Comment } = initSchema(schema);
+const { ChallengePool, OpenQuestion, OpenAnswer } = initSchema(schema);
 
 export {
-  Blog,
-  Post,
-  Comment
+  ChallengePool,
+  OpenQuestion,
+  OpenAnswer
 };

@@ -1,5 +1,11 @@
 {
   "AppSyncApiName": "scalexamapp",
   "DynamoDBBillingMode": "PAY_PER_REQUEST",
-  "DynamoDBEnableServerSideEncryption": false
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authscalexamapp9792e8e9",
+      "Outputs.UserPoolId"
+    ]
+  }
 }

@@ -11,11 +11,11 @@
 	<h2>scalexam</h2>
 
 	{#if $store != null}
-		<h2>
+		<h1>
 			You are logged in <button type="button" on:click={logout}
 				>Log Out</button
 			>
-		</h2>
+		</h1>
 		<pre>
     {JSON.stringify($store, null, 2)}
   </pre>

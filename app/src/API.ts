@@ -2,17 +2,17 @@
 /* eslint-disable */
 //  This file was automatically generated and should not be edited.
 
-export type CreateBlogInput = {
+export type CreateChallengePoolInput = {
   id?: string | null,
-  name: string,
+  description: string,
   _version?: number | null,
 };
 
-export type ModelBlogConditionInput = {
-  name?: ModelStringInput | null,
-  and?: Array< ModelBlogConditionInput | null > | null,
-  or?: Array< ModelBlogConditionInput | null > | null,
-  not?: ModelBlogConditionInput | null,
+export type ModelChallengePoolConditionInput = {
+  description?: ModelStringInput | null,
+  and?: Array< ModelChallengePoolConditionInput | null > | null,
+  or?: Array< ModelChallengePoolConditionInput | null > | null,
+  not?: ModelChallengePoolConditionInput | null,
 };
 
 export type ModelStringInput = {
@@ -55,83 +55,84 @@ export type ModelSizeInput = {
   between?: Array< number | null > | null,
 };
 
-export type Blog = {
-  __typename: "Blog",
+export type ChallengePool = {
+  __typename: "ChallengePool",
   id: string,
-  name: string,
-  posts?: ModelPostConnection | null,
+  description: string,
   _version: number,
   _deleted?: boolean | null,
   _lastChangedAt: number,
   createdAt: string,
   updatedAt: string,
+  openQuestions?: ModelOpenQuestionConnection | null,
 };
 
-export type ModelPostConnection = {
-  __typename: "ModelPostConnection",
-  items?:  Array<Post | null > | null,
+export type ModelOpenQuestionConnection = {
+  __typename: "ModelOpenQuestionConnection",
+  items?:  Array<OpenQuestion | null > | null,
   nextToken?: string | null,
   startedAt?: number | null,
 };
 
-export type Post = {
-  __typename: "Post",
+export type OpenQuestion = {
+  __typename: "OpenQuestion",
   id: string,
-  title: string,
-  blogID: string,
-  blog?: Blog | null,
-  comments?: ModelCommentConnection | null,
+  text: string,
+  challengePoolID?: string | null,
   _version: number,
   _deleted?: boolean | null,
   _lastChangedAt: number,
   createdAt: string,
   updatedAt: string,
+  challengePool?: ChallengePool | null,
+  openAnswers?: ModelOpenAnswerConnection | null,
 };
 
-export type ModelCommentConnection = {
-  __typename: "ModelCommentConnection",
-  items?:  Array<Comment | null > | null,
+export type ModelOpenAnswerConnection = {
+  __typename: "ModelOpenAnswerConnection",
+  items?:  Array<OpenAnswer | null > | null,
   nextToken?: string | null,
   startedAt?: number | null,
 };
 
-export type Comment = {
-  __typename: "Comment",
+export type OpenAnswer = {
+  __typename: "OpenAnswer",
   id: string,
-  postID: string,
-  post?: Post | null,
-  content: string,
+  openQuestionID?: string | null,
+  text: string,
   _version: number,
   _deleted?: boolean | null,
   _lastChangedAt: number,
   createdAt: string,
   updatedAt: string,
+  openQuestion?: OpenQuestion | null,
 };
 
-export type UpdateBlogInput = {
+export type UpdateChallengePoolInput = {
   id: string,
-  name?: string | null,
+  description?: string | null,
   _version?: number | null,
 };
 
-export type DeleteBlogInput = {
+export type DeleteChallengePoolInput = {
   id: string,
   _version?: number | null,
 };
 
-export type CreatePostInput = {
+export type CreateOpenQuestionInput = {
   id?: string | null,
-  title: string,
-  blogID: string,
+  text: string,
+  challengePoolID?: string | null,
   _version?: number | null,
+  openQuestionChallengePoolId?: string | null,
 };
 
-export type ModelPostConditionInput = {
-  title?: ModelStringInput | null,
-  blogID?: ModelIDInput | null,
-  and?: Array< ModelPostConditionInput | null > | null,
-  or?: Array< ModelPostConditionInput | null > | null,
-  not?: ModelPostConditionInput | null,
+export type ModelOpenQuestionConditionInput = {
+  text?: ModelStringInput | null,
+  challengePoolID?: ModelIDInput | null,
+  and?: Array< ModelOpenQuestionConditionInput | null > | null,
+  or?: Array< ModelOpenQuestionConditionInput | null > | null,
+  not?: ModelOpenQuestionConditionInput | null,
 };
 
 export type ModelIDInput = {
@@ -150,95 +151,103 @@ export type ModelIDInput = {
   size?: ModelSizeInput | null,
 };
 
-export type UpdatePostInput = {
+export type UpdateOpenQuestionInput = {
   id: string,
-  title?: string | null,
-  blogID?: string | null,
+  text?: string | null,
+  challengePoolID?: string | null,
+  _version?: number | null,
+  openQuestionChallengePoolId?: string | null,
+};
+
+export type DeleteOpenQuestionInput = {
+  id: string,
   _version?: number | null,
 };
 
-export type DeletePostInput = {
-  id: string,
-  _version?: number | null,
-};
-
-export type CreateCommentInput = {
+export type CreateOpenAnswerInput = {
   id?: string | null,
-  postID: string,
-  content: string,
+  openQuestionID?: string | null,
+  text: string,
   _version?: number | null,
+  openAnswerOpenQuestionId?: string | null,
 };
 
-export type ModelCommentConditionInput = {
-  postID?: ModelIDInput | null,
-  content?: ModelStringInput | null,
-  and?: Array< ModelCommentConditionInput | null > | null,
-  or?: Array< ModelCommentConditionInput | null > | null,
-  not?: ModelCommentConditionInput | null,
+export type ModelOpenAnswerConditionInput = {
+  openQuestionID?: ModelIDInput | null,
+  text?: ModelStringInput | null,
+  and?: Array< ModelOpenAnswerConditionInput | null > | null,
+  or?: Array< ModelOpenAnswerConditionInput | null > | null,
+  not?: ModelOpenAnswerConditionInput | null,
 };
 
-export type UpdateCommentInput = {
+export type UpdateOpenAnswerInput = {
   id: string,
-  postID?: string | null,
-  content?: string | null,
+  openQuestionID?: string | null,
+  text?: string | null,
   _version?: number | null,
+  openAnswerOpenQuestionId?: string | null,
 };
 
-export type DeleteCommentInput = {
+export type DeleteOpenAnswerInput = {
   id: string,
   _version?: number | null,
 };
 
-export type ModelBlogFilterInput = {
+export type ModelChallengePoolFilterInput = {
   id?: ModelIDInput | null,
-  name?: ModelStringInput | null,
-  and?: Array< ModelBlogFilterInput | null > | null,
-  or?: Array< ModelBlogFilterInput | null > | null,
-  not?: ModelBlogFilterInput | null,
+  description?: ModelStringInput | null,
+  and?: Array< ModelChallengePoolFilterInput | null > | null,
+  or?: Array< ModelChallengePoolFilterInput | null > | null,
+  not?: ModelChallengePoolFilterInput | null,
 };
 
-export type ModelBlogConnection = {
-  __typename: "ModelBlogConnection",
-  items?:  Array<Blog | null > | null,
+export type ModelChallengePoolConnection = {
+  __typename: "ModelChallengePoolConnection",
+  items?:  Array<ChallengePool | null > | null,
   nextToken?: string | null,
   startedAt?: number | null,
 };
 
-export type ModelPostFilterInput = {
+export type ModelOpenQuestionFilterInput = {
   id?: ModelIDInput | null,
-  title?: ModelStringInput | null,
-  blogID?: ModelIDInput | null,
-  and?: Array< ModelPostFilterInput | null > | null,
-  or?: Array< ModelPostFilterInput | null > | null,
-  not?: ModelPostFilterInput | null,
+  text?: ModelStringInput | null,
+  challengePoolID?: ModelIDInput | null,
+  and?: Array< ModelOpenQuestionFilterInput | null > | null,
+  or?: Array< ModelOpenQuestionFilterInput | null > | null,
+  not?: ModelOpenQuestionFilterInput | null,
 };
 
-export type ModelCommentFilterInput = {
+export type ModelOpenAnswerFilterInput = {
   id?: ModelIDInput | null,
-  postID?: ModelIDInput | null,
-  content?: ModelStringInput | null,
-  and?: Array< ModelCommentFilterInput | null > | null,
-  or?: Array< ModelCommentFilterInput | null > | null,
-  not?: ModelCommentFilterInput | null,
+  openQuestionID?: ModelIDInput | null,
+  text?: ModelStringInput | null,
+  and?: Array< ModelOpenAnswerFilterInput | null > | null,
+  or?: Array< ModelOpenAnswerFilterInput | null > | null,
+  not?: ModelOpenAnswerFilterInput | null,
 };
 
-export type CreateBlogMutationVariables = {
-  input: CreateBlogInput,
-  condition?: ModelBlogConditionInput | null,
+export type CreateChallengePoolMutationVariables = {
+  input: CreateChallengePoolInput,
+  condition?: ModelChallengePoolConditionInput | null,
 };
 
-export type CreateBlogMutation = {
-  createBlog?:  {
-    __typename: "Blog",
+export type CreateChallengePoolMutation = {
+  createChallengePool?:  {
+    __typename: "ChallengePool",
     id: string,
-    name: string,
-    posts?:  {
-      __typename: "ModelPostConnection",
+    description: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+    openQuestions?:  {
+      __typename: "ModelOpenQuestionConnection",
       items?:  Array< {
-        __typename: "Post",
+        __typename: "OpenQuestion",
         id: string,
-        title: string,
-        blogID: string,
+        text: string,
+        challengePoolID?: string | null,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
@@ -248,31 +257,31 @@ export type CreateBlogMutation = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
+  } | null,
+};
+
+export type UpdateChallengePoolMutationVariables = {
+  input: UpdateChallengePoolInput,
+  condition?: ModelChallengePoolConditionInput | null,
+};
+
+export type UpdateChallengePoolMutation = {
+  updateChallengePool?:  {
+    __typename: "ChallengePool",
+    id: string,
+    description: string,
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
-  } | null,
-};
-
-export type UpdateBlogMutationVariables = {
-  input: UpdateBlogInput,
-  condition?: ModelBlogConditionInput | null,
-};
-
-export type UpdateBlogMutation = {
-  updateBlog?:  {
-    __typename: "Blog",
-    id: string,
-    name: string,
-    posts?:  {
-      __typename: "ModelPostConnection",
+    openQuestions?:  {
+      __typename: "ModelOpenQuestionConnection",
       items?:  Array< {
-        __typename: "Post",
+        __typename: "OpenQuestion",
         id: string,
-        title: string,
-        blogID: string,
+        text: string,
+        challengePoolID?: string | null,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
@@ -282,31 +291,31 @@ export type UpdateBlogMutation = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
+  } | null,
+};
+
+export type DeleteChallengePoolMutationVariables = {
+  input: DeleteChallengePoolInput,
+  condition?: ModelChallengePoolConditionInput | null,
+};
+
+export type DeleteChallengePoolMutation = {
+  deleteChallengePool?:  {
+    __typename: "ChallengePool",
+    id: string,
+    description: string,
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
-  } | null,
-};
-
-export type DeleteBlogMutationVariables = {
-  input: DeleteBlogInput,
-  condition?: ModelBlogConditionInput | null,
-};
-
-export type DeleteBlogMutation = {
-  deleteBlog?:  {
-    __typename: "Blog",
-    id: string,
-    name: string,
-    posts?:  {
-      __typename: "ModelPostConnection",
+    openQuestions?:  {
+      __typename: "ModelOpenQuestionConnection",
       items?:  Array< {
-        __typename: "Post",
+        __typename: "OpenQuestion",
         id: string,
-        title: string,
-        blogID: string,
+        text: string,
+        challengePoolID?: string | null,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
@@ -316,47 +325,47 @@ export type DeleteBlogMutation = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
+  } | null,
+};
+
+export type CreateOpenQuestionMutationVariables = {
+  input: CreateOpenQuestionInput,
+  condition?: ModelOpenQuestionConditionInput | null,
+};
+
+export type CreateOpenQuestionMutation = {
+  createOpenQuestion?:  {
+    __typename: "OpenQuestion",
+    id: string,
+    text: string,
+    challengePoolID?: string | null,
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
-  } | null,
-};
-
-export type CreatePostMutationVariables = {
-  input: CreatePostInput,
-  condition?: ModelPostConditionInput | null,
-};
-
-export type CreatePostMutation = {
-  createPost?:  {
-    __typename: "Post",
-    id: string,
-    title: string,
-    blogID: string,
-    blog?:  {
-      __typename: "Blog",
+    challengePool?:  {
+      __typename: "ChallengePool",
       id: string,
-      name: string,
-      posts?:  {
-        __typename: "ModelPostConnection",
-        nextToken?: string | null,
-        startedAt?: number | null,
-      } | null,
+      description: string,
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
       createdAt: string,
       updatedAt: string,
+      openQuestions?:  {
+        __typename: "ModelOpenQuestionConnection",
+        nextToken?: string | null,
+        startedAt?: number | null,
+      } | null,
     } | null,
-    comments?:  {
-      __typename: "ModelCommentConnection",
+    openAnswers?:  {
+      __typename: "ModelOpenAnswerConnection",
       items?:  Array< {
-        __typename: "Comment",
+        __typename: "OpenAnswer",
         id: string,
-        postID: string,
-        content: string,
+        openQuestionID?: string | null,
+        text: string,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
@@ -366,47 +375,47 @@ export type CreatePostMutation = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
+  } | null,
+};
+
+export type UpdateOpenQuestionMutationVariables = {
+  input: UpdateOpenQuestionInput,
+  condition?: ModelOpenQuestionConditionInput | null,
+};
+
+export type UpdateOpenQuestionMutation = {
+  updateOpenQuestion?:  {
+    __typename: "OpenQuestion",
+    id: string,
+    text: string,
+    challengePoolID?: string | null,
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
-  } | null,
-};
-
-export type UpdatePostMutationVariables = {
-  input: UpdatePostInput,
-  condition?: ModelPostConditionInput | null,
-};
-
-export type UpdatePostMutation = {
-  updatePost?:  {
-    __typename: "Post",
-    id: string,
-    title: string,
-    blogID: string,
-    blog?:  {
-      __typename: "Blog",
+    challengePool?:  {
+      __typename: "ChallengePool",
       id: string,
-      name: string,
-      posts?:  {
-        __typename: "ModelPostConnection",
-        nextToken?: string | null,
-        startedAt?: number | null,
-      } | null,
+      description: string,
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
       createdAt: string,
       updatedAt: string,
+      openQuestions?:  {
+        __typename: "ModelOpenQuestionConnection",
+        nextToken?: string | null,
+        startedAt?: number | null,
+      } | null,
     } | null,
-    comments?:  {
-      __typename: "ModelCommentConnection",
+    openAnswers?:  {
+      __typename: "ModelOpenAnswerConnection",
       items?:  Array< {
-        __typename: "Comment",
+        __typename: "OpenAnswer",
         id: string,
-        postID: string,
-        content: string,
+        openQuestionID?: string | null,
+        text: string,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
@@ -416,47 +425,47 @@ export type UpdatePostMutation = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
+  } | null,
+};
+
+export type DeleteOpenQuestionMutationVariables = {
+  input: DeleteOpenQuestionInput,
+  condition?: ModelOpenQuestionConditionInput | null,
+};
+
+export type DeleteOpenQuestionMutation = {
+  deleteOpenQuestion?:  {
+    __typename: "OpenQuestion",
+    id: string,
+    text: string,
+    challengePoolID?: string | null,
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
-  } | null,
-};
-
-export type DeletePostMutationVariables = {
-  input: DeletePostInput,
-  condition?: ModelPostConditionInput | null,
-};
-
-export type DeletePostMutation = {
-  deletePost?:  {
-    __typename: "Post",
-    id: string,
-    title: string,
-    blogID: string,
-    blog?:  {
-      __typename: "Blog",
+    challengePool?:  {
+      __typename: "ChallengePool",
       id: string,
-      name: string,
-      posts?:  {
-        __typename: "ModelPostConnection",
-        nextToken?: string | null,
-        startedAt?: number | null,
-      } | null,
+      description: string,
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
       createdAt: string,
       updatedAt: string,
+      openQuestions?:  {
+        __typename: "ModelOpenQuestionConnection",
+        nextToken?: string | null,
+        startedAt?: number | null,
+      } | null,
     } | null,
-    comments?:  {
-      __typename: "ModelCommentConnection",
+    openAnswers?:  {
+      __typename: "ModelOpenAnswerConnection",
       items?:  Array< {
-        __typename: "Comment",
+        __typename: "OpenAnswer",
         id: string,
-        postID: string,
-        content: string,
+        openQuestionID?: string | null,
+        text: string,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
@@ -466,195 +475,273 @@ export type DeletePostMutation = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
+  } | null,
+};
+
+export type CreateOpenAnswerMutationVariables = {
+  input: CreateOpenAnswerInput,
+  condition?: ModelOpenAnswerConditionInput | null,
+};
+
+export type CreateOpenAnswerMutation = {
+  createOpenAnswer?:  {
+    __typename: "OpenAnswer",
+    id: string,
+    openQuestionID?: string | null,
+    text: string,
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
-  } | null,
-};
-
-export type CreateCommentMutationVariables = {
-  input: CreateCommentInput,
-  condition?: ModelCommentConditionInput | null,
-};
-
-export type CreateCommentMutation = {
-  createComment?:  {
-    __typename: "Comment",
-    id: string,
-    postID: string,
-    post?:  {
-      __typename: "Post",
+    openQuestion?:  {
+      __typename: "OpenQuestion",
       id: string,
-      title: string,
-      blogID: string,
-      blog?:  {
-        __typename: "Blog",
+      text: string,
+      challengePoolID?: string | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+      challengePool?:  {
+        __typename: "ChallengePool",
         id: string,
-        name: string,
+        description: string,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
         createdAt: string,
         updatedAt: string,
       } | null,
-      comments?:  {
-        __typename: "ModelCommentConnection",
+      openAnswers?:  {
+        __typename: "ModelOpenAnswerConnection",
         nextToken?: string | null,
         startedAt?: number | null,
       } | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
     } | null,
-    content: string,
+  } | null,
+};
+
+export type UpdateOpenAnswerMutationVariables = {
+  input: UpdateOpenAnswerInput,
+  condition?: ModelOpenAnswerConditionInput | null,
+};
+
+export type UpdateOpenAnswerMutation = {
+  updateOpenAnswer?:  {
+    __typename: "OpenAnswer",
+    id: string,
+    openQuestionID?: string | null,
+    text: string,
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
-  } | null,
-};
-
-export type UpdateCommentMutationVariables = {
-  input: UpdateCommentInput,
-  condition?: ModelCommentConditionInput | null,
-};
-
-export type UpdateCommentMutation = {
-  updateComment?:  {
-    __typename: "Comment",
-    id: string,
-    postID: string,
-    post?:  {
-      __typename: "Post",
+    openQuestion?:  {
+      __typename: "OpenQuestion",
       id: string,
-      title: string,
-      blogID: string,
-      blog?:  {
-        __typename: "Blog",
+      text: string,
+      challengePoolID?: string | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+      challengePool?:  {
+        __typename: "ChallengePool",
         id: string,
-        name: string,
+        description: string,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
         createdAt: string,
         updatedAt: string,
       } | null,
-      comments?:  {
-        __typename: "ModelCommentConnection",
+      openAnswers?:  {
+        __typename: "ModelOpenAnswerConnection",
         nextToken?: string | null,
         startedAt?: number | null,
       } | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
     } | null,
-    content: string,
+  } | null,
+};
+
+export type DeleteOpenAnswerMutationVariables = {
+  input: DeleteOpenAnswerInput,
+  condition?: ModelOpenAnswerConditionInput | null,
+};
+
+export type DeleteOpenAnswerMutation = {
+  deleteOpenAnswer?:  {
+    __typename: "OpenAnswer",
+    id: string,
+    openQuestionID?: string | null,
+    text: string,
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
-  } | null,
-};
-
-export type DeleteCommentMutationVariables = {
-  input: DeleteCommentInput,
-  condition?: ModelCommentConditionInput | null,
-};
-
-export type DeleteCommentMutation = {
-  deleteComment?:  {
-    __typename: "Comment",
-    id: string,
-    postID: string,
-    post?:  {
-      __typename: "Post",
+    openQuestion?:  {
+      __typename: "OpenQuestion",
       id: string,
-      title: string,
-      blogID: string,
-      blog?:  {
-        __typename: "Blog",
+      text: string,
+      challengePoolID?: string | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+      challengePool?:  {
+        __typename: "ChallengePool",
         id: string,
-        name: string,
+        description: string,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
         createdAt: string,
         updatedAt: string,
       } | null,
-      comments?:  {
-        __typename: "ModelCommentConnection",
+      openAnswers?:  {
+        __typename: "ModelOpenAnswerConnection",
         nextToken?: string | null,
         startedAt?: number | null,
       } | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
     } | null,
-    content: string,
+  } | null,
+};
+
+export type GetChallengePoolQueryVariables = {
+  id: string,
+};
+
+export type GetChallengePoolQuery = {
+  getChallengePool?:  {
+    __typename: "ChallengePool",
+    id: string,
+    description: string,
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
+    openQuestions?:  {
+      __typename: "ModelOpenQuestionConnection",
+      items?:  Array< {
+        __typename: "OpenQuestion",
+        id: string,
+        text: string,
+        challengePoolID?: string | null,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null > | null,
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
   } | null,
 };
 
-export type SyncBlogsQueryVariables = {
-  filter?: ModelBlogFilterInput | null,
+export type ListChallengePoolsQueryVariables = {
+  filter?: ModelChallengePoolFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListChallengePoolsQuery = {
+  listChallengePools?:  {
+    __typename: "ModelChallengePoolConnection",
+    items?:  Array< {
+      __typename: "ChallengePool",
+      id: string,
+      description: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+      openQuestions?:  {
+        __typename: "ModelOpenQuestionConnection",
+        nextToken?: string | null,
+        startedAt?: number | null,
+      } | null,
+    } | null > | null,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type SyncChallengePoolsQueryVariables = {
+  filter?: ModelChallengePoolFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
   lastSync?: number | null,
 };
 
-export type SyncBlogsQuery = {
-  syncBlogs?:  {
-    __typename: "ModelBlogConnection",
+export type SyncChallengePoolsQuery = {
+  syncChallengePools?:  {
+    __typename: "ModelChallengePoolConnection",
     items?:  Array< {
-      __typename: "Blog",
+      __typename: "ChallengePool",
       id: string,
-      name: string,
-      posts?:  {
-        __typename: "ModelPostConnection",
-        nextToken?: string | null,
-        startedAt?: number | null,
-      } | null,
+      description: string,
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
       createdAt: string,
       updatedAt: string,
+      openQuestions?:  {
+        __typename: "ModelOpenQuestionConnection",
+        nextToken?: string | null,
+        startedAt?: number | null,
+      } | null,
     } | null > | null,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
 };
 
-export type GetBlogQueryVariables = {
+export type GetOpenQuestionQueryVariables = {
   id: string,
 };
 
-export type GetBlogQuery = {
-  getBlog?:  {
-    __typename: "Blog",
+export type GetOpenQuestionQuery = {
+  getOpenQuestion?:  {
+    __typename: "OpenQuestion",
     id: string,
-    name: string,
-    posts?:  {
-      __typename: "ModelPostConnection",
+    text: string,
+    challengePoolID?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+    challengePool?:  {
+      __typename: "ChallengePool",
+      id: string,
+      description: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+      openQuestions?:  {
+        __typename: "ModelOpenQuestionConnection",
+        nextToken?: string | null,
+        startedAt?: number | null,
+      } | null,
+    } | null,
+    openAnswers?:  {
+      __typename: "ModelOpenAnswerConnection",
       items?:  Array< {
-        __typename: "Post",
+        __typename: "OpenAnswer",
         id: string,
-        title: string,
-        blogID: string,
+        openQuestionID?: string | null,
+        text: string,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
@@ -664,302 +751,224 @@ export type GetBlogQuery = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
-export type ListBlogsQueryVariables = {
-  filter?: ModelBlogFilterInput | null,
+export type ListOpenQuestionsQueryVariables = {
+  filter?: ModelOpenQuestionFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type ListBlogsQuery = {
-  listBlogs?:  {
-    __typename: "ModelBlogConnection",
+export type ListOpenQuestionsQuery = {
+  listOpenQuestions?:  {
+    __typename: "ModelOpenQuestionConnection",
     items?:  Array< {
-      __typename: "Blog",
+      __typename: "OpenQuestion",
       id: string,
-      name: string,
-      posts?:  {
-        __typename: "ModelPostConnection",
-        nextToken?: string | null,
-        startedAt?: number | null,
-      } | null,
+      text: string,
+      challengePoolID?: string | null,
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
       createdAt: string,
       updatedAt: string,
+      challengePool?:  {
+        __typename: "ChallengePool",
+        id: string,
+        description: string,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      openAnswers?:  {
+        __typename: "ModelOpenAnswerConnection",
+        nextToken?: string | null,
+        startedAt?: number | null,
+      } | null,
     } | null > | null,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
 };
 
-export type SyncPostsQueryVariables = {
-  filter?: ModelPostFilterInput | null,
+export type SyncOpenQuestionsQueryVariables = {
+  filter?: ModelOpenQuestionFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
   lastSync?: number | null,
 };
 
-export type SyncPostsQuery = {
-  syncPosts?:  {
-    __typename: "ModelPostConnection",
+export type SyncOpenQuestionsQuery = {
+  syncOpenQuestions?:  {
+    __typename: "ModelOpenQuestionConnection",
     items?:  Array< {
-      __typename: "Post",
+      __typename: "OpenQuestion",
       id: string,
-      title: string,
-      blogID: string,
-      blog?:  {
-        __typename: "Blog",
+      text: string,
+      challengePoolID?: string | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+      challengePool?:  {
+        __typename: "ChallengePool",
         id: string,
-        name: string,
+        description: string,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
         createdAt: string,
         updatedAt: string,
       } | null,
-      comments?:  {
-        __typename: "ModelCommentConnection",
+      openAnswers?:  {
+        __typename: "ModelOpenAnswerConnection",
         nextToken?: string | null,
         startedAt?: number | null,
       } | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
     } | null > | null,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
 };
 
-export type GetPostQueryVariables = {
+export type GetOpenAnswerQueryVariables = {
   id: string,
 };
 
-export type GetPostQuery = {
-  getPost?:  {
-    __typename: "Post",
+export type GetOpenAnswerQuery = {
+  getOpenAnswer?:  {
+    __typename: "OpenAnswer",
     id: string,
-    title: string,
-    blogID: string,
-    blog?:  {
-      __typename: "Blog",
-      id: string,
-      name: string,
-      posts?:  {
-        __typename: "ModelPostConnection",
-        nextToken?: string | null,
-        startedAt?: number | null,
-      } | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    comments?:  {
-      __typename: "ModelCommentConnection",
-      items?:  Array< {
-        __typename: "Comment",
-        id: string,
-        postID: string,
-        content: string,
-        _version: number,
-        _deleted?: boolean | null,
-        _lastChangedAt: number,
-        createdAt: string,
-        updatedAt: string,
-      } | null > | null,
-      nextToken?: string | null,
-      startedAt?: number | null,
-    } | null,
+    openQuestionID?: string | null,
+    text: string,
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
-  } | null,
-};
-
-export type ListPostsQueryVariables = {
-  filter?: ModelPostFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type ListPostsQuery = {
-  listPosts?:  {
-    __typename: "ModelPostConnection",
-    items?:  Array< {
-      __typename: "Post",
+    openQuestion?:  {
+      __typename: "OpenQuestion",
       id: string,
-      title: string,
-      blogID: string,
-      blog?:  {
-        __typename: "Blog",
+      text: string,
+      challengePoolID?: string | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+      challengePool?:  {
+        __typename: "ChallengePool",
         id: string,
-        name: string,
+        description: string,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
         createdAt: string,
         updatedAt: string,
       } | null,
-      comments?:  {
-        __typename: "ModelCommentConnection",
+      openAnswers?:  {
+        __typename: "ModelOpenAnswerConnection",
         nextToken?: string | null,
         startedAt?: number | null,
       } | null,
+    } | null,
+  } | null,
+};
+
+export type ListOpenAnswersQueryVariables = {
+  filter?: ModelOpenAnswerFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListOpenAnswersQuery = {
+  listOpenAnswers?:  {
+    __typename: "ModelOpenAnswerConnection",
+    items?:  Array< {
+      __typename: "OpenAnswer",
+      id: string,
+      openQuestionID?: string | null,
+      text: string,
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
       createdAt: string,
       updatedAt: string,
+      openQuestion?:  {
+        __typename: "OpenQuestion",
+        id: string,
+        text: string,
+        challengePoolID?: string | null,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
     } | null > | null,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
 };
 
-export type SyncCommentsQueryVariables = {
-  filter?: ModelCommentFilterInput | null,
+export type SyncOpenAnswersQueryVariables = {
+  filter?: ModelOpenAnswerFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
   lastSync?: number | null,
 };
 
-export type SyncCommentsQuery = {
-  syncComments?:  {
-    __typename: "ModelCommentConnection",
+export type SyncOpenAnswersQuery = {
+  syncOpenAnswers?:  {
+    __typename: "ModelOpenAnswerConnection",
     items?:  Array< {
-      __typename: "Comment",
+      __typename: "OpenAnswer",
       id: string,
-      postID: string,
-      post?:  {
-        __typename: "Post",
+      openQuestionID?: string | null,
+      text: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+      openQuestion?:  {
+        __typename: "OpenQuestion",
         id: string,
-        title: string,
-        blogID: string,
+        text: string,
+        challengePoolID?: string | null,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
         createdAt: string,
         updatedAt: string,
       } | null,
-      content: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
     } | null > | null,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
 };
 
-export type GetCommentQueryVariables = {
-  id: string,
-};
-
-export type GetCommentQuery = {
-  getComment?:  {
-    __typename: "Comment",
+export type OnCreateChallengePoolSubscription = {
+  onCreateChallengePool?:  {
+    __typename: "ChallengePool",
     id: string,
-    postID: string,
-    post?:  {
-      __typename: "Post",
-      id: string,
-      title: string,
-      blogID: string,
-      blog?:  {
-        __typename: "Blog",
-        id: string,
-        name: string,
-        _version: number,
-        _deleted?: boolean | null,
-        _lastChangedAt: number,
-        createdAt: string,
-        updatedAt: string,
-      } | null,
-      comments?:  {
-        __typename: "ModelCommentConnection",
-        nextToken?: string | null,
-        startedAt?: number | null,
-      } | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    content: string,
+    description: string,
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
-  } | null,
-};
-
-export type ListCommentsQueryVariables = {
-  filter?: ModelCommentFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type ListCommentsQuery = {
-  listComments?:  {
-    __typename: "ModelCommentConnection",
-    items?:  Array< {
-      __typename: "Comment",
-      id: string,
-      postID: string,
-      post?:  {
-        __typename: "Post",
-        id: string,
-        title: string,
-        blogID: string,
-        _version: number,
-        _deleted?: boolean | null,
-        _lastChangedAt: number,
-        createdAt: string,
-        updatedAt: string,
-      } | null,
-      content: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
-    } | null > | null,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
-};
-
-export type OnCreateBlogSubscription = {
-  onCreateBlog?:  {
-    __typename: "Blog",
-    id: string,
-    name: string,
-    posts?:  {
-      __typename: "ModelPostConnection",
+    openQuestions?:  {
+      __typename: "ModelOpenQuestionConnection",
       items?:  Array< {
-        __typename: "Post",
+        __typename: "OpenQuestion",
         id: string,
-        title: string,
-        blogID: string,
+        text: string,
+        challengePoolID?: string | null,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
@@ -969,26 +978,26 @@ export type OnCreateBlogSubscription = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
+  } | null,
+};
+
+export type OnUpdateChallengePoolSubscription = {
+  onUpdateChallengePool?:  {
+    __typename: "ChallengePool",
+    id: string,
+    description: string,
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
-  } | null,
-};
-
-export type OnUpdateBlogSubscription = {
-  onUpdateBlog?:  {
-    __typename: "Blog",
-    id: string,
-    name: string,
-    posts?:  {
-      __typename: "ModelPostConnection",
+    openQuestions?:  {
+      __typename: "ModelOpenQuestionConnection",
       items?:  Array< {
-        __typename: "Post",
+        __typename: "OpenQuestion",
         id: string,
-        title: string,
-        blogID: string,
+        text: string,
+        challengePoolID?: string | null,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
@@ -998,26 +1007,26 @@ export type OnUpdateBlogSubscription = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
+  } | null,
+};
+
+export type OnDeleteChallengePoolSubscription = {
+  onDeleteChallengePool?:  {
+    __typename: "ChallengePool",
+    id: string,
+    description: string,
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
-  } | null,
-};
-
-export type OnDeleteBlogSubscription = {
-  onDeleteBlog?:  {
-    __typename: "Blog",
-    id: string,
-    name: string,
-    posts?:  {
-      __typename: "ModelPostConnection",
+    openQuestions?:  {
+      __typename: "ModelOpenQuestionConnection",
       items?:  Array< {
-        __typename: "Post",
+        __typename: "OpenQuestion",
         id: string,
-        title: string,
-        blogID: string,
+        text: string,
+        challengePoolID?: string | null,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
@@ -1027,42 +1036,42 @@ export type OnDeleteBlogSubscription = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
+  } | null,
+};
+
+export type OnCreateOpenQuestionSubscription = {
+  onCreateOpenQuestion?:  {
+    __typename: "OpenQuestion",
+    id: string,
+    text: string,
+    challengePoolID?: string | null,
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
-  } | null,
-};
-
-export type OnCreatePostSubscription = {
-  onCreatePost?:  {
-    __typename: "Post",
-    id: string,
-    title: string,
-    blogID: string,
-    blog?:  {
-      __typename: "Blog",
+    challengePool?:  {
+      __typename: "ChallengePool",
       id: string,
-      name: string,
-      posts?:  {
-        __typename: "ModelPostConnection",
-        nextToken?: string | null,
-        startedAt?: number | null,
-      } | null,
+      description: string,
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
       createdAt: string,
       updatedAt: string,
+      openQuestions?:  {
+        __typename: "ModelOpenQuestionConnection",
+        nextToken?: string | null,
+        startedAt?: number | null,
+      } | null,
     } | null,
-    comments?:  {
-      __typename: "ModelCommentConnection",
+    openAnswers?:  {
+      __typename: "ModelOpenAnswerConnection",
       items?:  Array< {
-        __typename: "Comment",
+        __typename: "OpenAnswer",
         id: string,
-        postID: string,
-        content: string,
+        openQuestionID?: string | null,
+        text: string,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
@@ -1072,42 +1081,42 @@ export type OnCreatePostSubscription = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
+  } | null,
+};
+
+export type OnUpdateOpenQuestionSubscription = {
+  onUpdateOpenQuestion?:  {
+    __typename: "OpenQuestion",
+    id: string,
+    text: string,
+    challengePoolID?: string | null,
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
-  } | null,
-};
-
-export type OnUpdatePostSubscription = {
-  onUpdatePost?:  {
-    __typename: "Post",
-    id: string,
-    title: string,
-    blogID: string,
-    blog?:  {
-      __typename: "Blog",
+    challengePool?:  {
+      __typename: "ChallengePool",
       id: string,
-      name: string,
-      posts?:  {
-        __typename: "ModelPostConnection",
-        nextToken?: string | null,
-        startedAt?: number | null,
-      } | null,
+      description: string,
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
       createdAt: string,
       updatedAt: string,
+      openQuestions?:  {
+        __typename: "ModelOpenQuestionConnection",
+        nextToken?: string | null,
+        startedAt?: number | null,
+      } | null,
     } | null,
-    comments?:  {
-      __typename: "ModelCommentConnection",
+    openAnswers?:  {
+      __typename: "ModelOpenAnswerConnection",
       items?:  Array< {
-        __typename: "Comment",
+        __typename: "OpenAnswer",
         id: string,
-        postID: string,
-        content: string,
+        openQuestionID?: string | null,
+        text: string,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
@@ -1117,42 +1126,42 @@ export type OnUpdatePostSubscription = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
+  } | null,
+};
+
+export type OnDeleteOpenQuestionSubscription = {
+  onDeleteOpenQuestion?:  {
+    __typename: "OpenQuestion",
+    id: string,
+    text: string,
+    challengePoolID?: string | null,
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
-  } | null,
-};
-
-export type OnDeletePostSubscription = {
-  onDeletePost?:  {
-    __typename: "Post",
-    id: string,
-    title: string,
-    blogID: string,
-    blog?:  {
-      __typename: "Blog",
+    challengePool?:  {
+      __typename: "ChallengePool",
       id: string,
-      name: string,
-      posts?:  {
-        __typename: "ModelPostConnection",
-        nextToken?: string | null,
-        startedAt?: number | null,
-      } | null,
+      description: string,
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
       createdAt: string,
       updatedAt: string,
+      openQuestions?:  {
+        __typename: "ModelOpenQuestionConnection",
+        nextToken?: string | null,
+        startedAt?: number | null,
+      } | null,
     } | null,
-    comments?:  {
-      __typename: "ModelCommentConnection",
+    openAnswers?:  {
+      __typename: "ModelOpenAnswerConnection",
       items?:  Array< {
-        __typename: "Comment",
+        __typename: "OpenAnswer",
         id: string,
-        postID: string,
-        content: string,
+        openQuestionID?: string | null,
+        text: string,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
@@ -1162,130 +1171,125 @@ export type OnDeletePostSubscription = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
+  } | null,
+};
+
+export type OnCreateOpenAnswerSubscription = {
+  onCreateOpenAnswer?:  {
+    __typename: "OpenAnswer",
+    id: string,
+    openQuestionID?: string | null,
+    text: string,
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
-  } | null,
-};
-
-export type OnCreateCommentSubscription = {
-  onCreateComment?:  {
-    __typename: "Comment",
-    id: string,
-    postID: string,
-    post?:  {
-      __typename: "Post",
+    openQuestion?:  {
+      __typename: "OpenQuestion",
       id: string,
-      title: string,
-      blogID: string,
-      blog?:  {
-        __typename: "Blog",
+      text: string,
+      challengePoolID?: string | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+      challengePool?:  {
+        __typename: "ChallengePool",
         id: string,
-        name: string,
+        description: string,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
         createdAt: string,
         updatedAt: string,
       } | null,
-      comments?:  {
-        __typename: "ModelCommentConnection",
+      openAnswers?:  {
+        __typename: "ModelOpenAnswerConnection",
         nextToken?: string | null,
         startedAt?: number | null,
       } | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
     } | null,
-    content: string,
+  } | null,
+};
+
+export type OnUpdateOpenAnswerSubscription = {
+  onUpdateOpenAnswer?:  {
+    __typename: "OpenAnswer",
+    id: string,
+    openQuestionID?: string | null,
+    text: string,
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
-  } | null,
-};
-
-export type OnUpdateCommentSubscription = {
-  onUpdateComment?:  {
-    __typename: "Comment",
-    id: string,
-    postID: string,
-    post?:  {
-      __typename: "Post",
+    openQuestion?:  {
+      __typename: "OpenQuestion",
       id: string,
-      title: string,
-      blogID: string,
-      blog?:  {
-        __typename: "Blog",
+      text: string,
+      challengePoolID?: string | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+      challengePool?:  {
+        __typename: "ChallengePool",
         id: string,
-        name: string,
+        description: string,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
         createdAt: string,
         updatedAt: string,
       } | null,
-      comments?:  {
-        __typename: "ModelCommentConnection",
+      openAnswers?:  {
+        __typename: "ModelOpenAnswerConnection",
         nextToken?: string | null,
         startedAt?: number | null,
       } | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
     } | null,
-    content: string,
+  } | null,
+};
+
+export type OnDeleteOpenAnswerSubscription = {
+  onDeleteOpenAnswer?:  {
+    __typename: "OpenAnswer",
+    id: string,
+    openQuestionID?: string | null,
+    text: string,
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
     createdAt: string,
     updatedAt: string,
-  } | null,
-};
-
-export type OnDeleteCommentSubscription = {
-  onDeleteComment?:  {
-    __typename: "Comment",
-    id: string,
-    postID: string,
-    post?:  {
-      __typename: "Post",
+    openQuestion?:  {
+      __typename: "OpenQuestion",
       id: string,
-      title: string,
-      blogID: string,
-      blog?:  {
-        __typename: "Blog",
+      text: string,
+      challengePoolID?: string | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+      challengePool?:  {
+        __typename: "ChallengePool",
         id: string,
-        name: string,
+        description: string,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
         createdAt: string,
         updatedAt: string,
       } | null,
-      comments?:  {
-        __typename: "ModelCommentConnection",
+      openAnswers?:  {
+        __typename: "ModelOpenAnswerConnection",
         nextToken?: string | null,
         startedAt?: number | null,
       } | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
     } | null,
-    content: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };

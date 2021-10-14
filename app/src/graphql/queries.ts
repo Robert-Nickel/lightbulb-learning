@@ -2,47 +2,21 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const syncBlogs = /* GraphQL */ `
-  query SyncBlogs(
-    $filter: ModelBlogFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncBlogs(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        name
-        posts {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const getBlog = /* GraphQL */ `
-  query GetBlog($id: ID!) {
-    getBlog(id: $id) {
+export const getChallengePool = /* GraphQL */ `
+  query GetChallengePool($id: ID!) {
+    getChallengePool(id: $id) {
       id
-      name
-      posts {
+      description
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      openQuestions {
         items {
           id
-          title
-          blogID
+          text
+          challengePoolID
           _version
           _deleted
           _lastChangedAt
@@ -52,47 +26,42 @@ export const getBlog = /* GraphQL */ `
         nextToken
         startedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
-export const listBlogs = /* GraphQL */ `
-  query ListBlogs(
-    $filter: ModelBlogFilterInput
+export const listChallengePools = /* GraphQL */ `
+  query ListChallengePools(
+    $filter: ModelChallengePoolFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listBlogs(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listChallengePools(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        name
-        posts {
-          nextToken
-          startedAt
-        }
+        description
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
+        openQuestions {
+          nextToken
+          startedAt
+        }
       }
       nextToken
       startedAt
     }
   }
 `;
-export const syncPosts = /* GraphQL */ `
-  query SyncPosts(
-    $filter: ModelPostFilterInput
+export const syncChallengePools = /* GraphQL */ `
+  query SyncChallengePools(
+    $filter: ModelChallengePoolFilterInput
     $limit: Int
     $nextToken: String
     $lastSync: AWSTimestamp
   ) {
-    syncPosts(
+    syncChallengePools(
       filter: $filter
       limit: $limit
       nextToken: $nextToken
@@ -100,56 +69,51 @@ export const syncPosts = /* GraphQL */ `
     ) {
       items {
         id
-        title
-        blogID
-        blog {
-          id
-          name
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        comments {
-          nextToken
-          startedAt
-        }
+        description
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
+        openQuestions {
+          nextToken
+          startedAt
+        }
       }
       nextToken
       startedAt
     }
   }
 `;
-export const getPost = /* GraphQL */ `
-  query GetPost($id: ID!) {
-    getPost(id: $id) {
+export const getOpenQuestion = /* GraphQL */ `
+  query GetOpenQuestion($id: ID!) {
+    getOpenQuestion(id: $id) {
       id
-      title
-      blogID
-      blog {
+      text
+      challengePoolID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      challengePool {
         id
-        name
-        posts {
-          nextToken
-          startedAt
-        }
+        description
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
+        openQuestions {
+          nextToken
+          startedAt
+        }
       }
-      comments {
+      openAnswers {
         items {
           id
-          postID
-          content
+          openQuestionID
+          text
           _version
           _deleted
           _lastChangedAt
@@ -159,57 +123,52 @@ export const getPost = /* GraphQL */ `
         nextToken
         startedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
-export const listPosts = /* GraphQL */ `
-  query ListPosts(
-    $filter: ModelPostFilterInput
+export const listOpenQuestions = /* GraphQL */ `
+  query ListOpenQuestions(
+    $filter: ModelOpenQuestionFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listPosts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listOpenQuestions(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        title
-        blogID
-        blog {
+        text
+        challengePoolID
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        challengePool {
           id
-          name
+          description
           _version
           _deleted
           _lastChangedAt
           createdAt
           updatedAt
         }
-        comments {
+        openAnswers {
           nextToken
           startedAt
         }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
       }
       nextToken
       startedAt
     }
   }
 `;
-export const syncComments = /* GraphQL */ `
-  query SyncComments(
-    $filter: ModelCommentFilterInput
+export const syncOpenQuestions = /* GraphQL */ `
+  query SyncOpenQuestions(
+    $filter: ModelOpenQuestionFilterInput
     $limit: Int
     $nextToken: String
     $lastSync: AWSTimestamp
   ) {
-    syncComments(
+    syncOpenQuestions(
       filter: $filter
       limit: $limit
       nextToken: $nextToken
@@ -217,92 +176,133 @@ export const syncComments = /* GraphQL */ `
     ) {
       items {
         id
-        postID
-        post {
+        text
+        challengePoolID
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        challengePool {
           id
-          title
-          blogID
+          description
           _version
           _deleted
           _lastChangedAt
           createdAt
           updatedAt
         }
-        content
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
+        openAnswers {
+          nextToken
+          startedAt
+        }
       }
       nextToken
       startedAt
     }
   }
 `;
-export const getComment = /* GraphQL */ `
-  query GetComment($id: ID!) {
-    getComment(id: $id) {
+export const getOpenAnswer = /* GraphQL */ `
+  query GetOpenAnswer($id: ID!) {
+    getOpenAnswer(id: $id) {
       id
-      postID
-      post {
-        id
-        title
-        blogID
-        blog {
-          id
-          name
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        comments {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      content
+      openQuestionID
+      text
       _version
       _deleted
       _lastChangedAt
       createdAt
       updatedAt
-    }
-  }
-`;
-export const listComments = /* GraphQL */ `
-  query ListComments(
-    $filter: ModelCommentFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listComments(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
+      openQuestion {
         id
-        postID
-        post {
+        text
+        challengePoolID
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        challengePool {
           id
-          title
-          blogID
+          description
           _version
           _deleted
           _lastChangedAt
           createdAt
           updatedAt
         }
-        content
+        openAnswers {
+          nextToken
+          startedAt
+        }
+      }
+    }
+  }
+`;
+export const listOpenAnswers = /* GraphQL */ `
+  query ListOpenAnswers(
+    $filter: ModelOpenAnswerFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listOpenAnswers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        openQuestionID
+        text
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
+        openQuestion {
+          id
+          text
+          challengePoolID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncOpenAnswers = /* GraphQL */ `
+  query SyncOpenAnswers(
+    $filter: ModelOpenAnswerFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncOpenAnswers(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        openQuestionID
+        text
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        openQuestion {
+          id
+          text
+          challengePoolID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
       }
       nextToken
       startedAt

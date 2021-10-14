@@ -2,19 +2,24 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createBlog = /* GraphQL */ `
-  mutation CreateBlog(
-    $input: CreateBlogInput!
-    $condition: ModelBlogConditionInput
+export const createChallengePool = /* GraphQL */ `
+  mutation CreateChallengePool(
+    $input: CreateChallengePoolInput!
+    $condition: ModelChallengePoolConditionInput
   ) {
-    createBlog(input: $input, condition: $condition) {
+    createChallengePool(input: $input, condition: $condition) {
       id
-      name
-      posts {
+      description
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      openQuestions {
         items {
           id
-          title
-          blogID
+          text
+          challengePoolID
           _version
           _deleted
           _lastChangedAt
@@ -24,27 +29,27 @@ export const createBlog = /* GraphQL */ `
         nextToken
         startedAt
       }
+    }
+  }
+`;
+export const updateChallengePool = /* GraphQL */ `
+  mutation UpdateChallengePool(
+    $input: UpdateChallengePoolInput!
+    $condition: ModelChallengePoolConditionInput
+  ) {
+    updateChallengePool(input: $input, condition: $condition) {
+      id
+      description
       _version
       _deleted
       _lastChangedAt
       createdAt
       updatedAt
-    }
-  }
-`;
-export const updateBlog = /* GraphQL */ `
-  mutation UpdateBlog(
-    $input: UpdateBlogInput!
-    $condition: ModelBlogConditionInput
-  ) {
-    updateBlog(input: $input, condition: $condition) {
-      id
-      name
-      posts {
+      openQuestions {
         items {
           id
-          title
-          blogID
+          text
+          challengePoolID
           _version
           _deleted
           _lastChangedAt
@@ -54,27 +59,27 @@ export const updateBlog = /* GraphQL */ `
         nextToken
         startedAt
       }
+    }
+  }
+`;
+export const deleteChallengePool = /* GraphQL */ `
+  mutation DeleteChallengePool(
+    $input: DeleteChallengePoolInput!
+    $condition: ModelChallengePoolConditionInput
+  ) {
+    deleteChallengePool(input: $input, condition: $condition) {
+      id
+      description
       _version
       _deleted
       _lastChangedAt
       createdAt
       updatedAt
-    }
-  }
-`;
-export const deleteBlog = /* GraphQL */ `
-  mutation DeleteBlog(
-    $input: DeleteBlogInput!
-    $condition: ModelBlogConditionInput
-  ) {
-    deleteBlog(input: $input, condition: $condition) {
-      id
-      name
-      posts {
+      openQuestions {
         items {
           id
-          title
-          blogID
+          text
+          challengePoolID
           _version
           _deleted
           _lastChangedAt
@@ -84,41 +89,41 @@ export const deleteBlog = /* GraphQL */ `
         nextToken
         startedAt
       }
+    }
+  }
+`;
+export const createOpenQuestion = /* GraphQL */ `
+  mutation CreateOpenQuestion(
+    $input: CreateOpenQuestionInput!
+    $condition: ModelOpenQuestionConditionInput
+  ) {
+    createOpenQuestion(input: $input, condition: $condition) {
+      id
+      text
+      challengePoolID
       _version
       _deleted
       _lastChangedAt
       createdAt
       updatedAt
-    }
-  }
-`;
-export const createPost = /* GraphQL */ `
-  mutation CreatePost(
-    $input: CreatePostInput!
-    $condition: ModelPostConditionInput
-  ) {
-    createPost(input: $input, condition: $condition) {
-      id
-      title
-      blogID
-      blog {
+      challengePool {
         id
-        name
-        posts {
-          nextToken
-          startedAt
-        }
+        description
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
+        openQuestions {
+          nextToken
+          startedAt
+        }
       }
-      comments {
+      openAnswers {
         items {
           id
-          postID
-          content
+          openQuestionID
+          text
           _version
           _deleted
           _lastChangedAt
@@ -128,41 +133,41 @@ export const createPost = /* GraphQL */ `
         nextToken
         startedAt
       }
+    }
+  }
+`;
+export const updateOpenQuestion = /* GraphQL */ `
+  mutation UpdateOpenQuestion(
+    $input: UpdateOpenQuestionInput!
+    $condition: ModelOpenQuestionConditionInput
+  ) {
+    updateOpenQuestion(input: $input, condition: $condition) {
+      id
+      text
+      challengePoolID
       _version
       _deleted
       _lastChangedAt
       createdAt
       updatedAt
-    }
-  }
-`;
-export const updatePost = /* GraphQL */ `
-  mutation UpdatePost(
-    $input: UpdatePostInput!
-    $condition: ModelPostConditionInput
-  ) {
-    updatePost(input: $input, condition: $condition) {
-      id
-      title
-      blogID
-      blog {
+      challengePool {
         id
-        name
-        posts {
-          nextToken
-          startedAt
-        }
+        description
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
+        openQuestions {
+          nextToken
+          startedAt
+        }
       }
-      comments {
+      openAnswers {
         items {
           id
-          postID
-          content
+          openQuestionID
+          text
           _version
           _deleted
           _lastChangedAt
@@ -172,41 +177,41 @@ export const updatePost = /* GraphQL */ `
         nextToken
         startedAt
       }
+    }
+  }
+`;
+export const deleteOpenQuestion = /* GraphQL */ `
+  mutation DeleteOpenQuestion(
+    $input: DeleteOpenQuestionInput!
+    $condition: ModelOpenQuestionConditionInput
+  ) {
+    deleteOpenQuestion(input: $input, condition: $condition) {
+      id
+      text
+      challengePoolID
       _version
       _deleted
       _lastChangedAt
       createdAt
       updatedAt
-    }
-  }
-`;
-export const deletePost = /* GraphQL */ `
-  mutation DeletePost(
-    $input: DeletePostInput!
-    $condition: ModelPostConditionInput
-  ) {
-    deletePost(input: $input, condition: $condition) {
-      id
-      title
-      blogID
-      blog {
+      challengePool {
         id
-        name
-        posts {
-          nextToken
-          startedAt
-        }
+        description
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
+        openQuestions {
+          nextToken
+          startedAt
+        }
       }
-      comments {
+      openAnswers {
         items {
           id
-          postID
-          content
+          openQuestionID
+          text
           _version
           _deleted
           _lastChangedAt
@@ -216,131 +221,126 @@ export const deletePost = /* GraphQL */ `
         nextToken
         startedAt
       }
+    }
+  }
+`;
+export const createOpenAnswer = /* GraphQL */ `
+  mutation CreateOpenAnswer(
+    $input: CreateOpenAnswerInput!
+    $condition: ModelOpenAnswerConditionInput
+  ) {
+    createOpenAnswer(input: $input, condition: $condition) {
+      id
+      openQuestionID
+      text
       _version
       _deleted
       _lastChangedAt
       createdAt
       updatedAt
-    }
-  }
-`;
-export const createComment = /* GraphQL */ `
-  mutation CreateComment(
-    $input: CreateCommentInput!
-    $condition: ModelCommentConditionInput
-  ) {
-    createComment(input: $input, condition: $condition) {
-      id
-      postID
-      post {
+      openQuestion {
         id
-        title
-        blogID
-        blog {
+        text
+        challengePoolID
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        challengePool {
           id
-          name
+          description
           _version
           _deleted
           _lastChangedAt
           createdAt
           updatedAt
         }
-        comments {
+        openAnswers {
           nextToken
           startedAt
         }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
       }
-      content
+    }
+  }
+`;
+export const updateOpenAnswer = /* GraphQL */ `
+  mutation UpdateOpenAnswer(
+    $input: UpdateOpenAnswerInput!
+    $condition: ModelOpenAnswerConditionInput
+  ) {
+    updateOpenAnswer(input: $input, condition: $condition) {
+      id
+      openQuestionID
+      text
       _version
       _deleted
       _lastChangedAt
       createdAt
       updatedAt
-    }
-  }
-`;
-export const updateComment = /* GraphQL */ `
-  mutation UpdateComment(
-    $input: UpdateCommentInput!
-    $condition: ModelCommentConditionInput
-  ) {
-    updateComment(input: $input, condition: $condition) {
-      id
-      postID
-      post {
+      openQuestion {
         id
-        title
-        blogID
-        blog {
+        text
+        challengePoolID
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        challengePool {
           id
-          name
+          description
           _version
           _deleted
           _lastChangedAt
           createdAt
           updatedAt
         }
-        comments {
+        openAnswers {
           nextToken
           startedAt
         }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
       }
-      content
+    }
+  }
+`;
+export const deleteOpenAnswer = /* GraphQL */ `
+  mutation DeleteOpenAnswer(
+    $input: DeleteOpenAnswerInput!
+    $condition: ModelOpenAnswerConditionInput
+  ) {
+    deleteOpenAnswer(input: $input, condition: $condition) {
+      id
+      openQuestionID
+      text
       _version
       _deleted
       _lastChangedAt
       createdAt
       updatedAt
-    }
-  }
-`;
-export const deleteComment = /* GraphQL */ `
-  mutation DeleteComment(
-    $input: DeleteCommentInput!
-    $condition: ModelCommentConditionInput
-  ) {
-    deleteComment(input: $input, condition: $condition) {
-      id
-      postID
-      post {
+      openQuestion {
         id
-        title
-        blogID
-        blog {
+        text
+        challengePoolID
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        challengePool {
           id
-          name
+          description
           _version
           _deleted
           _lastChangedAt
           createdAt
           updatedAt
         }
-        comments {
+        openAnswers {
           nextToken
           startedAt
         }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
       }
-      content
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;

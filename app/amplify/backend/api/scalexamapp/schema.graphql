@@ -1,20 +1,21 @@
-type Blog @model {
+type ChallengePool @model @auth(rules: [{allow: public}]) {
   id: ID!
-  name: String!
-  posts: [Post] @connection(keyName: "byBlog", fields: ["id"])
+  description: String!
+  openQuestions: [OpenQuestion] @connection(keyName: "byChallengePool", fields: ["id"])
 }
 
-type Post @model @key(name: "byBlog", fields: ["blogID"]) {
+type OpenQuestion @model @key(name: "byChallengePool", fields: ["challengePoolID"]) @auth(rules: [{allow: public}]) {
   id: ID!
-  title: String!
-  blogID: ID!
-  blog: Blog @connection(fields: ["blogID"])
-  comments: [Comment] @connection(keyName: "byPost", fields: ["id"])
+  text: String!
+  challengePoolID: ID
+  challengePool: ChallengePool @connection
+  openAnswers: [OpenAnswer] @connection(keyName: "byOpenQuestion", fields: ["id"])
 }
 
-type Comment @model @key(name: "byPost", fields: ["postID", "content"]) {
+type OpenAnswer @model @key(name: "byOpenQuestion", fields: ["openQuestionID"]) @auth(rules: [{allow: public}]) {
   id: ID!
-  postID: ID!
-  post: Post @connection(fields: ["postID"])
-  content: String!
+  openQuestionID: ID
+  openQuestion: OpenQuestion @connection
+  text: String!
 }
+ 

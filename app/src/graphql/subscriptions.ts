@@ -2,16 +2,21 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreateBlog = /* GraphQL */ `
-  subscription OnCreateBlog {
-    onCreateBlog {
+export const onCreateChallengePool = /* GraphQL */ `
+  subscription OnCreateChallengePool {
+    onCreateChallengePool {
       id
-      name
-      posts {
+      description
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      openQuestions {
         items {
           id
-          title
-          blogID
+          text
+          challengePoolID
           _version
           _deleted
           _lastChangedAt
@@ -21,24 +26,24 @@ export const onCreateBlog = /* GraphQL */ `
         nextToken
         startedAt
       }
+    }
+  }
+`;
+export const onUpdateChallengePool = /* GraphQL */ `
+  subscription OnUpdateChallengePool {
+    onUpdateChallengePool {
+      id
+      description
       _version
       _deleted
       _lastChangedAt
       createdAt
       updatedAt
-    }
-  }
-`;
-export const onUpdateBlog = /* GraphQL */ `
-  subscription OnUpdateBlog {
-    onUpdateBlog {
-      id
-      name
-      posts {
+      openQuestions {
         items {
           id
-          title
-          blogID
+          text
+          challengePoolID
           _version
           _deleted
           _lastChangedAt
@@ -48,24 +53,24 @@ export const onUpdateBlog = /* GraphQL */ `
         nextToken
         startedAt
       }
+    }
+  }
+`;
+export const onDeleteChallengePool = /* GraphQL */ `
+  subscription OnDeleteChallengePool {
+    onDeleteChallengePool {
+      id
+      description
       _version
       _deleted
       _lastChangedAt
       createdAt
       updatedAt
-    }
-  }
-`;
-export const onDeleteBlog = /* GraphQL */ `
-  subscription OnDeleteBlog {
-    onDeleteBlog {
-      id
-      name
-      posts {
+      openQuestions {
         items {
           id
-          title
-          blogID
+          text
+          challengePoolID
           _version
           _deleted
           _lastChangedAt
@@ -75,38 +80,38 @@ export const onDeleteBlog = /* GraphQL */ `
         nextToken
         startedAt
       }
+    }
+  }
+`;
+export const onCreateOpenQuestion = /* GraphQL */ `
+  subscription OnCreateOpenQuestion {
+    onCreateOpenQuestion {
+      id
+      text
+      challengePoolID
       _version
       _deleted
       _lastChangedAt
       createdAt
       updatedAt
-    }
-  }
-`;
-export const onCreatePost = /* GraphQL */ `
-  subscription OnCreatePost {
-    onCreatePost {
-      id
-      title
-      blogID
-      blog {
+      challengePool {
         id
-        name
-        posts {
-          nextToken
-          startedAt
-        }
+        description
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
+        openQuestions {
+          nextToken
+          startedAt
+        }
       }
-      comments {
+      openAnswers {
         items {
           id
-          postID
-          content
+          openQuestionID
+          text
           _version
           _deleted
           _lastChangedAt
@@ -116,38 +121,38 @@ export const onCreatePost = /* GraphQL */ `
         nextToken
         startedAt
       }
+    }
+  }
+`;
+export const onUpdateOpenQuestion = /* GraphQL */ `
+  subscription OnUpdateOpenQuestion {
+    onUpdateOpenQuestion {
+      id
+      text
+      challengePoolID
       _version
       _deleted
       _lastChangedAt
       createdAt
       updatedAt
-    }
-  }
-`;
-export const onUpdatePost = /* GraphQL */ `
-  subscription OnUpdatePost {
-    onUpdatePost {
-      id
-      title
-      blogID
-      blog {
+      challengePool {
         id
-        name
-        posts {
-          nextToken
-          startedAt
-        }
+        description
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
+        openQuestions {
+          nextToken
+          startedAt
+        }
       }
-      comments {
+      openAnswers {
         items {
           id
-          postID
-          content
+          openQuestionID
+          text
           _version
           _deleted
           _lastChangedAt
@@ -157,38 +162,38 @@ export const onUpdatePost = /* GraphQL */ `
         nextToken
         startedAt
       }
+    }
+  }
+`;
+export const onDeleteOpenQuestion = /* GraphQL */ `
+  subscription OnDeleteOpenQuestion {
+    onDeleteOpenQuestion {
+      id
+      text
+      challengePoolID
       _version
       _deleted
       _lastChangedAt
       createdAt
       updatedAt
-    }
-  }
-`;
-export const onDeletePost = /* GraphQL */ `
-  subscription OnDeletePost {
-    onDeletePost {
-      id
-      title
-      blogID
-      blog {
+      challengePool {
         id
-        name
-        posts {
-          nextToken
-          startedAt
-        }
+        description
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
+        openQuestions {
+          nextToken
+          startedAt
+        }
       }
-      comments {
+      openAnswers {
         items {
           id
-          postID
-          content
+          openQuestionID
+          text
           _version
           _deleted
           _lastChangedAt
@@ -198,122 +203,117 @@ export const onDeletePost = /* GraphQL */ `
         nextToken
         startedAt
       }
+    }
+  }
+`;
+export const onCreateOpenAnswer = /* GraphQL */ `
+  subscription OnCreateOpenAnswer {
+    onCreateOpenAnswer {
+      id
+      openQuestionID
+      text
       _version
       _deleted
       _lastChangedAt
       createdAt
       updatedAt
-    }
-  }
-`;
-export const onCreateComment = /* GraphQL */ `
-  subscription OnCreateComment {
-    onCreateComment {
-      id
-      postID
-      post {
+      openQuestion {
         id
-        title
-        blogID
-        blog {
+        text
+        challengePoolID
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        challengePool {
           id
-          name
+          description
           _version
           _deleted
           _lastChangedAt
           createdAt
           updatedAt
         }
-        comments {
+        openAnswers {
           nextToken
           startedAt
         }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
       }
-      content
+    }
+  }
+`;
+export const onUpdateOpenAnswer = /* GraphQL */ `
+  subscription OnUpdateOpenAnswer {
+    onUpdateOpenAnswer {
+      id
+      openQuestionID
+      text
       _version
       _deleted
       _lastChangedAt
       createdAt
       updatedAt
-    }
-  }
-`;
-export const onUpdateComment = /* GraphQL */ `
-  subscription OnUpdateComment {
-    onUpdateComment {
-      id
-      postID
-      post {
+      openQuestion {
         id
-        title
-        blogID
-        blog {
+        text
+        challengePoolID
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        challengePool {
           id
-          name
+          description
           _version
           _deleted
           _lastChangedAt
           createdAt
           updatedAt
         }
-        comments {
+        openAnswers {
           nextToken
           startedAt
         }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
       }
-      content
+    }
+  }
+`;
+export const onDeleteOpenAnswer = /* GraphQL */ `
+  subscription OnDeleteOpenAnswer {
+    onDeleteOpenAnswer {
+      id
+      openQuestionID
+      text
       _version
       _deleted
       _lastChangedAt
       createdAt
       updatedAt
-    }
-  }
-`;
-export const onDeleteComment = /* GraphQL */ `
-  subscription OnDeleteComment {
-    onDeleteComment {
-      id
-      postID
-      post {
+      openQuestion {
         id
-        title
-        blogID
-        blog {
+        text
+        challengePoolID
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        challengePool {
           id
-          name
+          description
           _version
           _deleted
           _lastChangedAt
           createdAt
           updatedAt
         }
-        comments {
+        openAnswers {
           nextToken
           startedAt
         }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
       }
-      content
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;

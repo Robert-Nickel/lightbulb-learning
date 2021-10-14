@@ -4,45 +4,47 @@ import { ModelInit, MutableModel, PersistentModelConstructor } from "@aws-amplif
 
 
 
-type BlogMetaData = {
+type ChallengePoolMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
-type PostMetaData = {
+type OpenQuestionMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
-type CommentMetaData = {
+type OpenAnswerMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
-export declare class Blog {
+export declare class ChallengePool {
   readonly id: string;
-  readonly name: string;
-  readonly posts?: (Post | null)[];
+  readonly description: string;
+  readonly openQuestions?: (OpenQuestion | null)[];
   readonly createdAt?: string;
   readonly updatedAt?: string;
-  constructor(init: ModelInit<Blog, BlogMetaData>);
-  static copyOf(source: Blog, mutator: (draft: MutableModel<Blog, BlogMetaData>) => MutableModel<Blog, BlogMetaData> | void): Blog;
+  constructor(init: ModelInit<ChallengePool, ChallengePoolMetaData>);
+  static copyOf(source: ChallengePool, mutator: (draft: MutableModel<ChallengePool, ChallengePoolMetaData>) => MutableModel<ChallengePool, ChallengePoolMetaData> | void): ChallengePool;
 }
 
-export declare class Post {
+export declare class OpenQuestion {
   readonly id: string;
-  readonly title: string;
-  readonly blog?: Blog;
-  readonly comments?: (Comment | null)[];
+  readonly text: string;
+  readonly challengePoolID?: string;
+  readonly challengePool?: ChallengePool;
+  readonly openAnswers?: (OpenAnswer | null)[];
   readonly createdAt?: string;
   readonly updatedAt?: string;
-  constructor(init: ModelInit<Post, PostMetaData>);
-  static copyOf(source: Post, mutator: (draft: MutableModel<Post, PostMetaData>) => MutableModel<Post, PostMetaData> | void): Post;
+  constructor(init: ModelInit<OpenQuestion, OpenQuestionMetaData>);
+  static copyOf(source: OpenQuestion, mutator: (draft: MutableModel<OpenQuestion, OpenQuestionMetaData>) => MutableModel<OpenQuestion, OpenQuestionMetaData> | void): OpenQuestion;
 }
 
-export declare class Comment {
+export declare class OpenAnswer {
   readonly id: string;
-  readonly post?: Post;
-  readonly content: string;
+  readonly openQuestionID?: string;
+  readonly openQuestion?: OpenQuestion;
+  readonly text: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
-  constructor(init: ModelInit<Comment, CommentMetaData>);
-  static copyOf(source: Comment, mutator: (draft: MutableModel<Comment, CommentMetaData>) => MutableModel<Comment, CommentMetaData> | void): Comment;
+  constructor(init: ModelInit<OpenAnswer, OpenAnswerMetaData>);
+  static copyOf(source: OpenAnswer, mutator: (draft: MutableModel<OpenAnswer, OpenAnswerMetaData>) => MutableModel<OpenAnswer, OpenAnswerMetaData> | void): OpenAnswer;
 }

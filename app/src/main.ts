@@ -1,8 +1,10 @@
 import App from './App.svelte';
 import Amplify from '@aws-amplify/core';
+import API from '@aws-amplify/api';
 import aws_exports from './aws-exports';
 
 Amplify.configure(aws_exports);
+API.configure(aws_exports);
 
 const app = new App({
 	target: document.body,

@@ -1,24 +1,40 @@
 <script lang="ts">
 	import Login from "./Login.svelte";
 	import { store } from "./stores/auth.js";
+	import { API, graphqlOperation } from "aws-amplify";
+	import { createChallengePool } from "./graphql/mutations";
+	import { listChallengePools } from "./graphql/queries";
+	import type { ChallengePool } from "./API";
+	import { onCreateChallengePool } from "./graphql/subscriptions";
+
+	import { onMount } from "svelte";
+
+	let challengePools = [];
 
 	function logout() {
 		$store = null;
 	}
+
+	onMount(() => {
+		API.graphql(graphqlOperation(listChallengePools)).then((data) => {
+			console.log({ data });
+			challengePools = data.data.listChallengePools.items;
+		});
+	});
 </script>
 
 <main>
 	<h2>scalexam</h2>
 
 	{#if $store != null}
-		<h1>
-			You are logged in <button type="button" on:click={logout}
-				>Log Out</button
-			>
-		</h1>
+		<h1>You are logged in</h1>
+		<button type="button" on:click={logout}>Log Out</button>
 		<pre>
-    {JSON.stringify($store, null, 2)}
+    <!---{JSON.stringify($store, null, 2)}--->
   </pre>
+		{#each challengePools as challengePool}
+			<p>{challengePool.description}</p>
+		{/each}
 		<!--<OpenQuestionProposalsOverview {openQuestionProposals} />
     <ProposeOpenQuestion on:openQuestionProposed={handleOpenQuestionProposed} />-->
 	{:else}

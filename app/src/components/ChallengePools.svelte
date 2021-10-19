@@ -1,6 +1,7 @@
 <script lang="ts">
     import { DataStore } from "@aws-amplify/datastore";
     import { ChallengePool } from "../models";
+    import ChallengePoolComp from "./ChallengePoolComp.svelte";
     import OpenQuestions from "./OpenQuestions.svelte";
     import { Hub } from "aws-amplify";
 
@@ -47,14 +48,10 @@
     </div>
 
     {#each challengePools as challengePool}
-        <div class="container">
-            <h2>{challengePool.description}</h2>
-            <button
-                on:click={() => deleteChallengePoolFunc(challengePool.id)}
-                style="float: right;">Delete Challenge Pool</button
-            >
-            <OpenQuestions {challengePool} />
-        </div>
+        <ChallengePoolComp
+            {challengePool}
+            on:deleteClicked={() => deleteChallengePoolFunc(challengePool.id)}
+        />
     {/each}
 </div>
 

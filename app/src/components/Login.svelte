@@ -5,7 +5,7 @@
     signIn,
     confirmSignUp,
     loginFormState,
-  } from "./stores/auth.js";
+  } from "../stores/auth.js";
   let mode = localStorage.getItem("svelteLoginMode") || "signup";
   let isSigningIn = mode === "signin";
   let promise; // nothing to start with
@@ -94,7 +94,6 @@
   References:
   https://www.swyx.io/svelte-auth/
 -->
-
 <style>
   .errorMessage {
     background: papayawhip;

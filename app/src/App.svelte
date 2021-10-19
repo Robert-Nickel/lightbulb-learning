@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Login from "./Login.svelte";
+	import Login from "./components/Login.svelte";
 	import { store } from "./stores/auth.js";
 	import ChallengePools from "./components/ChallengePools.svelte";
 	import { DataStore } from "@aws-amplify/datastore";
@@ -11,13 +11,12 @@
 </script>
 
 <main>
-	<h1>scalexam</h1> <button type="button" on:click={logout} style="float: right">Log Out</button>
-	<br><br>
+	<h1>scalexam</h1>
+	<button type="button" on:click={logout} style="float: right">Log Out</button
+	>
+	<br /><br />
 	{#if $store != null}
 		<ChallengePools />
-
-		<!--<OpenQuestionProposalsOverview {openQuestionProposals} />
-    	<ProposeOpenQuestion on:openQuestionProposed={handleOpenQuestionProposed} />-->
 	{:else}
 		<Login />
 	{/if}

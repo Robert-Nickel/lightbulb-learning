@@ -9,7 +9,9 @@
     fetchOpenAnswers();
 
     async function fetchOpenAnswers() {
-        openAnswers = await DataStore.query(OpenAnswer);
+        openAnswers = await DataStore.query(OpenAnswer, (a) =>
+            a.openQuestionID("eq", openQuestion.id)
+        );
     }
 
     async function createOpenAnswerFunc(input) {

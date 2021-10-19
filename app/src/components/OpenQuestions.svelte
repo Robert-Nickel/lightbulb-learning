@@ -1,7 +1,7 @@
 <script lang="ts">
     import { DataStore } from "@aws-amplify/datastore";
     import { OpenQuestion, ChallengePool } from "../models";
-import OpenAnswer from "./OpenAnswer.svelte";
+    import OpenAnswer from "./OpenAnswer.svelte";
 
     export let challengePool: ChallengePool;
 
@@ -10,7 +10,9 @@ import OpenAnswer from "./OpenAnswer.svelte";
     fetchOpenQuestions();
 
     async function fetchOpenQuestions() {
-        openQuestions = await DataStore.query(OpenQuestion);
+        openQuestions = await DataStore.query(OpenQuestion, (q) =>
+            q.challengePoolID("eq", challengePool.id)
+        );
     }
 
     async function createOpenQuestionFunc(input) {
@@ -50,7 +52,7 @@ import OpenAnswer from "./OpenAnswer.svelte";
                 on:click={() => deleteOpenQuestionFunc(openQuestion.id)}
                 style="float: right;">Delete this Open Question</button
             >
-            <OpenAnswer {openQuestion}></OpenAnswer>
+            <OpenAnswer {openQuestion} />
         </div>
     {/each}
 </div>

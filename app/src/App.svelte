@@ -11,18 +11,10 @@
 </script>
 
 <main>
-	<h2>scalexam</h2>
-
+	<h1>scalexam</h1> <button type="button" on:click={logout} style="float: right">Log Out</button>
+	<br><br>
 	{#if $store != null}
-		<h1>You are logged in</h1>
-		<button type="button" on:click={logout}>Log Out</button>
-
 		<ChallengePools />
-
-		<!--This shows the user data-->
-		<!--<pre>
-			{JSON.stringify($store, null, 2)}
-  		</pre>-->
 
 		<!--<OpenQuestionProposalsOverview {openQuestionProposals} />
     	<ProposeOpenQuestion on:openQuestionProposed={handleOpenQuestionProposed} />-->
@@ -35,13 +27,12 @@
 	main {
 		text-align: center;
 		padding: 1em;
-		max-width: 240px;
+		max-width: 900px;
 		margin: 0 auto;
 	}
 
 	h1 {
 		color: #ff3e00;
-		text-transform: uppercase;
 		font-size: 4em;
 		font-weight: 100;
 	}

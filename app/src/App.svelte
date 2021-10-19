@@ -12,10 +12,11 @@
 
 <main>
 	<h1>scalexam</h1>
-	<button type="button" on:click={logout} style="float: right">Log Out</button
-	>
+	
 	<br /><br />
 	{#if $store != null}
+	<button type="button" on:click={logout} style="float: right">Log Out</button
+		>
 		<ChallengePools />
 	{:else}
 		<Login />

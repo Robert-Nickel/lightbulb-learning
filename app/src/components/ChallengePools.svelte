@@ -2,10 +2,20 @@
     import { DataStore } from "@aws-amplify/datastore";
     import { ChallengePool } from "../models";
     import OpenQuestions from "./OpenQuestions.svelte";
+    import { Hub } from "aws-amplify";
 
     let challengePools: Array<ChallengePool> = [];
 
     fetchChallengePools();
+
+    const listener = Hub.listen("datastore", async (hubData) => {
+        const { event, data } = hubData.payload;
+        if (event === "ready") {
+            fetchChallengePools();
+            // This removes the listener
+            listener();
+        }
+    });
 
     async function fetchChallengePools() {
         challengePools = await DataStore.query(ChallengePool);

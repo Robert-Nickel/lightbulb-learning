@@ -3,7 +3,11 @@
 	import { store } from "./stores/auth.js";
 	import ChallengePools from "./components/ChallengePools.svelte";
 	import { DataStore } from "@aws-amplify/datastore";
-	import TailwindCss from './TailwindCss.svelte'
+	import TailwindCss from "./TailwindCss.svelte";
+	import Navbar from "./components/Navbar.svelte";
+	import Sidebar from "./components/Sidebar.svelte";
+
+	let open = false;
 
 	function logout() {
 		$store = null;
@@ -11,16 +15,14 @@
 	}
 </script>
 
+<TailwindCss />
+<Sidebar bind:open on:logout={logout} />
+<Navbar bind:sidebar={open} on:logout={logout} />
 <main>
-	<TailwindCss/>
-
 	<h1>scalexam</h1>
 
 	<br /><br />
 	{#if $store != null}
-		<button type="button" on:click={logout} style="float: right"
-			>Log Out</button
-		>
 		<ChallengePools />
 	{:else}
 		<Login />
@@ -28,6 +30,9 @@
 </main>
 
 <style>
+	:global(body) {
+		padding: 0;
+	}
 	main {
 		text-align: center;
 		padding: 1em;

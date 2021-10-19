@@ -7,6 +7,7 @@ import sveltePreprocess from 'svelte-preprocess';
 import typescript from '@rollup/plugin-typescript';
 import css from 'rollup-plugin-css-only';
 import json from "@rollup/plugin-json";
+import tailwind from 'tailwindcss';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -41,7 +42,14 @@ export default {
 	},
 	plugins: [
 		svelte({
-			preprocess: sveltePreprocess({ sourceMap: !production }),
+			preprocess: sveltePreprocess({
+				sourceMap: !production,
+				postcss: {
+					plugins: [
+						tailwind('./tailwind.config.js')
+					]
+				}
+			}),
 			compilerOptions: {
 				// enable run-time checks when not in production
 				dev: !production

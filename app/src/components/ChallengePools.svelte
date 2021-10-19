@@ -1,7 +1,7 @@
 <script lang="ts">
     import { DataStore } from "@aws-amplify/datastore";
     import { ChallengePool } from "../models";
-    import ChallengePoolComp from "./ChallengePoolComp.svelte";
+    import ChallengePoolDetail from "./ChallengePoolDetail.svelte";
     import OpenQuestions from "./OpenQuestions.svelte";
     import { Hub } from "aws-amplify";
 
@@ -33,38 +33,25 @@
     }
 </script>
 
-<div class="container">
-    <h2>Challenge Pools</h2>
-    <div class="container">
-        <h2>Create new Challenge Pool</h2>
-        <input
-            placeholder="Description"
-            on:keydown={(e) => {
-                if (e.key === "Enter") {
-                    createChallengePoolFunc(e.target);
-                }
-            }}
-        />
-    </div>
-
+<div class="space-y-4">
     {#each challengePools as challengePool}
-        <ChallengePoolComp
+        <ChallengePoolDetail
             {challengePool}
             on:deleteClicked={() => deleteChallengePoolFunc(challengePool.id)}
         />
     {/each}
+    <div class="space-y-4">
+        <span class="block">Create new Challenge Pool</span>
+        <span class="block"
+            ><input
+                placeholder="Description"
+                class="w-full"
+                on:keydown={(e) => {
+                    if (e.key === "Enter") {
+                        createChallengePoolFunc(e.target);
+                    }
+                }}
+            /></span
+        >
+    </div>
 </div>
-
-<style>
-    .container {
-        border: 3px #333 solid;
-        border-radius: 10px;
-        text-align: left;
-        padding: 1em;
-        margin: 1em;
-    }
-
-    input {
-        width: 16em;
-    }
-</style>

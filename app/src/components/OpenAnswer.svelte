@@ -30,9 +30,8 @@
     }
 </script>
 
-<div class="container">
-    <h2>Open Answers</h2>
-    <div class="container">
+<div>
+    <div>
         <h2>Create new Open Answer</h2>
         <input
             placeholder="Answer"
@@ -45,7 +44,7 @@
     </div>
 
     {#each openAnswers as openAnswer}
-        <div class="container">
+        <div >
             <h2>{openAnswer.text}</h2>
             <button
                 on:click={() => deleteOpenAnswerFunc(openAnswer.id)}
@@ -54,17 +53,3 @@
         </div>
     {/each}
 </div>
-
-<style>
-    .container {
-        border: 3px #333 solid;
-        border-radius: 10px;
-        text-align: left;
-        padding: 1em;
-        margin: 1em;
-    }
-
-    input {
-        width: 16em;
-    }
-</style>

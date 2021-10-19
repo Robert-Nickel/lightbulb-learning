@@ -31,9 +31,18 @@
     }
 </script>
 
-<div class="container">
-    <h2>Open Questions</h2>
-    <div class="container">
+<div space-y-4>
+    {#each openQuestions as openQuestion}
+        <div >
+            <h2>{openQuestion.text}</h2>
+            <button
+                on:click={() => deleteOpenQuestionFunc(openQuestion.id)}
+                style="float: right;">Delete this Open Question</button
+            >
+            <OpenAnswer {openQuestion} />
+        </div>
+    {/each}
+    <div >
         <h2>Create new Open Question</h2>
         <input
             placeholder="Question"
@@ -44,29 +53,4 @@
             }}
         />
     </div>
-
-    {#each openQuestions as openQuestion}
-        <div class="container">
-            <h2>{openQuestion.text}</h2>
-            <button
-                on:click={() => deleteOpenQuestionFunc(openQuestion.id)}
-                style="float: right;">Delete this Open Question</button
-            >
-            <OpenAnswer {openQuestion} />
-        </div>
-    {/each}
 </div>
-
-<style>
-    .container {
-        border: 3px #333 solid;
-        border-radius: 10px;
-        text-align: left;
-        padding: 1em;
-        margin: 1em;
-    }
-
-    input {
-        width: 16em;
-    }
-</style>

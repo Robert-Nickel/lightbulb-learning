@@ -6,6 +6,8 @@
 	import TailwindCss from "./TailwindCss.svelte";
 	import Navbar from "./components/Navbar.svelte";
 	import Sidebar from "./components/Sidebar.svelte";
+	import { SvelteToast } from "@zerodevx/svelte-toast";
+
 
 	let open = false;
 
@@ -18,37 +20,17 @@
 <TailwindCss />
 <Sidebar bind:open on:logout={logout} />
 <Navbar bind:sidebar={open} on:logout={logout} />
-<main>
-	<h1>scalexam</h1>
-
-	<br /><br />
+<main class="container mx-auto py-4 px-2">
 	{#if $store != null}
 		<ChallengePools />
 	{:else}
 		<Login />
 	{/if}
 </main>
+<SvelteToast />
 
 <style>
 	:global(body) {
 		padding: 0;
-	}
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 900px;
-		margin: 0 auto;
-	}
-
-	h1 {
-		color: #ff3e00;
-		font-size: 4em;
-		font-weight: 100;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
 	}
 </style>

@@ -8,7 +8,6 @@
 	import Sidebar from "./components/Sidebar.svelte";
 	import { SvelteToast } from "@zerodevx/svelte-toast";
 
-
 	let open = false;
 
 	function logout() {
@@ -20,7 +19,7 @@
 <TailwindCss />
 <Sidebar bind:open on:logout={logout} />
 <Navbar bind:sidebar={open} on:logout={logout} />
-<main class="container mx-auto py-4 px-2">
+<main class="container mx-auto py-4 px-2 max-w-screen-sm">
 	{#if $store != null}
 		<ChallengePools />
 	{:else}
@@ -29,6 +28,7 @@
 </main>
 <SvelteToast />
 
+<!--Go here to see which toasts are possible: https://zerodevx.github.io/svelte-toast/-->
 <style>
 	:global(body) {
 		padding: 0;

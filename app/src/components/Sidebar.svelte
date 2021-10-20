@@ -11,7 +11,7 @@
 </script>
 
 <aside
-	class="absolute w-full h-full bg-gray-200 border-r-2 shadow-lg"
+	class="absolute w-full h-full bg-gray-200 border-r-2 shadow-lg z-10"
 	class:open
 >
 	<nav class="p-12 text-xl">

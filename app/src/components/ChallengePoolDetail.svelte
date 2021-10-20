@@ -41,7 +41,7 @@
             <div>{challengePool.description}</div>
         </div>
         {#if open}<div>
-                <button on:click={deleteClicked}>Delete Challenge Pool</button>
+                <button on:click={deleteClicked}>Delete</button>
             </div>
         {/if}
     </div>

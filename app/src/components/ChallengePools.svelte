@@ -2,10 +2,10 @@
     import { DataStore } from "@aws-amplify/datastore";
     import { ChallengePool } from "../models";
     import ChallengePoolDetail from "./ChallengePoolDetail.svelte";
-    import OpenQuestions from "./MyOpenQuestions.svelte";
     import { Hub } from "aws-amplify";
 
     let challengePools: Array<ChallengePool> = [];
+    let activeChallenge: ChallengePool;
 
     fetchChallengePools();
 
@@ -33,25 +33,34 @@
     }
 </script>
 
-<div class="space-y-4">
-    {#each challengePools as challengePool}
-        <ChallengePoolDetail
-            {challengePool}
-            on:deleteClicked={() => deleteChallengePoolFunc(challengePool.id)}
-        />
-    {/each}
+{#if activeChallenge != null}
+    <div>challenge mode for</div>
+    <div>{activeChallenge.description}</div>
+{:else}
     <div class="space-y-4">
-        <span class="block">Create new Challenge Pool</span>
-        <span class="block"
-            ><input
-                placeholder="Description"
-                class="w-full"
-                on:keydown={(e) => {
-                    if (e.key === "Enter") {
-                        createChallengePoolFunc(e.target);
-                    }
+        {#each challengePools as challengePool}
+            <ChallengePoolDetail
+                {challengePool}
+                on:deleteClicked={() =>
+                    deleteChallengePoolFunc(challengePool.id)}
+                on:startChallengeClicked={() => {
+                    activeChallenge = challengePool;
                 }}
-            /></span
-        >
+            />
+        {/each}
+        <div class="space-y-4">
+            <span class="block">Create new Challenge Pool</span>
+            <span class="block"
+                ><input
+                    placeholder="Description"
+                    class="w-full"
+                    on:keydown={(e) => {
+                        if (e.key === "Enter") {
+                            createChallengePoolFunc(e.target);
+                        }
+                    }}
+                /></span
+            >
+        </div>
     </div>
-</div>
+{/if}

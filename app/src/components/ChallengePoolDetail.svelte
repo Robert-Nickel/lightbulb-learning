@@ -2,6 +2,7 @@
     import { createEventDispatcher } from "svelte";
     const dispatch = createEventDispatcher();
     import OpenQuestions from "./MyOpenQuestions.svelte";
+    import Arrow from "./Arrow.svelte";
 
     export let challengePool;
 
@@ -16,13 +17,7 @@
     <div class="flex justify-between">
         <div class="flex space-x-3">
             <div on:click={() => (open = !open)}>
-                {#if open}<i
-                        class="border-black border-solid p-1 border-b-2 border-r-2 inline-block transform rotate-45"
-                    />
-                {:else}<i
-                        class="border-black border-solid p-1 border-b-2 border-r-2 inline-block transform -rotate-45"
-                    />
-                {/if}
+               <Arrow down = {open}></Arrow>
             </div>
             <div>{challengePool.description}</div>
         </div>

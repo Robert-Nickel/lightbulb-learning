@@ -2,7 +2,7 @@
     import { DataStore } from "@aws-amplify/datastore";
     import { ChallengePool } from "../models";
     import ChallengePoolDetail from "./ChallengePoolDetail.svelte";
-    import OpenQuestions from "./OpenQuestions.svelte";
+    import OpenQuestions from "./MyOpenQuestions.svelte";
     import { Hub } from "aws-amplify";
 
     let challengePools: Array<ChallengePool> = [];

@@ -22,6 +22,7 @@ export const getChallengePool = /* GraphQL */ `
           _lastChangedAt
           createdAt
           updatedAt
+          owner
         }
         nextToken
         startedAt
@@ -109,6 +110,7 @@ export const getOpenQuestion = /* GraphQL */ `
           startedAt
         }
       }
+      owner
       openAnswers {
         items {
           id
@@ -119,6 +121,7 @@ export const getOpenQuestion = /* GraphQL */ `
           _lastChangedAt
           createdAt
           updatedAt
+          owner
         }
         nextToken
         startedAt
@@ -151,6 +154,7 @@ export const listOpenQuestions = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        owner
         openAnswers {
           nextToken
           startedAt
@@ -192,6 +196,7 @@ export const syncOpenQuestions = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        owner
         openAnswers {
           nextToken
           startedAt
@@ -231,11 +236,13 @@ export const getOpenAnswer = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        owner
         openAnswers {
           nextToken
           startedAt
         }
       }
+      owner
     }
   }
 `;
@@ -264,7 +271,9 @@ export const listOpenAnswers = /* GraphQL */ `
           _lastChangedAt
           createdAt
           updatedAt
+          owner
         }
+        owner
       }
       nextToken
       startedAt
@@ -302,7 +311,9 @@ export const syncOpenAnswers = /* GraphQL */ `
           _lastChangedAt
           createdAt
           updatedAt
+          owner
         }
+        owner
       }
       nextToken
       startedAt

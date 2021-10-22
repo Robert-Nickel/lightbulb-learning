@@ -85,6 +85,7 @@ export type OpenQuestion = {
   createdAt: string,
   updatedAt: string,
   challengePool?: ChallengePool | null,
+  owner?: string | null,
   openAnswers?: ModelOpenAnswerConnection | null,
 };
 
@@ -106,6 +107,7 @@ export type OpenAnswer = {
   createdAt: string,
   updatedAt: string,
   openQuestion?: OpenQuestion | null,
+  owner?: string | null,
 };
 
 export type UpdateChallengePoolInput = {
@@ -253,6 +255,7 @@ export type CreateChallengePoolMutation = {
         _lastChangedAt: number,
         createdAt: string,
         updatedAt: string,
+        owner?: string | null,
       } | null > | null,
       nextToken?: string | null,
       startedAt?: number | null,
@@ -287,6 +290,7 @@ export type UpdateChallengePoolMutation = {
         _lastChangedAt: number,
         createdAt: string,
         updatedAt: string,
+        owner?: string | null,
       } | null > | null,
       nextToken?: string | null,
       startedAt?: number | null,
@@ -321,6 +325,7 @@ export type DeleteChallengePoolMutation = {
         _lastChangedAt: number,
         createdAt: string,
         updatedAt: string,
+        owner?: string | null,
       } | null > | null,
       nextToken?: string | null,
       startedAt?: number | null,
@@ -359,6 +364,7 @@ export type CreateOpenQuestionMutation = {
         startedAt?: number | null,
       } | null,
     } | null,
+    owner?: string | null,
     openAnswers?:  {
       __typename: "ModelOpenAnswerConnection",
       items?:  Array< {
@@ -371,6 +377,7 @@ export type CreateOpenQuestionMutation = {
         _lastChangedAt: number,
         createdAt: string,
         updatedAt: string,
+        owner?: string | null,
       } | null > | null,
       nextToken?: string | null,
       startedAt?: number | null,
@@ -409,6 +416,7 @@ export type UpdateOpenQuestionMutation = {
         startedAt?: number | null,
       } | null,
     } | null,
+    owner?: string | null,
     openAnswers?:  {
       __typename: "ModelOpenAnswerConnection",
       items?:  Array< {
@@ -421,6 +429,7 @@ export type UpdateOpenQuestionMutation = {
         _lastChangedAt: number,
         createdAt: string,
         updatedAt: string,
+        owner?: string | null,
       } | null > | null,
       nextToken?: string | null,
       startedAt?: number | null,
@@ -459,6 +468,7 @@ export type DeleteOpenQuestionMutation = {
         startedAt?: number | null,
       } | null,
     } | null,
+    owner?: string | null,
     openAnswers?:  {
       __typename: "ModelOpenAnswerConnection",
       items?:  Array< {
@@ -471,6 +481,7 @@ export type DeleteOpenQuestionMutation = {
         _lastChangedAt: number,
         createdAt: string,
         updatedAt: string,
+        owner?: string | null,
       } | null > | null,
       nextToken?: string | null,
       startedAt?: number | null,
@@ -514,12 +525,14 @@ export type CreateOpenAnswerMutation = {
         createdAt: string,
         updatedAt: string,
       } | null,
+      owner?: string | null,
       openAnswers?:  {
         __typename: "ModelOpenAnswerConnection",
         nextToken?: string | null,
         startedAt?: number | null,
       } | null,
     } | null,
+    owner?: string | null,
   } | null,
 };
 
@@ -559,12 +572,14 @@ export type UpdateOpenAnswerMutation = {
         createdAt: string,
         updatedAt: string,
       } | null,
+      owner?: string | null,
       openAnswers?:  {
         __typename: "ModelOpenAnswerConnection",
         nextToken?: string | null,
         startedAt?: number | null,
       } | null,
     } | null,
+    owner?: string | null,
   } | null,
 };
 
@@ -604,12 +619,14 @@ export type DeleteOpenAnswerMutation = {
         createdAt: string,
         updatedAt: string,
       } | null,
+      owner?: string | null,
       openAnswers?:  {
         __typename: "ModelOpenAnswerConnection",
         nextToken?: string | null,
         startedAt?: number | null,
       } | null,
     } | null,
+    owner?: string | null,
   } | null,
 };
 
@@ -639,6 +656,7 @@ export type GetChallengePoolQuery = {
         _lastChangedAt: number,
         createdAt: string,
         updatedAt: string,
+        owner?: string | null,
       } | null > | null,
       nextToken?: string | null,
       startedAt?: number | null,
@@ -735,6 +753,7 @@ export type GetOpenQuestionQuery = {
         startedAt?: number | null,
       } | null,
     } | null,
+    owner?: string | null,
     openAnswers?:  {
       __typename: "ModelOpenAnswerConnection",
       items?:  Array< {
@@ -747,6 +766,7 @@ export type GetOpenQuestionQuery = {
         _lastChangedAt: number,
         createdAt: string,
         updatedAt: string,
+        owner?: string | null,
       } | null > | null,
       nextToken?: string | null,
       startedAt?: number | null,
@@ -783,6 +803,7 @@ export type ListOpenQuestionsQuery = {
         createdAt: string,
         updatedAt: string,
       } | null,
+      owner?: string | null,
       openAnswers?:  {
         __typename: "ModelOpenAnswerConnection",
         nextToken?: string | null,
@@ -824,6 +845,7 @@ export type SyncOpenQuestionsQuery = {
         createdAt: string,
         updatedAt: string,
       } | null,
+      owner?: string | null,
       openAnswers?:  {
         __typename: "ModelOpenAnswerConnection",
         nextToken?: string | null,
@@ -870,12 +892,14 @@ export type GetOpenAnswerQuery = {
         createdAt: string,
         updatedAt: string,
       } | null,
+      owner?: string | null,
       openAnswers?:  {
         __typename: "ModelOpenAnswerConnection",
         nextToken?: string | null,
         startedAt?: number | null,
       } | null,
     } | null,
+    owner?: string | null,
   } | null,
 };
 
@@ -908,7 +932,9 @@ export type ListOpenAnswersQuery = {
         _lastChangedAt: number,
         createdAt: string,
         updatedAt: string,
+        owner?: string | null,
       } | null,
+      owner?: string | null,
     } | null > | null,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -945,7 +971,9 @@ export type SyncOpenAnswersQuery = {
         _lastChangedAt: number,
         createdAt: string,
         updatedAt: string,
+        owner?: string | null,
       } | null,
+      owner?: string | null,
     } | null > | null,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -974,6 +1002,7 @@ export type OnCreateChallengePoolSubscription = {
         _lastChangedAt: number,
         createdAt: string,
         updatedAt: string,
+        owner?: string | null,
       } | null > | null,
       nextToken?: string | null,
       startedAt?: number | null,
@@ -1003,6 +1032,7 @@ export type OnUpdateChallengePoolSubscription = {
         _lastChangedAt: number,
         createdAt: string,
         updatedAt: string,
+        owner?: string | null,
       } | null > | null,
       nextToken?: string | null,
       startedAt?: number | null,
@@ -1032,11 +1062,16 @@ export type OnDeleteChallengePoolSubscription = {
         _lastChangedAt: number,
         createdAt: string,
         updatedAt: string,
+        owner?: string | null,
       } | null > | null,
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
   } | null,
+};
+
+export type OnCreateOpenQuestionSubscriptionVariables = {
+  owner?: string | null,
 };
 
 export type OnCreateOpenQuestionSubscription = {
@@ -1065,6 +1100,7 @@ export type OnCreateOpenQuestionSubscription = {
         startedAt?: number | null,
       } | null,
     } | null,
+    owner?: string | null,
     openAnswers?:  {
       __typename: "ModelOpenAnswerConnection",
       items?:  Array< {
@@ -1077,11 +1113,16 @@ export type OnCreateOpenQuestionSubscription = {
         _lastChangedAt: number,
         createdAt: string,
         updatedAt: string,
+        owner?: string | null,
       } | null > | null,
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
   } | null,
+};
+
+export type OnUpdateOpenQuestionSubscriptionVariables = {
+  owner?: string | null,
 };
 
 export type OnUpdateOpenQuestionSubscription = {
@@ -1110,6 +1151,7 @@ export type OnUpdateOpenQuestionSubscription = {
         startedAt?: number | null,
       } | null,
     } | null,
+    owner?: string | null,
     openAnswers?:  {
       __typename: "ModelOpenAnswerConnection",
       items?:  Array< {
@@ -1122,11 +1164,16 @@ export type OnUpdateOpenQuestionSubscription = {
         _lastChangedAt: number,
         createdAt: string,
         updatedAt: string,
+        owner?: string | null,
       } | null > | null,
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
   } | null,
+};
+
+export type OnDeleteOpenQuestionSubscriptionVariables = {
+  owner?: string | null,
 };
 
 export type OnDeleteOpenQuestionSubscription = {
@@ -1155,6 +1202,7 @@ export type OnDeleteOpenQuestionSubscription = {
         startedAt?: number | null,
       } | null,
     } | null,
+    owner?: string | null,
     openAnswers?:  {
       __typename: "ModelOpenAnswerConnection",
       items?:  Array< {
@@ -1167,11 +1215,16 @@ export type OnDeleteOpenQuestionSubscription = {
         _lastChangedAt: number,
         createdAt: string,
         updatedAt: string,
+        owner?: string | null,
       } | null > | null,
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
   } | null,
+};
+
+export type OnCreateOpenAnswerSubscriptionVariables = {
+  owner?: string | null,
 };
 
 export type OnCreateOpenAnswerSubscription = {
@@ -1205,13 +1258,19 @@ export type OnCreateOpenAnswerSubscription = {
         createdAt: string,
         updatedAt: string,
       } | null,
+      owner?: string | null,
       openAnswers?:  {
         __typename: "ModelOpenAnswerConnection",
         nextToken?: string | null,
         startedAt?: number | null,
       } | null,
     } | null,
+    owner?: string | null,
   } | null,
+};
+
+export type OnUpdateOpenAnswerSubscriptionVariables = {
+  owner?: string | null,
 };
 
 export type OnUpdateOpenAnswerSubscription = {
@@ -1245,13 +1304,19 @@ export type OnUpdateOpenAnswerSubscription = {
         createdAt: string,
         updatedAt: string,
       } | null,
+      owner?: string | null,
       openAnswers?:  {
         __typename: "ModelOpenAnswerConnection",
         nextToken?: string | null,
         startedAt?: number | null,
       } | null,
     } | null,
+    owner?: string | null,
   } | null,
+};
+
+export type OnDeleteOpenAnswerSubscriptionVariables = {
+  owner?: string | null,
 };
 
 export type OnDeleteOpenAnswerSubscription = {
@@ -1285,11 +1350,13 @@ export type OnDeleteOpenAnswerSubscription = {
         createdAt: string,
         updatedAt: string,
       } | null,
+      owner?: string | null,
       openAnswers?:  {
         __typename: "ModelOpenAnswerConnection",
         nextToken?: string | null,
         startedAt?: number | null,
       } | null,
     } | null,
+    owner?: string | null,
   } | null,
 };

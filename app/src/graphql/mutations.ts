@@ -25,6 +25,7 @@ export const createChallengePool = /* GraphQL */ `
           _lastChangedAt
           createdAt
           updatedAt
+          owner
         }
         nextToken
         startedAt
@@ -55,6 +56,7 @@ export const updateChallengePool = /* GraphQL */ `
           _lastChangedAt
           createdAt
           updatedAt
+          owner
         }
         nextToken
         startedAt
@@ -85,6 +87,7 @@ export const deleteChallengePool = /* GraphQL */ `
           _lastChangedAt
           createdAt
           updatedAt
+          owner
         }
         nextToken
         startedAt
@@ -119,6 +122,7 @@ export const createOpenQuestion = /* GraphQL */ `
           startedAt
         }
       }
+      owner
       openAnswers {
         items {
           id
@@ -129,6 +133,7 @@ export const createOpenQuestion = /* GraphQL */ `
           _lastChangedAt
           createdAt
           updatedAt
+          owner
         }
         nextToken
         startedAt
@@ -163,6 +168,7 @@ export const updateOpenQuestion = /* GraphQL */ `
           startedAt
         }
       }
+      owner
       openAnswers {
         items {
           id
@@ -173,6 +179,7 @@ export const updateOpenQuestion = /* GraphQL */ `
           _lastChangedAt
           createdAt
           updatedAt
+          owner
         }
         nextToken
         startedAt
@@ -207,6 +214,7 @@ export const deleteOpenQuestion = /* GraphQL */ `
           startedAt
         }
       }
+      owner
       openAnswers {
         items {
           id
@@ -217,6 +225,7 @@ export const deleteOpenQuestion = /* GraphQL */ `
           _lastChangedAt
           createdAt
           updatedAt
+          owner
         }
         nextToken
         startedAt
@@ -256,11 +265,13 @@ export const createOpenAnswer = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        owner
         openAnswers {
           nextToken
           startedAt
         }
       }
+      owner
     }
   }
 `;
@@ -296,11 +307,13 @@ export const updateOpenAnswer = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        owner
         openAnswers {
           nextToken
           startedAt
         }
       }
+      owner
     }
   }
 `;
@@ -336,11 +349,13 @@ export const deleteOpenAnswer = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        owner
         openAnswers {
           nextToken
           startedAt
         }
       }
+      owner
     }
   }
 `;

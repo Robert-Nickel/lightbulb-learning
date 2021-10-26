@@ -1,0 +1,23 @@
+{
+    "prod": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-skapp-prod-125115-authRole",
+            "UnauthRoleArn": "arn:aws:iam::532688539985:role/amplify-skapp-prod-125115-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::532688539985:role/amplify-skapp-prod-125115-authRole",
+            "Region": "eu-central-1",
+            "DeploymentBucketName": "amplify-skapp-prod-125115-deployment",
+            "UnauthRoleName": "amplify-skapp-prod-125115-unauthRole",
+            "StackName": "amplify-skapp-prod-125115",
+            "StackId": "arn:aws:cloudformation:eu-central-1:532688539985:stack/amplify-skapp-prod-125115/a5f88450-364a-11ec-a604-0ab7cbfcdcf0",
+            "AmplifyAppId": "d3dw9tzhw4kj7t"
+        },
+        "categories": {
+            "hosting": {
+                "amplifyhosting": {
+                    "appId": "d3dw9tzhw4kj7t",
+                    "type": "manual"
+                }
+            }
+        }
+    }
+}

@@ -1,12 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" href="/favicon.png" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		%svelte.head%
-	</head>
-	<body>
-		<div id="svelte">%svelte.body%</div>
-	</body>
+
+<head>
+	<meta charset="utf-8" />
+	<link rel="icon" href="/favicon.png" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<script>
+		window.global = window;
+		var exports = {}
+	</script>
+	%svelte.head%
+</head>
+
+<body>
+	<!-- https://github.com/aws/aws-amplify/issues/678 fix: -->
+	<script>
+
+		const isBrowser = () => typeof window !== 'undefined';
+		const isGlobal = () => typeof global !== 'undefined';
+
+		// https://github.com/aws-amplify/amplify-js/issues/7499#issuecomment-804386820
+		var exports = {};
+
+		if (!isGlobal() && isBrowser()) {
+			var global = window;
+		}
+
+	</script>
+	<!-- https://github.com/aws/aws-amplify/issues/678 fix end-->
+
+	<div id="svelte">%svelte.body%</div>
+</body>
+
 </html>

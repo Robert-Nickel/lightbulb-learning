@@ -60,6 +60,10 @@
 
         fetchOpenQuestions();
     }
+
+    function commitOpenQuestion() {
+        
+    }
 </script>
 
 <div>
@@ -107,10 +111,15 @@
                 <div>Answer: {openQuestion.answerText}</div>
                 <div>
                     <button
-                        on:click={() => deleteMyAnswerFromOpenQuestion(openQuestion)}
+                        on:click={() =>
+                            deleteMyAnswerFromOpenQuestion(openQuestion)}
                         >Delete</button
                     >
                 </div>
             </div>{/if}
+        <button
+            disabled={!openQuestion.answerText}
+            on:click={commitOpenQuestion}>Commit</button
+        >
     {/each}
 </div>

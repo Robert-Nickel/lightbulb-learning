@@ -83,8 +83,8 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "text": {
-                    "name": "text",
+                "questionText": {
+                    "name": "questionText",
                     "isArray": false,
                     "type": "String",
                     "isRequired": true,
@@ -123,6 +123,13 @@ export const schema = {
                         "connectionType": "HAS_MANY",
                         "associatedWith": "openQuestionID"
                     }
+                },
+                "answerText": {
+                    "name": "answerText",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -272,5 +279,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "1776a397c044406a4d9863b9bbbd29b8"
+    "version": "0ca047b2811ae74ae0493bd147572ee9"
 };

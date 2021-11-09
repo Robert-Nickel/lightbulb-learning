@@ -6,10 +6,11 @@ type ChallengePool @model @auth(rules: [{allow: public}]) {
 
 type OpenQuestion @model @key(name: "byChallengePool", fields: ["challengePoolID"]) @auth(rules: [{allow: owner}]) {
   id: ID!
-  text: String!
+  questionText: String!
   challengePoolID: ID
   challengePool: ChallengePool @connection
   openAnswers: [OpenAnswer] @connection(keyName: "byOpenQuestion", fields: ["id"])
+  answerText: String
 }
 
 type OpenAnswer @model @key(name: "byOpenQuestion", fields: ["openQuestionID"]) @auth(rules: [{allow: owner}]) {

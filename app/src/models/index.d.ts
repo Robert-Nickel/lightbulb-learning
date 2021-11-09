@@ -28,10 +28,11 @@ export declare class ChallengePool {
 
 export declare class OpenQuestion {
   readonly id: string;
-  readonly text: string;
+  readonly questionText: string;
   readonly challengePoolID?: string;
   readonly challengePool?: ChallengePool;
   readonly openAnswers?: (OpenAnswer | null)[];
+  readonly answerText?: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<OpenQuestion, OpenQuestionMetaData>);

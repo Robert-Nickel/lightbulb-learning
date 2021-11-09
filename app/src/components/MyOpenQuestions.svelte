@@ -1,7 +1,6 @@
 <script lang="ts">
     import { DataStore } from "@aws-amplify/datastore";
     import { OpenQuestion, ChallengePool } from "../models";
-    import MyOpenAnswer from "./MyOpenAnswer.svelte";
     import { toast } from "@zerodevx/svelte-toast";
 
     export let challengePool: ChallengePool;
@@ -10,10 +9,10 @@
 
     fetchOpenQuestions();
 
-    async function createOpenQuestionFunc(input) {
+    async function createOpenQuestionFunc(questionText) {
         await DataStore.save(
             new OpenQuestion({
-                text: input.value,
+                questionText,
                 challengePoolID: challengePool.id,
             })
         );
@@ -28,6 +27,19 @@
         });
     }
 
+    async function updateOpenQuestionWithAnswer(
+        openQuestion: OpenQuestion,
+        answerText
+    ) {
+        await DataStore.save(
+            OpenQuestion.copyOf(openQuestion, (updated) => {
+                updated.answerText = answerText;
+            })
+        );
+
+        fetchOpenQuestions();
+    }
+
     async function fetchOpenQuestions() {
         openQuestions = await DataStore.query(OpenQuestion, (q) =>
             q.challengePoolID("eq", challengePool.id)
@@ -38,6 +50,16 @@
         await DataStore.delete(await DataStore.query(OpenQuestion, id));
         fetchOpenQuestions();
     }
+
+    async function deleteMyAnswerFromOpenQuestion(openQuestion) {
+        await DataStore.save(
+            OpenQuestion.copyOf(openQuestion, (updated) => {
+                updated.answerText = null;
+            })
+        );
+
+        fetchOpenQuestions();
+    }
 </script>
 
 <div>
@@ -46,7 +68,7 @@
         placeholder="Create new Open Question"
         on:keydown={(e) => {
             if (e.key === "Enter") {
-                createOpenQuestionFunc(e.target);
+                createOpenQuestionFunc(e.target.value);
             }
         }}
     />
@@ -55,13 +77,40 @@
 <div>
     {#each openQuestions as openQuestion}
         <div class="flex justify-between space-y-0">
-            <div>{openQuestion.text}</div>
+            <div>{openQuestion.questionText}</div>
             <div>
                 <button on:click={() => deleteOpenQuestionFunc(openQuestion.id)}
                     >Delete</button
                 >
             </div>
         </div>
-        <MyOpenAnswer {openQuestion} />
+
+        {#if openQuestion.answerText == null}
+            <div>
+                <div>
+                    <input
+                        class="w-full"
+                        placeholder="What is the answer?"
+                        on:keydown={(e) => {
+                            if (e.key === "Enter") {
+                                updateOpenQuestionWithAnswer(
+                                    openQuestion,
+                                    e.target.value
+                                );
+                            }
+                        }}
+                    />
+                </div>
+            </div>
+        {:else}
+            <div class="flex justify-between">
+                <div>Answer: {openQuestion.answerText}</div>
+                <div>
+                    <button
+                        on:click={() => deleteMyAnswerFromOpenQuestion(openQuestion)}
+                        >Delete</button
+                    >
+                </div>
+            </div>{/if}
     {/each}
 </div>

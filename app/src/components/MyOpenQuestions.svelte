@@ -61,18 +61,18 @@
         fetchOpenQuestionDrafts();
     }
 
-    function commitOpenQuestionDraft() {
+    function commitOpenQuestionDraft(openQuestionDraftID) {
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
         var raw = JSON.stringify({
-            hallo: "welt",
+            id: openQuestionDraftID,
         });
 
         var requestOptions = {
             method: "POST",
             headers: myHeaders,
-            body: raw
+            body: raw,
         };
 
         fetch(
@@ -141,7 +141,7 @@
             </div>{/if}
         <button
             disabled={!openQuestionDraft.answerText}
-            on:click={commitOpenQuestionDraft}>Commit</button
+            on:click={() => commitOpenQuestionDraft(openQuestionDraft.id)}>Commit</button
         >
     {/each}
 </div>

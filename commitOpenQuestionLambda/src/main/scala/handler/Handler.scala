@@ -23,7 +23,7 @@ class Handler {
       .builder()
       .withStatusCode(200)
       .withHeaders(headers)
-      .withBody("okay")
+      .withBody(s"${apiGatewayEvent.getBody()}")
       .build()
   }
 }

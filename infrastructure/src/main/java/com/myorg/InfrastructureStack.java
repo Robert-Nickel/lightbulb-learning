@@ -1,7 +1,6 @@
 package com.myorg;
 
 import java.util.Arrays;
-import java.util.List;
 
 import software.amazon.awscdk.core.CfnOutput;
 import software.amazon.awscdk.core.Construct;
@@ -30,10 +29,12 @@ public class InfrastructureStack extends Stack {
                 .code(Code.fromAsset("../commitOpenQuestionLambda/target/scala-3.0.1/lambda-scala-seed.jar"))
                 .handler("handler.Handler::handle").build();
 
-        final HttpApi httpApi = HttpApi.Builder.create(this, "scalexam").corsPreflight(CorsPreflightOptions.builder()
-                .allowOrigins(List.of("*")).allowMethods(List.of(HttpMethod.POST)).build()).build();
+        final HttpApi httpApi = HttpApi.Builder.create(this, "scalexam")
+                .corsPreflight(CorsPreflightOptions.builder().allowOrigins(Arrays.asList("*"))
+                        .allowMethods(Arrays.asList(HttpMethod.POST, HttpMethod.OPTIONS)).build())
+                .build();
 
-        httpApi.addRoutes(AddRoutesOptions.builder().path("/commitOpenQuestion").methods(Arrays.asList(HttpMethod.POST))
+        httpApi.addRoutes(AddRoutesOptions.builder().path("/commitOpenQuestion").methods(Arrays.asList(HttpMethod.POST, HttpMethod.OPTIONS))
                 .integration(LambdaProxyIntegration.Builder.create().handler(commitOpenQuestionLambda).build())
                 .build());
 

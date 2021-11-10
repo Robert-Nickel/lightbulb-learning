@@ -12,10 +12,11 @@ class Handler {
       apiGatewayEvent: APIGatewayV2HTTPEvent,
       context: Context
   ): APIGatewayV2HTTPResponse = {
-    HashMap<String, String> headers = new HashMap<>();
-    headers.put("Content-Type", "application/json");
-    headers.put("Access-Control-Allow-Origin", "*");
-    headers.put("Access-Control-Allow-Methods", "*");
+
+    val headers = new HashMap[String, String]()
+    headers.put("Access-Control-Allow-Headers", "Content-Type")
+    headers.put("Access-Control-Allow-Origin", "*")
+    headers.put("Access-Control-Allow-Methods", "*")
 
     println(s"body = ${apiGatewayEvent.getBody()}")
     APIGatewayV2HTTPResponse

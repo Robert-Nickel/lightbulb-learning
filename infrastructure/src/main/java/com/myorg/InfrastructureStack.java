@@ -30,8 +30,6 @@ public class InfrastructureStack extends Stack {
                 .handler("handler.Handler::handle").build();
 
         final HttpApi httpApi = HttpApi.Builder.create(this, "scalexam")
-                .corsPreflight(CorsPreflightOptions.builder().allowOrigins(Arrays.asList("*"))
-                        .allowMethods(Arrays.asList(HttpMethod.POST, HttpMethod.OPTIONS)).build())
                 .build();
 
         httpApi.addRoutes(AddRoutesOptions.builder().path("/commitOpenQuestion").methods(Arrays.asList(HttpMethod.POST, HttpMethod.OPTIONS))

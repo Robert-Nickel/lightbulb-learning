@@ -6,3 +6,6 @@ Helpful resources:
 - Amplify CLI documentation: https://docs.amplify.aws/cli
 - More details on this folder & generated files: https://docs.amplify.aws/cli/reference/files
 - Join Amplify's community: https://amplify.aws/community/
+
+
+[Restoring Deleted Amplify Projects](https://aws.amazon.com/blogs/mobile/restoring-aws-amplify-project-after-deleting-it-from-the-cloud/)

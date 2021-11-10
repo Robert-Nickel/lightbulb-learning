@@ -1,23 +1,23 @@
 <script lang="ts">
     import { DataStore } from "@aws-amplify/datastore";
-    import { OpenQuestion, ChallengePool } from "../models";
+    import { OpenQuestionDraft, ChallengePool } from "../models";
     import { toast } from "@zerodevx/svelte-toast";
 
     export let challengePool: ChallengePool;
 
-    let openQuestions: Array<OpenQuestion> = [];
+    let openQuestionDrafts: Array<OpenQuestionDraft> = [];
 
-    fetchOpenQuestions();
+    fetchOpenQuestionDrafts();
 
-    async function createOpenQuestionFunc(questionText) {
+    async function createOpenQuestionDraftFunc(questionText) {
         await DataStore.save(
-            new OpenQuestion({
+            new OpenQuestionDraft({
                 questionText,
                 challengePoolID: challengePool.id,
             })
         );
 
-        fetchOpenQuestions();
+        fetchOpenQuestionDrafts();
 
         toast.push("Open Question created!", {
             theme: {
@@ -27,41 +27,41 @@
         });
     }
 
-    async function updateOpenQuestionWithAnswer(
-        openQuestion: OpenQuestion,
+    async function updateOpenQuestionDraftWithAnswer(
+        openQuestionDraft: OpenQuestionDraft,
         answerText
     ) {
         await DataStore.save(
-            OpenQuestion.copyOf(openQuestion, (updated) => {
+            OpenQuestionDraft.copyOf(openQuestionDraft, (updated) => {
                 updated.answerText = answerText;
             })
         );
 
-        fetchOpenQuestions();
+        fetchOpenQuestionDrafts();
     }
 
-    async function fetchOpenQuestions() {
-        openQuestions = await DataStore.query(OpenQuestion, (q) =>
+    async function fetchOpenQuestionDrafts() {
+        openQuestionDrafts = await DataStore.query(OpenQuestionDraft, (q) =>
             q.challengePoolID("eq", challengePool.id)
         );
     }
 
-    async function deleteOpenQuestionFunc(id) {
-        await DataStore.delete(await DataStore.query(OpenQuestion, id));
-        fetchOpenQuestions();
+    async function deleteOpenQuestionDraftFunc(id) {
+        await DataStore.delete(await DataStore.query(OpenQuestionDraft, id));
+        fetchOpenQuestionDrafts();
     }
 
-    async function deleteMyAnswerFromOpenQuestion(openQuestion) {
+    async function deleteMyAnswerFromOpenQuestionDraft(openQuestionDraft) {
         await DataStore.save(
-            OpenQuestion.copyOf(openQuestion, (updated) => {
+            OpenQuestionDraft.copyOf(openQuestionDraft, (updated) => {
                 updated.answerText = null;
             })
         );
 
-        fetchOpenQuestions();
+        fetchOpenQuestionDrafts();
     }
 
-    function commitOpenQuestion() {
+    function commitOpenQuestionDraft() {
         
     }
 </script>
@@ -72,24 +72,24 @@
         placeholder="Create new Open Question"
         on:keydown={(e) => {
             if (e.key === "Enter") {
-                createOpenQuestionFunc(e.target.value);
+                createOpenQuestionDraftFunc(e.target.value);
             }
         }}
     />
 </div>
 
 <div>
-    {#each openQuestions as openQuestion}
+    {#each openQuestionDrafts as openQuestionDraft}
         <div class="flex justify-between space-y-0">
-            <div>{openQuestion.questionText}</div>
+            <div>{openQuestionDraft.questionText}</div>
             <div>
-                <button on:click={() => deleteOpenQuestionFunc(openQuestion.id)}
+                <button on:click={() => deleteOpenQuestionDraftFunc(openQuestionDraft.id)}
                     >Delete</button
                 >
             </div>
         </div>
 
-        {#if openQuestion.answerText == null}
+        {#if openQuestionDraft.answerText == null}
             <div>
                 <div>
                     <input
@@ -97,8 +97,8 @@
                         placeholder="What is the answer?"
                         on:keydown={(e) => {
                             if (e.key === "Enter") {
-                                updateOpenQuestionWithAnswer(
-                                    openQuestion,
+                                updateOpenQuestionDraftWithAnswer(
+                                    openQuestionDraft,
                                     e.target.value
                                 );
                             }
@@ -108,18 +108,18 @@
             </div>
         {:else}
             <div class="flex justify-between">
-                <div>Answer: {openQuestion.answerText}</div>
+                <div>Answer: {openQuestionDraft.answerText}</div>
                 <div>
                     <button
                         on:click={() =>
-                            deleteMyAnswerFromOpenQuestion(openQuestion)}
+                            deleteMyAnswerFromOpenQuestionDraft(openQuestionDraft)}
                         >Delete</button
                     >
                 </div>
             </div>{/if}
         <button
-            disabled={!openQuestion.answerText}
-            on:click={commitOpenQuestion}>Commit</button
+            disabled={!openQuestionDraft.answerText}
+            on:click={commitOpenQuestionDraft}>Commit</button
         >
     {/each}
 </div>

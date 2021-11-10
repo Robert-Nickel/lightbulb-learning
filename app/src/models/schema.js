@@ -1,5 +1,100 @@
 export const schema = {
     "models": {
+        "OpenQuestionDraft": {
+            "name": "OpenQuestionDraft",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "questionText": {
+                    "name": "questionText",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "challengePoolID": {
+                    "name": "challengePoolID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "ChallengePool": {
+                    "name": "ChallengePool",
+                    "isArray": false,
+                    "type": {
+                        "model": "ChallengePool"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "openQuestionDraftChallengePoolId"
+                    }
+                },
+                "answerText": {
+                    "name": "answerText",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "OpenQuestionDrafts",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byChallengePool",
+                        "fields": [
+                            "challengePoolID"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
         "ChallengePool": {
             "name": "ChallengePool",
             "fields": {
@@ -279,5 +374,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "0ca047b2811ae74ae0493bd147572ee9"
+    "version": "c4c6e781513459baf308276ea0fddd51"
 };

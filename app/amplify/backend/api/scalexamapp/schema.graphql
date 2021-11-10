@@ -1,3 +1,11 @@
+type OpenQuestionDraft @model @key(name: "byChallengePool", fields: ["challengePoolID"]) @auth(rules: [{allow: public}]) {
+  id: ID!
+  questionText: String
+  challengePoolID: ID
+  ChallengePool: ChallengePool @connection
+  answerText: String
+}
+
 type ChallengePool @model @auth(rules: [{allow: public}]) {
   id: ID!
   description: String!

@@ -2,6 +2,108 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const getOpenQuestionDraft = /* GraphQL */ `
+  query GetOpenQuestionDraft($id: ID!) {
+    getOpenQuestionDraft(id: $id) {
+      id
+      questionText
+      challengePoolID
+      answerText
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      ChallengePool {
+        id
+        description
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        openQuestions {
+          nextToken
+          startedAt
+        }
+      }
+    }
+  }
+`;
+export const listOpenQuestionDrafts = /* GraphQL */ `
+  query ListOpenQuestionDrafts(
+    $filter: ModelOpenQuestionDraftFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listOpenQuestionDrafts(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        questionText
+        challengePoolID
+        answerText
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        ChallengePool {
+          id
+          description
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncOpenQuestionDrafts = /* GraphQL */ `
+  query SyncOpenQuestionDrafts(
+    $filter: ModelOpenQuestionDraftFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncOpenQuestionDrafts(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        questionText
+        challengePoolID
+        answerText
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        ChallengePool {
+          id
+          description
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
 export const getChallengePool = /* GraphQL */ `
   query GetChallengePool($id: ID!) {
     getChallengePool(id: $id) {
@@ -15,8 +117,9 @@ export const getChallengePool = /* GraphQL */ `
       openQuestions {
         items {
           id
-          text
+          questionText
           challengePoolID
+          answerText
           _version
           _deleted
           _lastChangedAt
@@ -90,8 +193,9 @@ export const getOpenQuestion = /* GraphQL */ `
   query GetOpenQuestion($id: ID!) {
     getOpenQuestion(id: $id) {
       id
-      text
+      questionText
       challengePoolID
+      answerText
       _version
       _deleted
       _lastChangedAt
@@ -138,8 +242,9 @@ export const listOpenQuestions = /* GraphQL */ `
     listOpenQuestions(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        text
+        questionText
         challengePoolID
+        answerText
         _version
         _deleted
         _lastChangedAt
@@ -180,8 +285,9 @@ export const syncOpenQuestions = /* GraphQL */ `
     ) {
       items {
         id
-        text
+        questionText
         challengePoolID
+        answerText
         _version
         _deleted
         _lastChangedAt
@@ -220,8 +326,9 @@ export const getOpenAnswer = /* GraphQL */ `
       updatedAt
       openQuestion {
         id
-        text
+        questionText
         challengePoolID
+        answerText
         _version
         _deleted
         _lastChangedAt
@@ -264,8 +371,9 @@ export const listOpenAnswers = /* GraphQL */ `
         updatedAt
         openQuestion {
           id
-          text
+          questionText
           challengePoolID
+          answerText
           _version
           _deleted
           _lastChangedAt
@@ -304,8 +412,9 @@ export const syncOpenAnswers = /* GraphQL */ `
         updatedAt
         openQuestion {
           id
-          text
+          questionText
           challengePoolID
+          answerText
           _version
           _deleted
           _lastChangedAt

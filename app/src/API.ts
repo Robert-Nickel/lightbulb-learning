@@ -2,17 +2,22 @@
 /* eslint-disable */
 //  This file was automatically generated and should not be edited.
 
-export type CreateChallengePoolInput = {
+export type CreateOpenQuestionDraftInput = {
   id?: string | null,
-  description: string,
+  questionText?: string | null,
+  challengePoolID?: string | null,
+  answerText?: string | null,
   _version?: number | null,
+  openQuestionDraftChallengePoolId?: string | null,
 };
 
-export type ModelChallengePoolConditionInput = {
-  description?: ModelStringInput | null,
-  and?: Array< ModelChallengePoolConditionInput | null > | null,
-  or?: Array< ModelChallengePoolConditionInput | null > | null,
-  not?: ModelChallengePoolConditionInput | null,
+export type ModelOpenQuestionDraftConditionInput = {
+  questionText?: ModelStringInput | null,
+  challengePoolID?: ModelIDInput | null,
+  answerText?: ModelStringInput | null,
+  and?: Array< ModelOpenQuestionDraftConditionInput | null > | null,
+  or?: Array< ModelOpenQuestionDraftConditionInput | null > | null,
+  not?: ModelOpenQuestionDraftConditionInput | null,
 };
 
 export type ModelStringInput = {
@@ -55,6 +60,36 @@ export type ModelSizeInput = {
   between?: Array< number | null > | null,
 };
 
+export type ModelIDInput = {
+  ne?: string | null,
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  contains?: string | null,
+  notContains?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+  size?: ModelSizeInput | null,
+};
+
+export type OpenQuestionDraft = {
+  __typename: "OpenQuestionDraft",
+  id: string,
+  questionText?: string | null,
+  challengePoolID?: string | null,
+  answerText?: string | null,
+  _version: number,
+  _deleted?: boolean | null,
+  _lastChangedAt: number,
+  createdAt: string,
+  updatedAt: string,
+  ChallengePool?: ChallengePool | null,
+};
+
 export type ChallengePool = {
   __typename: "ChallengePool",
   id: string,
@@ -77,8 +112,9 @@ export type ModelOpenQuestionConnection = {
 export type OpenQuestion = {
   __typename: "OpenQuestion",
   id: string,
-  text: string,
+  questionText: string,
   challengePoolID?: string | null,
+  answerText?: string | null,
   _version: number,
   _deleted?: boolean | null,
   _lastChangedAt: number,
@@ -110,6 +146,33 @@ export type OpenAnswer = {
   owner?: string | null,
 };
 
+export type UpdateOpenQuestionDraftInput = {
+  id: string,
+  questionText?: string | null,
+  challengePoolID?: string | null,
+  answerText?: string | null,
+  _version?: number | null,
+  openQuestionDraftChallengePoolId?: string | null,
+};
+
+export type DeleteOpenQuestionDraftInput = {
+  id: string,
+  _version?: number | null,
+};
+
+export type CreateChallengePoolInput = {
+  id?: string | null,
+  description: string,
+  _version?: number | null,
+};
+
+export type ModelChallengePoolConditionInput = {
+  description?: ModelStringInput | null,
+  and?: Array< ModelChallengePoolConditionInput | null > | null,
+  or?: Array< ModelChallengePoolConditionInput | null > | null,
+  not?: ModelChallengePoolConditionInput | null,
+};
+
 export type UpdateChallengePoolInput = {
   id: string,
   description?: string | null,
@@ -123,40 +186,27 @@ export type DeleteChallengePoolInput = {
 
 export type CreateOpenQuestionInput = {
   id?: string | null,
-  text: string,
+  questionText: string,
   challengePoolID?: string | null,
+  answerText?: string | null,
   _version?: number | null,
   openQuestionChallengePoolId?: string | null,
 };
 
 export type ModelOpenQuestionConditionInput = {
-  text?: ModelStringInput | null,
+  questionText?: ModelStringInput | null,
   challengePoolID?: ModelIDInput | null,
+  answerText?: ModelStringInput | null,
   and?: Array< ModelOpenQuestionConditionInput | null > | null,
   or?: Array< ModelOpenQuestionConditionInput | null > | null,
   not?: ModelOpenQuestionConditionInput | null,
 };
 
-export type ModelIDInput = {
-  ne?: string | null,
-  eq?: string | null,
-  le?: string | null,
-  lt?: string | null,
-  ge?: string | null,
-  gt?: string | null,
-  contains?: string | null,
-  notContains?: string | null,
-  between?: Array< string | null > | null,
-  beginsWith?: string | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
-  size?: ModelSizeInput | null,
-};
-
 export type UpdateOpenQuestionInput = {
   id: string,
-  text?: string | null,
+  questionText?: string | null,
   challengePoolID?: string | null,
+  answerText?: string | null,
   _version?: number | null,
   openQuestionChallengePoolId?: string | null,
 };
@@ -195,6 +245,23 @@ export type DeleteOpenAnswerInput = {
   _version?: number | null,
 };
 
+export type ModelOpenQuestionDraftFilterInput = {
+  id?: ModelIDInput | null,
+  questionText?: ModelStringInput | null,
+  challengePoolID?: ModelIDInput | null,
+  answerText?: ModelStringInput | null,
+  and?: Array< ModelOpenQuestionDraftFilterInput | null > | null,
+  or?: Array< ModelOpenQuestionDraftFilterInput | null > | null,
+  not?: ModelOpenQuestionDraftFilterInput | null,
+};
+
+export type ModelOpenQuestionDraftConnection = {
+  __typename: "ModelOpenQuestionDraftConnection",
+  items?:  Array<OpenQuestionDraft | null > | null,
+  nextToken?: string | null,
+  startedAt?: number | null,
+};
+
 export type ModelChallengePoolFilterInput = {
   id?: ModelIDInput | null,
   description?: ModelStringInput | null,
@@ -212,8 +279,9 @@ export type ModelChallengePoolConnection = {
 
 export type ModelOpenQuestionFilterInput = {
   id?: ModelIDInput | null,
-  text?: ModelStringInput | null,
+  questionText?: ModelStringInput | null,
   challengePoolID?: ModelIDInput | null,
+  answerText?: ModelStringInput | null,
   and?: Array< ModelOpenQuestionFilterInput | null > | null,
   or?: Array< ModelOpenQuestionFilterInput | null > | null,
   not?: ModelOpenQuestionFilterInput | null,
@@ -226,6 +294,111 @@ export type ModelOpenAnswerFilterInput = {
   and?: Array< ModelOpenAnswerFilterInput | null > | null,
   or?: Array< ModelOpenAnswerFilterInput | null > | null,
   not?: ModelOpenAnswerFilterInput | null,
+};
+
+export type CreateOpenQuestionDraftMutationVariables = {
+  input: CreateOpenQuestionDraftInput,
+  condition?: ModelOpenQuestionDraftConditionInput | null,
+};
+
+export type CreateOpenQuestionDraftMutation = {
+  createOpenQuestionDraft?:  {
+    __typename: "OpenQuestionDraft",
+    id: string,
+    questionText?: string | null,
+    challengePoolID?: string | null,
+    answerText?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+    ChallengePool?:  {
+      __typename: "ChallengePool",
+      id: string,
+      description: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+      openQuestions?:  {
+        __typename: "ModelOpenQuestionConnection",
+        nextToken?: string | null,
+        startedAt?: number | null,
+      } | null,
+    } | null,
+  } | null,
+};
+
+export type UpdateOpenQuestionDraftMutationVariables = {
+  input: UpdateOpenQuestionDraftInput,
+  condition?: ModelOpenQuestionDraftConditionInput | null,
+};
+
+export type UpdateOpenQuestionDraftMutation = {
+  updateOpenQuestionDraft?:  {
+    __typename: "OpenQuestionDraft",
+    id: string,
+    questionText?: string | null,
+    challengePoolID?: string | null,
+    answerText?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+    ChallengePool?:  {
+      __typename: "ChallengePool",
+      id: string,
+      description: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+      openQuestions?:  {
+        __typename: "ModelOpenQuestionConnection",
+        nextToken?: string | null,
+        startedAt?: number | null,
+      } | null,
+    } | null,
+  } | null,
+};
+
+export type DeleteOpenQuestionDraftMutationVariables = {
+  input: DeleteOpenQuestionDraftInput,
+  condition?: ModelOpenQuestionDraftConditionInput | null,
+};
+
+export type DeleteOpenQuestionDraftMutation = {
+  deleteOpenQuestionDraft?:  {
+    __typename: "OpenQuestionDraft",
+    id: string,
+    questionText?: string | null,
+    challengePoolID?: string | null,
+    answerText?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+    ChallengePool?:  {
+      __typename: "ChallengePool",
+      id: string,
+      description: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+      openQuestions?:  {
+        __typename: "ModelOpenQuestionConnection",
+        nextToken?: string | null,
+        startedAt?: number | null,
+      } | null,
+    } | null,
+  } | null,
 };
 
 export type CreateChallengePoolMutationVariables = {
@@ -248,8 +421,9 @@ export type CreateChallengePoolMutation = {
       items?:  Array< {
         __typename: "OpenQuestion",
         id: string,
-        text: string,
+        questionText: string,
         challengePoolID?: string | null,
+        answerText?: string | null,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
@@ -283,8 +457,9 @@ export type UpdateChallengePoolMutation = {
       items?:  Array< {
         __typename: "OpenQuestion",
         id: string,
-        text: string,
+        questionText: string,
         challengePoolID?: string | null,
+        answerText?: string | null,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
@@ -318,8 +493,9 @@ export type DeleteChallengePoolMutation = {
       items?:  Array< {
         __typename: "OpenQuestion",
         id: string,
-        text: string,
+        questionText: string,
         challengePoolID?: string | null,
+        answerText?: string | null,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
@@ -342,8 +518,9 @@ export type CreateOpenQuestionMutation = {
   createOpenQuestion?:  {
     __typename: "OpenQuestion",
     id: string,
-    text: string,
+    questionText: string,
     challengePoolID?: string | null,
+    answerText?: string | null,
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
@@ -394,8 +571,9 @@ export type UpdateOpenQuestionMutation = {
   updateOpenQuestion?:  {
     __typename: "OpenQuestion",
     id: string,
-    text: string,
+    questionText: string,
     challengePoolID?: string | null,
+    answerText?: string | null,
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
@@ -446,8 +624,9 @@ export type DeleteOpenQuestionMutation = {
   deleteOpenQuestion?:  {
     __typename: "OpenQuestion",
     id: string,
-    text: string,
+    questionText: string,
     challengePoolID?: string | null,
+    answerText?: string | null,
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
@@ -508,8 +687,9 @@ export type CreateOpenAnswerMutation = {
     openQuestion?:  {
       __typename: "OpenQuestion",
       id: string,
-      text: string,
+      questionText: string,
       challengePoolID?: string | null,
+      answerText?: string | null,
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
@@ -555,8 +735,9 @@ export type UpdateOpenAnswerMutation = {
     openQuestion?:  {
       __typename: "OpenQuestion",
       id: string,
-      text: string,
+      questionText: string,
       challengePoolID?: string | null,
+      answerText?: string | null,
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
@@ -602,8 +783,9 @@ export type DeleteOpenAnswerMutation = {
     openQuestion?:  {
       __typename: "OpenQuestion",
       id: string,
-      text: string,
+      questionText: string,
       challengePoolID?: string | null,
+      answerText?: string | null,
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
@@ -630,6 +812,113 @@ export type DeleteOpenAnswerMutation = {
   } | null,
 };
 
+export type GetOpenQuestionDraftQueryVariables = {
+  id: string,
+};
+
+export type GetOpenQuestionDraftQuery = {
+  getOpenQuestionDraft?:  {
+    __typename: "OpenQuestionDraft",
+    id: string,
+    questionText?: string | null,
+    challengePoolID?: string | null,
+    answerText?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+    ChallengePool?:  {
+      __typename: "ChallengePool",
+      id: string,
+      description: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+      openQuestions?:  {
+        __typename: "ModelOpenQuestionConnection",
+        nextToken?: string | null,
+        startedAt?: number | null,
+      } | null,
+    } | null,
+  } | null,
+};
+
+export type ListOpenQuestionDraftsQueryVariables = {
+  filter?: ModelOpenQuestionDraftFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListOpenQuestionDraftsQuery = {
+  listOpenQuestionDrafts?:  {
+    __typename: "ModelOpenQuestionDraftConnection",
+    items?:  Array< {
+      __typename: "OpenQuestionDraft",
+      id: string,
+      questionText?: string | null,
+      challengePoolID?: string | null,
+      answerText?: string | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+      ChallengePool?:  {
+        __typename: "ChallengePool",
+        id: string,
+        description: string,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+    } | null > | null,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type SyncOpenQuestionDraftsQueryVariables = {
+  filter?: ModelOpenQuestionDraftFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
+};
+
+export type SyncOpenQuestionDraftsQuery = {
+  syncOpenQuestionDrafts?:  {
+    __typename: "ModelOpenQuestionDraftConnection",
+    items?:  Array< {
+      __typename: "OpenQuestionDraft",
+      id: string,
+      questionText?: string | null,
+      challengePoolID?: string | null,
+      answerText?: string | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+      ChallengePool?:  {
+        __typename: "ChallengePool",
+        id: string,
+        description: string,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+    } | null > | null,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
 export type GetChallengePoolQueryVariables = {
   id: string,
 };
@@ -649,8 +938,9 @@ export type GetChallengePoolQuery = {
       items?:  Array< {
         __typename: "OpenQuestion",
         id: string,
-        text: string,
+        questionText: string,
         challengePoolID?: string | null,
+        answerText?: string | null,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
@@ -731,8 +1021,9 @@ export type GetOpenQuestionQuery = {
   getOpenQuestion?:  {
     __typename: "OpenQuestion",
     id: string,
-    text: string,
+    questionText: string,
     challengePoolID?: string | null,
+    answerText?: string | null,
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
@@ -786,8 +1077,9 @@ export type ListOpenQuestionsQuery = {
     items?:  Array< {
       __typename: "OpenQuestion",
       id: string,
-      text: string,
+      questionText: string,
       challengePoolID?: string | null,
+      answerText?: string | null,
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
@@ -828,8 +1120,9 @@ export type SyncOpenQuestionsQuery = {
     items?:  Array< {
       __typename: "OpenQuestion",
       id: string,
-      text: string,
+      questionText: string,
       challengePoolID?: string | null,
+      answerText?: string | null,
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
@@ -875,8 +1168,9 @@ export type GetOpenAnswerQuery = {
     openQuestion?:  {
       __typename: "OpenQuestion",
       id: string,
-      text: string,
+      questionText: string,
       challengePoolID?: string | null,
+      answerText?: string | null,
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
@@ -925,8 +1219,9 @@ export type ListOpenAnswersQuery = {
       openQuestion?:  {
         __typename: "OpenQuestion",
         id: string,
-        text: string,
+        questionText: string,
         challengePoolID?: string | null,
+        answerText?: string | null,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
@@ -964,8 +1259,9 @@ export type SyncOpenAnswersQuery = {
       openQuestion?:  {
         __typename: "OpenQuestion",
         id: string,
-        text: string,
+        questionText: string,
         challengePoolID?: string | null,
+        answerText?: string | null,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
@@ -977,6 +1273,96 @@ export type SyncOpenAnswersQuery = {
     } | null > | null,
     nextToken?: string | null,
     startedAt?: number | null,
+  } | null,
+};
+
+export type OnCreateOpenQuestionDraftSubscription = {
+  onCreateOpenQuestionDraft?:  {
+    __typename: "OpenQuestionDraft",
+    id: string,
+    questionText?: string | null,
+    challengePoolID?: string | null,
+    answerText?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+    ChallengePool?:  {
+      __typename: "ChallengePool",
+      id: string,
+      description: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+      openQuestions?:  {
+        __typename: "ModelOpenQuestionConnection",
+        nextToken?: string | null,
+        startedAt?: number | null,
+      } | null,
+    } | null,
+  } | null,
+};
+
+export type OnUpdateOpenQuestionDraftSubscription = {
+  onUpdateOpenQuestionDraft?:  {
+    __typename: "OpenQuestionDraft",
+    id: string,
+    questionText?: string | null,
+    challengePoolID?: string | null,
+    answerText?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+    ChallengePool?:  {
+      __typename: "ChallengePool",
+      id: string,
+      description: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+      openQuestions?:  {
+        __typename: "ModelOpenQuestionConnection",
+        nextToken?: string | null,
+        startedAt?: number | null,
+      } | null,
+    } | null,
+  } | null,
+};
+
+export type OnDeleteOpenQuestionDraftSubscription = {
+  onDeleteOpenQuestionDraft?:  {
+    __typename: "OpenQuestionDraft",
+    id: string,
+    questionText?: string | null,
+    challengePoolID?: string | null,
+    answerText?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+    ChallengePool?:  {
+      __typename: "ChallengePool",
+      id: string,
+      description: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+      openQuestions?:  {
+        __typename: "ModelOpenQuestionConnection",
+        nextToken?: string | null,
+        startedAt?: number | null,
+      } | null,
+    } | null,
   } | null,
 };
 
@@ -995,8 +1381,9 @@ export type OnCreateChallengePoolSubscription = {
       items?:  Array< {
         __typename: "OpenQuestion",
         id: string,
-        text: string,
+        questionText: string,
         challengePoolID?: string | null,
+        answerText?: string | null,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
@@ -1025,8 +1412,9 @@ export type OnUpdateChallengePoolSubscription = {
       items?:  Array< {
         __typename: "OpenQuestion",
         id: string,
-        text: string,
+        questionText: string,
         challengePoolID?: string | null,
+        answerText?: string | null,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
@@ -1055,8 +1443,9 @@ export type OnDeleteChallengePoolSubscription = {
       items?:  Array< {
         __typename: "OpenQuestion",
         id: string,
-        text: string,
+        questionText: string,
         challengePoolID?: string | null,
+        answerText?: string | null,
         _version: number,
         _deleted?: boolean | null,
         _lastChangedAt: number,
@@ -1078,8 +1467,9 @@ export type OnCreateOpenQuestionSubscription = {
   onCreateOpenQuestion?:  {
     __typename: "OpenQuestion",
     id: string,
-    text: string,
+    questionText: string,
     challengePoolID?: string | null,
+    answerText?: string | null,
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
@@ -1129,8 +1519,9 @@ export type OnUpdateOpenQuestionSubscription = {
   onUpdateOpenQuestion?:  {
     __typename: "OpenQuestion",
     id: string,
-    text: string,
+    questionText: string,
     challengePoolID?: string | null,
+    answerText?: string | null,
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
@@ -1180,8 +1571,9 @@ export type OnDeleteOpenQuestionSubscription = {
   onDeleteOpenQuestion?:  {
     __typename: "OpenQuestion",
     id: string,
-    text: string,
+    questionText: string,
     challengePoolID?: string | null,
+    answerText?: string | null,
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
@@ -1241,8 +1633,9 @@ export type OnCreateOpenAnswerSubscription = {
     openQuestion?:  {
       __typename: "OpenQuestion",
       id: string,
-      text: string,
+      questionText: string,
       challengePoolID?: string | null,
+      answerText?: string | null,
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
@@ -1287,8 +1680,9 @@ export type OnUpdateOpenAnswerSubscription = {
     openQuestion?:  {
       __typename: "OpenQuestion",
       id: string,
-      text: string,
+      questionText: string,
       challengePoolID?: string | null,
+      answerText?: string | null,
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
@@ -1333,8 +1727,9 @@ export type OnDeleteOpenAnswerSubscription = {
     openQuestion?:  {
       __typename: "OpenQuestion",
       id: string,
-      text: string,
+      questionText: string,
       challengePoolID?: string | null,
+      answerText?: string | null,
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,

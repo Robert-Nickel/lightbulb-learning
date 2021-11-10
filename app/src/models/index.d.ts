@@ -4,6 +4,10 @@ import { ModelInit, MutableModel, PersistentModelConstructor } from "@aws-amplif
 
 
 
+type OpenQuestionDraftMetaData = {
+  readOnlyFields: 'createdAt' | 'updatedAt';
+}
+
 type ChallengePoolMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
@@ -14,6 +18,18 @@ type OpenQuestionMetaData = {
 
 type OpenAnswerMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
+}
+
+export declare class OpenQuestionDraft {
+  readonly id: string;
+  readonly questionText?: string;
+  readonly challengePoolID?: string;
+  readonly ChallengePool?: ChallengePool;
+  readonly answerText?: string;
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
+  constructor(init: ModelInit<OpenQuestionDraft, OpenQuestionDraftMetaData>);
+  static copyOf(source: OpenQuestionDraft, mutator: (draft: MutableModel<OpenQuestionDraft, OpenQuestionDraftMetaData>) => MutableModel<OpenQuestionDraft, OpenQuestionDraftMetaData> | void): OpenQuestionDraft;
 }
 
 export declare class ChallengePool {

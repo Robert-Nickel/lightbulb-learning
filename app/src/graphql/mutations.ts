@@ -2,6 +2,99 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const createOpenQuestionDraft = /* GraphQL */ `
+  mutation CreateOpenQuestionDraft(
+    $input: CreateOpenQuestionDraftInput!
+    $condition: ModelOpenQuestionDraftConditionInput
+  ) {
+    createOpenQuestionDraft(input: $input, condition: $condition) {
+      id
+      questionText
+      challengePoolID
+      answerText
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      ChallengePool {
+        id
+        description
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        openQuestions {
+          nextToken
+          startedAt
+        }
+      }
+    }
+  }
+`;
+export const updateOpenQuestionDraft = /* GraphQL */ `
+  mutation UpdateOpenQuestionDraft(
+    $input: UpdateOpenQuestionDraftInput!
+    $condition: ModelOpenQuestionDraftConditionInput
+  ) {
+    updateOpenQuestionDraft(input: $input, condition: $condition) {
+      id
+      questionText
+      challengePoolID
+      answerText
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      ChallengePool {
+        id
+        description
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        openQuestions {
+          nextToken
+          startedAt
+        }
+      }
+    }
+  }
+`;
+export const deleteOpenQuestionDraft = /* GraphQL */ `
+  mutation DeleteOpenQuestionDraft(
+    $input: DeleteOpenQuestionDraftInput!
+    $condition: ModelOpenQuestionDraftConditionInput
+  ) {
+    deleteOpenQuestionDraft(input: $input, condition: $condition) {
+      id
+      questionText
+      challengePoolID
+      answerText
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      ChallengePool {
+        id
+        description
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        openQuestions {
+          nextToken
+          startedAt
+        }
+      }
+    }
+  }
+`;
 export const createChallengePool = /* GraphQL */ `
   mutation CreateChallengePool(
     $input: CreateChallengePoolInput!
@@ -18,8 +111,9 @@ export const createChallengePool = /* GraphQL */ `
       openQuestions {
         items {
           id
-          text
+          questionText
           challengePoolID
+          answerText
           _version
           _deleted
           _lastChangedAt
@@ -49,8 +143,9 @@ export const updateChallengePool = /* GraphQL */ `
       openQuestions {
         items {
           id
-          text
+          questionText
           challengePoolID
+          answerText
           _version
           _deleted
           _lastChangedAt
@@ -80,8 +175,9 @@ export const deleteChallengePool = /* GraphQL */ `
       openQuestions {
         items {
           id
-          text
+          questionText
           challengePoolID
+          answerText
           _version
           _deleted
           _lastChangedAt
@@ -102,8 +198,9 @@ export const createOpenQuestion = /* GraphQL */ `
   ) {
     createOpenQuestion(input: $input, condition: $condition) {
       id
-      text
+      questionText
       challengePoolID
+      answerText
       _version
       _deleted
       _lastChangedAt
@@ -148,8 +245,9 @@ export const updateOpenQuestion = /* GraphQL */ `
   ) {
     updateOpenQuestion(input: $input, condition: $condition) {
       id
-      text
+      questionText
       challengePoolID
+      answerText
       _version
       _deleted
       _lastChangedAt
@@ -194,8 +292,9 @@ export const deleteOpenQuestion = /* GraphQL */ `
   ) {
     deleteOpenQuestion(input: $input, condition: $condition) {
       id
-      text
+      questionText
       challengePoolID
+      answerText
       _version
       _deleted
       _lastChangedAt
@@ -249,8 +348,9 @@ export const createOpenAnswer = /* GraphQL */ `
       updatedAt
       openQuestion {
         id
-        text
+        questionText
         challengePoolID
+        answerText
         _version
         _deleted
         _lastChangedAt
@@ -291,8 +391,9 @@ export const updateOpenAnswer = /* GraphQL */ `
       updatedAt
       openQuestion {
         id
-        text
+        questionText
         challengePoolID
+        answerText
         _version
         _deleted
         _lastChangedAt
@@ -333,8 +434,9 @@ export const deleteOpenAnswer = /* GraphQL */ `
       updatedAt
       openQuestion {
         id
-        text
+        questionText
         challengePoolID
+        answerText
         _version
         _deleted
         _lastChangedAt

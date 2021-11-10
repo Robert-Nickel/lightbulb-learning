@@ -2,6 +2,90 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const onCreateOpenQuestionDraft = /* GraphQL */ `
+  subscription OnCreateOpenQuestionDraft {
+    onCreateOpenQuestionDraft {
+      id
+      questionText
+      challengePoolID
+      answerText
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      ChallengePool {
+        id
+        description
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        openQuestions {
+          nextToken
+          startedAt
+        }
+      }
+    }
+  }
+`;
+export const onUpdateOpenQuestionDraft = /* GraphQL */ `
+  subscription OnUpdateOpenQuestionDraft {
+    onUpdateOpenQuestionDraft {
+      id
+      questionText
+      challengePoolID
+      answerText
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      ChallengePool {
+        id
+        description
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        openQuestions {
+          nextToken
+          startedAt
+        }
+      }
+    }
+  }
+`;
+export const onDeleteOpenQuestionDraft = /* GraphQL */ `
+  subscription OnDeleteOpenQuestionDraft {
+    onDeleteOpenQuestionDraft {
+      id
+      questionText
+      challengePoolID
+      answerText
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      ChallengePool {
+        id
+        description
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        openQuestions {
+          nextToken
+          startedAt
+        }
+      }
+    }
+  }
+`;
 export const onCreateChallengePool = /* GraphQL */ `
   subscription OnCreateChallengePool {
     onCreateChallengePool {
@@ -15,8 +99,9 @@ export const onCreateChallengePool = /* GraphQL */ `
       openQuestions {
         items {
           id
-          text
+          questionText
           challengePoolID
+          answerText
           _version
           _deleted
           _lastChangedAt
@@ -43,8 +128,9 @@ export const onUpdateChallengePool = /* GraphQL */ `
       openQuestions {
         items {
           id
-          text
+          questionText
           challengePoolID
+          answerText
           _version
           _deleted
           _lastChangedAt
@@ -71,8 +157,9 @@ export const onDeleteChallengePool = /* GraphQL */ `
       openQuestions {
         items {
           id
-          text
+          questionText
           challengePoolID
+          answerText
           _version
           _deleted
           _lastChangedAt
@@ -90,8 +177,9 @@ export const onCreateOpenQuestion = /* GraphQL */ `
   subscription OnCreateOpenQuestion($owner: String) {
     onCreateOpenQuestion(owner: $owner) {
       id
-      text
+      questionText
       challengePoolID
+      answerText
       _version
       _deleted
       _lastChangedAt
@@ -133,8 +221,9 @@ export const onUpdateOpenQuestion = /* GraphQL */ `
   subscription OnUpdateOpenQuestion($owner: String) {
     onUpdateOpenQuestion(owner: $owner) {
       id
-      text
+      questionText
       challengePoolID
+      answerText
       _version
       _deleted
       _lastChangedAt
@@ -176,8 +265,9 @@ export const onDeleteOpenQuestion = /* GraphQL */ `
   subscription OnDeleteOpenQuestion($owner: String) {
     onDeleteOpenQuestion(owner: $owner) {
       id
-      text
+      questionText
       challengePoolID
+      answerText
       _version
       _deleted
       _lastChangedAt
@@ -228,8 +318,9 @@ export const onCreateOpenAnswer = /* GraphQL */ `
       updatedAt
       openQuestion {
         id
-        text
+        questionText
         challengePoolID
+        answerText
         _version
         _deleted
         _lastChangedAt
@@ -267,8 +358,9 @@ export const onUpdateOpenAnswer = /* GraphQL */ `
       updatedAt
       openQuestion {
         id
-        text
+        questionText
         challengePoolID
+        answerText
         _version
         _deleted
         _lastChangedAt
@@ -306,8 +398,9 @@ export const onDeleteOpenAnswer = /* GraphQL */ `
       updatedAt
       openQuestion {
         id
-        text
+        questionText
         challengePoolID
+        answerText
         _version
         _deleted
         _lastChangedAt

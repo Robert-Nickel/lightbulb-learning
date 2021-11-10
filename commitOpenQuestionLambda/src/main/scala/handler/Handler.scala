@@ -51,16 +51,16 @@ class Handler {
 
     val item: Item = new Item().withPrimaryKey("Id", id)
     */
-    val headers = new HashMap[String, String]()
+    /*val headers = new HashMap[String, String]()
     headers.put("Access-Control-Allow-Headers", "Content-Type")
     headers.put("Access-Control-Allow-Origin", "*")
-    headers.put("Access-Control-Allow-Methods", "*")
+    headers.put("Access-Control-Allow-Methods", "*")*/
 
     //println(s"body = ${apiGatewayEvent.getBody()}")
     APIGatewayV2HTTPResponse
       .builder()
       .withStatusCode(200)
-      .withHeaders(headers)
+      //.withHeaders(headers)
       .withBody(s"${apiGatewayEvent.getBody()}")
       .build()
   }

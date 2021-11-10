@@ -30,9 +30,13 @@ public class InfrastructureStack extends Stack {
                 .handler("handler.Handler::handle").build();
 
         final HttpApi httpApi = HttpApi.Builder.create(this, "scalexam")
+                .corsPreflight(CorsPreflightOptions.builder().allowOrigins(Arrays.asList("*"))
+                        .allowMethods(Arrays.asList(HttpMethod.POST, HttpMethod.OPTIONS))
+                        .allowHeaders(Arrays.asList("Content-Type")).build())
                 .build();
 
-        httpApi.addRoutes(AddRoutesOptions.builder().path("/commitOpenQuestion").methods(Arrays.asList(HttpMethod.POST, HttpMethod.OPTIONS))
+        httpApi.addRoutes(AddRoutesOptions.builder().path("/commitOpenQuestion")
+                .methods(Arrays.asList(HttpMethod.POST, HttpMethod.OPTIONS))
                 .integration(LambdaProxyIntegration.Builder.create().handler(commitOpenQuestionLambda).build())
                 .build());
 

@@ -68,6 +68,7 @@
         var raw = JSON.stringify({
             "id": openQuestionDraftID,
         });
+        console.log("request body", raw)
 
         var requestOptions = {
             method: "POST",

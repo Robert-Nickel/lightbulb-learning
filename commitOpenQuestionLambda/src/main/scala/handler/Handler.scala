@@ -26,10 +26,9 @@ class Handler {
       apiGatewayEvent: APIGatewayV2HTTPEvent,
       context: Context
   ): APIGatewayV2HTTPResponse = {
-
     println(s"body = ${apiGatewayEvent.getBody()}")
 
-    val event = apiGatewayEvent.getBody()
+    /*val event = apiGatewayEvent.getBody()
     if(event == null) {
       println("null ;)")
     } else {
@@ -51,13 +50,13 @@ class Handler {
     val table: Table = dynamoDB.getTable("OpenQuestionDraft-xiukk7jyfnexpd66hqxfnnrmem-prod");
 
     val item: Item = new Item().withPrimaryKey("Id", id)
-
+    */
     val headers = new HashMap[String, String]()
     headers.put("Access-Control-Allow-Headers", "Content-Type")
     headers.put("Access-Control-Allow-Origin", "*")
     headers.put("Access-Control-Allow-Methods", "*")
 
-    println(s"body = ${apiGatewayEvent.getBody()}")
+    //println(s"body = ${apiGatewayEvent.getBody()}")
     APIGatewayV2HTTPResponse
       .builder()
       .withStatusCode(200)

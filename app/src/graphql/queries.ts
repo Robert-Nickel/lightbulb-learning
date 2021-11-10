@@ -2,18 +2,50 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const syncOpenQuestionDrafts = /* GraphQL */ `
+  query SyncOpenQuestionDrafts(
+    $filter: ModelOpenQuestionDraftFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncOpenQuestionDrafts(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        questionText
+        challengePoolID
+        ChallengePool {
+          id
+          description
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        answerText
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
 export const getOpenQuestionDraft = /* GraphQL */ `
   query GetOpenQuestionDraft($id: ID!) {
     getOpenQuestionDraft(id: $id) {
       id
       questionText
       challengePoolID
-      answerText
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
       ChallengePool {
         id
         description
@@ -27,6 +59,12 @@ export const getOpenQuestionDraft = /* GraphQL */ `
           startedAt
         }
       }
+      answerText
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -45,12 +83,6 @@ export const listOpenQuestionDrafts = /* GraphQL */ `
         id
         questionText
         challengePoolID
-        answerText
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
         ChallengePool {
           id
           description
@@ -60,20 +92,26 @@ export const listOpenQuestionDrafts = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        answerText
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
       }
       nextToken
       startedAt
     }
   }
 `;
-export const syncOpenQuestionDrafts = /* GraphQL */ `
-  query SyncOpenQuestionDrafts(
-    $filter: ModelOpenQuestionDraftFilterInput
+export const syncChallengePools = /* GraphQL */ `
+  query SyncChallengePools(
+    $filter: ModelChallengePoolFilterInput
     $limit: Int
     $nextToken: String
     $lastSync: AWSTimestamp
   ) {
-    syncOpenQuestionDrafts(
+    syncChallengePools(
       filter: $filter
       limit: $limit
       nextToken: $nextToken
@@ -81,22 +119,15 @@ export const syncOpenQuestionDrafts = /* GraphQL */ `
     ) {
       items {
         id
-        questionText
-        challengePoolID
-        answerText
+        description
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
-        ChallengePool {
-          id
-          description
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
+        openQuestions {
+          nextToken
+          startedAt
         }
       }
       nextToken
@@ -158,49 +189,12 @@ export const listChallengePools = /* GraphQL */ `
     }
   }
 `;
-export const syncChallengePools = /* GraphQL */ `
-  query SyncChallengePools(
-    $filter: ModelChallengePoolFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncChallengePools(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        description
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-        openQuestions {
-          nextToken
-          startedAt
-        }
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
 export const getOpenQuestion = /* GraphQL */ `
   query GetOpenQuestion($id: ID!) {
     getOpenQuestion(id: $id) {
       id
       questionText
       challengePoolID
-      answerText
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
       challengePool {
         id
         description
@@ -214,6 +208,12 @@ export const getOpenQuestion = /* GraphQL */ `
           startedAt
         }
       }
+      answerText
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       owner
       openAnswers {
         items {
@@ -244,12 +244,6 @@ export const listOpenQuestions = /* GraphQL */ `
         id
         questionText
         challengePoolID
-        answerText
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
         challengePool {
           id
           description
@@ -259,6 +253,12 @@ export const listOpenQuestions = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        answerText
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
         owner
         openAnswers {
           nextToken
@@ -287,12 +287,6 @@ export const syncOpenQuestions = /* GraphQL */ `
         id
         questionText
         challengePoolID
-        answerText
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
         challengePool {
           id
           description
@@ -302,6 +296,12 @@ export const syncOpenQuestions = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        answerText
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
         owner
         openAnswers {
           nextToken
@@ -328,12 +328,6 @@ export const getOpenAnswer = /* GraphQL */ `
         id
         questionText
         challengePoolID
-        answerText
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
         challengePool {
           id
           description
@@ -343,6 +337,12 @@ export const getOpenAnswer = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        answerText
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
         owner
         openAnswers {
           nextToken

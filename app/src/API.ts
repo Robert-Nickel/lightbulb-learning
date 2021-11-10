@@ -81,13 +81,13 @@ export type OpenQuestionDraft = {
   id: string,
   questionText?: string | null,
   challengePoolID?: string | null,
+  ChallengePool?: ChallengePool | null,
   answerText?: string | null,
   _version: number,
   _deleted?: boolean | null,
   _lastChangedAt: number,
   createdAt: string,
   updatedAt: string,
-  ChallengePool?: ChallengePool | null,
 };
 
 export type ChallengePool = {
@@ -114,13 +114,13 @@ export type OpenQuestion = {
   id: string,
   questionText: string,
   challengePoolID?: string | null,
+  challengePool?: ChallengePool | null,
   answerText?: string | null,
   _version: number,
   _deleted?: boolean | null,
   _lastChangedAt: number,
   createdAt: string,
   updatedAt: string,
-  challengePool?: ChallengePool | null,
   owner?: string | null,
   openAnswers?: ModelOpenAnswerConnection | null,
 };
@@ -307,12 +307,6 @@ export type CreateOpenQuestionDraftMutation = {
     id: string,
     questionText?: string | null,
     challengePoolID?: string | null,
-    answerText?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
     ChallengePool?:  {
       __typename: "ChallengePool",
       id: string,
@@ -328,6 +322,12 @@ export type CreateOpenQuestionDraftMutation = {
         startedAt?: number | null,
       } | null,
     } | null,
+    answerText?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -342,12 +342,6 @@ export type UpdateOpenQuestionDraftMutation = {
     id: string,
     questionText?: string | null,
     challengePoolID?: string | null,
-    answerText?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
     ChallengePool?:  {
       __typename: "ChallengePool",
       id: string,
@@ -363,6 +357,12 @@ export type UpdateOpenQuestionDraftMutation = {
         startedAt?: number | null,
       } | null,
     } | null,
+    answerText?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -377,12 +377,6 @@ export type DeleteOpenQuestionDraftMutation = {
     id: string,
     questionText?: string | null,
     challengePoolID?: string | null,
-    answerText?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
     ChallengePool?:  {
       __typename: "ChallengePool",
       id: string,
@@ -398,6 +392,12 @@ export type DeleteOpenQuestionDraftMutation = {
         startedAt?: number | null,
       } | null,
     } | null,
+    answerText?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -520,12 +520,6 @@ export type CreateOpenQuestionMutation = {
     id: string,
     questionText: string,
     challengePoolID?: string | null,
-    answerText?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
     challengePool?:  {
       __typename: "ChallengePool",
       id: string,
@@ -541,6 +535,12 @@ export type CreateOpenQuestionMutation = {
         startedAt?: number | null,
       } | null,
     } | null,
+    answerText?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
     owner?: string | null,
     openAnswers?:  {
       __typename: "ModelOpenAnswerConnection",
@@ -573,12 +573,6 @@ export type UpdateOpenQuestionMutation = {
     id: string,
     questionText: string,
     challengePoolID?: string | null,
-    answerText?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
     challengePool?:  {
       __typename: "ChallengePool",
       id: string,
@@ -594,6 +588,12 @@ export type UpdateOpenQuestionMutation = {
         startedAt?: number | null,
       } | null,
     } | null,
+    answerText?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
     owner?: string | null,
     openAnswers?:  {
       __typename: "ModelOpenAnswerConnection",
@@ -626,12 +626,6 @@ export type DeleteOpenQuestionMutation = {
     id: string,
     questionText: string,
     challengePoolID?: string | null,
-    answerText?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
     challengePool?:  {
       __typename: "ChallengePool",
       id: string,
@@ -647,6 +641,12 @@ export type DeleteOpenQuestionMutation = {
         startedAt?: number | null,
       } | null,
     } | null,
+    answerText?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
     owner?: string | null,
     openAnswers?:  {
       __typename: "ModelOpenAnswerConnection",
@@ -689,12 +689,6 @@ export type CreateOpenAnswerMutation = {
       id: string,
       questionText: string,
       challengePoolID?: string | null,
-      answerText?: string | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
       challengePool?:  {
         __typename: "ChallengePool",
         id: string,
@@ -705,6 +699,12 @@ export type CreateOpenAnswerMutation = {
         createdAt: string,
         updatedAt: string,
       } | null,
+      answerText?: string | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
       owner?: string | null,
       openAnswers?:  {
         __typename: "ModelOpenAnswerConnection",
@@ -737,12 +737,6 @@ export type UpdateOpenAnswerMutation = {
       id: string,
       questionText: string,
       challengePoolID?: string | null,
-      answerText?: string | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
       challengePool?:  {
         __typename: "ChallengePool",
         id: string,
@@ -753,6 +747,12 @@ export type UpdateOpenAnswerMutation = {
         createdAt: string,
         updatedAt: string,
       } | null,
+      answerText?: string | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
       owner?: string | null,
       openAnswers?:  {
         __typename: "ModelOpenAnswerConnection",
@@ -785,12 +785,6 @@ export type DeleteOpenAnswerMutation = {
       id: string,
       questionText: string,
       challengePoolID?: string | null,
-      answerText?: string | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
       challengePool?:  {
         __typename: "ChallengePool",
         id: string,
@@ -801,6 +795,12 @@ export type DeleteOpenAnswerMutation = {
         createdAt: string,
         updatedAt: string,
       } | null,
+      answerText?: string | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
       owner?: string | null,
       openAnswers?:  {
         __typename: "ModelOpenAnswerConnection",
@@ -809,76 +809,6 @@ export type DeleteOpenAnswerMutation = {
       } | null,
     } | null,
     owner?: string | null,
-  } | null,
-};
-
-export type GetOpenQuestionDraftQueryVariables = {
-  id: string,
-};
-
-export type GetOpenQuestionDraftQuery = {
-  getOpenQuestionDraft?:  {
-    __typename: "OpenQuestionDraft",
-    id: string,
-    questionText?: string | null,
-    challengePoolID?: string | null,
-    answerText?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
-    ChallengePool?:  {
-      __typename: "ChallengePool",
-      id: string,
-      description: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
-      openQuestions?:  {
-        __typename: "ModelOpenQuestionConnection",
-        nextToken?: string | null,
-        startedAt?: number | null,
-      } | null,
-    } | null,
-  } | null,
-};
-
-export type ListOpenQuestionDraftsQueryVariables = {
-  filter?: ModelOpenQuestionDraftFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type ListOpenQuestionDraftsQuery = {
-  listOpenQuestionDrafts?:  {
-    __typename: "ModelOpenQuestionDraftConnection",
-    items?:  Array< {
-      __typename: "OpenQuestionDraft",
-      id: string,
-      questionText?: string | null,
-      challengePoolID?: string | null,
-      answerText?: string | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
-      ChallengePool?:  {
-        __typename: "ChallengePool",
-        id: string,
-        description: string,
-        _version: number,
-        _deleted?: boolean | null,
-        _lastChangedAt: number,
-        createdAt: string,
-        updatedAt: string,
-      } | null,
-    } | null > | null,
-    nextToken?: string | null,
-    startedAt?: number | null,
   } | null,
 };
 
@@ -897,12 +827,6 @@ export type SyncOpenQuestionDraftsQuery = {
       id: string,
       questionText?: string | null,
       challengePoolID?: string | null,
-      answerText?: string | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
       ChallengePool?:  {
         __typename: "ChallengePool",
         id: string,
@@ -912,6 +836,112 @@ export type SyncOpenQuestionDraftsQuery = {
         _lastChangedAt: number,
         createdAt: string,
         updatedAt: string,
+      } | null,
+      answerText?: string | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type GetOpenQuestionDraftQueryVariables = {
+  id: string,
+};
+
+export type GetOpenQuestionDraftQuery = {
+  getOpenQuestionDraft?:  {
+    __typename: "OpenQuestionDraft",
+    id: string,
+    questionText?: string | null,
+    challengePoolID?: string | null,
+    ChallengePool?:  {
+      __typename: "ChallengePool",
+      id: string,
+      description: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+      openQuestions?:  {
+        __typename: "ModelOpenQuestionConnection",
+        nextToken?: string | null,
+        startedAt?: number | null,
+      } | null,
+    } | null,
+    answerText?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListOpenQuestionDraftsQueryVariables = {
+  filter?: ModelOpenQuestionDraftFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListOpenQuestionDraftsQuery = {
+  listOpenQuestionDrafts?:  {
+    __typename: "ModelOpenQuestionDraftConnection",
+    items?:  Array< {
+      __typename: "OpenQuestionDraft",
+      id: string,
+      questionText?: string | null,
+      challengePoolID?: string | null,
+      ChallengePool?:  {
+        __typename: "ChallengePool",
+        id: string,
+        description: string,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      answerText?: string | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type SyncChallengePoolsQueryVariables = {
+  filter?: ModelChallengePoolFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
+};
+
+export type SyncChallengePoolsQuery = {
+  syncChallengePools?:  {
+    __typename: "ModelChallengePoolConnection",
+    items?:  Array< {
+      __typename: "ChallengePool",
+      id: string,
+      description: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
+      openQuestions?:  {
+        __typename: "ModelOpenQuestionConnection",
+        nextToken?: string | null,
+        startedAt?: number | null,
       } | null,
     } | null > | null,
     nextToken?: string | null,
@@ -983,36 +1013,6 @@ export type ListChallengePoolsQuery = {
   } | null,
 };
 
-export type SyncChallengePoolsQueryVariables = {
-  filter?: ModelChallengePoolFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-  lastSync?: number | null,
-};
-
-export type SyncChallengePoolsQuery = {
-  syncChallengePools?:  {
-    __typename: "ModelChallengePoolConnection",
-    items?:  Array< {
-      __typename: "ChallengePool",
-      id: string,
-      description: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
-      openQuestions?:  {
-        __typename: "ModelOpenQuestionConnection",
-        nextToken?: string | null,
-        startedAt?: number | null,
-      } | null,
-    } | null > | null,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
-};
-
 export type GetOpenQuestionQueryVariables = {
   id: string,
 };
@@ -1023,12 +1023,6 @@ export type GetOpenQuestionQuery = {
     id: string,
     questionText: string,
     challengePoolID?: string | null,
-    answerText?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
     challengePool?:  {
       __typename: "ChallengePool",
       id: string,
@@ -1044,6 +1038,12 @@ export type GetOpenQuestionQuery = {
         startedAt?: number | null,
       } | null,
     } | null,
+    answerText?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
     owner?: string | null,
     openAnswers?:  {
       __typename: "ModelOpenAnswerConnection",
@@ -1079,12 +1079,6 @@ export type ListOpenQuestionsQuery = {
       id: string,
       questionText: string,
       challengePoolID?: string | null,
-      answerText?: string | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
       challengePool?:  {
         __typename: "ChallengePool",
         id: string,
@@ -1095,6 +1089,12 @@ export type ListOpenQuestionsQuery = {
         createdAt: string,
         updatedAt: string,
       } | null,
+      answerText?: string | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
       owner?: string | null,
       openAnswers?:  {
         __typename: "ModelOpenAnswerConnection",
@@ -1122,12 +1122,6 @@ export type SyncOpenQuestionsQuery = {
       id: string,
       questionText: string,
       challengePoolID?: string | null,
-      answerText?: string | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
       challengePool?:  {
         __typename: "ChallengePool",
         id: string,
@@ -1138,6 +1132,12 @@ export type SyncOpenQuestionsQuery = {
         createdAt: string,
         updatedAt: string,
       } | null,
+      answerText?: string | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
       owner?: string | null,
       openAnswers?:  {
         __typename: "ModelOpenAnswerConnection",
@@ -1170,12 +1170,6 @@ export type GetOpenAnswerQuery = {
       id: string,
       questionText: string,
       challengePoolID?: string | null,
-      answerText?: string | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
       challengePool?:  {
         __typename: "ChallengePool",
         id: string,
@@ -1186,6 +1180,12 @@ export type GetOpenAnswerQuery = {
         createdAt: string,
         updatedAt: string,
       } | null,
+      answerText?: string | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
       owner?: string | null,
       openAnswers?:  {
         __typename: "ModelOpenAnswerConnection",
@@ -1282,12 +1282,6 @@ export type OnCreateOpenQuestionDraftSubscription = {
     id: string,
     questionText?: string | null,
     challengePoolID?: string | null,
-    answerText?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
     ChallengePool?:  {
       __typename: "ChallengePool",
       id: string,
@@ -1303,6 +1297,12 @@ export type OnCreateOpenQuestionDraftSubscription = {
         startedAt?: number | null,
       } | null,
     } | null,
+    answerText?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -1312,12 +1312,6 @@ export type OnUpdateOpenQuestionDraftSubscription = {
     id: string,
     questionText?: string | null,
     challengePoolID?: string | null,
-    answerText?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
     ChallengePool?:  {
       __typename: "ChallengePool",
       id: string,
@@ -1333,6 +1327,12 @@ export type OnUpdateOpenQuestionDraftSubscription = {
         startedAt?: number | null,
       } | null,
     } | null,
+    answerText?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -1342,12 +1342,6 @@ export type OnDeleteOpenQuestionDraftSubscription = {
     id: string,
     questionText?: string | null,
     challengePoolID?: string | null,
-    answerText?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
     ChallengePool?:  {
       __typename: "ChallengePool",
       id: string,
@@ -1363,6 +1357,12 @@ export type OnDeleteOpenQuestionDraftSubscription = {
         startedAt?: number | null,
       } | null,
     } | null,
+    answerText?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -1460,7 +1460,7 @@ export type OnDeleteChallengePoolSubscription = {
 };
 
 export type OnCreateOpenQuestionSubscriptionVariables = {
-  owner?: string | null,
+  owner: string,
 };
 
 export type OnCreateOpenQuestionSubscription = {
@@ -1469,12 +1469,6 @@ export type OnCreateOpenQuestionSubscription = {
     id: string,
     questionText: string,
     challengePoolID?: string | null,
-    answerText?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
     challengePool?:  {
       __typename: "ChallengePool",
       id: string,
@@ -1490,6 +1484,12 @@ export type OnCreateOpenQuestionSubscription = {
         startedAt?: number | null,
       } | null,
     } | null,
+    answerText?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
     owner?: string | null,
     openAnswers?:  {
       __typename: "ModelOpenAnswerConnection",
@@ -1512,7 +1512,7 @@ export type OnCreateOpenQuestionSubscription = {
 };
 
 export type OnUpdateOpenQuestionSubscriptionVariables = {
-  owner?: string | null,
+  owner: string,
 };
 
 export type OnUpdateOpenQuestionSubscription = {
@@ -1521,12 +1521,6 @@ export type OnUpdateOpenQuestionSubscription = {
     id: string,
     questionText: string,
     challengePoolID?: string | null,
-    answerText?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
     challengePool?:  {
       __typename: "ChallengePool",
       id: string,
@@ -1542,6 +1536,12 @@ export type OnUpdateOpenQuestionSubscription = {
         startedAt?: number | null,
       } | null,
     } | null,
+    answerText?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
     owner?: string | null,
     openAnswers?:  {
       __typename: "ModelOpenAnswerConnection",
@@ -1564,7 +1564,7 @@ export type OnUpdateOpenQuestionSubscription = {
 };
 
 export type OnDeleteOpenQuestionSubscriptionVariables = {
-  owner?: string | null,
+  owner: string,
 };
 
 export type OnDeleteOpenQuestionSubscription = {
@@ -1573,12 +1573,6 @@ export type OnDeleteOpenQuestionSubscription = {
     id: string,
     questionText: string,
     challengePoolID?: string | null,
-    answerText?: string | null,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-    createdAt: string,
-    updatedAt: string,
     challengePool?:  {
       __typename: "ChallengePool",
       id: string,
@@ -1594,6 +1588,12 @@ export type OnDeleteOpenQuestionSubscription = {
         startedAt?: number | null,
       } | null,
     } | null,
+    answerText?: string | null,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+    createdAt: string,
+    updatedAt: string,
     owner?: string | null,
     openAnswers?:  {
       __typename: "ModelOpenAnswerConnection",
@@ -1616,7 +1616,7 @@ export type OnDeleteOpenQuestionSubscription = {
 };
 
 export type OnCreateOpenAnswerSubscriptionVariables = {
-  owner?: string | null,
+  owner: string,
 };
 
 export type OnCreateOpenAnswerSubscription = {
@@ -1635,12 +1635,6 @@ export type OnCreateOpenAnswerSubscription = {
       id: string,
       questionText: string,
       challengePoolID?: string | null,
-      answerText?: string | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
       challengePool?:  {
         __typename: "ChallengePool",
         id: string,
@@ -1651,6 +1645,12 @@ export type OnCreateOpenAnswerSubscription = {
         createdAt: string,
         updatedAt: string,
       } | null,
+      answerText?: string | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
       owner?: string | null,
       openAnswers?:  {
         __typename: "ModelOpenAnswerConnection",
@@ -1663,7 +1663,7 @@ export type OnCreateOpenAnswerSubscription = {
 };
 
 export type OnUpdateOpenAnswerSubscriptionVariables = {
-  owner?: string | null,
+  owner: string,
 };
 
 export type OnUpdateOpenAnswerSubscription = {
@@ -1682,12 +1682,6 @@ export type OnUpdateOpenAnswerSubscription = {
       id: string,
       questionText: string,
       challengePoolID?: string | null,
-      answerText?: string | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
       challengePool?:  {
         __typename: "ChallengePool",
         id: string,
@@ -1698,6 +1692,12 @@ export type OnUpdateOpenAnswerSubscription = {
         createdAt: string,
         updatedAt: string,
       } | null,
+      answerText?: string | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
       owner?: string | null,
       openAnswers?:  {
         __typename: "ModelOpenAnswerConnection",
@@ -1710,7 +1710,7 @@ export type OnUpdateOpenAnswerSubscription = {
 };
 
 export type OnDeleteOpenAnswerSubscriptionVariables = {
-  owner?: string | null,
+  owner: string,
 };
 
 export type OnDeleteOpenAnswerSubscription = {
@@ -1729,12 +1729,6 @@ export type OnDeleteOpenAnswerSubscription = {
       id: string,
       questionText: string,
       challengePoolID?: string | null,
-      answerText?: string | null,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      createdAt: string,
-      updatedAt: string,
       challengePool?:  {
         __typename: "ChallengePool",
         id: string,
@@ -1745,6 +1739,12 @@ export type OnDeleteOpenAnswerSubscription = {
         createdAt: string,
         updatedAt: string,
       } | null,
+      answerText?: string | null,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      createdAt: string,
+      updatedAt: string,
       owner?: string | null,
       openAnswers?:  {
         __typename: "ModelOpenAnswerConnection",

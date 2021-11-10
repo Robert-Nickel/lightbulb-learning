@@ -11,12 +11,6 @@ export const createOpenQuestionDraft = /* GraphQL */ `
       id
       questionText
       challengePoolID
-      answerText
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
       ChallengePool {
         id
         description
@@ -30,6 +24,12 @@ export const createOpenQuestionDraft = /* GraphQL */ `
           startedAt
         }
       }
+      answerText
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -42,12 +42,6 @@ export const updateOpenQuestionDraft = /* GraphQL */ `
       id
       questionText
       challengePoolID
-      answerText
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
       ChallengePool {
         id
         description
@@ -61,6 +55,12 @@ export const updateOpenQuestionDraft = /* GraphQL */ `
           startedAt
         }
       }
+      answerText
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -73,12 +73,6 @@ export const deleteOpenQuestionDraft = /* GraphQL */ `
       id
       questionText
       challengePoolID
-      answerText
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
       ChallengePool {
         id
         description
@@ -92,6 +86,12 @@ export const deleteOpenQuestionDraft = /* GraphQL */ `
           startedAt
         }
       }
+      answerText
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -200,12 +200,6 @@ export const createOpenQuestion = /* GraphQL */ `
       id
       questionText
       challengePoolID
-      answerText
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
       challengePool {
         id
         description
@@ -219,6 +213,12 @@ export const createOpenQuestion = /* GraphQL */ `
           startedAt
         }
       }
+      answerText
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       owner
       openAnswers {
         items {
@@ -247,12 +247,6 @@ export const updateOpenQuestion = /* GraphQL */ `
       id
       questionText
       challengePoolID
-      answerText
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
       challengePool {
         id
         description
@@ -266,6 +260,12 @@ export const updateOpenQuestion = /* GraphQL */ `
           startedAt
         }
       }
+      answerText
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       owner
       openAnswers {
         items {
@@ -294,12 +294,6 @@ export const deleteOpenQuestion = /* GraphQL */ `
       id
       questionText
       challengePoolID
-      answerText
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
       challengePool {
         id
         description
@@ -313,6 +307,12 @@ export const deleteOpenQuestion = /* GraphQL */ `
           startedAt
         }
       }
+      answerText
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       owner
       openAnswers {
         items {
@@ -350,12 +350,6 @@ export const createOpenAnswer = /* GraphQL */ `
         id
         questionText
         challengePoolID
-        answerText
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
         challengePool {
           id
           description
@@ -365,6 +359,12 @@ export const createOpenAnswer = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        answerText
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
         owner
         openAnswers {
           nextToken
@@ -393,12 +393,6 @@ export const updateOpenAnswer = /* GraphQL */ `
         id
         questionText
         challengePoolID
-        answerText
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
         challengePool {
           id
           description
@@ -408,6 +402,12 @@ export const updateOpenAnswer = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        answerText
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
         owner
         openAnswers {
           nextToken
@@ -436,12 +436,6 @@ export const deleteOpenAnswer = /* GraphQL */ `
         id
         questionText
         challengePoolID
-        answerText
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
         challengePool {
           id
           description
@@ -451,6 +445,12 @@ export const deleteOpenAnswer = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        answerText
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
         owner
         openAnswers {
           nextToken

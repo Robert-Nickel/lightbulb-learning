@@ -1,6 +1,7 @@
 package com.myorg;
 
 import java.util.Arrays;
+import java.util.List;
 
 import software.amazon.awscdk.core.CfnOutput;
 import software.amazon.awscdk.core.Construct;
@@ -8,6 +9,7 @@ import software.amazon.awscdk.core.Duration;
 import software.amazon.awscdk.core.Stack;
 import software.amazon.awscdk.core.StackProps;
 import software.amazon.awscdk.services.apigatewayv2.AddRoutesOptions;
+import software.amazon.awscdk.services.apigatewayv2.CorsPreflightOptions;
 import software.amazon.awscdk.services.apigatewayv2.HttpApi;
 import software.amazon.awscdk.services.apigatewayv2.HttpMethod;
 import software.amazon.awscdk.services.apigatewayv2.LambdaProxyIntegration;
@@ -28,9 +30,10 @@ public class InfrastructureStack extends Stack {
                 .code(Code.fromAsset("../commitOpenQuestionLambda/target/scala-3.0.1/lambda-scala-seed.jar"))
                 .handler("handler.Handler::handle").build();
 
-        final HttpApi httpApi = HttpApi.Builder.create(this, "scalexam").build();
+        final HttpApi httpApi = HttpApi.Builder.create(this, "scalexam").corsPreflight(CorsPreflightOptions.builder()
+                .allowOrigins(List.of("*")).allowMethods(List.of(HttpMethod.POST)).build()).build();
 
-        httpApi.addRoutes(AddRoutesOptions.builder().path("/commitOpenQuestion").methods(Arrays.asList(HttpMethod.GET))
+        httpApi.addRoutes(AddRoutesOptions.builder().path("/commitOpenQuestion").methods(Arrays.asList(HttpMethod.POST))
                 .integration(LambdaProxyIntegration.Builder.create().handler(commitOpenQuestionLambda).build())
                 .build());
 

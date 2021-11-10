@@ -62,7 +62,26 @@
     }
 
     function commitOpenQuestionDraft() {
-        
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
+            hallo: "welt",
+        });
+
+        var requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw
+        };
+
+        fetch(
+            "https://vb77sibd9h.execute-api.eu-central-1.amazonaws.com/commitOpenQuestion",
+            requestOptions
+        )
+            .then((response) => response.text())
+            .then((result) => console.log(result))
+            .catch((error) => console.log("error", error));
     }
 </script>
 
@@ -83,7 +102,9 @@
         <div class="flex justify-between space-y-0">
             <div>{openQuestionDraft.questionText}</div>
             <div>
-                <button on:click={() => deleteOpenQuestionDraftFunc(openQuestionDraft.id)}
+                <button
+                    on:click={() =>
+                        deleteOpenQuestionDraftFunc(openQuestionDraft.id)}
                     >Delete</button
                 >
             </div>
@@ -112,8 +133,9 @@
                 <div>
                     <button
                         on:click={() =>
-                            deleteMyAnswerFromOpenQuestionDraft(openQuestionDraft)}
-                        >Delete</button
+                            deleteMyAnswerFromOpenQuestionDraft(
+                                openQuestionDraft
+                            )}>Delete</button
                     >
                 </div>
             </div>{/if}

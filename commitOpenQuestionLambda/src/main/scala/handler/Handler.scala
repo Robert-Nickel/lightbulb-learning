@@ -27,7 +27,16 @@ class Handler {
       context: Context
   ): APIGatewayV2HTTPResponse = {
 
-    val parsed_body = Json.parse(apiGatewayEvent.getBody())
+    println(s"body = ${apiGatewayEvent.getBody()}")
+
+    val event = apiGatewayEvent.getBody()
+    if(event == null) {
+      println("null ;)")
+    } else {
+      println("nicht null :(")
+    }
+
+    val parsed_body = Json.parse(event)
     val body = parsed_body.as[Body]
 
     println(s"body= ${body}")

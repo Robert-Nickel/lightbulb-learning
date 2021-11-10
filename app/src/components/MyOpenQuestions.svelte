@@ -66,7 +66,7 @@
         myHeaders.append("Content-Type", "application/json");
 
         var raw = JSON.stringify({
-            id: openQuestionDraftID,
+            "id": openQuestionDraftID,
         });
 
         var requestOptions = {

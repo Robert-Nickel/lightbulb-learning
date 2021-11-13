@@ -1,4 +1,4 @@
-# scalexam
+# lightbulb learning
 
 Hi!
 
@@ -10,4 +10,4 @@ It is open source and will be provided as hosted service later on.
 
 I would be glad to add you to the scalexam [mailing list](https://tinyletter.com/RobertNickel), where I share updates, success stories, fails and lessons learned about scalexam.
 
-scalexam - scaling education
+lightbulb learning - learning for the long run

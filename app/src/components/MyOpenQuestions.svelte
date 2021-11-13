@@ -77,7 +77,7 @@
         };
 
         fetch(
-            "https://vb77sibd9h.execute-api.eu-central-1.amazonaws.com/commitOpenQuestion",
+            "https://95piat5x81.execute-api.eu-central-1.amazonaws.com/commitOpenQuestion",
             requestOptions
         )
             .then((response) => response.text())

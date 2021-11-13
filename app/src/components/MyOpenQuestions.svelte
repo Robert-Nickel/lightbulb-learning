@@ -68,7 +68,6 @@
         var raw = JSON.stringify({
             "id": openQuestionDraftID,
         });
-        console.log("request body", raw)
 
         var requestOptions = {
             method: "POST",
@@ -77,7 +76,7 @@
         };
 
         fetch(
-            "https://95piat5x81.execute-api.eu-central-1.amazonaws.com/commitOpenQuestion",
+            "https://agwo4kf1j0.execute-api.eu-central-1.amazonaws.com/commitOpenQuestion",
             requestOptions
         )
             .then((response) => response.text())

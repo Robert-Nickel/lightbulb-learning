@@ -26,9 +26,3 @@ npm run build
 ```
 
 You can run the newly built app with `npm run start`.
-
-## Deploy this app to amplify
-
-Use amplify push/publish/pull to sync with scalexam amplify.
-
-To deploy use: https://console.aws.amazon.com/amplify/home#/deploy?repo=https://github.com/robert-nickel/scalexam

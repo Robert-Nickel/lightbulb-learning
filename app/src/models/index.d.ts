@@ -25,6 +25,7 @@ export declare class OpenQuestionDraft {
   readonly id: string;
   readonly questionText?: string;
   readonly answerText?: string;
+  readonly challengePoolID?: string;
   readonly ChallengePool?: ChallengePool;
   readonly createdAt?: string;
   readonly updatedAt?: string;

@@ -1,5 +1,11 @@
 {
   "AppSyncApiName": "lightbulblearningapp",
   "DynamoDBBillingMode": "PAY_PER_REQUEST",
-  "DynamoDBEnableServerSideEncryption": false
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authlightbulblearningapp1ed418f9",
+      "Outputs.UserPoolId"
+    ]
+  }
 }

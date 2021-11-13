@@ -83,6 +83,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "challengePoolID": {
+                    "name": "challengePoolID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "ChallengePool": {
                     "name": "ChallengePool",
                     "isArray": false,
@@ -141,5 +148,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "8bf1a9157e043fd36c8d3ee0472de159"
+    "version": "07f831cb9a45dc1698f5375137ec9a48"
 };

@@ -29,7 +29,7 @@ public class InfrastructureStack extends Stack {
                 .code(Code.fromAsset("../commitOpenQuestionLambda/target/scala-3.0.1/lambda-scala-seed.jar"))
                 .handler("handler.Handler::handle").build();
 
-        final HttpApi httpApi = HttpApi.Builder.create(this, "lightbulb-learning")
+        final HttpApi httpApi = HttpApi.Builder.create(this, "lightbulb-learning-api-gateway")
                 .corsPreflight(CorsPreflightOptions.builder().allowOrigins(Arrays.asList("*"))
                         .allowMethods(Arrays.asList(HttpMethod.POST, HttpMethod.OPTIONS))
                         .allowHeaders(Arrays.asList("Content-Type")).build())

@@ -1,0 +1,11 @@
+type ChallengePool @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  description: String
+}
+
+type OpenQuestionDraft @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  questionText: String
+  answerText: String
+  ChallengePool: ChallengePool @connection
+}

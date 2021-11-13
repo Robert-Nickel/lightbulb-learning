@@ -10,6 +10,11 @@
       "StackName": "amplify-lightbulblearningapp-prod-152655",
       "StackId": "arn:aws:cloudformation:eu-central-1:532688539985:stack/amplify-lightbulblearningapp-prod-152655/c2775240-448d-11ec-9482-0a3c4296578a",
       "AmplifyAppId": "d1qn4e82jsnps3"
+    },
+    "categories": {
+      "auth": {
+        "lightbulblearningapp1ed418f9": {}
+      }
     }
   }
 }

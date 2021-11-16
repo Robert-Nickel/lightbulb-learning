@@ -12,6 +12,7 @@ import software.amazon.awscdk.services.apigatewayv2.CorsPreflightOptions;
 import software.amazon.awscdk.services.apigatewayv2.HttpApi;
 import software.amazon.awscdk.services.apigatewayv2.HttpMethod;
 import software.amazon.awscdk.services.apigatewayv2.LambdaProxyIntegration;
+import software.amazon.awscdk.services.iam.PolicyStatement;
 import software.amazon.awscdk.services.lambda.Code;
 import software.amazon.awscdk.services.lambda.Function;
 import software.amazon.awscdk.services.lambda.Runtime;
@@ -23,12 +24,16 @@ public class InfrastructureStack extends Stack {
 
         public InfrastructureStack(final Construct scope, final String id, final StackProps props) {
                 super(scope, id, props);
-
+                
                 final Function commitOpenQuestionLambda = Function.Builder.create(this, "commitOpenQuestion")
                                 .runtime(Runtime.JAVA_11).timeout(Duration.seconds(30)).memorySize(256)
                                 .code(Code.fromAsset(
                                                 "../commitOpenQuestionLambda/target/scala-3.0.1/lambda-scala-seed.jar"))
                                 .handler("handler.Handler::handle").build();
+
+                commitOpenQuestionLambda.addToRolePolicy(PolicyStatement.Builder.create().resources(Arrays.asList(
+                                "arn:aws:dynamodb:eu-central-1:532688539985:table/OpenQuestionDraft-bz5o7yvpwbdijnygi4gs2ns4ui-prod"))
+                                .actions(Arrays.asList("dynamodb:GetItem")).build());
 
                 final HttpApi httpApi = HttpApi.Builder.create(this, "lightbulb-learning-api-gateway")
                                 .corsPreflight(CorsPreflightOptions.builder().allowOrigins(Arrays.asList("*"))

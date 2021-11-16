@@ -20,6 +20,7 @@ case class Body(id: String)
 given jsonToBody: JsonInput[Body] with 
   def apply(json: JsonValue) = Body(json("id"))
 
+
 class Handler {
 
   def handle(
@@ -39,16 +40,17 @@ class Handler {
       println(s"id = ${id}")
 
       val client: AmazonDynamoDB = AmazonDynamoDBClientBuilder.standard().build();
-      
       val dynamoDB: DynamoDB = new DynamoDB(client);
-      val table: Table = dynamoDB.getTable("OpenQuestionDraft-xiukk7jyfnexpd66hqxfnnrmem-prod");
-      
-      // TODO: get the item from the dynamoDB table
+      val tableName = "OpenQuestionDraft-bz5o7yvpwbdijnygi4gs2ns4ui-prod";
+      val table: Table = dynamoDB.getTable(tableName);
+      val item: Item = table.getItem("id", id);
+
+      println(s"item = ${item}")
 
       return APIGatewayV2HTTPResponse
         .builder()
         .withStatusCode(200)
-        .withBody(s"${apiGatewayEvent.getBody()}")
+        .withBody(s"${item}")
         .build()
     } else {
        /* For OPTIONS call*/
@@ -58,7 +60,6 @@ class Handler {
             .withStatusCode(200)
             .withBody(s"${apiGatewayEvent.getBody()}")
             .build()
-      
       }
   }
 }

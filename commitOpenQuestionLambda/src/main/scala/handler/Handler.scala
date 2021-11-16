@@ -26,42 +26,39 @@ class Handler {
       apiGatewayEvent: APIGatewayV2HTTPEvent,
       context: Context
   ): APIGatewayV2HTTPResponse = {
-    println(s"body = ${apiGatewayEvent.getBody()}")
+    if(apiGatewayEvent != null && apiGatewayEvent.getBody() != null) {
+      println("Handling request with apiGatewayEvent")
+      println(s"apiGatewayEvent = ${apiGatewayEvent}")
+      val event = apiGatewayEvent.getBody()
+      println(s"event = ${event}")
+      val parsed_body = Json.parse(event)
+      println(s"parsed_body = ${parsed_body}")
+      val body = parsed_body.as[Body]
+      println(s"body = ${body}")
+      val id  = body.id
+      println(s"id = ${id}")
 
-    /*val event = apiGatewayEvent.getBody()
-    if(event == null) {
-      println("null ;)")
+      val client: AmazonDynamoDB = AmazonDynamoDBClientBuilder.standard().build();
+      
+      val dynamoDB: DynamoDB = new DynamoDB(client);
+      val table: Table = dynamoDB.getTable("OpenQuestionDraft-xiukk7jyfnexpd66hqxfnnrmem-prod");
+      
+      // TODO: get the item from the dynamoDB table
+
+      return APIGatewayV2HTTPResponse
+        .builder()
+        .withStatusCode(200)
+        .withBody(s"${apiGatewayEvent.getBody()}")
+        .build()
     } else {
-      println("nicht null :(")
-    }
-
-    val parsed_body = Json.parse(event)
-    val body = parsed_body.as[Body]
-
-    println(s"body= ${body}")
-
-    val id  = body.id
-    
-    println(s"id = ${id}")
-
-    val client: AmazonDynamoDB = AmazonDynamoDBClientBuilder.standard().build();
-    
-    val dynamoDB: DynamoDB = new DynamoDB(client);
-    val table: Table = dynamoDB.getTable("OpenQuestionDraft-xiukk7jyfnexpd66hqxfnnrmem-prod");
-
-    val item: Item = new Item().withPrimaryKey("Id", id)
-    */
-    /*val headers = new HashMap[String, String]()
-    headers.put("Access-Control-Allow-Headers", "Content-Type")
-    headers.put("Access-Control-Allow-Origin", "*")
-    headers.put("Access-Control-Allow-Methods", "*")*/
-
-    //println(s"body = ${apiGatewayEvent.getBody()}")
-    APIGatewayV2HTTPResponse
-      .builder()
-      .withStatusCode(200)
-      //.withHeaders(headers)
-      .withBody(s"${apiGatewayEvent.getBody()}")
-      .build()
+       /* For OPTIONS call*/
+      println("Handling request with apiGatewayEvent == null or apiGatewayEvent.body == null")
+      return APIGatewayV2HTTPResponse
+            .builder()
+            .withStatusCode(200)
+            .withBody(s"${apiGatewayEvent.getBody()}")
+            .build()
+      
+      }
   }
 }

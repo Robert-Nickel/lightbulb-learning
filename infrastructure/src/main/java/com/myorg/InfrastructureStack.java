@@ -17,29 +17,31 @@ import software.amazon.awscdk.services.lambda.Function;
 import software.amazon.awscdk.services.lambda.Runtime;
 
 public class InfrastructureStack extends Stack {
-    public InfrastructureStack(final Construct scope, final String id) {
-        this(scope, id, null);
-    }
+        public InfrastructureStack(final Construct scope, final String id) {
+                this(scope, id, null);
+        }
 
-    public InfrastructureStack(final Construct scope, final String id, final StackProps props) {
-        super(scope, id, props);
+        public InfrastructureStack(final Construct scope, final String id, final StackProps props) {
+                super(scope, id, props);
 
-        final Function commitOpenQuestionLambda = Function.Builder.create(this, "commitOpenQuestion")
-                .runtime(Runtime.JAVA_11).timeout(Duration.seconds(30))
-                .code(Code.fromAsset("../commitOpenQuestionLambda/target/scala-3.0.1/lambda-scala-seed.jar"))
-                .handler("handler.Handler::handle").build();
+                final Function commitOpenQuestionLambda = Function.Builder.create(this, "commitOpenQuestion")
+                                .runtime(Runtime.JAVA_11).timeout(Duration.seconds(30)).memorySize(256)
+                                .code(Code.fromAsset(
+                                                "../commitOpenQuestionLambda/target/scala-3.0.1/lambda-scala-seed.jar"))
+                                .handler("handler.Handler::handle").build();
 
-        final HttpApi httpApi = HttpApi.Builder.create(this, "lightbulb-learning-api-gateway")
-                .corsPreflight(CorsPreflightOptions.builder().allowOrigins(Arrays.asList("*"))
-                        .allowMethods(Arrays.asList(HttpMethod.POST, HttpMethod.OPTIONS))
-                        .allowHeaders(Arrays.asList("Content-Type")).build())
-                .build();
+                final HttpApi httpApi = HttpApi.Builder.create(this, "lightbulb-learning-api-gateway")
+                                .corsPreflight(CorsPreflightOptions.builder().allowOrigins(Arrays.asList("*"))
+                                                .allowMethods(Arrays.asList(HttpMethod.POST, HttpMethod.OPTIONS))
+                                                .allowHeaders(Arrays.asList("Content-Type")).build())
+                                .build();
 
-        httpApi.addRoutes(AddRoutesOptions.builder().path("/commitOpenQuestion")
-                .methods(Arrays.asList(HttpMethod.POST, HttpMethod.OPTIONS))
-                .integration(LambdaProxyIntegration.Builder.create().handler(commitOpenQuestionLambda).build())
-                .build());
+                httpApi.addRoutes(AddRoutesOptions.builder().path("/commitOpenQuestion")
+                                .methods(Arrays.asList(HttpMethod.POST, HttpMethod.OPTIONS))
+                                .integration(LambdaProxyIntegration.Builder.create().handler(commitOpenQuestionLambda)
+                                                .build())
+                                .build());
 
-        CfnOutput.Builder.create(this, "URL").value(httpApi.getUrl() + "commitOpenQuestion").build();
-    }
+                CfnOutput.Builder.create(this, "URL").value(httpApi.getUrl() + "commitOpenQuestion").build();
+        }
 }

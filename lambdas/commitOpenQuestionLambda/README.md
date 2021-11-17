@@ -1,5 +1,7 @@
 ## sbt project compiled with Scala 3
 
+This Lambda is invoked, when a user commits an open question
+
 ### Assembly
 You can assemble the Scala 3 code to a jar by using `sbt assembly`
 

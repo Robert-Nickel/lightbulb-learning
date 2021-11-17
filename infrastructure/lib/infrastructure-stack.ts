@@ -12,26 +12,24 @@ export class InfrastructureStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    const topic = new sns.Topic(this, 'sns-topic', {
-        displayName: 'My SNS topic',
-    });
-    
-/*
-    const table = new dynamodb.Table(this, 'DemoTestTable2', {
-      partitionKey: { name: 'id', type: dynamodb.AttributeType.STRING },
+    const topic = new sns.Topic(this, 'open-question-topic', {
+        displayName: 'Open Question Topic',
     });
 
-    // Adding tags
-    Aspects.of(table).add(new cdk.Tag("user:Application", "lightbulblearningapp"))
-    Aspects.of(table).add(new cdk.Tag("user:Stack", "prod"))
-*/
-
-    const commitOpenQuestionLambda = new lambda.Function(this, 'commitOpenQuestion', {
+    const commitOpenQuestionLambda = new lambda.Function(this, 'commitOpenQuestionLambda', {
       runtime: lambda.Runtime.JAVA_11,
       timeout: cdk.Duration.seconds(30),
       memorySize: 256,
       handler: 'handler.Handler::handle',
       code: lambda.Code.fromAsset(path.join(__dirname, '../../commitOpenQuestionLambda/target/scala-3.0.1/lambda-scala-seed.jar')),
+    });
+
+    const createOpenQuestionLambda = new lambda.Function(this, 'createOpenQuestionLambda', {
+      runtime: lambda.Runtime.JAVA_11,
+      timeout: cdk.Duration.seconds(30),
+      memorySize: 256,
+      handler: 'handler.Handler::handle',
+      code: lambda.Code.fromAsset(path.join(__dirname, '../../createOpenQuestionLambda/target/scala-3.0.1/lambda-scala-seed.jar')),
     });
 
     commitOpenQuestionLambda.addToRolePolicy(new PolicyStatement({
@@ -68,5 +66,15 @@ export class InfrastructureStack extends cdk.Stack {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       value: httpApi.url + "commitOpenQuestion",
     });
+
+    /*
+    const table = new dynamodb.Table(this, 'DemoTestTable2', {
+      partitionKey: { name: 'id', type: dynamodb.AttributeType.STRING },
+    });
+
+    // Adding tags
+    Aspects.of(table).add(new cdk.Tag("user:Application", "lightbulblearningapp"))
+    Aspects.of(table).add(new cdk.Tag("user:Stack", "prod"))
+*/
   }
 }

@@ -10,7 +10,6 @@ export class InfrastructureStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    // 👇 create sns topic
     const topic = new sns.Topic(this, 'sns-topic', {
         displayName: 'My SNS topic',
     });
@@ -19,7 +18,7 @@ export class InfrastructureStack extends cdk.Stack {
       runtime: lambda.Runtime.JAVA_11,
       timeout: cdk.Duration.seconds(30),
       memorySize: 256,
-      handler: 'handler.Handler::handle()',
+      handler: 'handler.Handler::handle',
       code: lambda.Code.fromAsset(path.join(__dirname, '../../commitOpenQuestionLambda/target/scala-3.0.1/lambda-scala-seed.jar')),
     });
 
@@ -32,7 +31,9 @@ export class InfrastructureStack extends cdk.Stack {
       /* description: 'Learning API', */
       corsPreflight: {
         allowHeaders: [
-          'Content-Type'
+          'Content-Type',
+          'x-amz-user-agent',
+          'x-api-key'
         ],
         allowMethods: [
           CorsHttpMethod.OPTIONS,

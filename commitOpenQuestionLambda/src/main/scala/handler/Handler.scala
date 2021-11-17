@@ -14,6 +14,10 @@ import com.amazonaws.services.lambda.runtime.events.{
 import little.json.*
 import little.json.Implicits.{ *, given }
 import scala.language.implicitConversions
+import software.amazon.awssdk.services.sns.SnsClient;
+import software.amazon.awssdk.services.sns.model.PublishRequest;
+import software.amazon.awssdk.services.sns.model.PublishResponse;
+import software.amazon.awssdk.regions.Region;
 
 case class Body(id: String)
 
@@ -46,6 +50,9 @@ class Handler {
       val item: Item = table.getItem("id", id);
 
       println(s"item = ${item}")
+      
+      publishMessageToSNS(s"$item")
+
 
       return APIGatewayV2HTTPResponse
         .builder()
@@ -61,5 +68,18 @@ class Handler {
             .withBody(s"${apiGatewayEvent.getBody()}")
             .build()
       }
+  }
+
+  def publishMessageToSNS(message: String): PublishResponse = {
+    val snsClient = SnsClient.builder()
+                        .region(Region.EU_CENTRAL_1)
+                        .build()
+    val request: PublishRequest = PublishRequest.builder()
+      .message(message)
+      .topicArn("arn:aws:sns:eu-central-1:532688539985:InfrastructureStack-snstopic2C4AE3C1-1M7EC73IM20IP")
+      .build()  
+
+    // TODO: catch SnsException
+    snsClient.publish(request);
   }
 }

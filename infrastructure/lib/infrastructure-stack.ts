@@ -5,6 +5,8 @@ import { PolicyStatement } from '@aws-cdk/aws-iam';
 import { CorsHttpMethod, HttpApi, HttpMethod } from '@aws-cdk/aws-apigatewayv2';
 import { LambdaProxyIntegration } from '@aws-cdk/aws-apigatewayv2-integrations';
 import * as sns from '@aws-cdk/aws-sns';
+import * as dynamodb from '@aws-cdk/aws-dynamodb';
+import { Aspects } from '@aws-cdk/core';
 
 export class InfrastructureStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
@@ -13,6 +15,14 @@ export class InfrastructureStack extends cdk.Stack {
     const topic = new sns.Topic(this, 'sns-topic', {
         displayName: 'My SNS topic',
     });
+
+    const table = new dynamodb.Table(this, 'DemoTestTable2', {
+      partitionKey: { name: 'id', type: dynamodb.AttributeType.STRING },
+    });
+
+    // Adding tags
+    Aspects.of(table).add(new cdk.Tag("user:Application", "lightbulblearningapp"))
+    Aspects.of(table).add(new cdk.Tag("user:Stack", "prod"))
 
     const commitOpenQuestionLambda = new lambda.Function(this, 'commitOpenQuestion', {
       runtime: lambda.Runtime.JAVA_11,

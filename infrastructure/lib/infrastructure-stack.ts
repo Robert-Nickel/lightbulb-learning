@@ -15,7 +15,8 @@ export class InfrastructureStack extends cdk.Stack {
     const topic = new sns.Topic(this, 'sns-topic', {
         displayName: 'My SNS topic',
     });
-
+    
+/*
     const table = new dynamodb.Table(this, 'DemoTestTable2', {
       partitionKey: { name: 'id', type: dynamodb.AttributeType.STRING },
     });
@@ -23,6 +24,7 @@ export class InfrastructureStack extends cdk.Stack {
     // Adding tags
     Aspects.of(table).add(new cdk.Tag("user:Application", "lightbulblearningapp"))
     Aspects.of(table).add(new cdk.Tag("user:Stack", "prod"))
+*/
 
     const commitOpenQuestionLambda = new lambda.Function(this, 'commitOpenQuestion', {
       runtime: lambda.Runtime.JAVA_11,

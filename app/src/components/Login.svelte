@@ -33,33 +33,35 @@
   {:catch error}
     <p class="errorMessage">Something went wrong: {error.message}</p>
   {/await}
-  <div class="SwitchContainer">
-    <label class="switch">
-      <input type="checkbox" on:click={toggleMode} bind:checked={isSigningIn} />
-      <span class="slider round" />
-    </label>
-    {#if mode === "signin"}
-      Switch to Sign Up
-    {:else}
-      Switch to Sign In
-    {/if}
-  </div>
-  {#if mode === "signin"}
-    <h1>Sign In</h1>
-  {:else if mode === "confirm"}
-    <h1>Confirm Signup</h1>
-  {:else}
-    <h1>Sign Up</h1>
-  {/if}
-  <form on:submit|preventDefault={handleSubmit}>
-    {#if mode !== "confirm"}
-      <label>
-        Username:
+  <div class="flex justify-between mb-8">
+    <div class="inline-block">
+      {#if mode === "signin"}
+        <p class="text-3xl">Sign In</p>
+      {:else}
+        <p class="text-3xl">Sign Up</p>
+      {/if}
+    </div>
+    <div class="flex justify-end">
+      <label class="switch relative mt-32">
         <input
-          type="text"
-          bind:value={$loginFormState.username}
-          placeholder="your username"
+          type="checkbox"
+          on:click={toggleMode}
+          bind:checked={isSigningIn}
         />
+        <span class="slider round" />
+      </label>
+      {#if mode === "signin"}
+        <p class="pt-2 ml-2">Switch to Sign Up</p>
+      {:else}
+        <p class="pt-2 ml-2">Switch to Sign In</p>
+      {/if}
+    </div>
+  </div>
+  <form on:submit|preventDefault={handleSubmit}>
+    {#if mode == "signin"}
+      <label>
+        Email:
+        <input type="text" bind:value={$loginFormState.username} />
       </label>
       <label>
         Password:
@@ -68,17 +70,17 @@
     {/if}
     {#if mode === "signup"}
       <label>
-        Email (for confirmation code):
-        <input
-          type="email"
-          bind:value={$loginFormState.email}
-          placeholder="real@email.com"
-        />
+        Email:
+        <input type="email" bind:value={$loginFormState.email} />
+      </label>
+      <label>
+        Password:
+        <input type="password" bind:value={$loginFormState.password} />
       </label>
     {/if}
     {#if mode === "confirm"}
       <label>
-        6 digit Confirmation:
+        Confirm signup (check your email):
         <input
           type="text"
           bind:value={$loginFormState.confirmCode}
@@ -118,16 +120,8 @@
   }
   /* The switch - the box around the slider */
   .switch {
-    position: relative;
-    display: inline-block;
     width: 60px;
     height: 34px;
-  }
-
-  .SwitchContainer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 
   /* Hide default HTML checkbox */

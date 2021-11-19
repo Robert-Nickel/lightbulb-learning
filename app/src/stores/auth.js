@@ -22,11 +22,12 @@ export async function signIn() {
   ).then((data) => void store.set(data));
 }
 export async function signUp() {
+  const email = get(loginFormState).email
   return Auth.signUp({
-    username: get(loginFormState).username,
+    username: email,
     password: get(loginFormState).password,
     attributes: {
-      email: get(loginFormState).email
+      email: email
     }
   }).then((user) => {
     get(loginFormState).confirmingUser = user;

@@ -27,7 +27,11 @@
         >
     </nav>
 </header>
-
+<div class="bg-lightbulb bg-cover">
+    <p class="text-7xl max-w-screen-sm mx-auto px-8 leading-snug pt-32 pb-8 text-white font-bold">
+        Learning for the long run.
+    </p>
+</div>
 <!--
     References:
     https://dev.to/joshnuss/creating-a-sidebar-menu-in-svelte-ih2

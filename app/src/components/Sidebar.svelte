@@ -1,11 +1,17 @@
 <script>
+	import { store } from "../stores/auth.js";
 	import { createEventDispatcher } from "svelte";
+	const dispatch = createEventDispatcher();
 
 	export let open = false;
 
-	const dispatch = createEventDispatcher();
+	function login() {
+		open = false;
+		dispatch("login");
+	}
 
 	function logout() {
+		open = false;
 		dispatch("logout");
 	}
 </script>
@@ -14,13 +20,11 @@
 	class="absolute w-full h-full bg-gray-200 border-r-2 shadow-lg z-10"
 	class:open
 >
-	<nav class="p-12 text-xl">
-		<a
-			href="/"
-			class="hover:text-gray-700 hover:no-underline"
-			on:click={logout}>Logout</a
-		>
-	</nav>
+	{#if $store == null}
+		<nav on:click={login} class="p-12 text-xl">Login</nav>
+	{:else}
+		<nav on:click={logout} class="p-12 text-xl">Logout</nav>
+	{/if}
 </aside>
 
 <style>

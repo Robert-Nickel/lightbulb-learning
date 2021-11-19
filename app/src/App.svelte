@@ -7,8 +7,16 @@
 	import Navbar from "./components/Navbar.svelte";
 	import Sidebar from "./components/Sidebar.svelte";
 	import { SvelteToast } from "@zerodevx/svelte-toast";
+	import NewsletterSignup from "./components/NewsletterSignup.svelte";
+	import WhatWeDo from "./components/WhatWeDo.svelte";
 
-	let open = false;
+	let sidebarOpen = false;
+	let showLogin = false;
+
+	function login() {
+		showLogin = true;
+		console.log("showLogin = " + showLogin);
+	}
 
 	function logout() {
 		$store = null;
@@ -17,15 +25,23 @@
 </script>
 
 <TailwindCss />
-<Sidebar bind:open on:logout={logout} />
-<Navbar bind:sidebar={open} on:logout={logout} />
-<main class="container mx-auto py-4 px-2 max-w-screen-sm">
-	{#if $store != null}
+<Sidebar bind:open={sidebarOpen} on:logout={logout} on:login={login} />
+<Navbar bind:sidebar={sidebarOpen} on:logout={logout} />
+
+{#if $store != null}
+	<main class="container mx-auto py-4 px-2 max-w-screen-sm">
 		<ChallengePools />
-	{:else}
+	</main>
+{:else if showLogin}
+	<main class="container mx-auto py-4 px-2 max-w-screen-sm">
 		<Login />
-	{/if}
-</main>
+	</main>
+{:else}
+	<main class="container mx-auto py-4 px-2 max-w-screen-sm">
+		<WhatWeDo />
+	</main>
+	<NewsletterSignup />
+{/if}
 <SvelteToast />
 
 <!--Go here to see which toasts are possible: https://zerodevx.github.io/svelte-toast/-->

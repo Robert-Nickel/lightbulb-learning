@@ -7,7 +7,7 @@
 	import Navbar from "./components/Navbar.svelte";
 	import Sidebar from "./components/Sidebar.svelte";
 	import { SvelteToast } from "@zerodevx/svelte-toast";
-	import NewsletterSignup from "./components/NewsletterSignup.svelte";
+	import NewsletterSignUp from "./components/NewsletterSignUp.svelte";
 	import WhatWeDo from "./components/WhatWeDo.svelte";
 
 	let sidebarOpen = false;
@@ -40,7 +40,7 @@
 	<main class="container mx-auto py-4 px-2 max-w-screen-sm">
 		<WhatWeDo />
 	</main>
-	<NewsletterSignup />
+	<NewsletterSignUp />
 {/if}
 <SvelteToast />
 

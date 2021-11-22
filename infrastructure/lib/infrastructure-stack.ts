@@ -21,7 +21,7 @@ export class InfrastructureStack extends cdk.Stack {
       timeout: cdk.Duration.seconds(30),
       memorySize: 256,
       handler: 'handler.Handler::handle',
-      code: lambda.Code.fromAsset(path.join(__dirname, '../../commitOpenQuestionLambda/target/scala-3.0.1/lambda-scala-seed.jar')),
+      code: lambda.Code.fromAsset(path.join(__dirname, '../../lambdas/commitOpenQuestionLambda/target/scala-3.0.1/lambda-scala-seed.jar')),
     });
 
     const createOpenQuestionLambda = new lambda.Function(this, 'createOpenQuestionLambda', {
@@ -29,7 +29,7 @@ export class InfrastructureStack extends cdk.Stack {
       timeout: cdk.Duration.seconds(30),
       memorySize: 256,
       handler: 'handler.Handler::handle',
-      code: lambda.Code.fromAsset(path.join(__dirname, '../../createOpenQuestionLambda/target/scala-3.0.1/lambda-scala-seed.jar')),
+      code: lambda.Code.fromAsset(path.join(__dirname, '../../lambdas/createOpenQuestionLambda/target/scala-3.0.1/lambda-scala-seed.jar')),
     });
 
     commitOpenQuestionLambda.addToRolePolicy(new PolicyStatement({

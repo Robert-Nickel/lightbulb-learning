@@ -4,7 +4,7 @@ import * as path from 'path';
 import { PolicyStatement } from '@aws-cdk/aws-iam';
 import { CorsHttpMethod, HttpApi, HttpMethod } from '@aws-cdk/aws-apigatewayv2';
 import { LambdaProxyIntegration } from '@aws-cdk/aws-apigatewayv2-integrations';
-
+import { Duration } from '@aws-cdk/aws-cloudwatch/node_modules/@aws-cdk/core/lib/duration'
 import * as sns from '@aws-cdk/aws-sns';
 import * as sqs from '@aws-cdk/aws-sqs';
 import * as subs from '@aws-cdk/aws-sns-subscriptions';
@@ -15,6 +15,7 @@ export class InfrastructureStack extends cdk.Stack {
 
     const commitOpenQuestionLambda = new lambda.Function(this, 'commitOpenQuestionLambda', {
       runtime: lambda.Runtime.JAVA_11,
+      timeout: Duration.seconds(30),
       memorySize: 256,
       handler: 'handler.Handler::handle',
       code: lambda.Code.fromAsset(path.join(__dirname, '../../lambdas/commitOpenQuestionLambda/target/scala-3.0.1/lambda-scala-seed.jar')),
@@ -22,6 +23,7 @@ export class InfrastructureStack extends cdk.Stack {
 
     const createOpenQuestionLambda = new lambda.Function(this, 'createOpenQuestionLambda', {
       runtime: lambda.Runtime.JAVA_11,
+      timeout: Duration.seconds(30),
       memorySize: 256,
       handler: 'handler.Handler::handle',
       code: lambda.Code.fromAsset(path.join(__dirname, '../../lambdas/createOpenQuestionLambda/target/scala-3.0.1/lambda-scala-seed.jar')),

@@ -21,7 +21,7 @@
 	class:open
 >
 	{#if $store == null}
-		<nav on:click={login} class="p-12 text-xl">Login</nav>
+		<nav on:click={login} class="p-12 text-xl">Login / Register</nav>
 	{:else}
 		<nav on:click={logout} class="p-12 text-xl">Logout</nav>
 	{/if}

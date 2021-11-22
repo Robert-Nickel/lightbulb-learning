@@ -1,4 +1,4 @@
-<div class="bg-black py-16 mt-8 pb-64">
+<div class="bg-black py-16 mt-8 pb-16">
     <div class="mx-auto max-w-screen-sm">
         <p class="text-white text-3xl mx-8 mb-8">Stay in the loop?</p>
         <form
@@ -11,10 +11,10 @@
             <input
                 type="text"
                 name="email"
-                class="font-semibold rounded-lg shadow-md focus:outline-none"
+                class="font-semibold rounded-lg shadow-md focus:outline-none mx-auto"
                 placeholder="email@example.com"
                 id="tlemail"
-                style="padding: 0.5rem; margin-right: 0.5rem; margin-bottom: 0.5rem; min-width: 24em; max-width: 100%;"
+                style="padding: 0.5rem; margin-right: 0.5rem; margin-bottom: 0.5rem; min-width: 16em;"
             />
             <input type="hidden" value="1" name="embed" />
             <input type="submit" value="Subscribe" class="btn-yellow" />

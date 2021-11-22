@@ -80,6 +80,7 @@ class Handler {
       .build()  
 
     // TODO: catch SnsException
+    println("Publishing the request now...")
     val result = snsClient.publish(request)
     println(s"publish result = ${snsClient.publish(request)}");
     return result

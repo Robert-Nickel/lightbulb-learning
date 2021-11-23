@@ -32,33 +32,25 @@ class Handler {
       context: Context
   ): APIGatewayV2HTTPResponse = {
     if(apiGatewayEvent != null && apiGatewayEvent.getBody() != null) {
-      println("Handling request with apiGatewayEvent")
       println(s"apiGatewayEvent = ${apiGatewayEvent}")
       val event = apiGatewayEvent.getBody()
-      println(s"event = ${event}")
       val parsed_body = Json.parse(event)
       println(s"parsed_body = ${parsed_body}")
       val body = parsed_body.as[Body]
       println(s"body = ${body}")
-      val id  = body.id
-      println(s"id = ${id}")
+      
 
+      /*
       val client: AmazonDynamoDB = AmazonDynamoDBClientBuilder.defaultClient();
-
-      println("client built")
       val dynamoDB: DynamoDB = new DynamoDB(client);
-      println("dynamoDB built")
-
       val tableName = "OpenQuestionDraft-bz5o7yvpwbdijnygi4gs2ns4ui-prod";
       val table: Table = dynamoDB.getTable(tableName);
-      println("table built")
-
       val item: Item = table.getItem("id", id);
+      */
 
-      println(s"item = ${item}")
+      //println(s"item = ${item}")
       
-      publishMessageToSNS(s"$item")
-
+      //publishMessageToSNS(s"$item")
 
       return APIGatewayV2HTTPResponse
         .builder()
@@ -77,13 +69,16 @@ class Handler {
   }
 
   def publishMessageToSNS(message: String): PublishResponse = {
+    println("before snsClient")
     val snsClient = SnsClient.builder()
                         .region(Region.EU_CENTRAL_1)
                         .build()
+    println("build snsClient")
     val request: PublishRequest = PublishRequest.builder()
       .message(message)
       .topicArn("arn:aws:sns:eu-central-1:532688539985:InfrastructureStack-snstopic2C4AE3C1-1M7EC73IM20IP")
       .build()  
+    println("build request")
 
     // TODO: catch SnsException
     println("Publishing the request now...")

@@ -15,7 +15,6 @@
 
 	function login() {
 		showLogin = true;
-		console.log("showLogin = " + showLogin);
 	}
 
 	function logout() {

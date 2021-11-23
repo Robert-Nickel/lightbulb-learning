@@ -43,10 +43,16 @@ class Handler {
       val id  = body.id
       println(s"id = ${id}")
 
-      val client: AmazonDynamoDB = AmazonDynamoDBClientBuilder.standard().build();
+      val client: AmazonDynamoDB = AmazonDynamoDBClientBuilder.defaultClient();
+
+      println("client built")
       val dynamoDB: DynamoDB = new DynamoDB(client);
+      println("dynamoDB built")
+
       val tableName = "OpenQuestionDraft-bz5o7yvpwbdijnygi4gs2ns4ui-prod";
       val table: Table = dynamoDB.getTable(tableName);
+      println("table built")
+
       val item: Item = table.getItem("id", id);
 
       println(s"item = ${item}")

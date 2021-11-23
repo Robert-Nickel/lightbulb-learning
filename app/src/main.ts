@@ -1,7 +1,8 @@
 import App from './App.svelte';
 import Amplify from '@aws-amplify/core';
-import aws_exports from './aws-exports';
+// import aws_exports from './aws-exports';
 import * as process from 'process';
+const aws_exports = require('./aws-exports').default;
 
 Amplify.configure(aws_exports);
 

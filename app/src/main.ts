@@ -14,5 +14,3 @@ const app = new App({
 });
 
 export default app;
-
-// changed myApp6 image from default Amazon EC2 to Node 17.1.0

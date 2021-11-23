@@ -32,6 +32,7 @@ export class InfrastructureStack extends cdk.Stack {
           phases: {
             preBuild: {
               commands: [
+                'nvm install 17',
                 'npm install'
               ]
             },

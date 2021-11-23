@@ -50,6 +50,7 @@ class Handler {
       val item: Item = table.getItem("id", id);
 
       println(s"item = ${item}")
+      println("I wonder if this line triggers a build")
       
       publishMessageToSNS(s"$item")
 

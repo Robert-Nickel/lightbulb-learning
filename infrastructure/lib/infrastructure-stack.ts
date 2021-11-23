@@ -74,7 +74,8 @@ export class InfrastructureStack extends cdk.Stack {
     const openQuestionTopic = new sns.Topic(this, 'open-question-topic', {
       topicName: 'open-question-topic',
       displayName: 'Open Question Topic',
-      fifo: true
+      fifo: true,
+      contentBasedDeduplication: true
     });
 
     openQuestionTopic.addSubscription(new subs.SqsSubscription(createOpenQuestionQueue));

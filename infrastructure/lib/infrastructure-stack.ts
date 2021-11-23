@@ -19,8 +19,7 @@ export class InfrastructureStack extends cdk.Stack {
     // });
 
     // URLs von API Gateway haben sich geaendert wenn `cdk destroy`
-  
-    const amplifyApp = new amplify.App(this, 'MyApp4', {
+    const amplifyApp = new amplify.App(this, 'MyApp5', {
       sourceCodeProvider: new amplify.GitHubSourceCodeProvider({
         owner: 'Lightbulb-Learning',
         repository: 'lightbulb-learning',
@@ -33,32 +32,24 @@ export class InfrastructureStack extends cdk.Stack {
           phases: {
             preBuild: {
               commands: [
-                'yarn'
+                'npm install'
               ]
             },
             build: {
               commands: [
-                'yarn build'
+                'npm run build'
               ]
             }
           },
           artifacts: {
-            baseDirectory: 'public',
+            baseDirectory: '/public',
             files:
             - '**/*'
           }
         },
-        // backend: {
-        //   phases: {
-        //     build: {
-        //       commands: ['amplifyPush --simple']
-        //     }
-        //   }
-        // }
       })
     });
 
-    // FIXME: add master to main
     const master = amplifyApp.addBranch('main');
 
     const commitOpenQuestionLambda = new lambda.Function(this, 'commitOpenQuestionLambda', {

@@ -84,6 +84,11 @@ export class InfrastructureStack extends cdk.Stack {
       resources: ["arn:aws:dynamodb:eu-central-1:532688539985:table/OpenQuestionDraft-bz5o7yvpwbdijnygi4gs2ns4ui-prod"],
       actions: ["dynamodb:GetItem"]
     }))
+    
+    commitOpenQuestionLambda.addToRolePolicy(new PolicyStatement({
+      resources: ["arn:aws:sns:eu-central-1:532688539985:open-question-topic.fifo"],
+      actions: ["SNS:Publish"]
+    }))
 
     const httpApi = new HttpApi(this, 'lightbulb-learning-api-gateway', {
       /* description: 'Learning API', */

@@ -28,3 +28,5 @@ const awsmobile = {
     "aws_appsync_authenticationType": "API_KEY",
     "aws_appsync_apiKey": "da2-ts3qc3ad7rcdrh536tcc22rfku"
 };
+
+export default awsmobile;

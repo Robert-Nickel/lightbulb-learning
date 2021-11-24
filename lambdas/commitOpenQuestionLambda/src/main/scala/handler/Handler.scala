@@ -53,12 +53,12 @@ class Handler {
   def publish(
       openQuestionCommittedEvent: OpenQuestionCommittedEvent
   ): PublishResponse = {
-    //val httpClient = ApacheHttpClient.builder().build();
+    val httpClient = ApacheHttpClient.builder().build();
 
-    //println("httpClient built")
+    println("httpClient built")
     val snsClient = SnsClient
       .builder()
-      //.httpClient(httpClient)
+      .httpClient(httpClient)
       .region(Region.EU_CENTRAL_1)
       .build()
     println("snsClient built")

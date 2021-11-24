@@ -9,6 +9,7 @@ import * as subs from '@aws-cdk/aws-sns-subscriptions';
 import * as cdk from '@aws-cdk/core';
 import * as amplify from '@aws-cdk/aws-amplify';
 import * as codebuild from '@aws-cdk/aws-codebuild';
+import * as lambdaEventSources from '@aws-cdk/aws-lambda-event-sources';
 
 export class InfrastructureStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
@@ -70,6 +71,10 @@ export class InfrastructureStack extends cdk.Stack {
     });
 
     const createOpenQuestionQueue = new sqs.Queue(this, 'create-open-question-queue', {fifo: true});
+    
+    createOpenQuestionLambda.addEventSource(
+      new lambdaEventSources.SqsEventSource(createOpenQuestionQueue)
+    );
 
     const openQuestionTopic = new sns.Topic(this, 'open-question-topic', {
       topicName: 'open-question-topic',

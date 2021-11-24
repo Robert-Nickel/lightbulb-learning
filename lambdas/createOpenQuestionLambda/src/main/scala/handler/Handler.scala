@@ -5,18 +5,17 @@ import com.amazonaws.services.lambda.runtime.events.{
   APIGatewayV2HTTPEvent,
   APIGatewayV2HTTPResponse
 }
-import software.amazon.awssdk.services.sns.SnsClient;
+
+import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.lambda.runtime.RequestHandler;
+import com.amazonaws.services.lambda.runtime.events.SQSEvent;
+import com.amazonaws.services.lambda.runtime.events.SQSEvent.SQSMessage;
 
 class Handler {
   def handle(
-      apiGatewayEvent: APIGatewayV2HTTPEvent,
+      sqsEvent: SQSEvent,
       context: Context
-  ): APIGatewayV2HTTPResponse = {
-    println(s"apiGatewayEvent = $apiGatewayEvent")
-    return APIGatewayV2HTTPResponse
-      .builder()
-      .withStatusCode(200)
-      .withBody(s"${apiGatewayEvent.getBody()}")
-      .build()
+  ): Unit = {
+    println(s"sqsEvent.getMessage = ${sqsEvent.getMessage}")
   }
 }

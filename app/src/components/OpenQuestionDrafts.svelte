@@ -1,6 +1,6 @@
 <script lang="ts">
     import { DataStore } from "@aws-amplify/datastore";
-    import { OpenQuestionDraft, ChallengePool } from "../models";
+    import { OpenQuestionDraft, ChallengePool, OpenQuestion } from "../models";
     import { toast } from "@zerodevx/svelte-toast";
 
     export let challengePool: ChallengePool;
@@ -61,7 +61,20 @@
         fetchOpenQuestionDrafts();
     }
 
-    function commitOpenQuestionDraft(openQuestionDraft: OpenQuestionDraft) {
+    async function commitOpenQuestionDraft(openQuestionDraft: OpenQuestionDraft) {
+        await DataStore.save(
+            new OpenQuestion({
+                questionText: openQuestionDraft.questionText,
+                challengePoolID: openQuestionDraft.challengePoolID,
+            })
+        );
+
+        publishOpenQuestionCommittedEvent(openQuestionDraft)
+
+        await DataStore.delete(openQuestionDraft);
+    }
+
+    async function publishOpenQuestionCommittedEvent(openQuestionDraft: OpenQuestionDraft) {
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 

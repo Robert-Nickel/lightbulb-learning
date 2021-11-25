@@ -16,6 +16,6 @@ class Handler {
       sqsEvent: SQSEvent,
       context: Context
   ): Unit = {
-    println(s"sqsEvent.getMessage = ${sqsEvent.getMessage}")
+    println(s"sqsEvent = ${sqsEvent}")
   }
 }

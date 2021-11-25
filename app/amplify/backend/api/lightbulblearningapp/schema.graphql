@@ -1,3 +1,10 @@
+type OpenQuestion @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  questionText: String
+  challengePoolID: ID
+  ChallengePool: ChallengePool @connection(fields: ["challengePoolID"])
+}
+
 type ChallengePool @model @auth(rules: [{allow: public}]) {
   id: ID!
   description: String

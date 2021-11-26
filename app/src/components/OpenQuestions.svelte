@@ -3,14 +3,14 @@
     import { ChallengePool, OpenQuestion } from "../models";
 
     export let challengePool: ChallengePool;
-
+    
     let openQuestions: Array<OpenQuestion> = [];
 
     fetchOpenQuestions();
 
-    async function fetchOpenQuestions() {
+    export async function fetchOpenQuestions() {
         openQuestions = await DataStore.query(OpenQuestion, (q) =>
-            q.challengePoolID("eq", challengePool.id)
+            q.challengepoolID("eq", challengePool.id)
         );
     }
 </script>

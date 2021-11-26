@@ -4,10 +4,9 @@
     import OpenQuestionDrafts from "./OpenQuestionDrafts.svelte";
     import Arrow from "./Arrow.svelte";
     import OpenQuestions from "./OpenQuestions.svelte";
-    import { DataStore } from "@aws-amplify/datastore";
-    import { ChallengePool } from "../models";
 
-    export let challengePool: ChallengePool;
+    export let challengePool;
+    let openQuestions;
 
     let open = false;
 
@@ -17,11 +16,10 @@
 
     function startChallengeClicked() {
         dispatch("startChallengeClicked");
-        // im just here to see if this change triggers a rebuild :)
     }
 
-    async function fetchChallengePool() {
-        challengePool = await DataStore.query(ChallengePool, challengePool.id);
+    function openQuestionCommitted() {
+        openQuestions.fetchOpenQuestions();
     }
 </script>
 
@@ -42,7 +40,7 @@
         {/if}
     </div>
     {#if open}
-        <OpenQuestionDrafts {challengePool} on:toast on:change={fetchChallengePool}/>
-        <OpenQuestions {challengePool} />
+        <OpenQuestionDrafts {challengePool} on:toast on:openQuestionCommitted={openQuestionCommitted}/>
+        <OpenQuestions bind:this={openQuestions} {challengePool} />
     {/if}
 </div>

@@ -5,15 +5,22 @@
     import { OpenQuestionDraft, ChallengePool, OpenQuestion } from "../models";
 
     export let challengePool: ChallengePool;
+    let openQuestionDrafts: Array<OpenQuestionDraft> = [];
 
-    async function createOpenQuestionDraftFunc(questionText) {
+    async function fetchOpenQuestionDrafts() {
+        openQuestionDrafts = await DataStore.query(OpenQuestionDraft, (q) =>
+            q.challengepoolID("eq", challengePool.id)
+        );
+    }
+
+    async function createOpenQuestionDraft(questionText) {
         await DataStore.save(
             new OpenQuestionDraft({
                 questionText,
-                challengePoolID: challengePool.id,
+                challengepoolID: challengePool.id,
             })
         );
-        dispatch("change")
+        fetchOpenQuestionDrafts();
     }
 
     async function updateOpenQuestionDraftWithAnswer(
@@ -25,12 +32,12 @@
                 updated.answerText = answerText;
             })
         );
-        dispatch("change")
+        fetchOpenQuestionDrafts();
     }
 
     async function deleteOpenQuestionDraftFunc(id) {
         await DataStore.delete(await DataStore.query(OpenQuestionDraft, id));
-        dispatch("change")
+        fetchOpenQuestionDrafts();
     }
 
     async function deleteMyAnswerFromOpenQuestionDraft(openQuestionDraft) {
@@ -39,25 +46,33 @@
                 updated.answerText = null;
             })
         );
-        dispatch("change")
+        fetchOpenQuestionDrafts();
     }
 
-    async function commitOpenQuestionDraft(openQuestionDraft: OpenQuestionDraft) {
+    async function commitOpenQuestion(
+        openQuestionDraft: OpenQuestionDraft
+    ) {
         await DataStore.save(
             new OpenQuestion({
                 questionText: openQuestionDraft.questionText,
-                challengePoolID: openQuestionDraft.challengePoolID,
+                challengepoolID: openQuestionDraft.challengepoolID,
             })
         );
-        publishOpenQuestionCommittedEvent(openQuestionDraft)
-        
-        dispatch("toast", {type: "success", text: "Open Question created!"})
+        dispatch("openQuestionCommitted");
 
-        await DataStore.delete(await DataStore.query(OpenQuestionDraft, openQuestionDraft.id));
-        dispatch("change")
+        publishOpenQuestionCommittedEvent(openQuestionDraft);
+
+        dispatch("toast", { type: "success", text: "Open Question created!" });
+        
+        await DataStore.delete(
+            await DataStore.query(OpenQuestionDraft, openQuestionDraft.id)
+        );
+        fetchOpenQuestionDrafts();
     }
 
-    async function publishOpenQuestionCommittedEvent(openQuestionDraft: OpenQuestionDraft) {
+    async function publishOpenQuestionCommittedEvent(
+        openQuestionDraft: OpenQuestionDraft
+    ) {
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
@@ -85,14 +100,14 @@
         placeholder="Create new Open Question"
         on:keydown={(e) => {
             if (e.key === "Enter") {
-                createOpenQuestionDraftFunc(e.target.value);
+                createOpenQuestionDraft(e.target.value);
             }
         }}
     />
 </div>
 
 <div>
-    {#each challengePool.OpenQuestionDrafts as openQuestionDraft}
+    {#each openQuestionDrafts as openQuestionDraft}
         <div class="flex justify-between space-y-0">
             <div>{openQuestionDraft.questionText}</div>
             <div>
@@ -135,7 +150,8 @@
             </div>{/if}
         <button
             disabled={!openQuestionDraft.answerText}
-            on:click={() => commitOpenQuestionDraft(openQuestionDraft)}>Commit</button
+            on:click={() => commitOpenQuestion(openQuestionDraft)}
+            >Commit</button
         >
     {/each}
 </div>

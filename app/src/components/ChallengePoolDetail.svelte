@@ -17,6 +17,7 @@
 
     function startChallengeClicked() {
         dispatch("startChallengeClicked");
+        // im just here to see if this change triggers a rebuild :)
     }
 
     async function fetchChallengePool() {

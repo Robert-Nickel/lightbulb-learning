@@ -1,10 +1,13 @@
 <script lang="ts">
     import { createEventDispatcher } from "svelte";
     const dispatch = createEventDispatcher();
-    import OpenQuestions from "./MyOpenQuestions.svelte";
+    import OpenQuestionDrafts from "./OpenQuestionDrafts.svelte";
     import Arrow from "./Arrow.svelte";
+    import OpenQuestions from "./OpenQuestions.svelte";
+    import { DataStore } from "@aws-amplify/datastore";
+    import { ChallengePool } from "../models";
 
-    export let challengePool;
+    export let challengePool: ChallengePool;
 
     let open = false;
 
@@ -14,6 +17,10 @@
 
     function startChallengeClicked() {
         dispatch("startChallengeClicked");
+    }
+
+    async function fetchChallengePool() {
+        challengePool = await DataStore.query(ChallengePool, challengePool.id);
     }
 </script>
 
@@ -34,6 +41,7 @@
         {/if}
     </div>
     {#if open}
+        <OpenQuestionDrafts {challengePool} on:toast on:change={fetchChallengePool}/>
         <OpenQuestions {challengePool} />
     {/if}
 </div>

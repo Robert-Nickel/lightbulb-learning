@@ -46,6 +46,7 @@
                 on:startChallengeClicked={() => {
                     activeChallenge = challengePool;
                 }}
+                on:toast
             />
         {/each}
         <div class="space-y-4">

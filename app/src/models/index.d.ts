@@ -19,8 +19,7 @@ type OpenQuestionDraftMetaData = {
 export declare class OpenQuestion {
   readonly id: string;
   readonly questionText?: string;
-  readonly challengePoolID?: string;
-  readonly ChallengePool?: ChallengePool;
+  readonly challengepoolID?: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<OpenQuestion, OpenQuestionMetaData>);
@@ -30,6 +29,8 @@ export declare class OpenQuestion {
 export declare class ChallengePool {
   readonly id: string;
   readonly description?: string;
+  readonly OpenQuestions?: (OpenQuestion | null)[];
+  readonly OpenQuestionDrafts?: (OpenQuestionDraft | null)[];
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<ChallengePool, ChallengePoolMetaData>);
@@ -40,8 +41,7 @@ export declare class OpenQuestionDraft {
   readonly id: string;
   readonly questionText?: string;
   readonly answerText?: string;
-  readonly challengePoolID?: string;
-  readonly ChallengePool?: ChallengePool;
+  readonly challengepoolID?: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<OpenQuestionDraft, OpenQuestionDraftMetaData>);

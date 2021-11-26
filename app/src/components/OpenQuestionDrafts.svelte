@@ -1,13 +1,10 @@
 <script lang="ts">
+    import { createEventDispatcher } from "svelte";
+    const dispatch = createEventDispatcher();
     import { DataStore } from "@aws-amplify/datastore";
     import { OpenQuestionDraft, ChallengePool, OpenQuestion } from "../models";
-    import { toast } from "@zerodevx/svelte-toast";
 
     export let challengePool: ChallengePool;
-
-    let openQuestionDrafts: Array<OpenQuestionDraft> = [];
-
-    fetchOpenQuestionDrafts();
 
     async function createOpenQuestionDraftFunc(questionText) {
         await DataStore.save(
@@ -16,15 +13,7 @@
                 challengePoolID: challengePool.id,
             })
         );
-
-        fetchOpenQuestionDrafts();
-
-        toast.push("Open Question created!", {
-            theme: {
-                "--toastBackground": "#48BB78",
-                "--toastBarBackground": "#2F855A",
-            },
-        });
+        dispatch("change")
     }
 
     async function updateOpenQuestionDraftWithAnswer(
@@ -36,19 +25,12 @@
                 updated.answerText = answerText;
             })
         );
-
-        fetchOpenQuestionDrafts();
-    }
-
-    async function fetchOpenQuestionDrafts() {
-        openQuestionDrafts = await DataStore.query(OpenQuestionDraft, (q) =>
-            q.challengePoolID("eq", challengePool.id)
-        );
+        dispatch("change")
     }
 
     async function deleteOpenQuestionDraftFunc(id) {
         await DataStore.delete(await DataStore.query(OpenQuestionDraft, id));
-        fetchOpenQuestionDrafts();
+        dispatch("change")
     }
 
     async function deleteMyAnswerFromOpenQuestionDraft(openQuestionDraft) {
@@ -57,8 +39,7 @@
                 updated.answerText = null;
             })
         );
-
-        fetchOpenQuestionDrafts();
+        dispatch("change")
     }
 
     async function commitOpenQuestionDraft(openQuestionDraft: OpenQuestionDraft) {
@@ -68,10 +49,12 @@
                 challengePoolID: openQuestionDraft.challengePoolID,
             })
         );
-
         publishOpenQuestionCommittedEvent(openQuestionDraft)
+        
+        dispatch("toast", {type: "success", text: "Open Question created!"})
 
-        await DataStore.delete(openQuestionDraft);
+        await DataStore.delete(await DataStore.query(OpenQuestionDraft, openQuestionDraft.id));
+        dispatch("change")
     }
 
     async function publishOpenQuestionCommittedEvent(openQuestionDraft: OpenQuestionDraft) {
@@ -109,7 +92,7 @@
 </div>
 
 <div>
-    {#each openQuestionDrafts as openQuestionDraft}
+    {#each challengePool.OpenQuestionDrafts as openQuestionDraft}
         <div class="flex justify-between space-y-0">
             <div>{openQuestionDraft.questionText}</div>
             <div>

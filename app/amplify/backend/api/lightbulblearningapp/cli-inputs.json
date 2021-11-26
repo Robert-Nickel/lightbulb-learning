@@ -22,6 +22,6 @@
       }
     },
     "apiName": "lightbulblearningapp",
-    "gqlSchemaPath": "/tmp/amplify-f0d3ed05-ff3b-4345-b1cf-8bc60d67281e/amplify/backend/api/lightbulblearningapp/schema.graphql"
+    "gqlSchemaPath": "/tmp/amplify-3afd7375-068e-4140-ad8e-4fad47160992/amplify/backend/api/lightbulblearningapp/schema.graphql"
   }
 }

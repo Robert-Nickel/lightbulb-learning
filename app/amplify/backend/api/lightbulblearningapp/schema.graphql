@@ -1,20 +1,20 @@
-type OpenQuestion @model @auth(rules: [{allow: public}]) {
+type OpenQuestion @model @auth(rules: [{allow: public}, {allow: owner, operations: [create, update, delete]}]) @key(name: "byChallengePool", fields: ["challengepoolID"]) {
   id: ID!
   questionText: String
-  challengePoolID: ID
-  ChallengePool: ChallengePool @connection(fields: ["challengePoolID"])
+  challengepoolID: ID
 }
 
-type ChallengePool @model @auth(rules: [{allow: public}]) {
+type ChallengePool @model @auth(rules: [{allow: public}, {allow: owner, operations: [create, update, delete]}]) {
   id: ID!
   description: String
+  OpenQuestions: [OpenQuestion] @connection(keyName: "byChallengePool", fields: ["id"])
+  OpenQuestionDrafts: [OpenQuestionDraft] @connection(keyName: "byChallengePool", fields: ["id"])
 }
 
-type OpenQuestionDraft @model @auth(rules: [{allow: public}]) {
+type OpenQuestionDraft @model @auth(rules: [{allow: public}, {allow: owner}]) @key(name: "byChallengePool", fields: ["challengepoolID"]) {
   id: ID!
   questionText: String
   answerText: String
-  challengePoolID: ID
-  ChallengePool: ChallengePool @connection(fields: ["challengePoolID"])
+  challengepoolID: ID
 }
  

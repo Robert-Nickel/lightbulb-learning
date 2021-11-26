@@ -6,7 +6,7 @@
 	import TailwindCss from "./TailwindCss.svelte";
 	import Navbar from "./components/Navbar.svelte";
 	import Sidebar from "./components/Sidebar.svelte";
-	import { SvelteToast } from "@zerodevx/svelte-toast";
+	import { SvelteToast, toast } from "@zerodevx/svelte-toast";
 	import NewsletterSignUp from "./components/NewsletterSignUp.svelte";
 	import WhatWeDo from "./components/WhatWeDo.svelte";
 
@@ -21,6 +21,16 @@
 		$store = null;
 		DataStore.clear();
 	}
+
+	function showToast(toastEvent) {
+		let theme = {
+			"--toastBackground": "#48BB78",
+			"--toastBarBackground": "#2F855A",
+		};
+		toast.push(toastEvent.detail.text, {
+			theme,
+		});
+	}
 </script>
 
 <TailwindCss />
@@ -29,7 +39,7 @@
 
 {#if $store != null}
 	<main class="container mx-auto py-4 px-2 max-w-screen-sm">
-		<ChallengePools />
+		<ChallengePools on:toast={showToast} />
 	</main>
 {:else if showLogin}
 	<main class="container mx-auto py-4 px-2 max-w-screen-sm">

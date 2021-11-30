@@ -9,6 +9,7 @@ getUserStats(userid) -> {
     createdAnswers: 20
 }
 */
+console.log("loaded assessment-service.js");
 
 const express = require('express')
 const app = express()
@@ -16,7 +17,13 @@ const port = 3000
 
 // Load the AWS SDK for Node.js
 const AWS = require('aws-sdk');
-AWS.config.update({region: 'eu-central-1'});
+
+AWS.config.update({
+  region: 'eu-central-1',
+  accessKeyId: 'AKIAXYBVWCFIUN46AGXM',
+  secretAccessKey: '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',
+});
+
 const QUEUE_URL = "https://sqs.eu-central-1.amazonaws.com/532688539985/Microservice-Assessment.fifo";
 var sqs = new AWS.SQS({apiVersion: '2012-11-05'});
 
@@ -47,11 +54,18 @@ var params = {
      console.log(data.Messages);
 
      // get type of message (is it a question? is it an reviewed answer?)
+     createdQuestionMessages = data.Messages.filter( m => {
+       let parsedBody = JSON.parse(m.Body)
+       if(!parsedBody.TYPE) {
+         console.log(`Ignoring: ${m.MessageId} cause it has not the expected TYPE`);
+         return false;
+       } else {
+         return parsedBody.TYPE.Value === 'CREATED_QUESTION'
+       }
+     });
 
-     // get user info from DB
-
+     // -> get user info from DB
      // calculate new user info
-
      // store new user info in db
 
      var deleteParams = {

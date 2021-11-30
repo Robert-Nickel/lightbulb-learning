@@ -1,7 +1,6 @@
 #!/bin/sh
 # deploy the frontend
 cd ../app
-amplify publish
 # build the lambdas
 cd ../lambdas/commitOpenQuestionLambda
 sbt assembly
@@ -12,4 +11,4 @@ cd ../../infrastructure
 npm install
 cdk synth
 cdk deploy
-echo "--- Deployment successful ---"
+echo "--- Deployment finished ---"

@@ -9,9 +9,9 @@ given jsonToOpenQuestionDraft: JsonInput[OpenQuestionDraft] with
     json("id"),
     json("questionText"),
     json("answerText"),
-    json("challengePoolID"))
+    json("challengepoolID"))
 
-case class OpenQuestionDraft(id: String, questionText: String, answerText: String, challengePoolID: String) {
+case class OpenQuestionDraft(id: String, questionText: String, answerText: String, challengepoolID: String) {
   def toOpenQuestionCommittedEvent() = 
-    OpenQuestionCommittedEvent(id, questionText, answerText, challengePoolID)
+    OpenQuestionCommittedEvent(id, questionText, answerText, challengepoolID)
 }

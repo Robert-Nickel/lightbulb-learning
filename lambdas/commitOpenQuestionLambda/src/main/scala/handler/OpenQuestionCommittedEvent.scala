@@ -9,6 +9,6 @@ given openQuestionCommittedEventToJson: JsonOutput[OpenQuestionCommittedEvent] w
     "id" -> o.id,
     "questionText" -> o.questionText,
     "answerText" -> o.answerText,
-    "challengePoolID" -> o.challengePoolID)
+    "challengepoolID" -> o.challengepoolID)
 
-case class OpenQuestionCommittedEvent(id: String, questionText: String, answerText: String, challengePoolID: String, version: Int = 1)
+case class OpenQuestionCommittedEvent(id: String, questionText: String, answerText: String, challengepoolID: String, version: Int = 1)

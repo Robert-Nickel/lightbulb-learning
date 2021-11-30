@@ -9,10 +9,11 @@ import com.amazonaws.services.lambda.runtime.events.{
 import software.amazon.awssdk.http.apache.ApacheHttpClient;
 import scala.language.implicitConversions
 import software.amazon.awssdk.services.sns.SnsClient;
-import software.amazon.awssdk.services.sns.model.PublishRequest;
-import software.amazon.awssdk.services.sns.model.PublishResponse;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.http.SdkHttpClient;
+
+import software.amazon.awssdk.services.sns.model.{MessageAttributeValue, PublishRequest, PublishResponse}
+import scala.jdk.CollectionConverters.MapHasAsJava
 
 import little.json.*
 import little.json.Implicits.{*, given}
@@ -63,10 +64,16 @@ class Handler {
       .build()
     println("snsClient built")
 
+    val MessageAttributes =
+      Map(
+        "TYPE" -> MessageAttributeValue.builder().stringValue("CREATED_QUESTION").dataType("String").build()
+    )
+
     val request: PublishRequest = PublishRequest
       .builder()
       .message(s"${Json.toJson(openQuestionCommittedEvent)}")
       .messageGroupId(openQuestionCommittedEvent.id)
+      .messageAttributes(MessageAttributes.asJava)
       .topicArn(
         "arn:aws:sns:eu-central-1:532688539985:open-question-topic.fifo"
       )

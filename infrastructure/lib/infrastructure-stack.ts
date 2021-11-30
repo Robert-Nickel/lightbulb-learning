@@ -7,53 +7,11 @@ import * as sns from '@aws-cdk/aws-sns';
 import * as sqs from '@aws-cdk/aws-sqs';
 import * as subs from '@aws-cdk/aws-sns-subscriptions';
 import * as cdk from '@aws-cdk/core';
-import * as amplify from '@aws-cdk/aws-amplify';
-import * as codebuild from '@aws-cdk/aws-codebuild';
 import * as lambdaEventSources from '@aws-cdk/aws-lambda-event-sources';
 
 export class InfrastructureStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
-
-    // const topic = new sns.Topic(this, 'sns-topic', {
-    //   displayName: 'My SNS topic',
-    // });
-
-    // URLs von API Gateway haben sich geaendert wenn `cdk destroy`
-    const amplifyApp = new amplify.App(this, 'MyApp6', {
-      sourceCodeProvider: new amplify.GitHubSourceCodeProvider({
-        owner: 'Lightbulb-Learning',
-        repository: 'lightbulb-learning',
-        oauthToken: cdk.SecretValue.secretsManager('github-oauth-token')
-      }),
-      buildSpec: codebuild.BuildSpec.fromObjectToYaml({ // Alternatively add a `amplify.yml` to the repo
-        version: '1.0',
-        appRoot: "app",
-        frontend: {
-          phases: {
-            preBuild: {
-              commands: [
-                // 'nvm install 17',
-                'npm install'
-              ]
-            },
-            build: {
-              commands: [
-                'npm run build'
-              ]
-            }
-          },
-          artifacts: {
-            baseDirectory: '/public',
-            files:
-            - '**/*'
-          }
-        },
-      })
-    });
-
-    const master = amplifyApp.addBranch('main');
-    amplifyApp.addCustomRule(amplify.CustomRule.SINGLE_PAGE_APPLICATION_REDIRECT);
 
     const commitOpenQuestionLambda = new lambda.Function(this, 'commitOpenQuestionLambda', {
       runtime: lambda.Runtime.JAVA_11,

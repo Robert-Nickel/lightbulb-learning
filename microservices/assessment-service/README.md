@@ -23,7 +23,7 @@ eksctl create cluster \
 
 ## Kubectl Commnads
 - `kubectl get pods` list active pods
-- `kubectl get svc` 
+- `kubectl get svc` list active services
 - `kubectl apply -f deployment.yaml`  - create pod based on deployment.yaml file
 - `kubectl delete pod ...` - deletes a pod
 - `kubectl logs ...` - show log information for a pod

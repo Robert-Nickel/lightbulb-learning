@@ -29,6 +29,7 @@ spec:
               name: aws-secret
               key: aws_secret_key
 ---
+# note this service is automatically created from cloud provider if we specify LoadBalancer!! 
 apiVersion: v1
 kind: Service
 metadata:
@@ -39,10 +40,11 @@ spec:
     app:  assessment-service
   ports:
     - protocol: TCP
-      port: 3000
-      targetPort: 3000
-      nodePort: 30100
+      port: 3000 # routes to port 3000 (SERVICE) from `nodePort`
+      targetPort: 3000 # routes to port 3000 (POD) from `port` 
+      nodePort: 30100 # reachable from extern with nodeIP and this port
 ---
+# note this service is automatically created from cloud provider if we specify LoadBalancer!! 
 apiVersion: v1
 kind: Service
 metadata:

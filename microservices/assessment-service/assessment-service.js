@@ -3,20 +3,13 @@
 // For every entry for every user count += 1
 
 // Bei jeder Anfrage erhalten wir Tenant + UserID
-/*
-getUserStats(userid) -> {
-    createdQuestions: 10,
-    createdAnswers: 20
-}
-*/
-
 const express = require('express')
 const app = express()
 const port = 3000
-
-// Load the AWS SDK for Node.js
-const AWS = require('aws-sdk');
-AWS.config.update({region: 'eu-central-1'});
+const AWS = require('aws-sdk'); // Load the AWS SDK for Node.js
+AWS.config.update({
+  region: 'eu-central-1'
+});
 const QUEUE_URL = "https://sqs.eu-central-1.amazonaws.com/532688539985/Microservice-Assessment.fifo";
 var sqs = new AWS.SQS({apiVersion: '2012-11-05'});
 

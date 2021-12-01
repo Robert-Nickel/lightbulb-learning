@@ -13,6 +13,8 @@ AWS.config.update({
 const QUEUE_URL = "https://sqs.eu-central-1.amazonaws.com/532688539985/Microservice-Assessment.fifo";
 var sqs = new AWS.SQS({apiVersion: '2012-11-05'});
 
+console.log("assessment-service started");
+
 app.get('/get-userinfo', (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   res.end(JSON.stringify({ createdQuestions: 10, createdAnswers: 20 }));
@@ -40,11 +42,8 @@ var params = {
      console.log(data.Messages);
 
      // get type of message (is it a question? is it an reviewed answer?)
-
      // get user info from DB
-
      // calculate new user info
-
      // store new user info in db
 
      var deleteParams = {

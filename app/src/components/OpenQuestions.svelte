@@ -16,6 +16,7 @@
 </script>
 
 <div>
+    All Questions:
     {#each openQuestions as openQuestion}
         <div class="flex justify-between space-y-0">
             <div>{openQuestion.questionText}</div>

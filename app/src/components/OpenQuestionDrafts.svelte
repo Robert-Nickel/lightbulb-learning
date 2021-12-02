@@ -107,6 +107,7 @@
 </div>
 
 <div>
+    Drafts:
     {#each openQuestionDrafts as openQuestionDraft}
         <div class="flex justify-between space-y-0">
             <div>{openQuestionDraft.questionText}</div>

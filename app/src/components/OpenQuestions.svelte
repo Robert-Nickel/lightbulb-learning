@@ -1,9 +1,10 @@
 <script lang="ts">
     import { DataStore } from "@aws-amplify/datastore";
-    import { ChallengePool, OpenQuestion } from "../models";
+    import { ChallengePool, OpenQuestion, OpenAnswer } from "../models";
+    import MyOpenAnswer from "./MyOpenAnswer.svelte";
 
     export let challengePool: ChallengePool;
-    
+
     let openQuestions: Array<OpenQuestion> = [];
 
     fetchOpenQuestions();
@@ -16,10 +17,12 @@
 </script>
 
 <div>
-    All Questions:
+    {#if openQuestions.length > 0}All Questions:{/if}
     {#each openQuestions as openQuestion}
-        <div class="flex justify-between space-y-0">
+        <div>
             <div>{openQuestion.questionText}</div>
+           
+            <MyOpenAnswer bind:openQuestion />
         </div>
     {/each}
 </div>

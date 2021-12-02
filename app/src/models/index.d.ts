@@ -1,5 +1,13 @@
 import { ModelInit, MutableModel, PersistentModelConstructor } from "@aws-amplify/datastore";
 
+
+
+
+
+type OpenAnswerMetaData = {
+  readOnlyFields: 'createdAt' | 'updatedAt';
+}
+
 type OpenQuestionMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
@@ -12,10 +20,21 @@ type OpenQuestionDraftMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
+export declare class OpenAnswer {
+  readonly id: string;
+  readonly answerText?: string;
+  readonly openquestionID?: string;
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
+  constructor(init: ModelInit<OpenAnswer, OpenAnswerMetaData>);
+  static copyOf(source: OpenAnswer, mutator: (draft: MutableModel<OpenAnswer, OpenAnswerMetaData>) => MutableModel<OpenAnswer, OpenAnswerMetaData> | void): OpenAnswer;
+}
+
 export declare class OpenQuestion {
   readonly id: string;
   readonly questionText?: string;
   readonly challengepoolID?: string;
+  readonly OpenAnswers?: (OpenAnswer | null)[];
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<OpenQuestion, OpenQuestionMetaData>);

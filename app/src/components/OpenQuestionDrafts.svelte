@@ -49,9 +49,7 @@
         fetchOpenQuestionDrafts();
     }
 
-    async function commitOpenQuestion(
-        openQuestionDraft: OpenQuestionDraft
-    ) {
+    async function commitOpenQuestion(openQuestionDraft: OpenQuestionDraft) {
         await DataStore.save(
             new OpenQuestion({
                 questionText: openQuestionDraft.questionText,
@@ -63,7 +61,7 @@
         publishOpenQuestionCommittedEvent(openQuestionDraft);
 
         dispatch("toast", { type: "success", text: "Open Question created!" });
-        
+
         await DataStore.delete(
             await DataStore.query(OpenQuestionDraft, openQuestionDraft.id)
         );
@@ -107,7 +105,9 @@
 </div>
 
 <div>
-    Drafts:
+    {#if openQuestionDrafts.length > 0}
+        Drafts:
+    {/if}
     {#each openQuestionDrafts as openQuestionDraft}
         <div class="flex justify-between space-y-0">
             <div>{openQuestionDraft.questionText}</div>

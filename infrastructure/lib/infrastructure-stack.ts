@@ -21,6 +21,14 @@ export class InfrastructureStack extends cdk.Stack {
       code: lambda.Code.fromAsset(path.join(__dirname, '../../lambdas/commitOpenQuestionLambda/target/scala-3.0.1/lambda-scala-seed.jar')),
     });
 
+    const commitOpenAnswerLambda = new lambda.Function(this, 'commitOpenAnswerLambda', {
+      runtime: lambda.Runtime.JAVA_11,
+      timeout: cdk.Duration.seconds(30),
+      memorySize: 256,
+      handler: 'handler.Handler::handle',
+      code: lambda.Code.fromAsset(path.join(__dirname, '../../lambdas/commitOpenAnswerLambda/target/scala-3.0.1/lambda-scala-seed.jar')),
+    });
+
     const createOpenQuestionLambda = new lambda.Function(this, 'createOpenQuestionLambda', {
       runtime: lambda.Runtime.JAVA_11,
       timeout: cdk.Duration.seconds(30),
@@ -42,17 +50,30 @@ export class InfrastructureStack extends cdk.Stack {
       contentBasedDeduplication: true
     });
 
+    const openAnswerTopic = new sns.Topic(this, 'open-answer-topic', {
+      topicName: 'open-answer-topic',
+      displayName: 'Open Answer Topic',
+      fifo: true,
+      contentBasedDeduplication: true
+    });
+
     openQuestionTopic.addSubscription(new subs.SqsSubscription(createOpenQuestionQueue));
 
-    commitOpenQuestionLambda.addToRolePolicy(new PolicyStatement({
+    const dynamoGetItemPolicy = new PolicyStatement({
       resources: ["arn:aws:dynamodb:eu-central-1:532688539985:table/OpenQuestionDraft-bz5o7yvpwbdijnygi4gs2ns4ui-prod"],
       actions: ["dynamodb:GetItem"]
-    }))
+    })
+
+    commitOpenQuestionLambda.addToRolePolicy(dynamoGetItemPolicy)
+    commitOpenAnswerLambda.addToRolePolicy(dynamoGetItemPolicy)
     
-    commitOpenQuestionLambda.addToRolePolicy(new PolicyStatement({
+    const snsPublishPolicy = new PolicyStatement({
       resources: ["arn:aws:sns:eu-central-1:532688539985:open-question-topic.fifo"],
       actions: ["SNS:Publish"]
-    }))
+    })
+
+    commitOpenQuestionLambda.addToRolePolicy(snsPublishPolicy)
+    commitOpenAnswerLambda.addToRolePolicy(snsPublishPolicy)
 
     const httpApi = new HttpApi(this, 'lightbulb-learning-api-gateway', {
       /* description: 'Learning API', */
@@ -78,14 +99,25 @@ export class InfrastructureStack extends cdk.Stack {
       }),
     });
 
+    httpApi.addRoutes({
+      path: '/commitOpenAnswer',
+      methods: [HttpMethod.POST, HttpMethod.OPTIONS],
+      integration: new LambdaProxyIntegration({
+        handler: commitOpenAnswerLambda,
+      }),
+    });
 
-    new cdk.CfnOutput(this, 'URL', {
+    new cdk.CfnOutput(this, 'API Gateway URL', {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       value: httpApi.url + "commitOpenQuestion",
     });
     new cdk.CfnOutput(this, 'openQuestionTopicArn', {
       value: openQuestionTopic.topicArn,
       description: 'The arn of the open-question SNS topic',
+    });
+    new cdk.CfnOutput(this, 'openAnswerTopicArn', {
+      value: openAnswerTopic.topicArn,
+      description: 'The arn of the open-answer SNS topic',
     });
   }
 }

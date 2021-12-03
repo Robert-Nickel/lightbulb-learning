@@ -4,6 +4,7 @@
     import { DataStore } from "@aws-amplify/datastore";
     import { OpenQuestionDraft, ChallengePool, OpenQuestion } from "../models";
 
+    export let baseUrl;
     export let challengePool: ChallengePool;
     let openQuestionDrafts: Array<OpenQuestionDraft> = [];
 
@@ -83,7 +84,7 @@
         };
 
         fetch(
-            "https://yybkc7efv3.execute-api.eu-central-1.amazonaws.com/commitOpenQuestion",
+            `${baseUrl}/commitOpenQuestion`,
             requestOptions
         )
             .then((response) => response.text())

@@ -4,6 +4,7 @@
     import ChallengePoolDetail from "./ChallengePoolDetail.svelte";
     import { Hub } from "aws-amplify";
 
+    export let baseUrl;
     let challengePools: Array<ChallengePool> = [];
     let activeChallenge: ChallengePool;
 
@@ -47,6 +48,7 @@
                     activeChallenge = challengePool;
                 }}
                 on:toast
+                baseUrl
             />
         {/each}
         <div class="space-y-4">

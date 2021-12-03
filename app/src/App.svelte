@@ -12,6 +12,7 @@
 
 	let sidebarOpen = false;
 	let showLogin = false;
+	const baseUrl = "https://yybkc7efv3.execute-api.eu-central-1.amazonaws.com"
 
 	function login() {
 		showLogin = true;
@@ -39,7 +40,7 @@
 
 {#if $store != null}
 	<main class="container mx-auto py-4 px-2 max-w-screen-sm">
-		<ChallengePools on:toast={showToast} />
+		<ChallengePools on:toast={showToast} baseUrl />
 	</main>
 {:else if showLogin}
 	<main class="container mx-auto py-4 px-2 max-w-screen-sm">

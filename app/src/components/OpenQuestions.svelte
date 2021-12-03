@@ -3,6 +3,7 @@
     import { ChallengePool, OpenQuestion, OpenAnswer } from "../models";
     import MyOpenAnswer from "./MyOpenAnswer.svelte";
 
+    export let baseUrl;
     export let challengePool: ChallengePool;
 
     let openQuestions: Array<OpenQuestion> = [];
@@ -22,7 +23,7 @@
         <div>
             <div>{openQuestion.questionText}</div>
            
-            <MyOpenAnswer bind:openQuestion />
+            <MyOpenAnswer bind:openQuestion baseUrl/>
         </div>
     {/each}
 </div>

@@ -6,6 +6,8 @@
     import OpenQuestions from "./OpenQuestions.svelte";
 
     export let challengePool;
+    export let baseUrl;
+
     let openQuestions;
 
     let open = false;
@@ -40,7 +42,7 @@
         {/if}
     </div>
     {#if open}
-        <OpenQuestionDrafts {challengePool} on:toast on:openQuestionCommitted={openQuestionCommitted}/>
+        <OpenQuestionDrafts {challengePool} on:toast on:openQuestionCommitted={openQuestionCommitted} baseUrl/>
         <OpenQuestions bind:this={openQuestions} {challengePool} />
     {/if}
 </div>

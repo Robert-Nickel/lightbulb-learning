@@ -6,6 +6,8 @@ cd ../lambdas/commitOpenQuestionLambda
 sbt assembly
 cd ../createOpenQuestionLambda
 sbt assembly
+cd ../commitOpenAnswerLambda
+sbt assembly
 # deploy the whole infrastructure 
 cd ../../infrastructure
 npm install

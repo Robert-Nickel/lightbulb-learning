@@ -10,6 +10,7 @@
     let openAnswer: OpenAnswer;
 
     fetchMyOpenAnswerDraft(openQuestion);
+    fetchMyOpenAnswer(openQuestion);
 
     async function fetchMyOpenAnswerDraft(openQuestion) {
         let openAnswerDrafts = await DataStore.query(OpenAnswerDraft, (a) =>

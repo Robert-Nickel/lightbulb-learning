@@ -148,11 +148,12 @@
                             )}>Delete</button
                     >
                 </div>
-            </div>{/if}
-        <button
-            disabled={!openQuestionDraft.answerText}
-            on:click={() => commitOpenQuestion(openQuestionDraft)}
-            >Commit</button
-        >
+            </div>
+        {/if}
+            <button
+                disabled={!openQuestionDraft.answerText}
+                on:click={() => commitOpenQuestion(openQuestionDraft)}
+                >Commit</button
+            >
     {/each}
 </div>

@@ -1,42 +1,86 @@
 <script lang="ts">
+    import { createEventDispatcher } from "svelte";
+    const dispatch = createEventDispatcher();
     import { DataStore } from "@aws-amplify/datastore";
-    import { OpenAnswer, OpenQuestion } from "../models";
+    import { OpenAnswerDraft, OpenQuestion, OpenAnswer } from "../models";
 
-    export let openQuestion;
+    export let openQuestion: OpenQuestion;
+    let openAnswerDraft: OpenAnswerDraft;
     let openAnswer: OpenAnswer;
 
-    fetchMyOpenAnswers();
+    fetchMyOpenAnswerDraft(openQuestion);
 
-    async function fetchMyOpenAnswers() {
+    async function fetchMyOpenAnswerDraft(openQuestion) {
+        let openAnswerDrafts = await DataStore.query(OpenAnswerDraft, (a) =>
+            a.openquestionID("eq", openQuestion.id)
+        );
+        openAnswerDraft = openAnswerDrafts[0];
+    }
+
+    async function fetchMyOpenAnswer(openQuestion) {
         let openAnswers = await DataStore.query(OpenAnswer, (a) =>
             a.openquestionID("eq", openQuestion.id)
         );
-        openAnswer = openAnswers[0]
+        openAnswer = openAnswers[0];
     }
 
-    async function answerOpenQuestion(openQuestion: OpenQuestion, answerText) {
+    async function saveOpenAnswerDraft(openQuestion: OpenQuestion, answerText) {
         await DataStore.save(
-            new OpenAnswer({
+            new OpenAnswerDraft({
                 answerText,
                 openquestionID: openQuestion.id,
             })
         );
-        fetchMyOpenAnswers();
+        fetchMyOpenAnswerDraft(openQuestion);
+    }
+
+    async function commitOpenAnswer(openAnswerDraft: OpenAnswerDraft) {
+        console.log("committing...");
+        console.log(openAnswerDraft);
+
+        await DataStore.delete(
+            await DataStore.query(OpenAnswerDraft, openAnswerDraft.id)
+        );
+        fetchMyOpenAnswerDraft(openQuestion);
+
+        let myOpenAnswer: OpenAnswer = new OpenAnswer({
+            answerText: openAnswerDraft.answerText,
+            openquestionID: openAnswerDraft.openquestionID,
+        });
+        await DataStore.save(myOpenAnswer);
+        openAnswer = myOpenAnswer;
+
+        // TODO: publishOpenQuestionCommittedEvent(openQuestionDraft);
+
+        dispatch("toast", { type: "success", text: "Open Answer created!" });
+
+        fetchMyOpenAnswer(openQuestion);
     }
 </script>
 
 <div>
     {#if openAnswer}
-        {openAnswer.answerText}
+        Your answer: {openAnswer.answerText}
     {:else}
-        <input
-            class="w-full"
-            placeholder="Answer this question"
-            on:keydown={(e) => {
-                if (e.key === "Enter") {
-                    answerOpenQuestion(openQuestion, e.target.value);
-                }
-            }}
-        />
+        {#if openAnswerDraft}
+            {openAnswerDraft.answerText}
+        {:else}
+            <input
+                class="w-full"
+                placeholder="Answer this question"
+                on:keydown={(e) => {
+                    if (e.key === "Enter") {
+                        saveOpenAnswerDraft(openQuestion, e.target.value);
+                    }
+                }}
+            />
+        {/if}
+        <div>
+            <button
+                disabled={!openAnswerDraft}
+                on:click={() => commitOpenAnswer(openAnswerDraft)}
+                >Commit</button
+            >
+        </div>
     {/if}
 </div>

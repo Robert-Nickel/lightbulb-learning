@@ -1,5 +1,80 @@
 export const schema = {
     "models": {
+        "OpenAnswerDraft": {
+            "name": "OpenAnswerDraft",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "answerText": {
+                    "name": "answerText",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "openquestionID": {
+                    "name": "openquestionID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "OpenAnswerDrafts",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byOpenQuestion",
+                        "fields": [
+                            "openquestionID"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
         "OpenAnswer": {
             "name": "OpenAnswer",
             "fields": {
@@ -104,6 +179,20 @@ export const schema = {
                     "isArray": true,
                     "type": {
                         "model": "OpenAnswer"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": "openquestionID"
+                    }
+                },
+                "OpenAnswerDrafts": {
+                    "name": "OpenAnswerDrafts",
+                    "isArray": true,
+                    "type": {
+                        "model": "OpenAnswerDraft"
                     },
                     "isRequired": false,
                     "attributes": [],
@@ -370,5 +459,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "2bfd5585d8612c90380ffa8402b84bb1"
+    "version": "307241ea9d3d4170237db7e9f799e361"
 };

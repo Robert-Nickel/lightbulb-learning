@@ -9,17 +9,17 @@
     let openAnswerDraft: OpenAnswerDraft;
     let openAnswer: OpenAnswer;
 
-    fetchMyOpenAnswerDraft(openQuestion);
-    fetchMyOpenAnswer(openQuestion);
+    fetchOpenAnswerDraft(openQuestion);
+    fetchOpenAnswer(openQuestion);
 
-    async function fetchMyOpenAnswerDraft(openQuestion) {
+    async function fetchOpenAnswerDraft(openQuestion) {
         let openAnswerDrafts = await DataStore.query(OpenAnswerDraft, (a) =>
             a.openquestionID("eq", openQuestion.id)
         );
         openAnswerDraft = openAnswerDrafts[0];
     }
 
-    async function fetchMyOpenAnswer(openQuestion) {
+    async function fetchOpenAnswer(openQuestion) {
         let openAnswers = await DataStore.query(OpenAnswer, (a) =>
             a.openquestionID("eq", openQuestion.id)
         );
@@ -33,7 +33,7 @@
                 openquestionID: openQuestion.id,
             })
         );
-        fetchMyOpenAnswerDraft(openQuestion);
+        fetchOpenAnswerDraft(openQuestion);
     }
 
     async function commitOpenAnswer(
@@ -53,14 +53,14 @@
 
         dispatch("toast", { type: "success", text: "Open Answer created!" });
 
-        fetchMyOpenAnswer(openQuestion);
+        fetchOpenAnswer(openQuestion);
     }
 
     async function deleteMyAnswerDraft(openAnswerDraft: OpenAnswerDraft) {
         await DataStore.delete(
             await DataStore.query(OpenAnswerDraft, openAnswerDraft.id)
         );
-        fetchMyOpenAnswerDraft(openQuestion);
+        fetchOpenAnswerDraft(openQuestion);
     }
 
     async function publishOpenAnswerCommittedEvent(openAnswer: OpenAnswer) {
@@ -87,7 +87,7 @@
 
 <div>
     {#if openAnswer}
-        Your answer: {openAnswer.answerText}
+        Answer: {openAnswer.answerText}
     {:else}
         {#if openAnswerDraft}
             <div class="flex justify-between">

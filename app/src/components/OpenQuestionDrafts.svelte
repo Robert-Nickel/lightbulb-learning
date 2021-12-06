@@ -114,53 +114,56 @@
 
 <div class="space-y-2">
     {#each openQuestionDrafts as openQuestionDraft}
-        <div class="flex justify-between space-y-0">
-            <div>{openQuestionDraft.questionText}</div>
-            <div>
-                <button
-                    on:click={() =>
-                        deleteOpenQuestionDraft(openQuestionDraft.id)}
-                    class="w-32">Delete</button
-                >
+        <div class="rounded space-y-2 bg-gray-300 p-4">
+            <div class="flex justify-between ">
+                <div>{openQuestionDraft.questionText}</div>
+                <div>
+                    <button
+                        on:click={() =>
+                            deleteOpenQuestionDraft(openQuestionDraft.id)}
+                        class="w-32">Delete</button
+                    >
+                </div>
             </div>
-        </div>
 
-        {#if openQuestionDraft.answerText == null}
-            <div class="flex justify-between space-x-2">
-                <div class="w-full">
-                    <input
-                        class="w-full"
-                        placeholder="What is the answer?"
-                        id="openQuestionDraftAnswerText"
-                    />
+            {#if openQuestionDraft.answerText == null}
+                <div class="flex justify-between space-x-2">
+                    <div class="w-full">
+                        <input
+                            class="w-full"
+                            placeholder="What is the correct answer?"
+                            id="openQuestionDraftAnswerText"
+                        />
+                    </div>
+                    <div>
+                        <button
+                            on:click={() =>
+                                updateOpenQuestionDraftWithAnswer(
+                                    openQuestionDraft
+                                )}
+                            class="w-32">Save Answer</button
+                        >
+                    </div>
                 </div>
-                <div>
-                    <button
-                        on:click={() =>
-                            updateOpenQuestionDraftWithAnswer(
-                                openQuestionDraft
-                            )}
-                        class="w-32">Save Answer</button
-                    >
+            {:else}
+                <div class="flex justify-between">
+                    <div>Answer: {openQuestionDraft.answerText}</div>
+                    <div>
+                        <button
+                            on:click={() =>
+                                deleteMyAnswerFromOpenQuestionDraft(
+                                    openQuestionDraft
+                                )}
+                            class="w-32">Delete</button
+                        >
+                    </div>
                 </div>
-            </div>
-        {:else}
-            <div class="flex justify-between">
-                <div>Answer: {openQuestionDraft.answerText}</div>
-                <div>
-                    <button
-                        on:click={() =>
-                            deleteMyAnswerFromOpenQuestionDraft(
-                                openQuestionDraft
-                            )}>Delete</button
-                    >
-                </div>
-            </div>
-        {/if}
-        <button
-            disabled={!openQuestionDraft.answerText}
-            on:click={() => commitOpenQuestion(openQuestionDraft)}
-            class="w-32">Publish</button
-        >
+            {/if}
+            <button
+                disabled={!openQuestionDraft.answerText}
+                on:click={() => commitOpenQuestion(openQuestionDraft)}
+                class="w-32">Publish</button
+            >
+        </div>
     {/each}
 </div>

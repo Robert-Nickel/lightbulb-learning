@@ -17,10 +17,10 @@
     }
 </script>
 
-<div>
-    {#if openQuestions.length > 0}All Questions:{/if}
+<div class="space-y-2">
+    {#if openQuestions.length > 0}<div class="text-xl mt-8">All Open Questions</div>{/if}
     {#each openQuestions as openQuestion}
-        <div>
+        <div class="rounded space-y-2 bg-gray-300 p-4">
             <div>{openQuestion.questionText}</div>
            
             <OpenAnswers bind:openQuestion baseUrl/>

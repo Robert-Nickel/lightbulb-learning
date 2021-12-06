@@ -26,7 +26,10 @@
                 challengepoolID: challengePool.id,
             })
         );
-        fetchOpenQuestionDrafts();
+        document.getElementById("openQuestionDraftQuestionText").value = "";
+
+        await fetchOpenQuestionDrafts();
+        document.getElementById("openQuestionDraftAnswerText").focus()
     }
 
     async function updateOpenQuestionDraftWithAnswer(
@@ -101,7 +104,7 @@
     <div class="w-full">
         <input
             class="w-full"
-            placeholder="Create new Open Question"
+            placeholder="Create an open question"
             id="openQuestionDraftQuestionText"
         />
     </div>
@@ -113,10 +116,12 @@
 </div>
 
 <div class="space-y-2">
+    {#if openQuestionDrafts.length > 0}<div class="text-xl mt-8">Drafts</div>{/if}
+
     {#each openQuestionDrafts as openQuestionDraft}
         <div class="rounded space-y-2 bg-gray-300 p-4">
             <div class="flex justify-between ">
-                <div>{openQuestionDraft.questionText}</div>
+                <div>Question: {openQuestionDraft.questionText}</div>
                 <div>
                     <button
                         on:click={() =>

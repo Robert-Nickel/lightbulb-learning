@@ -16,10 +16,6 @@
         dispatch("deleteClicked");
     }
 
-    function startChallengeClicked() {
-        dispatch("startChallengeClicked");
-    }
-
     function openQuestionCommitted() {
         openQuestions.fetchOpenQuestions();
     }
@@ -36,8 +32,6 @@
         {#if open}
             <div>
                 <button on:click={deleteClicked}>Delete</button>
-                <button on:click={startChallengeClicked}>Start Challenge</button
-                >
             </div>
         {/if}
     </div>

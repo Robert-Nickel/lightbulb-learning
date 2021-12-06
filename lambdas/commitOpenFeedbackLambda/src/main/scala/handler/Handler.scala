@@ -25,10 +25,10 @@ class Handler {
   ): APIGatewayV2HTTPResponse = {
     if (apiGatewayEvent != null && apiGatewayEvent.getBody() != null) {
       val eventBody = apiGatewayEvent.getBody()
-      val openAnswer = Json.parse(eventBody).as[OpenAnswer]
-      val openAnswerCommittedEvent =
-        openAnswer.toOpenAnswerCommittedEvent()
-      val publishResult = publish(openAnswerCommittedEvent)
+      val openFeedback = Json.parse(eventBody).as[OpenFeedback]
+      val openFeedbackCommittedEvent =
+        openFeedback.toOpenFeedbackCommittedEvent()
+      val publishResult = publish(openFeedbackCommittedEvent)
 
       return APIGatewayV2HTTPResponse
         .builder()
@@ -49,7 +49,7 @@ class Handler {
   }
 
   def publish(
-      openAnswerCommittedEvent: OpenAnswerCommittedEvent
+      openFeedbackCommittedEvent: OpenFeedbackCommittedEvent
   ): PublishResponse = {
     val httpClient = ApacheHttpClient.builder().build();
 
@@ -61,16 +61,16 @@ class Handler {
 
     val MessageAttributes =
       Map(
-        "TYPE" -> MessageAttributeValue.builder().stringValue("OPEN_ANSWER_CREATED").dataType("String").build()
+        "TYPE" -> MessageAttributeValue.builder().stringValue("OPEN_FEEDBACK_CREATED").dataType("String").build()
     )
 
     val request: PublishRequest = PublishRequest
       .builder()
-      .message(s"${Json.toJson(openAnswerCommittedEvent)}")
-      .messageGroupId(openAnswerCommittedEvent.id)
+      .message(s"${Json.toJson(openFeedbackCommittedEvent)}")
+      .messageGroupId(openFeedbackCommittedEvent.id)
       .messageAttributes(MessageAttributes.asJava)
       .topicArn(
-        "arn:aws:sns:eu-central-1:532688539985:open-answer-topic.fifo"
+        "arn:aws:sns:eu-central-1:532688539985:open-feedback-topic.fifo"
       )
       .build()
 

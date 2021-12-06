@@ -13,36 +13,13 @@ export class InfrastructureStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    const commitOpenQuestionLambda = new lambda.Function(this, 'commitOpenQuestionLambda', {
-      runtime: lambda.Runtime.JAVA_11,
-      timeout: cdk.Duration.seconds(30),
-      memorySize: 256,
-      handler: 'handler.Handler::handle',
-      code: lambda.Code.fromAsset(path.join(__dirname, '../../lambdas/commitOpenQuestionLambda/target/scala-3.0.1/lambda-scala-seed.jar')),
-    });
+    const snsPublishPolicy = new PolicyStatement({
+      resources: ["arn:aws:sns:eu-central-1:532688539985:open-question-topic.fifo"],
+      actions: ["SNS:Publish"]
+    })
 
-    const commitOpenAnswerLambda = new lambda.Function(this, 'commitOpenAnswerLambda', {
-      runtime: lambda.Runtime.JAVA_11,
-      timeout: cdk.Duration.seconds(30),
-      memorySize: 256,
-      handler: 'handler.Handler::handle',
-      code: lambda.Code.fromAsset(path.join(__dirname, '../../lambdas/commitOpenAnswerLambda/target/scala-3.0.1/lambda-scala-seed.jar')),
-    });
-
-    const createOpenQuestionLambda = new lambda.Function(this, 'createOpenQuestionLambda', {
-      runtime: lambda.Runtime.JAVA_11,
-      timeout: cdk.Duration.seconds(30),
-      memorySize: 256,
-      handler: 'handler.Handler::handle',
-      code: lambda.Code.fromAsset(path.join(__dirname, '../../lambdas/createOpenQuestionLambda/target/scala-3.0.1/lambda-scala-seed.jar')),
-    });
-
-    const createOpenQuestionQueue = new sqs.Queue(this, 'create-open-question-queue', {fifo: true});
-    
-    createOpenQuestionLambda.addEventSource(
-      new lambdaEventSources.SqsEventSource(createOpenQuestionQueue)
-    );
-
+    const commitOpenQuestionLambda = buildLambda('commitOpenQuestionLambda', this);
+    commitOpenQuestionLambda.addToRolePolicy(snsPublishPolicy)
     const openQuestionTopic = new sns.Topic(this, 'open-question-topic', {
       topicName: 'open-question-topic',
       displayName: 'Open Question Topic',
@@ -50,6 +27,8 @@ export class InfrastructureStack extends cdk.Stack {
       contentBasedDeduplication: true
     });
 
+    const commitOpenAnswerLambda = buildLambda('commitOpenAnswerLambda', this);
+    commitOpenAnswerLambda.addToRolePolicy(snsPublishPolicy)
     const openAnswerTopic = new sns.Topic(this, 'open-answer-topic', {
       topicName: 'open-answer-topic',
       displayName: 'Open Answer Topic',
@@ -57,23 +36,31 @@ export class InfrastructureStack extends cdk.Stack {
       contentBasedDeduplication: true
     });
 
+    const commitOpenFeedbackLambda = buildLambda('commitOpenFeedbackLambda', this);
+    commitOpenAnswerLambda.addToRolePolicy(snsPublishPolicy)
+    const openFeedbackTopic = new sns.Topic(this, 'open-feedback-topic', {
+      topicName: 'open-feedback-topic',
+      displayName: 'Open Feedback Topic',
+      fifo: true,
+      contentBasedDeduplication: true
+    });
+
+    const createOpenQuestionLambda = buildLambda('createOpenQuestionLambda', this);
+    const createOpenQuestionQueue = new sqs.Queue(this, 'create-open-question-queue', { fifo: true });
+    createOpenQuestionLambda.addEventSource(
+      new lambdaEventSources.SqsEventSource(createOpenQuestionQueue)
+    );
     openQuestionTopic.addSubscription(new subs.SqsSubscription(createOpenQuestionQueue));
 
+    // This is currently not required, but might be very helpful soon.
+    /*
     const dynamoGetItemPolicy = new PolicyStatement({
       resources: ["arn:aws:dynamodb:eu-central-1:532688539985:table/OpenQuestionDraft-bz5o7yvpwbdijnygi4gs2ns4ui-prod"],
       actions: ["dynamodb:GetItem"]
     })
-
     commitOpenQuestionLambda.addToRolePolicy(dynamoGetItemPolicy)
     commitOpenAnswerLambda.addToRolePolicy(dynamoGetItemPolicy)
-    
-    const snsPublishPolicy = new PolicyStatement({
-      resources: ["arn:aws:sns:eu-central-1:532688539985:open-question-topic.fifo"],
-      actions: ["SNS:Publish"]
-    })
-
-    commitOpenQuestionLambda.addToRolePolicy(snsPublishPolicy)
-    commitOpenAnswerLambda.addToRolePolicy(snsPublishPolicy)
+    */
 
     const httpApi = new HttpApi(this, 'lightbulb-learning-api-gateway', {
       /* description: 'Learning API', */
@@ -90,7 +77,6 @@ export class InfrastructureStack extends cdk.Stack {
         allowOrigins: ['*'],
       },
     });
-
     httpApi.addRoutes({
       path: '/commitOpenQuestion',
       methods: [HttpMethod.POST, HttpMethod.OPTIONS],
@@ -98,12 +84,18 @@ export class InfrastructureStack extends cdk.Stack {
         handler: commitOpenQuestionLambda,
       }),
     });
-
     httpApi.addRoutes({
       path: '/commitOpenAnswer',
       methods: [HttpMethod.POST, HttpMethod.OPTIONS],
       integration: new LambdaProxyIntegration({
         handler: commitOpenAnswerLambda,
+      }),
+    });
+    httpApi.addRoutes({
+      path: '/commitOpenFeedback',
+      methods: [HttpMethod.POST, HttpMethod.OPTIONS],
+      integration: new LambdaProxyIntegration({
+        handler: commitOpenFeedbackLambda,
       }),
     });
 
@@ -119,5 +111,19 @@ export class InfrastructureStack extends cdk.Stack {
       value: openAnswerTopic.topicArn,
       description: 'The arn of the open-answer SNS topic',
     });
+    new cdk.CfnOutput(this, 'openFeedbackTopicArn', {
+      value: openFeedbackTopic.topicArn,
+      description: 'The arn of the open-feedback SNS topic',
+    });
   }
+}
+
+function buildLambda(lambdaName: string, scope: cdk.Construct) {
+  return new lambda.Function(scope, lambdaName, {
+    runtime: lambda.Runtime.JAVA_11,
+    timeout: cdk.Duration.seconds(30),
+    memorySize: 256,
+    handler: 'handler.Handler::handle',
+    code: lambda.Code.fromAsset(path.join(__dirname, `../../lambdas/${lambdaName}/target/scala-3.0.1/lambda-scala-seed.jar`)),
+  })
 }

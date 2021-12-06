@@ -48,9 +48,6 @@
                 {challengePool}
                 on:deleteClicked={() =>
                     deleteChallengePool(challengePool.id)}
-                on:startChallengeClicked={() => {
-                    activeChallenge = challengePool;
-                }}
                 on:toast
                 baseUrl
             />

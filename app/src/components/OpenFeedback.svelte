@@ -49,7 +49,7 @@
         await DataStore.save(myOpenFeedback);
         openFeedback = myOpenFeedback;
 
-        // TODO: publishOpenFeedbackCommittedEvent(openFeedback);
+        publishOpenFeedbackCommittedEvent(openFeedback);
 
         dispatch("toast", { type: "success", text: "Open Feedback created!" });
 
@@ -61,6 +61,24 @@
             await DataStore.query(OpenFeedbackDraft, openFeedbackDraft.id)
         );
         fetchOpenFeedbackDraft(openAnswer);
+    }
+
+    async function publishOpenFeedbackCommittedEvent(openFeedback: OpenFeedback) {
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify(openFeedback);
+
+        var requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+        };
+
+        fetch(`${baseUrl}/commitOpenFeedback`, requestOptions)
+            .then((response) => response.text())
+            .then((result) => console.log(result))
+            .catch((error) => console.log("error", error));
     }
 </script>
 

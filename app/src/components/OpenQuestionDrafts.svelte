@@ -8,13 +8,18 @@
     export let challengePool: ChallengePool;
     let openQuestionDrafts: Array<OpenQuestionDraft> = [];
 
+    fetchOpenQuestionDrafts();
+
     async function fetchOpenQuestionDrafts() {
         openQuestionDrafts = await DataStore.query(OpenQuestionDraft, (q) =>
             q.challengepoolID("eq", challengePool.id)
         );
     }
 
-    async function createOpenQuestionDraft(questionText) {
+    async function createOpenQuestionDraft() {
+        const questionText = document.getElementById(
+            "openQuestionDraftText"
+        ).value;
         await DataStore.save(
             new OpenQuestionDraft({
                 questionText,
@@ -83,26 +88,22 @@
             body: raw,
         };
 
-        fetch(
-            `${baseUrl}/commitOpenQuestion`,
-            requestOptions
-        )
+        fetch(`${baseUrl}/commitOpenQuestion`, requestOptions)
             .then((response) => response.text())
             .then((result) => console.log(result))
             .catch((error) => console.log("error", error));
     }
 </script>
 
-<div>
-    <input
-        class="w-full"
-        placeholder="Create new Open Question"
-        on:keydown={(e) => {
-            if (e.key === "Enter") {
-                createOpenQuestionDraft(e.target.value);
-            }
-        }}
-    />
+<div class="flex justify-between space-x-2">
+    <div class="w-full">
+        <input
+            class="w-full"
+            placeholder="Create new Open Question"
+            id="openQuestionDraftText"
+        />
+    </div>
+    <div><button on:click={createOpenQuestionDraft}>Save Draft</button></div>
 </div>
 
 <div>
@@ -151,10 +152,10 @@
                 </div>
             </div>
         {/if}
-            <button
-                disabled={!openQuestionDraft.answerText}
-                on:click={() => commitOpenQuestion(openQuestionDraft)}
-                >Commit</button
-            >
+        <button
+            disabled={!openQuestionDraft.answerText}
+            on:click={() => commitOpenQuestion(openQuestionDraft)}
+            >Commit</button
+        >
     {/each}
 </div>

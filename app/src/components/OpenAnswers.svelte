@@ -3,6 +3,7 @@
     const dispatch = createEventDispatcher();
     import { DataStore } from "@aws-amplify/datastore";
     import { OpenAnswerDraft, OpenQuestion, OpenAnswer } from "../models";
+    import OpenFeedback from "./OpenFeedback.svelte";
 
     export let baseUrl;
     export let openQuestion: OpenQuestion;
@@ -40,7 +41,7 @@
         openAnswerDraft: OpenAnswerDraft,
         openQuestion: OpenQuestion
     ) {
-        deleteMyAnswerDraft(openAnswerDraft);
+        deleteMyAnswerDraft(openAnswerDraft, openQuestion);
 
         let myOpenAnswer: OpenAnswer = new OpenAnswer({
             answerText: openAnswerDraft.answerText,
@@ -56,7 +57,10 @@
         fetchOpenAnswer(openQuestion);
     }
 
-    async function deleteMyAnswerDraft(openAnswerDraft: OpenAnswerDraft) {
+    async function deleteMyAnswerDraft(
+        openAnswerDraft: OpenAnswerDraft,
+        openQuestion: OpenQuestion
+    ) {
         await DataStore.delete(
             await DataStore.query(OpenAnswerDraft, openAnswerDraft.id)
         );
@@ -75,10 +79,7 @@
             body: raw,
         };
 
-        fetch(
-            `${baseUrl}/commitOpenAnswer`,
-            requestOptions
-        )
+        fetch(`${baseUrl}/commitOpenAnswer`, requestOptions)
             .then((response) => response.text())
             .then((result) => console.log(result))
             .catch((error) => console.log("error", error));
@@ -88,13 +89,15 @@
 <div>
     {#if openAnswer}
         Answer: {openAnswer.answerText}
+        <OpenFeedback bind:openAnswer baseUrl/>
     {:else}
         {#if openAnswerDraft}
             <div class="flex justify-between">
                 <div>{openAnswerDraft.answerText}</div>
                 <div>
                     <button
-                        on:click={() => deleteMyAnswerDraft(openAnswerDraft)}
+                        on:click={() =>
+                            deleteMyAnswerDraft(openAnswerDraft, openQuestion)}
                         >Delete</button
                     >
                 </div>

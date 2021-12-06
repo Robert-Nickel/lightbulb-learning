@@ -12,6 +12,14 @@ type OpenAnswerMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
+type OpenFeedbackDraftMetaData = {
+  readOnlyFields: 'createdAt' | 'updatedAt';
+}
+
+type OpenFeedbackMetaData = {
+  readOnlyFields: 'createdAt' | 'updatedAt';
+}
+
 type OpenQuestionMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
@@ -42,6 +50,26 @@ export declare class OpenAnswer {
   readonly updatedAt?: string;
   constructor(init: ModelInit<OpenAnswer, OpenAnswerMetaData>);
   static copyOf(source: OpenAnswer, mutator: (draft: MutableModel<OpenAnswer, OpenAnswerMetaData>) => MutableModel<OpenAnswer, OpenAnswerMetaData> | void): OpenAnswer;
+}
+
+export declare class OpenFeedbackDraft {
+  readonly id: string;
+  readonly feedbackText?: string;
+  readonly openanswerID?: string;
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
+  constructor(init: ModelInit<OpenFeedbackDraft, OpenFeedbackDraftMetaData>);
+  static copyOf(source: OpenFeedbackDraft, mutator: (draft: MutableModel<OpenFeedbackDraft, OpenFeedbackDraftMetaData>) => MutableModel<OpenFeedbackDraft, OpenFeedbackDraftMetaData> | void): OpenFeedbackDraft;
+}
+
+export declare class OpenFeedback {
+  readonly id: string;
+  readonly feedbackText?: string;
+  readonly openanswerID?: string;
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
+  constructor(init: ModelInit<OpenFeedback, OpenFeedbackMetaData>);
+  static copyOf(source: OpenFeedback, mutator: (draft: MutableModel<OpenFeedback, OpenFeedbackMetaData>) => MutableModel<OpenFeedback, OpenFeedbackMetaData> | void): OpenFeedback;
 }
 
 export declare class OpenQuestion {

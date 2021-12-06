@@ -1,4 +1,4 @@
-type OpenAnswerDraft @model @auth(rules: [{allow: public}]) @key(name: "byOpenQuestion", fields: ["openquestionID"]) {
+type OpenAnswerDraft @model @auth(rules: [{allow: public}, {allow: owner}]) @key(name: "byOpenQuestion", fields: ["openquestionID"]) {
   id: ID!
   answerText: String
   openquestionID: ID
@@ -8,6 +8,18 @@ type OpenAnswer @model @auth(rules: [{allow: public}]) @key(name: "byOpenQuestio
   id: ID!
   answerText: String
   openquestionID: ID
+}
+
+type OpenFeedbackDraft @model @auth(rules: [{allow: public}, {allow: owner}]) @key(name: "byOpenAnswer", fields: ["openanswerID"]) {
+  id: ID!
+  feedbackText: String
+  openanswerID: ID
+}
+
+type OpenFeedback @model @auth(rules: [{allow: public}]) @key(name: "byOpenAnswer", fields: ["openanswerID"]) {
+  id: ID!
+  feedbackText: String
+  openanswerID: ID
 }
 
 type OpenQuestion @model @auth(rules: [{allow: public}, {allow: owner, operations: [create, update, delete]}]) @key(name: "byChallengePool", fields: ["challengepoolID"]) {

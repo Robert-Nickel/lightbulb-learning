@@ -9,6 +9,7 @@
     export let baseUrl;
     let challengePools: Array<ChallengePool> = [];
     let activeChallenge: ChallengePool;
+    let challengePoolDraft: string;
 
     fetchChallengePools();
 
@@ -25,8 +26,9 @@
         challengePools = await DataStore.query(ChallengePool);
     }
 
-    async function createChallengePool(input) {
-        await DataStore.save(new ChallengePool({ description: input.value }));
+    async function createChallengePool() {
+        const description = document.getElementById("challengePoolDescription").value
+        await DataStore.save(new ChallengePool({ description: description }));
         fetchChallengePools();
 
         dispatch("toast", { type: "success", text: "Challenge Pool created!" });
@@ -46,25 +48,22 @@
         {#each challengePools as challengePool}
             <ChallengePoolDetail
                 {challengePool}
-                on:deleteClicked={() =>
-                    deleteChallengePool(challengePool.id)}
+                on:deleteClicked={() => deleteChallengePool(challengePool.id)}
                 on:toast
                 baseUrl
             />
         {/each}
         <div class="space-y-4">
-            <span class="block">Create new Challenge Pool</span>
-            <span class="block"
-                ><input
-                    placeholder="Description"
-                    class="w-full"
-                    on:keydown={(e) => {
-                        if (e.key === "Enter") {
-                            createChallengePool(e.target);
-                        }
-                    }}
-                /></span
-            >
+            <div class="flex justify-between space-x-2">
+                <div class="w-full">
+                    <input
+                        id="challengePoolDescription"
+                        class="w-full"
+                        placeholder="Create new Challenge Pool"
+                    />
+                </div>
+                <div><button on:click={createChallengePool}>Create</button></div>
+            </div>
         </div>
     </div>
 {/if}

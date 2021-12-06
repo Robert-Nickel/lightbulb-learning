@@ -56,14 +56,19 @@
         fetchOpenFeedback(openAnswer);
     }
 
-    async function deleteMyFeedbackDraft(openFeedbackDraft: OpenFeedbackDraft, openAnswer: OpenAnswer) {
+    async function deleteMyFeedbackDraft(
+        openFeedbackDraft: OpenFeedbackDraft,
+        openAnswer: OpenAnswer
+    ) {
         await DataStore.delete(
             await DataStore.query(OpenFeedbackDraft, openFeedbackDraft.id)
         );
         fetchOpenFeedbackDraft(openAnswer);
     }
 
-    async function publishOpenFeedbackCommittedEvent(openFeedback: OpenFeedback) {
+    async function publishOpenFeedbackCommittedEvent(
+        openFeedback: OpenFeedback
+    ) {
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
@@ -91,8 +96,12 @@
                 <div>{openFeedbackDraft.feedbackText}</div>
                 <div>
                     <button
-                        on:click={() => deleteMyFeedbackDraft(openFeedbackDraft, openAnswer)}
-                        >Delete</button
+                        on:click={() =>
+                            deleteMyFeedbackDraft(
+                                openFeedbackDraft,
+                                openAnswer
+                            )}
+                        class="w-32">Delete</button
                     >
                 </div>
             </div>
@@ -110,8 +119,9 @@
         <div>
             <button
                 disabled={!openFeedbackDraft}
-                on:click={() => commitOpenFeedback(openFeedbackDraft, openAnswer)}
-                >Commit</button
+                on:click={() =>
+                    commitOpenFeedback(openFeedbackDraft, openAnswer)}
+                class="w-32">Commit</button
             >
         </div>
     {/if}

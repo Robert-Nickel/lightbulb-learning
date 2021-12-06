@@ -89,7 +89,7 @@
 <div>
     {#if openAnswer}
         Answer: {openAnswer.answerText}
-        <OpenFeedback bind:openAnswer baseUrl/>
+        <OpenFeedback bind:openAnswer baseUrl />
     {:else}
         {#if openAnswerDraft}
             <div class="flex justify-between">
@@ -98,7 +98,7 @@
                     <button
                         on:click={() =>
                             deleteMyAnswerDraft(openAnswerDraft, openQuestion)}
-                        >Delete</button
+                        class="w-32">Delete</button
                     >
                 </div>
             </div>
@@ -117,7 +117,7 @@
             <button
                 disabled={!openAnswerDraft}
                 on:click={() => commitOpenAnswer(openAnswerDraft, openQuestion)}
-                >Commit</button
+                class="w-32">Commit</button
             >
         </div>
     {/if}

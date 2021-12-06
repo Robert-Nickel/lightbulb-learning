@@ -18,7 +18,7 @@
 
     async function createOpenQuestionDraft() {
         const questionText = document.getElementById(
-            "openQuestionDraftText"
+            "openQuestionDraftQuestionText"
         ).value;
         await DataStore.save(
             new OpenQuestionDraft({
@@ -30,9 +30,11 @@
     }
 
     async function updateOpenQuestionDraftWithAnswer(
-        openQuestionDraft: OpenQuestionDraft,
-        answerText
+        openQuestionDraft: OpenQuestionDraft
     ) {
+        const answerText = document.getElementById(
+            "openQuestionDraftAnswerText"
+        ).value;
         await DataStore.save(
             OpenQuestionDraft.copyOf(openQuestionDraft, (updated) => {
                 updated.answerText = answerText;
@@ -100,16 +102,17 @@
         <input
             class="w-full"
             placeholder="Create new Open Question"
-            id="openQuestionDraftText"
+            id="openQuestionDraftQuestionText"
         />
     </div>
-    <div><button on:click={createOpenQuestionDraft}>Save Draft</button></div>
+    <div>
+        <button on:click={createOpenQuestionDraft} class="w-32"
+            >Save Draft</button
+        >
+    </div>
 </div>
 
-<div>
-    {#if openQuestionDrafts.length > 0}
-        Drafts:
-    {/if}
+<div class="space-y-2">
     {#each openQuestionDrafts as openQuestionDraft}
         <div class="flex justify-between space-y-0">
             <div>{openQuestionDraft.questionText}</div>
@@ -117,26 +120,28 @@
                 <button
                     on:click={() =>
                         deleteOpenQuestionDraft(openQuestionDraft.id)}
-                    >Delete</button
+                    class="w-32">Delete</button
                 >
             </div>
         </div>
 
         {#if openQuestionDraft.answerText == null}
-            <div>
-                <div>
+            <div class="flex justify-between space-x-2">
+                <div class="w-full">
                     <input
                         class="w-full"
                         placeholder="What is the answer?"
-                        on:keydown={(e) => {
-                            if (e.key === "Enter") {
-                                updateOpenQuestionDraftWithAnswer(
-                                    openQuestionDraft,
-                                    e.target.value
-                                );
-                            }
-                        }}
+                        id="openQuestionDraftAnswerText"
                     />
+                </div>
+                <div>
+                    <button
+                        on:click={() =>
+                            updateOpenQuestionDraftWithAnswer(
+                                openQuestionDraft
+                            )}
+                        class="w-32">Save Answer</button
+                    >
                 </div>
             </div>
         {:else}
@@ -155,7 +160,7 @@
         <button
             disabled={!openQuestionDraft.answerText}
             on:click={() => commitOpenQuestion(openQuestionDraft)}
-            >Commit</button
+            class="w-32">Publish</button
         >
     {/each}
 </div>

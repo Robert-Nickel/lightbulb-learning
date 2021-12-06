@@ -21,7 +21,7 @@
     }
 </script>
 
-<div class="bg-gray-200 space-y-5 p-8">
+<div class="bg-gray-200 space-y-4 p-8">
     <div class="flex justify-between">
         <div class="flex space-x-3">
             <div on:click={() => (open = !open)}>
@@ -31,7 +31,7 @@
         </div>
         {#if open}
             <div>
-                <button on:click={deleteClicked}>Delete</button>
+                <button on:click={deleteClicked} class="w-32">Delete</button>
             </div>
         {/if}
     </div>

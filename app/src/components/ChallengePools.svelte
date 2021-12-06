@@ -62,7 +62,7 @@
                         placeholder="Create new Challenge Pool"
                     />
                 </div>
-                <div><button on:click={createChallengePool}>Create</button></div>
+                <div><button on:click={createChallengePool} class="w-32">Create</button></div>
             </div>
         </div>
     </div>

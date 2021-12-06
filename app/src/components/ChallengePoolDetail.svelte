@@ -43,6 +43,6 @@
     </div>
     {#if open}
         <OpenQuestionDrafts {challengePool} on:toast on:openQuestionCommitted={openQuestionCommitted} baseUrl/>
-        <OpenQuestions bind:this={openQuestions} {challengePool} />
+        <OpenQuestions bind:this={openQuestions} {challengePool} baseUrl />
     {/if}
 </div>

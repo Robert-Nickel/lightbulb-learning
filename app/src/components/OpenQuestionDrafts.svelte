@@ -36,7 +36,7 @@
         fetchOpenQuestionDrafts();
     }
 
-    async function deleteOpenQuestionDraftFunc(id) {
+    async function deleteOpenQuestionDraft(id) {
         await DataStore.delete(await DataStore.query(OpenQuestionDraft, id));
         fetchOpenQuestionDrafts();
     }
@@ -115,7 +115,7 @@
             <div>
                 <button
                     on:click={() =>
-                        deleteOpenQuestionDraftFunc(openQuestionDraft.id)}
+                        deleteOpenQuestionDraft(openQuestionDraft.id)}
                     >Delete</button
                 >
             </div>

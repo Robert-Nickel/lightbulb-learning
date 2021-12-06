@@ -3,6 +3,8 @@
     import { ChallengePool } from "../models";
     import ChallengePoolDetail from "./ChallengePoolDetail.svelte";
     import { Hub } from "aws-amplify";
+    import { createEventDispatcher } from "svelte";
+    const dispatch = createEventDispatcher();
 
     export let baseUrl;
     let challengePools: Array<ChallengePool> = [];
@@ -23,12 +25,14 @@
         challengePools = await DataStore.query(ChallengePool);
     }
 
-    async function createChallengePoolFunc(input) {
+    async function createChallengePool(input) {
         await DataStore.save(new ChallengePool({ description: input.value }));
         fetchChallengePools();
+
+        dispatch("toast", { type: "success", text: "Challenge Pool created!" });
     }
 
-    async function deleteChallengePoolFunc(id) {
+    async function deleteChallengePool(id) {
         await DataStore.delete(await DataStore.query(ChallengePool, id));
         fetchChallengePools();
     }
@@ -43,7 +47,7 @@
             <ChallengePoolDetail
                 {challengePool}
                 on:deleteClicked={() =>
-                    deleteChallengePoolFunc(challengePool.id)}
+                    deleteChallengePool(challengePool.id)}
                 on:startChallengeClicked={() => {
                     activeChallenge = challengePool;
                 }}
@@ -59,7 +63,7 @@
                     class="w-full"
                     on:keydown={(e) => {
                         if (e.key === "Enter") {
-                            createChallengePoolFunc(e.target);
+                            createChallengePool(e.target);
                         }
                     }}
                 /></span

@@ -104,6 +104,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "owner": {
+                    "name": "owner",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "openquestionID": {
                     "name": "openquestionID",
                     "isArray": false,
@@ -263,6 +270,13 @@ export const schema = {
                     "name": "feedbackText",
                     "isArray": false,
                     "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "owner": {
+                    "name": "owner",
+                    "isArray": false,
+                    "type": "ID",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -640,5 +654,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "a3542917368824b06b10e684f047ade0"
+    "version": "394c24e7a4955c171209c6f11eabad4c"
 };

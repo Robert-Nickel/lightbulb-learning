@@ -45,6 +45,7 @@ export declare class OpenAnswerDraft {
 export declare class OpenAnswer {
   readonly id: string;
   readonly answerText?: string;
+  readonly owner?: string;
   readonly openquestionID?: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
@@ -65,6 +66,7 @@ export declare class OpenFeedbackDraft {
 export declare class OpenFeedback {
   readonly id: string;
   readonly feedbackText?: string;
+  readonly owner?: string;
   readonly openanswerID?: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;

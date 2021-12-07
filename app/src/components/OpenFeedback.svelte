@@ -7,6 +7,8 @@
 
     export let baseUrl;
     export let openAnswer: OpenAnswer;
+    export let userId;
+
     let openFeedbackDraft: OpenFeedbackDraft;
     let openFeedback: OpenFeedback;
 
@@ -86,58 +88,44 @@
             .then((result) => console.log(result))
             .catch((error) => console.log("error", error));
     }
-
-    async function isOpenAnswerUserOwned(openAnswer: OpenAnswer) {
-        const user = await Auth.currentAuthenticatedUser();
-        const userOwned = openAnswer.owner == user.attributes.sub;
-        console.log(userOwned)
-        return openAnswer.owner == user.attributes.sub;
-    }
 </script>
 
 <div>
     {#if openFeedback}
         Feedback: {openFeedback.feedbackText}
-    {:else}
-        {#await isOpenAnswerUserOwned(openAnswer) then isUserOwned}
-            {#if !isUserOwned}
-                {#if openFeedbackDraft}
-                    <div class="flex justify-between">
-                        <div>{openFeedbackDraft.feedbackText}</div>
-                        <div>
-                            <button
-                                on:click={() =>
-                                    deleteMyFeedbackDraft(
-                                        openFeedbackDraft,
-                                        openAnswer
-                                    )}
-                                class="w-32">Delete</button
-                            >
-                        </div>
-                    </div>
-                {:else}
-                    <input
-                        class="w-full"
-                        placeholder="Provide feedback to this answer"
-                        on:keydown={(e) => {
-                            if (e.key === "Enter") {
-                                saveOpenFeedbackDraft(
-                                    openAnswer,
-                                    e.target.value
-                                );
-                            }
-                        }}
-                    />
-                {/if}
+    {:else if openAnswer.owner != userId}
+        {#if openFeedbackDraft}
+            <div class="flex justify-between">
+                <div>{openFeedbackDraft.feedbackText}</div>
                 <div>
                     <button
-                        disabled={!openFeedbackDraft}
                         on:click={() =>
-                            commitOpenFeedback(openFeedbackDraft, openAnswer)}
-                        class="w-32">Commit</button
+                            deleteMyFeedbackDraft(
+                                openFeedbackDraft,
+                                openAnswer
+                            )}
+                        class="w-32">Delete</button
                     >
                 </div>
-            {/if}
-        {/await}
+            </div>
+        {:else}
+            <input
+                class="w-full"
+                placeholder="Provide feedback to this answer"
+                on:keydown={(e) => {
+                    if (e.key === "Enter") {
+                        saveOpenFeedbackDraft(openAnswer, e.target.value);
+                    }
+                }}
+            />
+        {/if}
+        <div>
+            <button
+                disabled={!openFeedbackDraft}
+                on:click={() =>
+                    commitOpenFeedback(openFeedbackDraft, openAnswer)}
+                class="w-32">Commit</button
+            >
+        </div>
     {/if}
 </div>

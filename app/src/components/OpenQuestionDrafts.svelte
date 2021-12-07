@@ -7,6 +7,8 @@
 
     export let baseUrl;
     export let challengePool: ChallengePool;
+    export let userId;
+
     let openQuestionDrafts: Array<OpenQuestionDraft> = [];
 
     fetchOpenQuestionDrafts();

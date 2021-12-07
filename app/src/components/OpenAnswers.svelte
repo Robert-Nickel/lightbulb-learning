@@ -7,12 +7,13 @@
     import { Auth } from "aws-amplify";
 
     export let baseUrl;
+    export let userId;
     export let openQuestion: OpenQuestion;
     let openAnswerDraft: OpenAnswerDraft;
-    let openAnswer: OpenAnswer;
+    let myOpenAnswer: OpenAnswer;
 
     fetchOpenAnswerDraft(openQuestion);
-    fetchOpenAnswer(openQuestion);
+    fetchMyOpenAnswer(openQuestion);
 
     async function fetchOpenAnswerDraft(openQuestion) {
         let openAnswerDrafts = await DataStore.query(OpenAnswerDraft, (a) =>
@@ -21,11 +22,13 @@
         openAnswerDraft = openAnswerDrafts[0];
     }
 
-    async function fetchOpenAnswer(openQuestion) {
-        let openAnswers = await DataStore.query(OpenAnswer, (a) =>
-            a.openquestionID("eq", openQuestion.id)
+    async function fetchMyOpenAnswer(openQuestion) {
+        let openAnswers = await DataStore.query(
+            OpenAnswer,
+            (a) =>
+                a.openquestionID("eq", openQuestion.id) && a.owner("eq", userId)
         );
-        openAnswer = openAnswers[0];
+        myOpenAnswer = openAnswers[0];
     }
 
     async function saveOpenAnswerDraft(openQuestion: OpenQuestion) {
@@ -53,13 +56,13 @@
             owner,
         });
         await DataStore.save(myOpenAnswer);
-        openAnswer = myOpenAnswer;
+        myOpenAnswer = myOpenAnswer;
 
-        publishOpenAnswerCommittedEvent(openAnswer);
+        publishOpenAnswerCommittedEvent(myOpenAnswer);
 
         dispatch("toast", { type: "success", text: "Open Answer created!" });
 
-        fetchOpenAnswer(openQuestion);
+        fetchMyOpenAnswer(openQuestion);
     }
 
     async function deleteMyAnswerDraft(
@@ -89,61 +92,51 @@
             .then((result) => console.log(result))
             .catch((error) => console.log("error", error));
     }
-
-    async function isOpenQuestionUserOwned(openQuestion: OpenQuestion) {
-        const user = await Auth.currentAuthenticatedUser();
-        return openQuestion.owner == user.attributes.sub;
-    }
 </script>
 
 <div class="space-y-2">
-    {#if openAnswer}
+    {#if myOpenAnswer}
         <div class=" mt-2">
-            Answer: {openAnswer.answerText}
+            Answer: {myOpenAnswer.answerText}
         </div>
-        <OpenFeedback bind:openAnswer baseUrl />
+        <OpenFeedback bind:openAnswer={myOpenAnswer} baseUrl userId />
     {:else if openAnswerDraft}
-            <div class="flex justify-between mt-2">
-                <div>{openAnswerDraft.answerText}</div>
-                <div>
-                    <button
-                        on:click={() =>
-                            deleteMyAnswerDraft(openAnswerDraft, openQuestion)}
-                        class="w-32">Delete</button
-                    >
-                </div>
+        <div class="flex justify-between mt-2">
+            <div>{openAnswerDraft.answerText}</div>
+            <div>
+                <button
+                    on:click={() =>
+                        deleteMyAnswerDraft(openAnswerDraft, openQuestion)}
+                    class="w-32">Delete</button
+                >
             </div>
+        </div>
+        <button
+            disabled={!openAnswerDraft}
+            on:click={() => commitOpenAnswer(openAnswerDraft, openQuestion)}
+            class="w-32">Publish</button
+        >
+    {:else if openQuestion.owner != userId}
+        <div class="flex justify-between space-x-2 mt-2">
+            <div class="w-full">
+                <input
+                    id="openAnswerDraft"
+                    class="w-full"
+                    placeholder="Answer this question"
+                />
+            </div>
+            <div>
+                <button
+                    on:click={() => saveOpenAnswerDraft(openQuestion)}
+                    class="w-32">Save Draft</button
+                >
+            </div>
+        </div>
+        <div>
             <button
                 disabled={!openAnswerDraft}
                 on:click={() => commitOpenAnswer(openAnswerDraft, openQuestion)}
                 class="w-32">Publish</button
             >
-    {:else}
-        {#await isOpenQuestionUserOwned(openQuestion) then isUserOwned}
-            {#if !isUserOwned}
-                <div class="flex justify-between space-x-2 mt-2">
-                    <div class="w-full">
-                        <input
-                            id="openAnswerDraft"
-                            class="w-full"
-                            placeholder="Answer this question"
-                        />
-                    </div>
-                    <div>
-                        <button
-                            on:click={() => saveOpenAnswerDraft(openQuestion)}
-                            class="w-32">Save Draft</button
-                        >
-                    </div>
-                </div>
-                <div>
-                    <button
-                        disabled={!openAnswerDraft}
-                        on:click={() =>
-                            commitOpenAnswer(openAnswerDraft, openQuestion)}
-                        class="w-32">Publish</button
-                    >
-                </div>{/if}
-        {/await}
-    {/if}
+        </div>{/if}
 </div>

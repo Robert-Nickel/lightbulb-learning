@@ -7,6 +7,7 @@
 
     export let challengePool;
     export let baseUrl;
+    export let userId;
 
     let openQuestions;
 
@@ -41,7 +42,13 @@
             on:toast
             on:openQuestionCommitted={openQuestionCommitted}
             baseUrl
+            userId
         />
-        <OpenQuestions bind:this={openQuestions} {challengePool} baseUrl />
+        <OpenQuestions
+            bind:this={openQuestions}
+            {challengePool}
+            baseUrl
+            userId
+        />
     {/if}
 </div>

@@ -7,6 +7,7 @@
     const dispatch = createEventDispatcher();
 
     export let baseUrl;
+    export let userId;
     let challengePools: Array<ChallengePool> = [];
     let activeChallenge: ChallengePool;
     let challengePoolDraft: string;
@@ -51,6 +52,7 @@
                 on:deleteClicked={() => deleteChallengePool(challengePool.id)}
                 on:toast
                 baseUrl
+                userId
             />
         {/each}
         <div class="space-y-4">

@@ -6,8 +6,8 @@
     import OpenQuestions from "./OpenQuestions.svelte";
 
     export let challengePool;
-    export let baseUrl;
-    export let userId;
+    export let baseUrl: string;
+    export let userId: string;
 
     let openQuestions;
 

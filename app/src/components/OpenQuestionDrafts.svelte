@@ -4,9 +4,9 @@
     import { DataStore } from "@aws-amplify/datastore";
     import { OpenQuestionDraft, ChallengePool, OpenQuestion } from "../models";
 
-    export let baseUrl;
+    export let baseUrl: string;
     export let challengePool: ChallengePool;
-    export let userId;
+    export let userId: string;
 
     let openQuestionDrafts: Array<OpenQuestionDraft> = [];
 

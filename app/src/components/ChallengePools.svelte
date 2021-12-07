@@ -6,8 +6,8 @@
     import { createEventDispatcher } from "svelte";
     const dispatch = createEventDispatcher();
 
-    export let baseUrl;
-    export let userId;
+    export let baseUrl: string;
+    export let userId: string;
     let challengePools: Array<ChallengePool> = [];
     let activeChallenge: ChallengePool;
     let challengePoolDraft: string;

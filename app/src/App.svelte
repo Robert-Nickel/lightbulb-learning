@@ -13,7 +13,7 @@
 
 	let sidebarOpen = false;
 	let showLogin = false;
-	const baseUrl = "https://yybkc7efv3.execute-api.eu-central-1.amazonaws.com";
+	const baseUrl: string = "https://yybkc7efv3.execute-api.eu-central-1.amazonaws.com";
 
 	function login() {
 		showLogin = true;
@@ -34,7 +34,7 @@
 		});
 	}
 
-	async function getUserId() {
+	async function getUserId(): Promise<string> {
 		const user = await Auth.currentAuthenticatedUser();
 		return user.attributes.sub;
 	}
@@ -47,7 +47,7 @@
 {#if $store != null}
 	{#await getUserId() then userId}
 		<main class="container mx-auto py-4 px-2 max-w-screen-sm">
-			<ChallengePools on:toast={showToast} baseUrl userId />
+			<ChallengePools on:toast={showToast} baseUrl=${baseUrl} userId=${userId} />
 		</main>
 	{/await}
 {:else if showLogin}

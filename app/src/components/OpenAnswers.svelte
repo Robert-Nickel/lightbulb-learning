@@ -5,14 +5,16 @@
     import { OpenAnswerDraft, OpenQuestion, OpenAnswer } from "../models";
     import OpenFeedback from "./OpenFeedback.svelte";
 
-    export let baseUrl;
-    export let userId;
+    export let baseUrl: string;;
+    export let userId: string;
     export let openQuestion: OpenQuestion;
     let openAnswerDraft: OpenAnswerDraft;
     let myOpenAnswer: OpenAnswer;
+    let openAnswers: Array<OpenAnswer>;
 
     fetchOpenAnswerDraft(openQuestion);
     fetchMyOpenAnswer(openQuestion);
+    fetchOpenAnswers(openQuestion);
 
     async function fetchOpenAnswerDraft(openQuestion) {
         let openAnswerDrafts = await DataStore.query(OpenAnswerDraft, (a) =>
@@ -28,6 +30,12 @@
                 a.openquestionID("eq", openQuestion.id) && a.owner("eq", userId)
         );
         myOpenAnswer = openAnswers[0];
+    }
+
+    async function fetchOpenAnswers(openQuestion) {
+        openAnswers = await DataStore.query(OpenAnswer, (a) =>
+            a.openquestionID("eq", openQuestion.id)
+        );
     }
 
     async function saveOpenAnswerDraft(openQuestion: OpenQuestion) {
@@ -94,9 +102,8 @@
 <div class="space-y-2">
     {#if myOpenAnswer}
         <div class=" mt-2">
-            Answer: {myOpenAnswer.answerText}
+            My Answer: {myOpenAnswer.answerText}
         </div>
-        <OpenFeedback bind:openAnswer={myOpenAnswer} baseUrl userId />
     {:else if openAnswerDraft}
         <div class="flex justify-between mt-2">
             <div>{openAnswerDraft.answerText}</div>
@@ -114,6 +121,7 @@
             class="w-32">Publish</button
         >
     {:else if openQuestion.owner != userId}
+        <!--Create a new answer-->
         <div class="flex justify-between space-x-2 mt-2">
             <div class="w-full">
                 <input
@@ -135,5 +143,12 @@
                 on:click={() => commitOpenAnswer(openAnswerDraft, openQuestion)}
                 class="w-32">Publish</button
             >
-        </div>{/if}
+        </div>
+    {/if}
+    {#each openAnswers as openAnswer}
+        <div class=" mt-2">
+            {openAnswer.answerText}
+        </div>
+        <OpenFeedback bind:openAnswer={openAnswer} baseUrl userId />
+    {/each}
 </div>

@@ -4,9 +4,9 @@
     import { DataStore } from "@aws-amplify/datastore";
     import { OpenFeedbackDraft, OpenFeedback, OpenAnswer } from "../models";
 
-    export let baseUrl;
+    export let baseUrl: string;
     export let openAnswer: OpenAnswer;
-    export let userId;
+    export let userId: string;
 
     let openFeedbackDraft: OpenFeedbackDraft;
     let openFeedback: OpenFeedback;

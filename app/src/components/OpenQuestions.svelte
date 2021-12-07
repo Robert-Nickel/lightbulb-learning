@@ -3,8 +3,8 @@
     import { ChallengePool, OpenQuestion, OpenAnswer } from "../models";
     import OpenAnswers from "./OpenAnswers.svelte";
 
-    export let baseUrl;
-    export let userId;
+    export let baseUrl: string;
+    export let userId: string;
     export let challengePool: ChallengePool;
 
     let openQuestions: Array<OpenQuestion> = [];

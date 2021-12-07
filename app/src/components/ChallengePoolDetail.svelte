@@ -30,13 +30,13 @@
             </div>
             <div>{challengePool.description}</div>
         </div>
-        {#if open}
+        {#if open && userId == challengePool.owner}
             <div>
                 <button on:click={deleteClicked} class="w-32">Delete</button>
             </div>
         {/if}
     </div>
-    {#if open && userId == challengePool.owner}
+    {#if open}
         <div class="mt-2">
             <OpenQuestionDrafts
                 {challengePool}

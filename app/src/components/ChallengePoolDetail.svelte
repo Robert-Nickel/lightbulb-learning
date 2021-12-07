@@ -22,7 +22,7 @@
     }
 </script>
 
-<div class="bg-gray-200 rounded space-y-4 p-8">
+<div class="bg-gray-200 rounded p-8">
     <div class="flex justify-between">
         <div class="flex space-x-3">
             <div on:click={() => (open = !open)}>
@@ -37,18 +37,20 @@
         {/if}
     </div>
     {#if open && userId == challengePool.owner}
-        <OpenQuestionDrafts
-            {challengePool}
-            on:toast
-            on:openQuestionCommitted={openQuestionCommitted}
-            {baseUrl}
-            {userId}
-        />
-        <OpenQuestions
-            bind:this={openQuestions}
-            {challengePool}
-            {baseUrl}
-            {userId}
-        />
+        <div class="mt-2">
+            <OpenQuestionDrafts
+                {challengePool}
+                on:toast
+                on:openQuestionCommitted={openQuestionCommitted}
+                {baseUrl}
+                {userId}
+            />
+            <OpenQuestions
+                bind:this={openQuestions}
+                {challengePool}
+                {baseUrl}
+                {userId}
+            />
+        </div>
     {/if}
 </div>

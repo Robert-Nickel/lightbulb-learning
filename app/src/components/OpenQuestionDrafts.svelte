@@ -62,7 +62,10 @@
         fetchOpenQuestionDrafts();
     }
 
-    async function commitOpenQuestion(openQuestionDraft: OpenQuestionDraft, userId: string) {
+    async function commitOpenQuestion(
+        openQuestionDraft: OpenQuestionDraft,
+        userId: string
+    ) {
         await DataStore.save(
             new OpenQuestion({
                 questionText: openQuestionDraft.questionText,
@@ -122,57 +125,60 @@
     {#if openQuestionDrafts.length > 0}<div class="text-xl mt-8">Drafts</div>
     {/if}
 
-    {#each openQuestionDrafts as openQuestionDraft}
-        <div class="rounded space-y-2 bg-gray-300 p-4">
-            <div class="flex justify-between ">
-                <div>Question: {openQuestionDraft.questionText}</div>
-                <div>
-                    <button
-                        on:click={() =>
-                            deleteOpenQuestionDraft(openQuestionDraft.id)}
-                        class="w-32">Delete</button
-                    >
-                </div>
-            </div>
-
-            {#if openQuestionDraft.answerText == null}
-                <div class="flex justify-between space-x-2">
-                    <div class="w-full">
-                        <input
-                            class="w-full"
-                            placeholder="What is the correct answer?"
-                            id="openQuestionDraftAnswerText"
-                        />
-                    </div>
+    {#if openQuestionDrafts && openQuestionDrafts.length > 0}
+        {#each openQuestionDrafts as openQuestionDraft}
+            <div class="rounded space-y-2 bg-gray-300 p-4">
+                <div class="flex justify-between ">
+                    <div>Question: {openQuestionDraft.questionText}</div>
                     <div>
                         <button
                             on:click={() =>
-                                updateOpenQuestionDraftWithAnswer(
-                                    openQuestionDraft
-                                )}
-                            class="w-32">Save Answer</button
-                        >
-                    </div>
-                </div>
-            {:else}
-                <div class="flex justify-between">
-                    <div>Answer: {openQuestionDraft.answerText}</div>
-                    <div>
-                        <button
-                            on:click={() =>
-                                deleteMyAnswerFromOpenQuestionDraft(
-                                    openQuestionDraft
-                                )}
+                                deleteOpenQuestionDraft(openQuestionDraft.id)}
                             class="w-32">Delete</button
                         >
                     </div>
                 </div>
-            {/if}
-            <button
-                disabled={!openQuestionDraft.answerText}
-                on:click={() => commitOpenQuestion(openQuestionDraft, userId)}
-                class="w-32">Publish</button
-            >
-        </div>
-    {/each}
+
+                {#if openQuestionDraft.answerText == null}
+                    <div class="flex justify-between space-x-2">
+                        <div class="w-full">
+                            <input
+                                class="w-full"
+                                placeholder="What is the correct answer?"
+                                id="openQuestionDraftAnswerText"
+                            />
+                        </div>
+                        <div>
+                            <button
+                                on:click={() =>
+                                    updateOpenQuestionDraftWithAnswer(
+                                        openQuestionDraft
+                                    )}
+                                class="w-32">Save Answer</button
+                            >
+                        </div>
+                    </div>
+                {:else}
+                    <div class="flex justify-between">
+                        <div>Answer: {openQuestionDraft.answerText}</div>
+                        <div>
+                            <button
+                                on:click={() =>
+                                    deleteMyAnswerFromOpenQuestionDraft(
+                                        openQuestionDraft
+                                    )}
+                                class="w-32">Delete</button
+                            >
+                        </div>
+                    </div>
+                {/if}
+                <button
+                    disabled={!openQuestionDraft.answerText}
+                    on:click={() =>
+                        commitOpenQuestion(openQuestionDraft, userId)}
+                    class="w-32">Publish</button
+                >
+            </div>
+        {/each}
+    {/if}
 </div>

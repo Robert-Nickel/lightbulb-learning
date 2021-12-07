@@ -4,6 +4,7 @@
     import { DataStore } from "@aws-amplify/datastore";
     import { OpenAnswerDraft, OpenQuestion, OpenAnswer } from "../models";
     import OpenFeedback from "./OpenFeedback.svelte";
+    import { Auth } from "aws-amplify";
 
     export let baseUrl;
     export let openQuestion: OpenQuestion;
@@ -27,7 +28,8 @@
         openAnswer = openAnswers[0];
     }
 
-    async function saveOpenAnswerDraft(openQuestion: OpenQuestion, answerText) {
+    async function saveOpenAnswerDraft(openQuestion: OpenQuestion) {
+        const answerText = document.getElementById("openAnswerDraft").value
         await DataStore.save(
             new OpenAnswerDraft({
                 answerText,
@@ -84,41 +86,58 @@
             .then((result) => console.log(result))
             .catch((error) => console.log("error", error));
     }
+
+    async function isOpenQuestionUserOwned(openQuestion: OpenQuestion) {
+        let user = await Auth.currentAuthenticatedUser();
+        return openQuestion.owner == user.attributes.sub;
+    }
 </script>
 
-<div>
+<div class="space-y-2 mt-2">
     {#if openAnswer}
         Answer: {openAnswer.answerText}
         <OpenFeedback bind:openAnswer baseUrl />
+    {:else if openAnswerDraft}
+        <div class="flex justify-between">
+            <div>{openAnswerDraft.answerText}</div>
+            <div>
+                <button
+                    on:click={() =>
+                        deleteMyAnswerDraft(openAnswerDraft, openQuestion)}
+                    class="w-32">Delete</button
+                >
+            </div>
+        </div>
+        <button
+            disabled={!openAnswerDraft}
+            on:click={() => commitOpenAnswer(openAnswerDraft, openQuestion)}
+            class="w-32">Publish</button
+        >
     {:else}
-        {#if openAnswerDraft}
-            <div class="flex justify-between">
-                <div>{openAnswerDraft.answerText}</div>
+        {#await isOpenQuestionUserOwned(openQuestion) then isUserOwned}
+            {#if !isUserOwned}
+                <div class="flex justify-between space-x-2">
+                    <div class="w-full">
+                        <input
+                            id="openAnswerDraft"
+                            class="w-full"
+                            placeholder="Answer this question"
+                        />
+                    </div>
+                    <div>
+                        <button on:click={() => saveOpenAnswerDraft(openQuestion)} class="w-32"
+                            >Save Draft</button
+                        >
+                    </div>
+                </div>
                 <div>
                     <button
+                        disabled={!openAnswerDraft}
                         on:click={() =>
-                            deleteMyAnswerDraft(openAnswerDraft, openQuestion)}
-                        class="w-32">Delete</button
+                            commitOpenAnswer(openAnswerDraft, openQuestion)}
+                        class="w-32">Publish</button
                     >
-                </div>
-            </div>
-        {:else}
-            <input
-                class="w-full"
-                placeholder="Answer this question"
-                on:keydown={(e) => {
-                    if (e.key === "Enter") {
-                        saveOpenAnswerDraft(openQuestion, e.target.value);
-                    }
-                }}
-            />
-        {/if}
-        <div>
-            <button
-                disabled={!openAnswerDraft}
-                on:click={() => commitOpenAnswer(openAnswerDraft, openQuestion)}
-                class="w-32">Commit</button
-            >
-        </div>
+                </div>{/if}
+        {/await}
     {/if}
 </div>

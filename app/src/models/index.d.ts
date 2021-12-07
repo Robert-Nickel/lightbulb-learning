@@ -76,6 +76,7 @@ export declare class OpenQuestion {
   readonly id: string;
   readonly questionText?: string;
   readonly challengepoolID?: string;
+  readonly owner?: string;
   readonly OpenAnswers?: (OpenAnswer | null)[];
   readonly OpenAnswerDrafts?: (OpenAnswerDraft | null)[];
   readonly createdAt?: string;

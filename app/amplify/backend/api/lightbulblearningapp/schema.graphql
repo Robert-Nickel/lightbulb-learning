@@ -7,6 +7,7 @@ type OpenAnswerDraft @model @auth(rules: [{allow: public}, {allow: owner}]) @key
 type OpenAnswer @model @auth(rules: [{allow: public}]) @key(name: "byOpenQuestion", fields: ["openquestionID"]) {
   id: ID!
   answerText: String
+  owner: ID
   openquestionID: ID
 }
 
@@ -19,6 +20,7 @@ type OpenFeedbackDraft @model @auth(rules: [{allow: public}, {allow: owner}]) @k
 type OpenFeedback @model @auth(rules: [{allow: public}]) @key(name: "byOpenAnswer", fields: ["openanswerID"]) {
   id: ID!
   feedbackText: String
+  owner: ID
   openanswerID: ID
 }
 
@@ -26,6 +28,7 @@ type OpenQuestion @model @auth(rules: [{allow: public}, {allow: owner, operation
   id: ID!
   questionText: String
   challengepoolID: ID
+  owner: ID
   OpenAnswers: [OpenAnswer] @connection(keyName: "byOpenQuestion", fields: ["id"])
   OpenAnswerDrafts: [OpenAnswerDraft] @connection(keyName: "byOpenQuestion", fields: ["id"])
 }

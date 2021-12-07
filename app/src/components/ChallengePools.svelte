@@ -30,7 +30,7 @@
         const description = document.getElementById("challengePoolDescription").value
         await DataStore.save(new ChallengePool({ description: description }));
         fetchChallengePools();
-
+        document.getElementById("challengePoolDescription").value = ""
         dispatch("toast", { type: "success", text: "Challenge Pool created!" });
     }
 

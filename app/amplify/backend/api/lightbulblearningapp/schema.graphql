@@ -26,6 +26,7 @@ type OpenQuestion @model @auth(rules: [{allow: public}, {allow: owner, operation
   id: ID!
   questionText: String
   challengepoolID: ID
+  owner: ID
   OpenAnswers: [OpenAnswer] @connection(keyName: "byOpenQuestion", fields: ["id"])
   OpenAnswerDrafts: [OpenAnswerDraft] @connection(keyName: "byOpenQuestion", fields: ["id"])
 }

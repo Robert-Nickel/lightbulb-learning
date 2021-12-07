@@ -4,6 +4,7 @@
     import { DataStore } from "@aws-amplify/datastore";
     import { OpenAnswerDraft, OpenQuestion, OpenAnswer } from "../models";
     import OpenFeedback from "./OpenFeedback.svelte";
+    import { Auth } from "aws-amplify";
 
     export let baseUrl;
     export let openQuestion: OpenQuestion;
@@ -84,41 +85,52 @@
             .then((result) => console.log(result))
             .catch((error) => console.log("error", error));
     }
+
+    async function isOpenQuestionUserOwned(openQuestion: OpenQuestion) {
+        let user = await Auth.currentAuthenticatedUser();
+        return openQuestion.owner == user.attributes.sub;
+    }
 </script>
 
 <div>
     {#if openAnswer}
         Answer: {openAnswer.answerText}
         <OpenFeedback bind:openAnswer baseUrl />
+    {:else if openAnswerDraft}
+        <div class="flex justify-between">
+            <div>{openAnswerDraft.answerText}</div>
+            <div>
+                <button
+                    on:click={() =>
+                        deleteMyAnswerDraft(openAnswerDraft, openQuestion)}
+                    class="w-32">Delete</button
+                >
+            </div>
+        </div>
+        <button
+            disabled={!openAnswerDraft}
+            on:click={() => commitOpenAnswer(openAnswerDraft, openQuestion)}
+            class="w-32">Commit</button
+        >
     {:else}
-        {#if openAnswerDraft}
-            <div class="flex justify-between">
-                <div>{openAnswerDraft.answerText}</div>
+        {#await isOpenQuestionUserOwned(openQuestion) then isUserOwned}
+            {#if !isUserOwned}<input
+                    class="w-full"
+                    placeholder="Answer this question"
+                    on:keydown={(e) => {
+                        if (e.key === "Enter") {
+                            saveOpenAnswerDraft(openQuestion, e.target.value);
+                        }
+                    }}
+                />
                 <div>
                     <button
+                        disabled={!openAnswerDraft}
                         on:click={() =>
-                            deleteMyAnswerDraft(openAnswerDraft, openQuestion)}
-                        class="w-32">Delete</button
+                            commitOpenAnswer(openAnswerDraft, openQuestion)}
+                        class="w-32">Commit</button
                     >
-                </div>
-            </div>
-        {:else}
-            <input
-                class="w-full"
-                placeholder="Answer this question"
-                on:keydown={(e) => {
-                    if (e.key === "Enter") {
-                        saveOpenAnswerDraft(openQuestion, e.target.value);
-                    }
-                }}
-            />
-        {/if}
-        <div>
-            <button
-                disabled={!openAnswerDraft}
-                on:click={() => commitOpenAnswer(openAnswerDraft, openQuestion)}
-                class="w-32">Commit</button
-            >
-        </div>
+                </div>{/if}
+        {/await}
     {/if}
 </div>

@@ -3,6 +3,7 @@
     const dispatch = createEventDispatcher();
     import { DataStore } from "@aws-amplify/datastore";
     import { OpenQuestionDraft, ChallengePool, OpenQuestion } from "../models";
+    import { Auth } from "aws-amplify";
 
     export let baseUrl;
     export let challengePool: ChallengePool;
@@ -29,7 +30,7 @@
         document.getElementById("openQuestionDraftQuestionText").value = "";
 
         await fetchOpenQuestionDrafts();
-        document.getElementById("openQuestionDraftAnswerText").focus()
+        document.getElementById("openQuestionDraftAnswerText").focus();
     }
 
     async function updateOpenQuestionDraftWithAnswer(
@@ -61,10 +62,13 @@
     }
 
     async function commitOpenQuestion(openQuestionDraft: OpenQuestionDraft) {
+        const user = await Auth.currentAuthenticatedUser();
+        const owner = user.attributes.sub;
         await DataStore.save(
             new OpenQuestion({
                 questionText: openQuestionDraft.questionText,
                 challengepoolID: openQuestionDraft.challengepoolID,
+                owner,
             })
         );
         dispatch("openQuestionCommitted");
@@ -116,7 +120,9 @@
 </div>
 
 <div class="space-y-2">
-    {#if openQuestionDrafts.length > 0}<div class="text-xl mt-8">Drafts</div>{/if}
+    {#if openQuestionDrafts.length > 0}<div class="text-xl mt-8">
+            Drafts
+        </div>{/if}
 
     {#each openQuestionDrafts as openQuestionDraft}
         <div class="rounded space-y-2 bg-gray-300 p-4">

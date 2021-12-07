@@ -1,6 +1,6 @@
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as path from 'path';
-import { PolicyStatement } from '@aws-cdk/aws-iam';
+import { Effect, PolicyStatement } from '@aws-cdk/aws-iam';
 import { CorsHttpMethod, HttpApi, HttpMethod } from '@aws-cdk/aws-apigatewayv2';
 import { LambdaProxyIntegration } from '@aws-cdk/aws-apigatewayv2-integrations';
 import * as sns from '@aws-cdk/aws-sns';
@@ -8,6 +8,7 @@ import * as sqs from '@aws-cdk/aws-sqs';
 import * as subs from '@aws-cdk/aws-sns-subscriptions';
 import * as cdk from '@aws-cdk/core';
 import * as lambdaEventSources from '@aws-cdk/aws-lambda-event-sources';
+import * as iam from '@aws-cdk/aws-iam';
 
 export class InfrastructureStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
@@ -51,6 +52,29 @@ export class InfrastructureStack extends cdk.Stack {
       new lambdaEventSources.SqsEventSource(createOpenQuestionQueue)
     );
     openQuestionTopic.addSubscription(new subs.SqsSubscription(createOpenQuestionQueue));
+  
+    const freeRole = new iam.Role(this, 'lightbulb-learning-FreeRole', {
+      assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+      description: 'Lightbulb-Learning Free Role',
+    });
+
+    const standardRole = new iam.Role(this, 'lightbulb-learning-StandardRole', {
+      assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+      description: 'Lightbulb-Learning Standard Role',
+    });
+
+    const premiumRole = new iam.Role(this, 'lightbulb-learning-PremiumRole', {
+      assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+      description: 'Lightbulb-Learning Premium Role',
+    });
+
+    const createGroupLambda = buildLambda('createGroupLambda', this);
+    const createGroupPolicy = new PolicyStatement({
+      resources: ["*"],
+      actions: ["cognito-idp:CreateGroup", "iam:PassRole"],
+      effect: Effect.ALLOW
+    })
+    createGroupLambda.addToRolePolicy(createGroupPolicy)
 
     // This is currently not required, but might be very helpful soon.
     /*
@@ -96,6 +120,13 @@ export class InfrastructureStack extends cdk.Stack {
       methods: [HttpMethod.POST, HttpMethod.OPTIONS],
       integration: new LambdaProxyIntegration({
         handler: commitOpenFeedbackLambda,
+      }),
+    });
+    httpApi.addRoutes({
+      path: '/createGroup',
+      methods: [HttpMethod.POST, HttpMethod.OPTIONS],
+      integration: new LambdaProxyIntegration({
+        handler: createGroupLambda,
       }),
     });
 

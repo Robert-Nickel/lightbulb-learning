@@ -9,10 +9,12 @@
     export let userId: string;
 
     let openFeedbackDraft: OpenFeedbackDraft;
-    let openFeedback: OpenFeedback;
+    let myOpenFeedback: OpenFeedback;
+    let openFeedbacks: Array<OpenFeedback>;
 
     fetchOpenFeedbackDraft(openAnswer);
-    fetchOpenFeedback(openAnswer);
+    fetchMyOpenFeedback(openAnswer);
+    fetchOpenFeedbacks(openAnswer);
 
     async function fetchOpenFeedbackDraft(openAnswer) {
         let openFeedbackDrafts = await DataStore.query(OpenFeedbackDraft, (f) =>
@@ -21,15 +23,22 @@
         openFeedbackDraft = openFeedbackDrafts[0];
     }
 
-    async function fetchOpenFeedback(openAnswer) {
-        let openFeedbacks = await DataStore.query(OpenFeedback, (f) =>
+    async function fetchMyOpenFeedback(openAnswer) {
+        let openFeedbacks = await DataStore.query(
+            OpenFeedback,
+            (f) => f.openanswerID("eq", openAnswer.id) && f.owner("eq", userId)
+        );
+        myOpenFeedback = openFeedbacks[0];
+    }
+
+    async function fetchOpenFeedbacks(openAnswer) {
+        openFeedbacks = await DataStore.query(OpenFeedback, (f) =>
             f.openanswerID("eq", openAnswer.id)
         );
-        openFeedback = openFeedbacks[0];
     }
 
     async function saveOpenFeedbackDraft(openAnswer: OpenAnswer) {
-        const feedbackText = document.getElementById("openFeedbackDraft").value
+        const feedbackText = document.getElementById("openFeedbackDraft").value;
         await DataStore.save(
             new OpenFeedbackDraft({
                 feedbackText,
@@ -48,15 +57,16 @@
         let myOpenFeedback: OpenFeedback = new OpenFeedback({
             feedbackText: openFeedbackDraft.feedbackText,
             openanswerID: openFeedbackDraft.openanswerID,
+            owner: userId,
         });
         await DataStore.save(myOpenFeedback);
-        openFeedback = myOpenFeedback;
 
-        publishOpenFeedbackCommittedEvent(openFeedback);
+        publishOpenFeedbackCommittedEvent(myOpenFeedback);
 
         dispatch("toast", { type: "success", text: "Open Feedback created!" });
 
-        fetchOpenFeedback(openAnswer);
+        fetchMyOpenFeedback(openAnswer);
+        fetchOpenFeedbacks(openAnswer);
     }
 
     async function deleteMyFeedbackDraft(
@@ -91,8 +101,11 @@
 </script>
 
 <div class="space-y-2">
-    {#if openFeedback}
-        Feedback: {openFeedback.feedbackText}
+    {#if myOpenFeedback}
+        <div class="rounded bg-gray-300 p-4 space-y-2">
+            <div class="italic">My Feedback:</div>
+            {myOpenFeedback.feedbackText}
+        </div>
     {:else if openAnswer.owner != userId}
         {#if openFeedbackDraft}
             <div class="flex justify-between">
@@ -133,5 +146,18 @@
                 class="w-32">Commit</button
             >
         </div>
+    {/if}
+    {#if openAnswer.owner == userId || myOpenFeedback}
+        <!--I can see other peoples feedback, if it was my answer or I already provided my feedback-->
+        {#if openFeedbacks}
+            <div class="space-y-2">
+                <div class="mb-2 italic">Other people's feedback:</div>
+                {#each openFeedbacks as openFeedback}
+                    <div class="rounded bg-gray-300 p-4 space-y-2">
+                        {openFeedback.feedbackText}
+                    </div>
+                {/each}
+            </div>
+        {/if}
     {/if}
 </div>

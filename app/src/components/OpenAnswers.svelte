@@ -146,11 +146,13 @@
         </div>
     {/if}
     {#if openAnswers && openAnswers.length > 0}
-        {#each openAnswers as openAnswer}
-            <div class="rounded space-y-2 bg-gray-200 p-4">
-                <div>{openAnswer.answerText}</div>
-                <OpenFeedback bind:openAnswer {baseUrl} {userId} />
-            </div>
-        {/each}
+        <div class="mt-2">
+            {#each openAnswers as openAnswer}
+                <div class="rounded space-y-2 bg-gray-200 p-4">
+                    <div>{openAnswer.answerText}</div>
+                    <OpenFeedback bind:openAnswer {baseUrl} {userId} />
+                </div>
+            {/each}
+        </div>
     {/if}
 </div>

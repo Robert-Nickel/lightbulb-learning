@@ -22,7 +22,7 @@
     }
 </script>
 
-<div class="bg-gray-200 space-y-4 p-8">
+<div class="bg-gray-200 rounded space-y-4 p-8">
     <div class="flex justify-between">
         <div class="flex space-x-3">
             <div on:click={() => (open = !open)}>

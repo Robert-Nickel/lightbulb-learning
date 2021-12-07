@@ -3,7 +3,6 @@
     const dispatch = createEventDispatcher();
     import { DataStore } from "@aws-amplify/datastore";
     import { OpenQuestionDraft, ChallengePool, OpenQuestion } from "../models";
-    import { Auth } from "aws-amplify";
 
     export let baseUrl;
     export let challengePool: ChallengePool;
@@ -64,13 +63,11 @@
     }
 
     async function commitOpenQuestion(openQuestionDraft: OpenQuestionDraft) {
-        const user = await Auth.currentAuthenticatedUser();
-        const owner = user.attributes.sub;
         await DataStore.save(
             new OpenQuestion({
                 questionText: openQuestionDraft.questionText,
                 challengepoolID: openQuestionDraft.challengepoolID,
-                owner,
+                owner: userId,
             })
         );
         dispatch("openQuestionCommitted");

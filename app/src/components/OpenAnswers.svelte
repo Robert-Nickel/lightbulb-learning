@@ -4,7 +4,6 @@
     import { DataStore } from "@aws-amplify/datastore";
     import { OpenAnswerDraft, OpenQuestion, OpenAnswer } from "../models";
     import OpenFeedback from "./OpenFeedback.svelte";
-    import { Auth } from "aws-amplify";
 
     export let baseUrl;
     export let userId;
@@ -47,13 +46,11 @@
         openQuestion: OpenQuestion
     ) {
         deleteMyAnswerDraft(openAnswerDraft, openQuestion);
-        const user = await Auth.currentAuthenticatedUser();
-        const owner = user.attributes.sub;
 
         let myOpenAnswer: OpenAnswer = new OpenAnswer({
             answerText: openAnswerDraft.answerText,
             openquestionID: openAnswerDraft.openquestionID,
-            owner,
+            owner: userId,
         });
         await DataStore.save(myOpenAnswer);
         myOpenAnswer = myOpenAnswer;

@@ -3,7 +3,6 @@
     const dispatch = createEventDispatcher();
     import { DataStore } from "@aws-amplify/datastore";
     import { OpenFeedbackDraft, OpenFeedback, OpenAnswer } from "../models";
-    import { Auth } from "aws-amplify";
 
     export let baseUrl;
     export let openAnswer: OpenAnswer;

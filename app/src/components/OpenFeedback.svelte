@@ -28,7 +28,8 @@
         openFeedback = openFeedbacks[0];
     }
 
-    async function saveOpenFeedbackDraft(openAnswer: OpenAnswer, feedbackText) {
+    async function saveOpenFeedbackDraft(openAnswer: OpenAnswer) {
+        const feedbackText = document.getElementById("openFeedbackDraft").value
         await DataStore.save(
             new OpenFeedbackDraft({
                 feedbackText,
@@ -89,7 +90,7 @@
     }
 </script>
 
-<div>
+<div class="space-y-2">
     {#if openFeedback}
         Feedback: {openFeedback.feedbackText}
     {:else if openAnswer.owner != userId}
@@ -108,15 +109,21 @@
                 </div>
             </div>
         {:else}
-            <input
-                class="w-full"
-                placeholder="Provide feedback to this answer"
-                on:keydown={(e) => {
-                    if (e.key === "Enter") {
-                        saveOpenFeedbackDraft(openAnswer, e.target.value);
-                    }
-                }}
-            />
+            <div class="flex justify-between space-x-2 mt-2">
+                <div class="w-full">
+                    <input
+                        id="openFeedbackDraft"
+                        class="w-full"
+                        placeholder="Provide feedback to this answer"
+                    />
+                </div>
+                <div>
+                    <button
+                        on:click={() => saveOpenFeedbackDraft(openAnswer)}
+                        class="w-32">Save Draft</button
+                    >
+                </div>
+            </div>
         {/if}
         <div>
             <button

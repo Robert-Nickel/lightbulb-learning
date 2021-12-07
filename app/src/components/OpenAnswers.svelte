@@ -5,7 +5,7 @@
     import { OpenAnswerDraft, OpenQuestion, OpenAnswer } from "../models";
     import OpenFeedback from "./OpenFeedback.svelte";
 
-    export let baseUrl: string;;
+    export let baseUrl: string;
     export let userId: string;
     export let openQuestion: OpenQuestion;
     let openAnswerDraft: OpenAnswerDraft;
@@ -145,10 +145,12 @@
             >
         </div>
     {/if}
-    {#each openAnswers as openAnswer}
-        <div class=" mt-2">
-            {openAnswer.answerText}
-        </div>
-        <OpenFeedback bind:openAnswer={openAnswer} {baseUrl} {userId} />
-    {/each}
+    {#if openAnswers && openAnswers.length > 0}
+        {#each openAnswers as openAnswer}
+            <div class="rounded space-y-2 bg-gray-200 p-4">
+                <div>{openAnswer.answerText}</div>
+                <OpenFeedback bind:openAnswer {baseUrl} {userId} />
+            </div>
+        {/each}
+    {/if}
 </div>

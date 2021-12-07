@@ -39,6 +39,11 @@
 		const user = await Auth.currentAuthenticatedUser();
 		return user.attributes.sub;
 	}
+
+	async function getUsername() {
+		const user = await Auth.currentAuthenticatedUser();
+		return user.attributes.email;
+	}
 </script>
 
 <TailwindCss />
@@ -62,6 +67,9 @@
 	<NewsletterSignUp />
 {/if}
 <SvelteToast />
+{#await getUsername() then username}
+	<div class="m-auto text-sm italic w-64 mt-48">Logged in as: {username}</div>
+{/await}
 
 <!--Go here to see which toasts are possible: https://zerodevx.github.io/svelte-toast/-->
 <style>

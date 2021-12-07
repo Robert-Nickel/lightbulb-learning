@@ -32,8 +32,9 @@
     }
 
     async function fetchOpenFeedbacks(openAnswer) {
-        openFeedbacks = await DataStore.query(OpenFeedback, (f) =>
-            f.openanswerID("eq", openAnswer.id)
+        openFeedbacks = await DataStore.query(
+            OpenFeedback,
+            (f) => f.openanswerID("eq", openAnswer.id) && f.owner("ne", userId)
         );
     }
 
@@ -149,7 +150,7 @@
     {/if}
     {#if openAnswer.owner == userId || myOpenFeedback}
         <!--I can see other peoples feedback, if it was my answer or I already provided my feedback-->
-        {#if openFeedbacks}
+        {#if openFeedbacks && openFeedbacks.length > 0}
             <div class="space-y-2">
                 <div class="mb-2 italic">Other people's feedback:</div>
                 {#each openFeedbacks as openFeedback}

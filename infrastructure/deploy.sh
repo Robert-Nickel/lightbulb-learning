@@ -2,17 +2,15 @@
 # deploy the frontend
 cd ../app
 # build the lambdas
-cd ../lambdas/commitOpenQuestionLambda
-sbt assembly
-cd ../createOpenQuestionLambda
-sbt assembly
-cd ../commitOpenAnswerLambda
-sbt assembly
-cd ../commitOpenFeedbackLambda
-sbt assembly
+cd ../lambdas/
+for d in */ ; do
+    cd "$d"
+    sbt assembly
+    cd ..
+done
 # deploy the whole infrastructure 
-cd ../../infrastructure
+cd ../infrastructure
 npm install
 cdk synth
-cdk deploy
+cdk deploy --require-approval never
 echo "--- Deployment finished ---"

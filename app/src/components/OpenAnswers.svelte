@@ -28,7 +28,8 @@
         openAnswer = openAnswers[0];
     }
 
-    async function saveOpenAnswerDraft(openQuestion: OpenQuestion, answerText) {
+    async function saveOpenAnswerDraft(openQuestion: OpenQuestion) {
+        const answerText = document.getElementById("openAnswerDraft").value
         await DataStore.save(
             new OpenAnswerDraft({
                 answerText,
@@ -92,7 +93,7 @@
     }
 </script>
 
-<div>
+<div class="space-y-2 mt-2">
     {#if openAnswer}
         Answer: {openAnswer.answerText}
         <OpenFeedback bind:openAnswer baseUrl />
@@ -110,25 +111,31 @@
         <button
             disabled={!openAnswerDraft}
             on:click={() => commitOpenAnswer(openAnswerDraft, openQuestion)}
-            class="w-32">Commit</button
+            class="w-32">Publish</button
         >
     {:else}
         {#await isOpenQuestionUserOwned(openQuestion) then isUserOwned}
-            {#if !isUserOwned}<input
-                    class="w-full"
-                    placeholder="Answer this question"
-                    on:keydown={(e) => {
-                        if (e.key === "Enter") {
-                            saveOpenAnswerDraft(openQuestion, e.target.value);
-                        }
-                    }}
-                />
+            {#if !isUserOwned}
+                <div class="flex justify-between space-x-2">
+                    <div class="w-full">
+                        <input
+                            id="openAnswerDraft"
+                            class="w-full"
+                            placeholder="Answer this question"
+                        />
+                    </div>
+                    <div>
+                        <button on:click={() => saveOpenAnswerDraft(openQuestion)} class="w-32"
+                            >Save Draft</button
+                        >
+                    </div>
+                </div>
                 <div>
                     <button
                         disabled={!openAnswerDraft}
                         on:click={() =>
                             commitOpenAnswer(openAnswerDraft, openQuestion)}
-                        class="w-32">Commit</button
+                        class="w-32">Publish</button
                     >
                 </div>{/if}
         {/await}

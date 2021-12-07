@@ -22,7 +22,7 @@
         <div class="text-xl mt-8">All Open Questions</div>
     {/if}
     {#each openQuestions as openQuestion}
-        <div class="rounded space-y-2 bg-gray-300 p-4">
+        <div class="rounded bg-gray-300 p-4">
             <div>{openQuestion.questionText}</div>
 
             <OpenAnswers bind:openQuestion baseUrl />

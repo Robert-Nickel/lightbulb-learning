@@ -90,6 +90,7 @@ export declare class OpenQuestion {
 export declare class ChallengePool {
   readonly id: string;
   readonly description?: string;
+  readonly owner?: string;
   readonly OpenQuestions?: (OpenQuestion | null)[];
   readonly OpenQuestionDrafts?: (OpenQuestionDraft | null)[];
   readonly createdAt?: string;

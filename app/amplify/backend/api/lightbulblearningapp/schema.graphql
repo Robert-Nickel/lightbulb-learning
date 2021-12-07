@@ -36,6 +36,7 @@ type OpenQuestion @model @auth(rules: [{allow: public}, {allow: owner, operation
 type ChallengePool @model @auth(rules: [{allow: public}, {allow: owner, operations: [create, update, delete]}]) {
   id: ID!
   description: String
+  owner: ID
   OpenQuestions: [OpenQuestion] @connection(keyName: "byChallengePool", fields: ["id"])
   OpenQuestionDrafts: [OpenQuestionDraft] @connection(keyName: "byChallengePool", fields: ["id"])
 }

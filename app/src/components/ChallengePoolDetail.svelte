@@ -36,7 +36,7 @@
             </div>
         {/if}
     </div>
-    {#if open}
+    {#if open && userId == challengePool.owner}
         <OpenQuestionDrafts
             {challengePool}
             on:toast

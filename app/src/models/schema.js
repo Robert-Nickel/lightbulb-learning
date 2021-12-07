@@ -476,6 +476,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "owner": {
+                    "name": "owner",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "OpenQuestions": {
                     "name": "OpenQuestions",
                     "isArray": true,
@@ -654,5 +661,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "394c24e7a4955c171209c6f11eabad4c"
+    "version": "889eedc65fe0eacc6de1fe30c493082e"
 };

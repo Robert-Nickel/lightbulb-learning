@@ -16,7 +16,8 @@ lazy val root = project
       "software.amazon.awssdk" % "apache-client" % "2.17.96",
       "software.amazon.awssdk" % "cognitoidentityprovider" % "2.17.96",
       "software.amazon.awssdk" % "iam" % "2.17.96",
-      "org.slf4j" % "slf4j-log4j12" % "1.7.32"
+      "org.slf4j" % "slf4j-log4j12" % "1.7.32",
+      "com.amazonaws" % "aws-java-sdk-iam" % "1.12.125"
     )
   )
 assemblyJarName in assembly := "lambda-scala-seed.jar"

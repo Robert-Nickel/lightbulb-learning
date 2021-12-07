@@ -53,16 +53,25 @@ export class InfrastructureStack extends cdk.Stack {
     );
     openQuestionTopic.addSubscription(new subs.SqsSubscription(createOpenQuestionQueue));
   
-    // TODO: Create role FREE/STANDARD/PREMIUM
+    const freeRole = new iam.Role(this, 'lightbulb-learning-FreeRole', {
+      assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+      description: 'Lightbulb-Learning Free Role',
+    });
+
     const standardRole = new iam.Role(this, 'lightbulb-learning-StandardRole', {
       assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
       description: 'Lightbulb-Learning Standard Role',
     });
 
+    const premiumRole = new iam.Role(this, 'lightbulb-learning-PremiumRole', {
+      assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+      description: 'Lightbulb-Learning Premium Role',
+    });
+
     const createGroupLambda = buildLambda('createGroupLambda', this);
     const createGroupPolicy = new PolicyStatement({
       resources: ["*"],
-      actions: ["cognito-idp:CreateGroup"],
+      actions: ["cognito-idp:CreateGroup", "iam:PassRole"],
       effect: Effect.ALLOW
     })
     createGroupLambda.addToRolePolicy(createGroupPolicy)

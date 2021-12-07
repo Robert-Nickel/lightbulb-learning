@@ -20,6 +20,10 @@ import software.amazon.awssdk.services.cognitoidentityprovider.model.CognitoIden
 import software.amazon.awssdk.services.cognitoidentityprovider.model.CreateGroupRequest;
 import software.amazon.awssdk.services.iam.*;
 
+import com.amazonaws.services.identitymanagement.model._
+import com.amazonaws.services.identitymanagement.{AmazonIdentityManagement, AmazonIdentityManagementClientBuilder}
+
+
 /* AddUserToGroup
 {
    "GroupName": "string",
@@ -33,6 +37,7 @@ class Handler {
       context: Context
   ): APIGatewayV2HTTPResponse = {
     if (apiGatewayEvent != null && apiGatewayEvent.getBody() != null) {
+      println("Hi0")
       val userPoolId = "eu-central-1_bAc9VMMys"
       val eventBody = apiGatewayEvent.getBody()
       val httpClient = ApacheHttpClient.builder().build();
@@ -42,10 +47,51 @@ class Handler {
         .httpClient(httpClient)
         .build()
 
+
+        println("Hi")
+
+      // val iamClient = AmazonIdentityManagementClientBuilder.defaultClient()
+      // println("Hi2")
+
+      // val roleRequest = new GetRoleRequest()
+      // roleRequest.setRoleName("lightbulb-learning-StandardRole")
+      // println("Hi3")
+
+      // auslesen von ARNS
+      // val getRoles = iamClient.getRole(roleRequest)
+      // println("getRoles")
+      // println(getRoles)
+
+      // lazy val iamClient: AmazonIdentityManagement = buildIAMClient
+
+      // def buildIAMClient: AmazonIdentityManagement = setupClient {
+        
+      // }
+
+      try {
+      val iamClient = AmazonIdentityManagementClientBuilder.standard().build()
+      println("Build iamClient")
+      val roleRequest = new GetRoleRequest()
+        .builder()
+        .roleName("lightbulb-learning-StandardRole")
+        .build()
+      val result = iamClient.getRole(roleRequest)
+      println("get role call!")
+      println("result")
+      println(result)
+} catch {
+    case e: Exception => { 
+      println("Error!")
+      print(e)
+    }
+}
+   
+
       val request: CreateGroupRequest =   (
       CreateGroupRequest.builder()
-        .groupName("Testgruppe")
+        .groupName("Testgruppe2")
         .userPoolId(userPoolId)
+        .roleArn("arn:aws:iam::532688539985:role/InfrastructureStack-lightbulblearningStandardRoleD-HBLE12VPTWQ")
         .build()
       )
       

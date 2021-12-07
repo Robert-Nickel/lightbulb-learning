@@ -13,7 +13,8 @@
 
 	let sidebarOpen = false;
 	let showLogin = false;
-	const baseUrl: string = "https://yybkc7efv3.execute-api.eu-central-1.amazonaws.com";
+	const baseUrl: string =
+		"https://yybkc7efv3.execute-api.eu-central-1.amazonaws.com";
 
 	function login() {
 		showLogin = true;
@@ -47,7 +48,7 @@
 {#if $store != null}
 	{#await getUserId() then userId}
 		<main class="container mx-auto py-4 px-2 max-w-screen-sm">
-			<ChallengePools on:toast={showToast} baseUrl=${baseUrl} userId=${userId} />
+			<ChallengePools on:toast={showToast} {baseUrl} {userId} />
 		</main>
 	{/await}
 {:else if showLogin}

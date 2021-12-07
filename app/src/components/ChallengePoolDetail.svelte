@@ -41,14 +41,14 @@
             {challengePool}
             on:toast
             on:openQuestionCommitted={openQuestionCommitted}
-            baseUrl
-            userId
+            {baseUrl}
+            {userId}
         />
         <OpenQuestions
             bind:this={openQuestions}
             {challengePool}
-            baseUrl
-            userId
+            {baseUrl}
+            {userId}
         />
     {/if}
 </div>

@@ -149,6 +149,6 @@
         <div class=" mt-2">
             {openAnswer.answerText}
         </div>
-        <OpenFeedback bind:openAnswer={openAnswer} baseUrl userId />
+        <OpenFeedback bind:openAnswer={openAnswer} {baseUrl} {userId} />
     {/each}
 </div>

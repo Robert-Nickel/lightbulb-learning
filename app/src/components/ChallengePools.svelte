@@ -10,7 +10,6 @@
     export let userId: string;
     let challengePools: Array<ChallengePool> = [];
     let activeChallenge: ChallengePool;
-    let challengePoolDraft: string;
 
     fetchChallengePools();
 
@@ -51,8 +50,8 @@
                 {challengePool}
                 on:deleteClicked={() => deleteChallengePool(challengePool.id)}
                 on:toast
-                baseUrl
-                userId
+                {baseUrl}
+                {userId}
             />
         {/each}
         <div class="space-y-4">

@@ -18,8 +18,6 @@
     }
 </script>
 
-
-
 <div class="space-y-2">
     {#if openQuestions.length > 0}
         <div class="text-xl mt-8">All Open Questions</div>
@@ -28,7 +26,7 @@
         <div class="rounded bg-gray-300 p-4">
             <div>{openQuestion.questionText}</div>
 
-            <OpenAnswers bind:openQuestion baseUrl userId/>
+            <OpenAnswers bind:openQuestion {baseUrl} {userId} />
         </div>
     {/each}
 </div>

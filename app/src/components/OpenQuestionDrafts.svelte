@@ -62,7 +62,7 @@
         fetchOpenQuestionDrafts();
     }
 
-    async function commitOpenQuestion(openQuestionDraft: OpenQuestionDraft) {
+    async function commitOpenQuestion(openQuestionDraft: OpenQuestionDraft, userId: string) {
         await DataStore.save(
             new OpenQuestion({
                 questionText: openQuestionDraft.questionText,
@@ -119,9 +119,8 @@
 </div>
 
 <div class="space-y-2">
-    {#if openQuestionDrafts.length > 0}<div class="text-xl mt-8">
-            Drafts
-        </div>{/if}
+    {#if openQuestionDrafts.length > 0}<div class="text-xl mt-8">Drafts</div>
+    {/if}
 
     {#each openQuestionDrafts as openQuestionDraft}
         <div class="rounded space-y-2 bg-gray-300 p-4">
@@ -171,7 +170,7 @@
             {/if}
             <button
                 disabled={!openQuestionDraft.answerText}
-                on:click={() => commitOpenQuestion(openQuestionDraft)}
+                on:click={() => commitOpenQuestion(openQuestionDraft, userId)}
                 class="w-32">Publish</button
             >
         </div>

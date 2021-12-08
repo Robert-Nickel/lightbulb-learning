@@ -6,7 +6,8 @@
     import OpenQuestions from "./OpenQuestions.svelte";
 
     export let challengePool;
-    export let baseUrl;
+    export let baseUrl: string;
+    export let userId: string;
 
     let openQuestions;
 
@@ -21,7 +22,7 @@
     }
 </script>
 
-<div class="bg-gray-200 space-y-4 p-8">
+<div class="bg-gray-200 rounded p-8">
     <div class="flex justify-between">
         <div class="flex space-x-3">
             <div on:click={() => (open = !open)}>
@@ -29,19 +30,27 @@
             </div>
             <div>{challengePool.description}</div>
         </div>
-        {#if open}
+        {#if open && userId == challengePool.owner}
             <div>
                 <button on:click={deleteClicked} class="w-32">Delete</button>
             </div>
         {/if}
     </div>
     {#if open}
-        <OpenQuestionDrafts
-            {challengePool}
-            on:toast
-            on:openQuestionCommitted={openQuestionCommitted}
-            baseUrl
-        />
-        <OpenQuestions bind:this={openQuestions} {challengePool} baseUrl />
+        <div class="mt-2">
+            <OpenQuestionDrafts
+                {challengePool}
+                on:toast
+                on:openQuestionCommitted={openQuestionCommitted}
+                {baseUrl}
+                {userId}
+            />
+            <OpenQuestions
+                bind:this={openQuestions}
+                {challengePool}
+                {baseUrl}
+                {userId}
+            />
+        </div>
     {/if}
 </div>

@@ -9,10 +9,12 @@
 	import { SvelteToast, toast } from "@zerodevx/svelte-toast";
 	import NewsletterSignUp from "./components/NewsletterSignUp.svelte";
 	import WhatWeDo from "./components/WhatWeDo.svelte";
+	import { Auth } from "aws-amplify";
 
 	let sidebarOpen = false;
 	let showLogin = false;
-	const baseUrl = "https://yybkc7efv3.execute-api.eu-central-1.amazonaws.com"
+	const baseUrl: string =
+		"https://yybkc7efv3.execute-api.eu-central-1.amazonaws.com";
 
 	function login() {
 		showLogin = true;
@@ -32,6 +34,16 @@
 			theme,
 		});
 	}
+
+	async function getUserId(): Promise<string> {
+		const user = await Auth.currentAuthenticatedUser();
+		return user.attributes.sub;
+	}
+
+	async function getUsername() {
+		const user = await Auth.currentAuthenticatedUser();
+		return user.attributes.email;
+	}
 </script>
 
 <TailwindCss />
@@ -39,9 +51,11 @@
 <Navbar bind:sidebar={sidebarOpen} on:logout={logout} />
 
 {#if $store != null}
-	<main class="container mx-auto py-4 px-2 max-w-screen-sm">
-		<ChallengePools on:toast={showToast} baseUrl />
-	</main>
+	{#await getUserId() then userId}
+		<main class="container mx-auto py-4 px-2 max-w-screen-sm">
+			<ChallengePools on:toast={showToast} {baseUrl} {userId} />
+		</main>
+	{/await}
 {:else if showLogin}
 	<main class="container mx-auto py-4 px-2 max-w-screen-sm">
 		<Login />
@@ -53,6 +67,9 @@
 	<NewsletterSignUp />
 {/if}
 <SvelteToast />
+{#await getUsername() then username}
+	<div class="m-auto text-sm italic w-64 mt-48">Logged in as: {username}</div>
+{/await}
 
 <!--Go here to see which toasts are possible: https://zerodevx.github.io/svelte-toast/-->
 <style>

@@ -4,13 +4,17 @@
     import { DataStore } from "@aws-amplify/datastore";
     import { OpenFeedbackDraft, OpenFeedback, OpenAnswer } from "../models";
 
-    export let baseUrl;
+    export let baseUrl: string;
     export let openAnswer: OpenAnswer;
+    export let userId: string;
+
     let openFeedbackDraft: OpenFeedbackDraft;
-    let openFeedback: OpenFeedback;
+    let myOpenFeedback: OpenFeedback;
+    let openFeedbacks: Array<OpenFeedback>;
 
     fetchOpenFeedbackDraft(openAnswer);
-    fetchOpenFeedback(openAnswer);
+    fetchMyOpenFeedback(openAnswer);
+    fetchOpenFeedbacks(openAnswer);
 
     async function fetchOpenFeedbackDraft(openAnswer) {
         let openFeedbackDrafts = await DataStore.query(OpenFeedbackDraft, (f) =>
@@ -19,14 +23,23 @@
         openFeedbackDraft = openFeedbackDrafts[0];
     }
 
-    async function fetchOpenFeedback(openAnswer) {
-        let openFeedbacks = await DataStore.query(OpenFeedback, (f) =>
-            f.openanswerID("eq", openAnswer.id)
+    async function fetchMyOpenFeedback(openAnswer) {
+        let openFeedbacks = await DataStore.query(
+            OpenFeedback,
+            (f) => f.openanswerID("eq", openAnswer.id) && f.owner("eq", userId)
         );
-        openFeedback = openFeedbacks[0];
+        myOpenFeedback = openFeedbacks[0];
     }
 
-    async function saveOpenFeedbackDraft(openAnswer: OpenAnswer, feedbackText) {
+    async function fetchOpenFeedbacks(openAnswer) {
+        openFeedbacks = await DataStore.query(
+            OpenFeedback,
+            (f) => f.openanswerID("eq", openAnswer.id) && f.owner("ne", userId)
+        );
+    }
+
+    async function saveOpenFeedbackDraft(openAnswer: OpenAnswer) {
+        const feedbackText = document.getElementById("openFeedbackDraft").value;
         await DataStore.save(
             new OpenFeedbackDraft({
                 feedbackText,
@@ -45,15 +58,16 @@
         let myOpenFeedback: OpenFeedback = new OpenFeedback({
             feedbackText: openFeedbackDraft.feedbackText,
             openanswerID: openFeedbackDraft.openanswerID,
+            owner: userId,
         });
         await DataStore.save(myOpenFeedback);
-        openFeedback = myOpenFeedback;
 
-        publishOpenFeedbackCommittedEvent(openFeedback);
+        publishOpenFeedbackCommittedEvent(myOpenFeedback);
 
         dispatch("toast", { type: "success", text: "Open Feedback created!" });
 
-        fetchOpenFeedback(openAnswer);
+        fetchMyOpenFeedback(openAnswer);
+        fetchOpenFeedbacks(openAnswer);
     }
 
     async function deleteMyFeedbackDraft(
@@ -87,10 +101,13 @@
     }
 </script>
 
-<div>
-    {#if openFeedback}
-        Feedback: {openFeedback.feedbackText}
-    {:else}
+<div class="space-y-2">
+    {#if myOpenFeedback}
+        <div class="rounded bg-gray-300 p-4 space-y-2">
+            <div class="italic">My Feedback:</div>
+            {myOpenFeedback.feedbackText}
+        </div>
+    {:else if openAnswer.owner != userId}
         {#if openFeedbackDraft}
             <div class="flex justify-between">
                 <div>{openFeedbackDraft.feedbackText}</div>
@@ -106,15 +123,21 @@
                 </div>
             </div>
         {:else}
-            <input
-                class="w-full"
-                placeholder="Provide feedback to this answer"
-                on:keydown={(e) => {
-                    if (e.key === "Enter") {
-                        saveOpenFeedbackDraft(openAnswer, e.target.value);
-                    }
-                }}
-            />
+            <div class="flex justify-between space-x-2 mt-2">
+                <div class="w-full">
+                    <input
+                        id="openFeedbackDraft"
+                        class="w-full"
+                        placeholder="Provide feedback to this answer"
+                    />
+                </div>
+                <div>
+                    <button
+                        on:click={() => saveOpenFeedbackDraft(openAnswer)}
+                        class="w-32">Save Draft</button
+                    >
+                </div>
+            </div>
         {/if}
         <div>
             <button
@@ -124,5 +147,18 @@
                 class="w-32">Commit</button
             >
         </div>
+    {/if}
+    {#if openAnswer.owner == userId || myOpenFeedback}
+        <!--I can see other peoples feedback, if it was my answer or I already provided my feedback-->
+        {#if openFeedbacks && openFeedbacks.length > 0}
+            <div class="space-y-2">
+                <div class="mb-2 italic">Other people's feedback:</div>
+                {#each openFeedbacks as openFeedback}
+                    <div class="rounded bg-gray-300 p-4 space-y-2">
+                        {openFeedback.feedbackText}
+                    </div>
+                {/each}
+            </div>
+        {/if}
     {/if}
 </div>

@@ -1,14 +1,7 @@
-# Welcome to your CDK TypeScript project!
+# Infrastructure is managed here.
 
-This is a blank project for TypeScript development with CDK.
+## Create new amplify app for premium users
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
-
-## Useful commands
-
- * `npm run build`   compile typescript to js
- * `npm run watch`   watch for changes and compile
- * `npm run test`    perform the jest unit tests
- * `cdk deploy`      deploy this stack to your default AWS account/region
- * `cdk diff`        compare deployed stack with current state
- * `cdk synth`       emits the synthesized CloudFormation template
+1. `chmod +x create_amplify_app.sh` and `./create_amplify_app.sh`.
+2. (Press `y` a couple of times.)
+3. If everything worked fine, your browser opens the freshly deployed instance.

@@ -21,7 +21,9 @@ import software.amazon.awssdk.services.cognitoidentityprovider.model.CreateGroup
 import software.amazon.awssdk.services.iam.model.*;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.iam.IamClient;
-//import software.amazon.awssdk.services.iam.model.ListRolesRequest;
+import software.amazon.awssdk.services.iam.model.ListRolesRequest;
+
+import scala.collection.JavaConverters._
 
 /* AddUserToGroup
 {
@@ -51,25 +53,34 @@ class Handler {
             .httpClient(httpClient)
             .build()
 
-      // val listRolesRequest: ListRolesRequest = (
-      //   ListRolesRequest.builder()
-      //     .pathPrefix("/InfrastructureStack-lightbulblearningStandardRole")
-      //     .build()
-      // )
+      val listRolesRequest = (
+        ListRolesRequest.builder()
+          .pathPrefix("/")
+          .build()
+      )
 
-      // val roleList = iamClient.listRoles(listRolesRequest)
-      // println("roleList")
-      // println(roleList)
+      println("listRolesRequest created.")
+      val roleListResponse = iamClient.listRoles(listRolesRequest)
+      println("roleListResponse")
+      println(roleListResponse)
+      
+      println("roleListResponse.roles()")
+      println(roleListResponse.roles())
+
+      // roleListResponse.roles().stream().filter(role -> !role.RoleName().startsWith("InfrastructureStack-lightbulblearningStandardRole")).collect(Collectors.toList())
+      // TODO: sometimes you have to call this function multiple times until it starts working. (2 times POST request in POSTMAN is currently necessary.)
+      // FIXME: below code is currently not working!
+      val filteredResultForRole = roleListResponse.roles().asScala.filter(x => x.roleName.startsWith("InfrastructureStack-lightbulblearningStandardRole"))
+      print(filteredResultForRole)
+      
+      // val freeRole = "InfrastructureStack-lightbulblearningFreeRole"
 
       val roleRequest: GetRoleRequest = ( 
       GetRoleRequest.builder()
         .roleName("InfrastructureStack-lightbulblearningStandardRoleD-HBLE12VPTWQ")
         .build()
       )
-
-      val result = iamClient.getRole(roleRequest)
-      println("result")
-      println(result)
+      // val roleResponse: GetRoleResponse = iamClient.getRole(roleRequest)
 
       val request: CreateGroupRequest = (
       CreateGroupRequest.builder()

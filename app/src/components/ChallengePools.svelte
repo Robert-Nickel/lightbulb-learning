@@ -9,7 +9,6 @@
     export let baseUrl: string;
     export let userId: string;
     let challengePools: Array<ChallengePool> = [];
-    let activeChallenge: ChallengePool;
 
     fetchChallengePools();
 
@@ -44,35 +43,30 @@
     }
 </script>
 
-{#if activeChallenge != null}
-    <div>challenge mode for</div>
-    <div>{activeChallenge.description}</div>
-{:else}
+<div class="space-y-4">
+    {#each challengePools as challengePool}
+        <ChallengePoolDetail
+            {challengePool}
+            on:deleteClicked={() => deleteChallengePool(challengePool.id)}
+            on:toast
+            {baseUrl}
+            {userId}
+        />
+    {/each}
     <div class="space-y-4">
-        {#each challengePools as challengePool}
-            <ChallengePoolDetail
-                {challengePool}
-                on:deleteClicked={() => deleteChallengePool(challengePool.id)}
-                on:toast
-                {baseUrl}
-                {userId}
-            />
-        {/each}
-        <div class="space-y-4">
-            <div class="flex justify-between space-x-2">
-                <div class="w-full">
-                    <input
-                        id="challengePoolDescription"
-                        class="w-full"
-                        placeholder="Create new Challenge Pool"
-                    />
-                </div>
-                <div>
-                    <button on:click={createChallengePool} class="w-32"
-                        >Create</button
-                    >
-                </div>
+        <div class="flex justify-between space-x-2">
+            <div class="w-full">
+                <input
+                    id="challengePoolDescription"
+                    class="w-full"
+                    placeholder="Create new Challenge Pool"
+                />
+            </div>
+            <div>
+                <button on:click={createChallengePool} class="w-32"
+                    >Create</button
+                >
             </div>
         </div>
     </div>
-{/if}
+</div>

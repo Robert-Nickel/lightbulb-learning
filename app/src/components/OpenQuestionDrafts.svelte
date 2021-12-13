@@ -107,7 +107,7 @@
 </script>
 
 <div class="flex justify-between space-x-2">
-    <div class="w-full">
+    <div class="w-full mt-4">
         <input
             class="w-full"
             placeholder="Create an open question"
@@ -115,7 +115,7 @@
         />
     </div>
     <div>
-        <button on:click={createOpenQuestionDraft} class="w-32"
+        <button on:click={createOpenQuestionDraft} class="w-32 mt-4"
             >Save Draft</button
         >
     </div>

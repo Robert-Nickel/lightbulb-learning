@@ -101,8 +101,8 @@
 
 <div class="space-y-2">
     {#if myOpenAnswer}
-        <div class=" mt-2">
-            My Answer: {myOpenAnswer.answerText}
+        <div class="italic mt-2 whitespace-pre">
+            ✅  You have answered this question.<!--My Answer: {myOpenAnswer.answerText}-->
         </div>
     {:else if openAnswerDraft}
         <div class="flex justify-between mt-2">
@@ -146,7 +146,7 @@
         </div>
     {/if}
     {#if openAnswers && openAnswers.length > 0}
-        <div class="mt-2">
+        <div class="mt-2 space-y-2">
             {#each openAnswers as openAnswer}
                 <div class="rounded space-y-2 bg-gray-200 p-4">
                     <div>{openAnswer.answerText}</div>

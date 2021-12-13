@@ -22,7 +22,7 @@
 </script>
 
 <aside
-	class="absolute w-64 h-full bg-gray-200 border-r-2 shadow-lg z-10 p-8 pt-24 space-y-2 text-xl"
+	class="absolute w-64 h-full bg-gray-800 text-white shadow-lg z-10 p-8 pt-24 space-y-2 text-xl cursor-default"
 	class:open
 >
 	{#if $store == null}

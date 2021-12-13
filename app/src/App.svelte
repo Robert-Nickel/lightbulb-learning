@@ -44,11 +44,6 @@
 		const user = await Auth.currentAuthenticatedUser();
 		return user.attributes.sub;
 	}
-
-	async function getUsername() {
-		const user = await Auth.currentAuthenticatedUser();
-		return user.attributes.email;
-	}
 </script>
 
 <TailwindCss />
@@ -59,7 +54,6 @@
 	on:signup={signup}
 />
 <Navbar bind:sidebar={sidebarOpen} />
-{#if $store == null}{/if}
 
 {#if $store != null}
 	{#await getUserId() then userId}
@@ -85,7 +79,6 @@
 		</main>
 	{/if}
 	<NewsletterSignUp />
-
 {/if}
 <SvelteToast />
 

@@ -6,7 +6,7 @@
 </script>
 
 <header
-    class="flex justify-between bg-gray-200 p-2 items-center text-gray-600 border-b-2"
+    class="flex justify-between bg-black p-2 items-center text-white"
 >
     <nav class="flex">
         <Hamburger bind:open={sidebar} />

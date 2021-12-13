@@ -24,6 +24,6 @@
 
 <style>
     .btn-yellow {
-        @apply py-2 px-4 bg-yellow-500 text-white font-semibold rounded-lg shadow-md hover:bg-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-opacity-75;
+        @apply py-2 px-4 text-gray-700 bg-yellow-400 font-semibold rounded-lg shadow-md hover:bg-yellow-300 focus:outline-none;
     }
 </style>

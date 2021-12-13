@@ -12,17 +12,22 @@
 	import { Auth } from "aws-amplify";
 
 	let sidebarOpen = false;
-	let showLogin = false;
+	let loginMode = "";
 	const baseUrl: string =
 		"https://yybkc7efv3.execute-api.eu-central-1.amazonaws.com";
 
-	function login() {
-		showLogin = true;
+	function signin() {
+		loginMode = "signin";
 	}
 
-	function logout() {
+	function signup() {
+		loginMode = "signup";
+	}
+
+	function signout() {
 		$store = null;
 		DataStore.clear();
+		loginMode = "signin";
 	}
 
 	function showToast(toastEvent) {
@@ -47,8 +52,14 @@
 </script>
 
 <TailwindCss />
-<Sidebar bind:open={sidebarOpen} on:logout={logout} on:login={login} />
-<Navbar bind:sidebar={sidebarOpen} on:logout={logout} />
+<Sidebar
+	bind:open={sidebarOpen}
+	on:signout={signout}
+	on:signin={signin}
+	on:signup={signup}
+/>
+<Navbar bind:sidebar={sidebarOpen} />
+{#if $store == null}{/if}
 
 {#if $store != null}
 	{#await getUserId() then userId}
@@ -56,20 +67,27 @@
 			<ChallengePools on:toast={showToast} {baseUrl} {userId} />
 		</main>
 	{/await}
-{:else if showLogin}
-	<main class="container mx-auto py-4 px-2 max-w-screen-sm">
-		<Login />
-	</main>
 {:else}
-	<main class="container mx-auto py-4 px-2 max-w-screen-sm">
-		<WhatWeDo />
-	</main>
+	<div class="bg-lightbulb bg-cover">
+		<p
+			class="text-7xl max-w-screen-sm mx-auto px-8 leading-snug pt-32 pb-8 text-white font-bold"
+		>
+			Learning for the long run.
+		</p>
+	</div>
+	{#if loginMode != ""}
+		<main class="container mx-auto py-4 px-2 max-w-screen-sm">
+			<Login mode={loginMode} />
+		</main>
+	{:else}
+		<main class="container mx-auto py-4 px-2 max-w-screen-sm">
+			<WhatWeDo />
+		</main>
+	{/if}
 	<NewsletterSignUp />
+
 {/if}
 <SvelteToast />
-{#await getUsername() then username}
-	<div class="m-auto text-sm italic w-64 mt-48">Logged in as: {username}</div>
-{/await}
 
 <!--Go here to see which toasts are possible: https://zerodevx.github.io/svelte-toast/-->
 <style>

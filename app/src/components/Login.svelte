@@ -1,18 +1,18 @@
 <script>
   import {
-    store,
     signUp,
     signIn,
     confirmSignUp,
     loginFormState,
   } from "../stores/auth.js";
-  let mode = localStorage.getItem("svelteLoginMode") || "signup";
+  
+  export let mode = "signup"
   let isSigningIn = mode === "signin";
   let promise; // nothing to start with
+
   function toggleMode() {
     if (mode === "signup") mode = "signin";
     else mode = "signup";
-    localStorage.setItem("svelteLoginMode", mode);
   }
   function handleSubmit() {
     if (mode === "signup") {

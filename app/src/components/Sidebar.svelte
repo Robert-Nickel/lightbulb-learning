@@ -5,25 +5,31 @@
 
 	export let open = false;
 
-	function login() {
+	function signin() {
 		open = false;
-		dispatch("login");
+		dispatch("signin");
+	}
+
+	function signup() {
+		open = false;
+		dispatch("signup");
 	}
 
 	function logout() {
 		open = false;
-		dispatch("logout");
+		dispatch("signout");
 	}
 </script>
 
 <aside
-	class="absolute w-full h-full bg-gray-200 border-r-2 shadow-lg z-10"
+	class="absolute w-64 h-full bg-gray-200 border-r-2 shadow-lg z-10 p-8 pt-24 space-y-2 text-xl"
 	class:open
 >
 	{#if $store == null}
-		<nav on:click={login} class="p-12 text-xl">Login / Register</nav>
+		<nav on:click={signin}>Sign In</nav>
+		<nav on:click={signup}>Sign Up</nav>
 	{:else}
-		<nav on:click={logout} class="p-12 text-xl">Logout</nav>
+		<nav on:click={logout}>Sign Out</nav>
 	{/if}
 </aside>
 

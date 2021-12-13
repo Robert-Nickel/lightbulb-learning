@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import Logo from "./Logo.svelte";
     import Hamburger from "./Hamburger.svelte";
 

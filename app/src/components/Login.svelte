@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import {
     signUp,
     signIn,
@@ -14,6 +14,7 @@
     if (mode === "signup") mode = "signin";
     else mode = "signup";
   }
+  
   function handleSubmit() {
     if (mode === "signup") {
       promise = signUp().then(() => {
@@ -58,17 +59,7 @@
     </div>
   </div>
   <form on:submit|preventDefault={handleSubmit}>
-    {#if mode == "signin"}
-      <label>
-        Email:
-        <input type="text" bind:value={$loginFormState.username} />
-      </label>
-      <label>
-        Password:
-        <input type="password" bind:value={$loginFormState.password} />
-      </label>
-    {/if}
-    {#if mode === "signup"}
+    {#if mode === "signup" || mode === "signin"}
       <label>
         Email:
         <input type="email" bind:value={$loginFormState.email} />
@@ -77,8 +68,7 @@
         Password:
         <input type="password" bind:value={$loginFormState.password} />
       </label>
-    {/if}
-    {#if mode === "confirm"}
+    {:else if mode === "confirm"}
       <label>
         Confirm signup (check your email):
         <input

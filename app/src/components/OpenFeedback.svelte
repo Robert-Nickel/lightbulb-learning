@@ -103,8 +103,8 @@
 
 <div class="space-y-2">
     {#if myOpenFeedback}
-        <div class="rounded bg-gray-300 p-4 space-y-2">
-            <div class="italic">My Feedback:</div>
+        <div class="rounded bg-gray-300 p-4 space-y-2 whitespace-pre">
+            <div class="italic">✅  This is your feedback.</div>
             {myOpenFeedback.feedbackText}
         </div>
     {:else if openAnswer.owner != userId}

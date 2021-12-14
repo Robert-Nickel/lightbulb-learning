@@ -1,13 +1,16 @@
-# 💡 Lightbulb Learning
+# Lightbulb Learning
 
-Hi!
+💡  Our vision is to optimize for the learning itself - because the demands to the graduates of the future are different from those of the past. They need to communicate, collaborate, analyze complex problems and develop solutions in teams. Using access to the internet and knowing how to filter the gigantic amount of information means being able to find solutions for the problems of the future.
 
-I am working on a tool to scale exams indefinitely by moving them to the online world.
+🥋  Lightbulb Learning lets your students challenge each other by asking good question, answering them precisely and providing feedback for each others work - all of that being a part of their educational performance.
 
-The crux: the questions are provided by the students themselves and doing so is part of the exam.
+🔥  Try Lightbulb Learning for free - so your students can practice today what we all need them to know tomorrow.
 
-It is open source and will be provided as hosted service later on.
+## Stay in the loop?
+Joing the [mailing list](https://tinyletter.com/RobertNickel).
 
-I would be glad to add you to the lightbulb learning [mailing list](https://tinyletter.com/RobertNickel), where I share updates, success stories, fails and lessons learned.
+This is a monthly curated newsletter about the product, stories of success and failure, lessons learned and my insights on this journey.
 
-lightbulb learning - learning for the long run
+I won't send you spam and you can unsubscribe at any time.
+
+I know that your time is valuable.

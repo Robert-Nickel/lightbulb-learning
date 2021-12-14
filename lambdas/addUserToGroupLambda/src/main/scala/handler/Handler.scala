@@ -30,6 +30,7 @@ class Handler {
   ): APIGatewayV2HTTPResponse = {
     if (apiGatewayEvent != null && apiGatewayEvent.getBody() != null) {
       // TODO: groupName (TenantID) verschluesseln!
+      // TODO: userAnzahl von Gruppe herausfinden
       val eventBody = apiGatewayEvent.getBody()
       val groupInfo = Json.parse(eventBody).as[GroupInfo]
       

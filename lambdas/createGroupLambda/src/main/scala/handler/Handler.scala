@@ -24,6 +24,7 @@ import software.amazon.awssdk.services.iam.IamClient;
 import software.amazon.awssdk.services.iam.model.ListRolesRequest;
 
 import scala.collection.JavaConverters._
+import scala.collection.mutable.ArrayBuffer
 
 /* AddUserToGroup
 {
@@ -38,6 +39,11 @@ class Handler {
       context: Context
   ): APIGatewayV2HTTPResponse = {
     if (apiGatewayEvent != null && apiGatewayEvent.getBody() != null) {
+      // val eventBody = apiGatewayEvent.getBody()
+      // val openFeedback = Json.parse(eventBody).as[OpenFeedback]
+
+      // TODO: auslesen welcher User in welcher Gruppe hinzugefuegt werden soll 
+      // TODO: auslesen welche Gruppe mit welcher Rolle erstellt werden soll
       val userPoolId = "eu-central-1_bAc9VMMys"
       val eventBody = apiGatewayEvent.getBody()
       val httpClient = ApacheHttpClient.builder().build();
@@ -70,23 +76,33 @@ class Handler {
       // roleListResponse.roles().stream().filter(role -> !role.RoleName().startsWith("InfrastructureStack-lightbulblearningStandardRole")).collect(Collectors.toList())
       // TODO: sometimes you have to call this function multiple times until it starts working. (2 times POST request in POSTMAN is currently necessary.)
       // FIXME: below code is currently not working!
-      val filteredResultForRole = roleListResponse.roles().asScala.filter(x => x.roleName.startsWith("InfrastructureStack-lightbulblearningStandardRole"))
-      print(filteredResultForRole)
+      val filteredResultForRole = roleListResponse.roles().asScala.filter(x => x.roleName.startsWith("InfrastructureStack-lightbulblearningFreeRole")).toArray
+      println("filteredResultForRole: ")
+      println(filteredResultForRole)
+      var roleARN = ""
+      if(filteredResultForRole.length > 0) {
+        roleARN = filteredResultForRole(0).arn()
+      } else {
+        println("no role found!")
+      }
+
+      println("roleARN:")
+      println(roleARN)
       
       // val freeRole = "InfrastructureStack-lightbulblearningFreeRole"
 
-      val roleRequest: GetRoleRequest = ( 
-      GetRoleRequest.builder()
-        .roleName("InfrastructureStack-lightbulblearningStandardRoleD-HBLE12VPTWQ")
-        .build()
-      )
+      // val roleRequest: GetRoleRequest = ( 
+      // GetRoleRequest.builder()
+      //   .roleName(roleARN)
+      //   .build()
+      // )
       // val roleResponse: GetRoleResponse = iamClient.getRole(roleRequest)
 
       val request: CreateGroupRequest = (
       CreateGroupRequest.builder()
-        .groupName("Testgruppe3")
+        .groupName("Testgruppe4")
         .userPoolId(userPoolId)
-        .roleArn("arn:aws:iam::532688539985:role/InfrastructureStack-lightbulblearningStandardRoleD-HBLE12VPTWQ")
+        .roleArn(roleARN)
         .build()
       )
       

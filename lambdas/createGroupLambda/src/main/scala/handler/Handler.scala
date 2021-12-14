@@ -17,6 +17,8 @@ import little.json.Implicits.{*, given}
 import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.CognitoIdentityProviderException;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.CreateGroupRequest;
+import software.amazon.awssdk.services.cognitoidentityprovider.model.AdminUpdateUserAttributesRequest;
+import software.amazon.awssdk.services.cognitoidentityprovider.model.AttributeType;
 
 import software.amazon.awssdk.services.iam.model.*;
 import software.amazon.awssdk.regions.Region;
@@ -39,12 +41,17 @@ class Handler {
       context: Context
   ): APIGatewayV2HTTPResponse = {
     if (apiGatewayEvent != null && apiGatewayEvent.getBody() != null) {
+      val groupName = "Testgruppe5"
+      val userName = "piskdvzrxkglrtskft@kvhrw.com"
+      val userPoolId = "eu-central-1_bAc9VMMys"
+      val roleType = "Free" // Standard | Premium
+
       // val eventBody = apiGatewayEvent.getBody()
       // val openFeedback = Json.parse(eventBody).as[OpenFeedback]
 
       // TODO: auslesen welcher User in welcher Gruppe hinzugefuegt werden soll 
       // TODO: auslesen welche Gruppe mit welcher Rolle erstellt werden soll
-      val userPoolId = "eu-central-1_bAc9VMMys"
+      
       val eventBody = apiGatewayEvent.getBody()
       val httpClient = ApacheHttpClient.builder().build();
       val cognitoClient = CognitoIdentityProviderClient
@@ -52,6 +59,25 @@ class Handler {
         .region(Region.EU_CENTRAL_1)
         .httpClient(httpClient)
         .build()
+
+      val customAttribute = (
+        AttributeType.builder()
+        .name("custom:admin_of_group")
+        .value(groupName)
+        .build()
+      )
+
+      val updateAdminUserAttributesRequest = (
+        AdminUpdateUserAttributesRequest.builder()
+          .userPoolId(userPoolId)
+          .username(userName)
+          .userAttributes(customAttribute)
+          .build()
+      )
+
+      val responseUpdateUserAttribute = cognitoClient.adminUpdateUserAttributes(
+        updateAdminUserAttributesRequest
+      )
 
       val iamClient = IamClient
             .builder()
@@ -65,20 +91,9 @@ class Handler {
           .build()
       )
 
-      println("listRolesRequest created.")
       val roleListResponse = iamClient.listRoles(listRolesRequest)
-      println("roleListResponse")
-      println(roleListResponse)
-      
-      println("roleListResponse.roles()")
-      println(roleListResponse.roles())
+      val filteredResultForRole = roleListResponse.roles().asScala.filter(x => x.roleName.startsWith("InfrastructureStack-lightbulblearning" + roleType + "Role")).toArray
 
-      // roleListResponse.roles().stream().filter(role -> !role.RoleName().startsWith("InfrastructureStack-lightbulblearningStandardRole")).collect(Collectors.toList())
-      // TODO: sometimes you have to call this function multiple times until it starts working. (2 times POST request in POSTMAN is currently necessary.)
-      // FIXME: below code is currently not working!
-      val filteredResultForRole = roleListResponse.roles().asScala.filter(x => x.roleName.startsWith("InfrastructureStack-lightbulblearningFreeRole")).toArray
-      println("filteredResultForRole: ")
-      println(filteredResultForRole)
       var roleARN = ""
       if(filteredResultForRole.length > 0) {
         roleARN = filteredResultForRole(0).arn()
@@ -86,21 +101,11 @@ class Handler {
         println("no role found!")
       }
 
-      println("roleARN:")
-      println(roleARN)
-      
-      // val freeRole = "InfrastructureStack-lightbulblearningFreeRole"
-
-      // val roleRequest: GetRoleRequest = ( 
-      // GetRoleRequest.builder()
-      //   .roleName(roleARN)
-      //   .build()
-      // )
-      // val roleResponse: GetRoleResponse = iamClient.getRole(roleRequest)
+      println("roleARN:" + roleARN)  
 
       val request: CreateGroupRequest = (
       CreateGroupRequest.builder()
-        .groupName("Testgruppe4")
+        .groupName(groupName)
         .userPoolId(userPoolId)
         .roleArn(roleARN)
         .build()

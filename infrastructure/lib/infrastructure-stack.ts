@@ -71,10 +71,19 @@ export class InfrastructureStack extends cdk.Stack {
     const createGroupLambda = buildLambda('createGroupLambda', this, 60);
     const createGroupPolicy = new PolicyStatement({
       resources: ["*"],
-      actions: ["cognito-idp:CreateGroup", "iam:PassRole", "iam:GetRole", "iam:ListRoles"],
+      actions: ["cognito-idp:CreateGroup", "iam:PassRole", "iam:GetRole", "iam:ListRoles", "cognito-idp:AdminUpdateUserAttributes"],
       effect: Effect.ALLOW
     })
     createGroupLambda.addToRolePolicy(createGroupPolicy)
+
+    const addUserToGroupLambda = buildLambda('addUserToGroupLambda', this, 60);
+    const addUserGroupPolicy = new PolicyStatement({
+      resources: ["*"],
+      actions: ["cognito-idp:AdminAddUserToGroup"],
+      effect: Effect.ALLOW
+    })
+    addUserToGroupLambda.addToRolePolicy(addUserGroupPolicy)
+
 
     // This is currently not required, but might be very helpful soon.
     /*
@@ -127,6 +136,13 @@ export class InfrastructureStack extends cdk.Stack {
       methods: [HttpMethod.POST, HttpMethod.OPTIONS],
       integration: new LambdaProxyIntegration({
         handler: createGroupLambda,
+      }),
+    });
+    httpApi.addRoutes({
+      path: '/addUserToGroup',
+      methods: [HttpMethod.POST, HttpMethod.OPTIONS],
+      integration: new LambdaProxyIntegration({
+        handler: addUserToGroupLambda,
       }),
     });
 

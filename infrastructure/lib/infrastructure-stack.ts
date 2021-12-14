@@ -68,7 +68,7 @@ export class InfrastructureStack extends cdk.Stack {
       description: 'Lightbulb-Learning Premium Role',
     });
 
-    const createGroupLambda = buildLambda('createGroupLambda', this);
+    const createGroupLambda = buildLambda('createGroupLambda', this, 60);
     const createGroupPolicy = new PolicyStatement({
       resources: ["*"],
       actions: ["cognito-idp:CreateGroup", "iam:PassRole", "iam:GetRole", "iam:ListRoles"],
@@ -149,10 +149,10 @@ export class InfrastructureStack extends cdk.Stack {
   }
 }
 
-function buildLambda(lambdaName: string, scope: cdk.Construct) {
+function buildLambda(lambdaName: string, scope: cdk.Construct, timeout = 30) {
   return new lambda.Function(scope, lambdaName, {
     runtime: lambda.Runtime.JAVA_11,
-    timeout: cdk.Duration.seconds(30),
+    timeout: cdk.Duration.seconds(timeout),
     memorySize: 256,
     handler: 'handler.Handler::handle',
     code: lambda.Code.fromAsset(path.join(__dirname, `../../lambdas/${lambdaName}/target/scala-3.0.1/lambda-scala-seed.jar`)),

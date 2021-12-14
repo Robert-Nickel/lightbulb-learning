@@ -28,31 +28,20 @@ import software.amazon.awssdk.services.iam.model.ListRolesRequest;
 import scala.collection.JavaConverters._
 import scala.collection.mutable.ArrayBuffer
 
-/* AddUserToGroup
-{
-   "GroupName": "string",
-   "Username": "string",
-   "UserPoolId": "string"  (default)
-}
-*/
 class Handler {
   def handle(
       apiGatewayEvent: APIGatewayV2HTTPEvent,
       context: Context
   ): APIGatewayV2HTTPResponse = {
     if (apiGatewayEvent != null && apiGatewayEvent.getBody() != null) {
-      val groupName = "Testgruppe5"
-      val userName = "piskdvzrxkglrtskft@kvhrw.com"
-      val userPoolId = "eu-central-1_bAc9VMMys"
-      val roleType = "Free" // Standard | Premium
 
-      // val eventBody = apiGatewayEvent.getBody()
-      // val openFeedback = Json.parse(eventBody).as[OpenFeedback]
-
-      // TODO: auslesen welcher User in welcher Gruppe hinzugefuegt werden soll 
-      // TODO: auslesen welche Gruppe mit welcher Rolle erstellt werden soll
-      
       val eventBody = apiGatewayEvent.getBody()
+      val createGroupInfo = Json.parse(eventBody).as[CreateGroupInfo]
+      val groupName = createGroupInfo.groupName     // "Testgruppe5"
+      val userName =  createGroupInfo.userName      // "piskdvzrxkglrtskft@kvhrw.com"
+      val userPoolId = createGroupInfo.userPoolId   // "eu-central-1_bAc9VMMys"
+      val roleType = createGroupInfo.roleType       // "Free" // Standard | Premium
+      
       val httpClient = ApacheHttpClient.builder().build();
       val cognitoClient = CognitoIdentityProviderClient
         .builder()
@@ -112,9 +101,8 @@ class Handler {
       )
       
       val response = cognitoClient.createGroup(request);
-      /* CreateGroupResponse(Group=GroupType(GroupName=Testgruppe, 
-      UserPoolId=eu-central-1_bAc9VMMys, LastModifiedDate=2021-12-07T09:28:10.680Z, 
-      CreationDate=2021-12-07T09:28:10.680Z)) */
+
+      // TODO: addUserToGroupLambda with UserName
 
       return APIGatewayV2HTTPResponse
         .builder()

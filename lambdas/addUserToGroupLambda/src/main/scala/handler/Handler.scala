@@ -29,15 +29,14 @@ class Handler {
       context: Context
   ): APIGatewayV2HTTPResponse = {
     if (apiGatewayEvent != null && apiGatewayEvent.getBody() != null) {
-      val groupName = "Testgruppe5"
-      val userName = "piskdvzrxkglrtskft@kvhrw.com"
-      val userPoolId = "eu-central-1_bAc9VMMys"
-      val roleType = "Free" // Standard | Premium
-
-      // val eventBody = apiGatewayEvent.getBody()
-      // val openFeedback = Json.parse(eventBody).as[OpenFeedback]
-
+      // TODO: groupName (TenantID) verschluesseln!
       val eventBody = apiGatewayEvent.getBody()
+      val groupInfo = Json.parse(eventBody).as[GroupInfo]
+      
+      val groupName = groupInfo.groupName   // Testgruppe5
+      val userName = groupInfo.userName     // piskdvzrxkglrtskft@kvhrw.com
+      val userPoolId = groupInfo.userPoolId // eu-central-1_bAc9VMMys
+
       val httpClient = ApacheHttpClient.builder().build();
       val cognitoClient = CognitoIdentityProviderClient
         .builder()
@@ -54,10 +53,7 @@ class Handler {
           .build()
       )
 
-      println("build adminAddUserToGroupRequest")
-
       val response = cognitoClient.adminAddUserToGroup(adminAddUserToGroupRequest)
-
       println("response:" + response)
 
       return APIGatewayV2HTTPResponse

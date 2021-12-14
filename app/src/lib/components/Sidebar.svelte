@@ -1,23 +1,23 @@
 <script>
-	import { store } from "../stores/auth.js";
-	import { createEventDispatcher } from "svelte";
+	import { store } from '$lib/stores/auth';
+	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
 
 	export let open = false;
 
 	function signin() {
 		open = false;
-		dispatch("signin");
+		dispatch('signin');
 	}
 
 	function signup() {
 		open = false;
-		dispatch("signup");
+		dispatch('signup');
 	}
 
 	function logout() {
 		open = false;
-		dispatch("signout");
+		dispatch('signout');
 	}
 </script>
 

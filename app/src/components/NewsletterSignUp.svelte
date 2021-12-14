@@ -19,6 +19,15 @@
             <input type="hidden" value="1" name="embed" />
             <input type="submit" value="Subscribe" class="btn-yellow" />
         </form>
+        <p class="mx-8 mt-4 text-gray-400">
+            This is a monthly curated newsletter about the product, stories of
+            success and failure, lessons learned and my insights on this
+            journey.
+        </p>
+        <p class="mx-8 mt-4 text-gray-400">
+            I won't send you spam and you can unsubscribe at any time.<br /> I know
+            that your time is valuable.
+        </p>
     </div>
 </div>
 

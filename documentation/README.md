@@ -1,5 +1,5 @@
 # Lightbulb Learning
-(15 - 30 Seiten)
+(mind 5.000 Wörter)
 
 ## Das Team
 Das Team besteht aus Kevin Olomu (@kolomu), Nicolai Stephan (@nistephan) und Robert Nickel (@Robert-Nickel).

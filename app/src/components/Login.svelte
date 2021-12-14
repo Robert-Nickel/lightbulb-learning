@@ -5,8 +5,8 @@
     confirmSignUp,
     loginFormState,
   } from "../stores/auth.js";
-  
-  export let mode = "signup"
+
+  export let mode = "signup";
   let isSigningIn = mode === "signin";
   let promise; // nothing to start with
 
@@ -14,14 +14,14 @@
     if (mode === "signup") mode = "signin";
     else mode = "signup";
   }
-  
+
   function handleSubmit() {
     if (mode === "signup") {
       promise = signUp().then(() => {
         mode = "confirm";
       });
     } else if (mode === "confirm") {
-      promise = confirmSignUp();
+      promise = confirmSignUp().then(signIn);
     } else {
       promise = signIn();
     }

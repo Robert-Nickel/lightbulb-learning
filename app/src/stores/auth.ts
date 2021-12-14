@@ -39,12 +39,11 @@ export async function confirmSignUp() {
     console.error({ loginFormState: get(loginFormState) });
     throw new Error('you should be confirming signup right after a signup');
   }
+
   return Auth.confirmSignUp(
     get(loginFormState).email,
     get(loginFormState).confirmCode
-  ).then((data) => {
-    console.log({data})
-
+  ).then((_) => {
     store.set(get(loginFormState).confirmingUser);
     get(loginFormState).confirmingUser = null;
   });

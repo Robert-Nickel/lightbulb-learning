@@ -1,4 +1,4 @@
-# lightbulb learning
+# 💡 lightbulb learning
 
 Hi!
 

@@ -101,18 +101,9 @@ class Handler {
         .build()
       )
       
-      println("createGroupRequest!")
       val response = cognitoClient.createGroup(request);
-
-      println("createdGroup!!")
       val addUserToGroupEvent = createGroupInfo.toAddUserToGroupEvent()
 
-      println("addUserToGroupEvent")
-      println(addUserToGroupEvent)
-
-      // TODO: POST REQUEST -> addUserToGroupLambda
-
-      println("before publish!!")
       val publishResult = publish(addUserToGroupEvent)
 
       return APIGatewayV2HTTPResponse
@@ -149,7 +140,6 @@ class Handler {
         "TYPE" -> MessageAttributeValue.builder().stringValue("ADD_USER_TO_GROUP").dataType("String").build()
     )
 
-    println("nice one!")
     val request: PublishRequest = PublishRequest
       .builder()
       .message(s"${Json.toJson(addUserToGroupEvent)}")

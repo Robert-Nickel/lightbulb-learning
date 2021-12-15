@@ -4,6 +4,7 @@ import java.util.HashMap;
 import com.amazonaws.services.lambda.runtime.Context
 import com.amazonaws.services.lambda.runtime.events.{
   APIGatewayV2HTTPEvent,
+  SQSEvent,
   APIGatewayV2HTTPResponse
 }
 import little.json.*
@@ -25,19 +26,31 @@ import scala.language.implicitConversions
 
 class Handler {
   def handle(
-      apiGatewayEvent: APIGatewayV2HTTPEvent,
+      sqsEvent: SQSEvent,
       context: Context
   ): APIGatewayV2HTTPResponse = {
-    println("apiGatewayEvent")
-    println(apiGatewayEvent)
+    println("sqsEvent")
+    println(sqsEvent)
 
-    println("context")
-    println(context)
-
-    if (apiGatewayEvent != null && apiGatewayEvent.getBody() != null) {
-      println("hey there: ")
+    if (sqsEvent != null /* && sqsEvent.getBody() != null */) {
       // TODO: groupName (TenantID) verschluesseln!
-      val eventBody = apiGatewayEvent.getBody()
+      // TODO: userAnzahl von Gruppe herausfinden
+      val records = sqsEvent.getRecords()
+      println("RECORDS:")
+      println(records)
+      var eventBody = ""
+      if(records.size() < 1) {
+        println("record length less than 1! ")
+        return APIGatewayV2HTTPResponse
+        .builder()
+        .withStatusCode(500)
+        .withBody("ERROR - no records provided")
+        .build()
+      } else {
+      eventBody = Json.parse(records.get(0).getBody()).as[AddUserRecord]
+      // eventBody = eventBody.getMessage()
+      println("eventBody:")
+      println(eventBody)
       val groupInfo = Json.parse(eventBody).as[GroupInfo] 
       
       println("eventBody: ")
@@ -80,6 +93,7 @@ class Handler {
         .withStatusCode(200)
         .withBody(response.toString())
         .build()
+      }
     } else {
       /* For OPTIONS call*/
       println(
@@ -88,7 +102,7 @@ class Handler {
       return APIGatewayV2HTTPResponse
         .builder()
         .withStatusCode(200)
-        .withBody(s"${apiGatewayEvent.getBody()}")
+        .withBody("hi2"/* s"${sqsEvent.getBody()} " */)
         .build()
     }
   }

@@ -12,4 +12,7 @@ given jsonToCreateGroupInfo: JsonInput[CreateGroupInfo] with
     json("roleType"),
     )
 
-case class CreateGroupInfo(groupName: String, userName: String, userPoolId: String, roleType: String) {}
+case class CreateGroupInfo(groupName: String, userName: String, userPoolId: String, roleType: String) {
+   def toAddUserToGroupEvent() = 
+    AddUserToGroupEvent(groupName, userName, userPoolId)
+}

@@ -68,10 +68,10 @@ export class InfrastructureStack extends cdk.Stack {
       description: 'Lightbulb-Learning Premium Role',
     });
 
-    const createGroupLambda = buildLambda('createGroupLambda', this, 60);
+    const createGroupLambda = buildLambda('createGroupLambda', this, 60, 512);
     const createGroupPolicy = new PolicyStatement({
       resources: ["*"],
-      actions: ["cognito-idp:CreateGroup", "iam:PassRole", "iam:GetRole", "iam:ListRoles", "cognito-idp:AdminUpdateUserAttributes"],
+      actions: ["cognito-idp:CreateGroup", "iam:PassRole", "iam:GetRole", "iam:ListRoles", "cognito-idp:AdminUpdateUserAttributes", "SNS:Publish"],
       effect: Effect.ALLOW
     })
     createGroupLambda.addToRolePolicy(createGroupPolicy)
@@ -79,10 +79,24 @@ export class InfrastructureStack extends cdk.Stack {
     const addUserToGroupLambda = buildLambda('addUserToGroupLambda', this, 60);
     const addUserGroupPolicy = new PolicyStatement({
       resources: ["*"],
-      actions: ["cognito-idp:AdminAddUserToGroup"],
+      actions: ["cognito-idp:AdminAddUserToGroup", "sqs:ReceiveMessage", "sqs:DeleteMessage", "sqs:GetQueueAttributes"],
       effect: Effect.ALLOW
     })
     addUserToGroupLambda.addToRolePolicy(addUserGroupPolicy)
+    const addUserToGroupTopic = new sns.Topic(this, 'add-user-to-group-topic', {
+      topicName: 'add-user-to-group-topic',
+      displayName: 'Add User To Group Topic',
+      fifo: true,
+      contentBasedDeduplication: true
+    });
+    const addUserToGroupQueue = new sqs.Queue(this, 'add-user-to-group-queue', { 
+      fifo: true, 
+      visibilityTimeout: cdk.Duration.seconds(60)
+    });
+    addUserToGroupLambda.addEventSource(
+      new lambdaEventSources.SqsEventSource(addUserToGroupQueue)
+    );
+    addUserToGroupTopic.addSubscription(new subs.SqsSubscription(addUserToGroupQueue));
 
 
     // This is currently not required, but might be very helpful soon.
@@ -162,14 +176,18 @@ export class InfrastructureStack extends cdk.Stack {
       value: openFeedbackTopic.topicArn,
       description: 'The arn of the open-feedback SNS topic',
     });
+    new cdk.CfnOutput(this, 'addUserToGroupTopicArn', {
+      value: addUserToGroupTopic.topicArn,
+      description: 'The arn of the add-user-to-group SNS topic',
+    });
   }
 }
 
-function buildLambda(lambdaName: string, scope: cdk.Construct, timeout = 30) {
+function buildLambda(lambdaName: string, scope: cdk.Construct, timeout = 30, customMemorySize=256) {
   return new lambda.Function(scope, lambdaName, {
     runtime: lambda.Runtime.JAVA_11,
     timeout: cdk.Duration.seconds(timeout),
-    memorySize: 256,
+    memorySize: customMemorySize,
     handler: 'handler.Handler::handle',
     code: lambda.Code.fromAsset(path.join(__dirname, `../../lambdas/${lambdaName}/target/scala-3.0.1/lambda-scala-seed.jar`)),
   })

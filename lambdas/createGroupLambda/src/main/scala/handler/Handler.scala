@@ -9,21 +9,22 @@ import com.amazonaws.services.lambda.runtime.events.{
 import software.amazon.awssdk.http.apache.ApacheHttpClient;
 import scala.language.implicitConversions
 import software.amazon.awssdk.http.SdkHttpClient;
-import scala.jdk.CollectionConverters.MapHasAsJava
+// import scala.jdk.CollectionConverters.MapHasAsJava
 
 import little.json.*
 import little.json.Implicits.{*, given}
 
+import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.CognitoIdentityProviderException;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.CreateGroupRequest;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.AdminUpdateUserAttributesRequest;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.AttributeType;
-
 import software.amazon.awssdk.services.iam.model.*;
-import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.iam.IamClient;
 import software.amazon.awssdk.services.iam.model.ListRolesRequest;
+import software.amazon.awssdk.services.sns.SnsClient;
+import software.amazon.awssdk.services.sns.model.{MessageAttributeValue, PublishRequest, PublishResponse}
 
 import scala.collection.JavaConverters._
 import scala.collection.mutable.ArrayBuffer
@@ -100,9 +101,19 @@ class Handler {
         .build()
       )
       
+      println("createGroupRequest!")
       val response = cognitoClient.createGroup(request);
 
-      // TODO: addUserToGroupLambda with UserName
+      println("createdGroup!!")
+      val addUserToGroupEvent = createGroupInfo.toAddUserToGroupEvent()
+
+      println("addUserToGroupEvent")
+      println(addUserToGroupEvent)
+
+      // TODO: POST REQUEST -> addUserToGroupLambda
+
+      println("before publish!!")
+      val publishResult = publish(addUserToGroupEvent)
 
       return APIGatewayV2HTTPResponse
         .builder()
@@ -120,6 +131,38 @@ class Handler {
         .withBody(s"${apiGatewayEvent.getBody()}")
         .build()
     }
+  }
+
+  def publish(
+      addUserToGroupEvent: AddUserToGroupEvent
+  ): PublishResponse = {
+    val httpClient = ApacheHttpClient.builder().build();
+
+    val snsClient = SnsClient
+      .builder()
+      .httpClient(httpClient)
+      .region(Region.EU_CENTRAL_1)
+      .build()
+
+    val MessageAttributes =
+      Map(
+        "TYPE" -> MessageAttributeValue.builder().stringValue("ADD_USER_TO_GROUP").dataType("String").build()
+    )
+
+    println("nice one!")
+    val request: PublishRequest = PublishRequest
+      .builder()
+      .message(s"${Json.toJson(addUserToGroupEvent)}")
+      .messageGroupId(addUserToGroupEvent.groupName)
+      .messageAttributes(MessageAttributes.asJava)
+      .topicArn(
+        "arn:aws:sns:eu-central-1:532688539985:add-user-to-group-topic.fifo"
+      )
+      .build()
+
+    val result = snsClient.publish(request)
+    println(s"publish result = ${snsClient.publish(request)}");
+    return result
   }
 
  

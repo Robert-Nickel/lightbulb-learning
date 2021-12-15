@@ -10,4 +10,8 @@ given jsonToGroupInfo: JsonInput[GroupInfo] with
     json("userName"),
     json("userPoolId"))
 
-case class GroupInfo(groupName: String, userName: String, userPoolId: String) {}
+case class GroupInfo(
+  groupName: String, 
+  userName: String, 
+  userPoolId: String) {
+}

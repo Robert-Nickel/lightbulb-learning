@@ -1,3 +1,10 @@
+# TODO
+
+- graphql subscription errors in browser console
+- first load: core_1.Reachability is not a constructor
+- signin button ist nicht blau
+- build kaputt
+
 # create-svelte
 
 Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte);

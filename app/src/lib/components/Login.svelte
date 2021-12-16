@@ -22,7 +22,7 @@
 		<header class="flex justify-between items-center">
 			<h3 class="text-3xl mb-0">{mode === 'signin' ? 'Sign In' : 'Sign Up'}</h3>
 			{#if mode === 'signin'}
-				<a on:click={() => (mode = 'signup')} class="-mt-1" href="javascript:;">
+				<a on:click={() => (mode = 'signup')} class="-mt-1" href="javascript:null;">
 					Switch to Sign Up
 				</a>
 			{:else}

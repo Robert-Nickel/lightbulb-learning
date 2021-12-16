@@ -3,7 +3,7 @@
 </script>
 
 <button
-	class="text-gray-100 hover:text-white mr-4 !border-none focus:outline-none cursor-default w-auto bg-transparent !box-shadow-none"
+	class="text-gray-100 hover:text-white mr-4 !border-none focus:outline-none cursor-default w-auto bg-transparent !box-shadow-none !h-7"
 	class:open
 	on:click={() => (open = !open)}
 >

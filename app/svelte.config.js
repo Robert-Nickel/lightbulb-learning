@@ -1,4 +1,4 @@
-import adapter from '@sveltejs/adapter-auto';
+import adapter from '@sveltejs/adapter-static';
 import preprocess from 'svelte-preprocess';
 
 /** @type {import('@sveltejs/kit').Config} */
@@ -17,7 +17,6 @@ const config = {
 		// hydrate the <div id="svelte"> element in src/app.html
 		target: '#svelte',
 		vite: () => {
-			// mode is something like 'dev', 'build', 'service-worker'
 			return {
 				resolve: {
 					alias: {
@@ -25,8 +24,8 @@ const config = {
 					}
 				}
 			};
-		}
-		// ssr: false
+		},
+		ssr: false
 	}
 };
 

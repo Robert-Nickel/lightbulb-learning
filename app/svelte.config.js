@@ -15,7 +15,17 @@ const config = {
 		adapter: adapter(),
 
 		// hydrate the <div id="svelte"> element in src/app.html
-		target: '#svelte'
+		target: '#svelte',
+		vite: () => {
+			// mode is something like 'dev', 'build', 'service-worker'
+			return {
+				resolve: {
+					alias: {
+						'./runtimeConfig': './runtimeConfig.browser'
+					}
+				}
+			};
+		}
 		// ssr: false
 	}
 };

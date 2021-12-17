@@ -1,9 +1,8 @@
 # TODO
 
-- graphql subscription errors in browser console
-- first load: core_1.Reachability is not a constructor
+- graphql subscription errors in browser console (nur lokal)
+- first load: core_1.Reachability is not a constructor (nur lokal)
 - signin button ist nicht blau
-- build kaputt
 
 # create-svelte
 

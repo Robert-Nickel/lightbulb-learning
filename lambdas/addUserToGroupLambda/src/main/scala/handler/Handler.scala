@@ -7,8 +7,7 @@ import com.amazonaws.services.lambda.runtime.events.{
   SQSEvent,
   APIGatewayV2HTTPResponse
 }
-import little.json.*
-import little.json.Implicits.{*, given}
+import ujson._
 
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.http.apache.ApacheHttpClient;
@@ -28,7 +27,7 @@ class Handler {
   def handle(
       sqsEvent: SQSEvent,
       context: Context
-  ): APIGatewayV2HTTPResponse = {
+  ): Unit = {
     println("sqsEvent")
     println(sqsEvent)
 
@@ -36,9 +35,6 @@ class Handler {
       // TODO: groupName (TenantID) verschluesseln!
       // TODO: userAnzahl von Gruppe herausfinden
       val records = sqsEvent.getRecords()
-      println("RECORDS:")
-      println(records)
-      var eventBody = ""
       if(records.size() < 1) {
         println("record length less than 1! ")
         return APIGatewayV2HTTPResponse
@@ -47,63 +43,70 @@ class Handler {
         .withBody("ERROR - no records provided")
         .build()
       } else {
-      eventBody = Json.parse(records.get(0).getBody()).as[AddUserRecord]
-      // eventBody = eventBody.getMessage()
-      println("eventBody:")
-      println(eventBody)
-      val groupInfo = Json.parse(eventBody).as[GroupInfo] 
+      println("the first record is:")
+      println(records.get(0))
+
+      println("getBody of first record")
+      println(records.get(0).getBody()) // THIS IS A STRING, getMessage() / ('MESSAGE') will not work...
+      // also parsing into object will not work because it is no valid JSON object for ujson...
       
-      println("eventBody: ")
-      println(eventBody)
+      // val sampleData = ujson.read(records.get(0).getBody()).str
+      // println(sampleData)
 
-      println("groupInfo")
-      println(groupInfo)
+     // val groupInfo = sampleData("Message")
 
-      val groupName = groupInfo.groupName   // Testgruppe5
-      val userName = groupInfo.userName     // piskdvzrxkglrtskft@kvhrw.com
-      val userPoolId = groupInfo.userPoolId // eu-central-1_bAc9VMMys
+      // var addUserRecord = Json.parse(records.get(0).getBody()).as[AddUserRecord]
+      // println("addUserRecord")
+      // println(addUserRecord)
+      
+      // var groupInfo = Json.parse(addUserRecord.Message).as[GroupInfo]
+      // val json = Json.parse(records)
+      // var groupInfo = (json \ "body" \ "Message")
+      
+          // println("groupInfo:")
+          // println(groupInfo)
 
-      println("groupName: " + groupName)
+          // // FIXME: value getMessage is not a member of string!!
+          // // val groupInfo = Json.parse(eventBody).as[GroupInfo] 
+          
+          // println("groupInfo")
+          // println(groupInfo)
 
-      val httpClient = ApacheHttpClient.builder().build();
-      val cognitoClient = CognitoIdentityProviderClient
-        .builder()
-        .region(Region.EU_CENTRAL_1)
-        .httpClient(httpClient)
-        .build()
+          // val groupName = groupInfo.groupName   // Testgruppe5
+          // val userName = groupInfo.userName     // piskdvzrxkglrtskft@kvhrw.com
+          // val userPoolId = groupInfo.userPoolId // eu-central-1_bAc9VMMys
 
-      println(";)")
+          // println("groupName: " + groupName)
 
-      val adminAddUserToGroupRequest = (
-        AdminAddUserToGroupRequest
-          .builder()
-          .userPoolId(userPoolId)
-          .groupName(groupName)
-          .username(userName)
-          .build()
-      )
+          // val httpClient = ApacheHttpClient.builder().build();
+          // val cognitoClient = CognitoIdentityProviderClient
+          //   .builder()
+          //   .region(Region.EU_CENTRAL_1)
+          //   .httpClient(httpClient)
+          //   .build()
 
-      println(":-P")
+          // println(";)")
 
-      val response = cognitoClient.adminAddUserToGroup(adminAddUserToGroupRequest)
-      println("response:" + response)
+          // val adminAddUserToGroupRequest = (
+          //   AdminAddUserToGroupRequest
+          //     .builder()
+          //     .userPoolId(userPoolId)
+          //     .groupName(groupName)
+          //     .username(userName)
+          //     .build()
+          // )
 
-      return APIGatewayV2HTTPResponse
-        .builder()
-        .withStatusCode(200)
-        .withBody(response.toString())
-        .build()
+          // println(":-P")
+
+          // val response = cognitoClient.adminAddUserToGroup(adminAddUserToGroupRequest)
+          // println("response:" + response)
+
       }
     } else {
       /* For OPTIONS call*/
       println(
         "Handling request with apiGatewayEvent == null or apiGatewayEvent.body == null"
       )
-      return APIGatewayV2HTTPResponse
-        .builder()
-        .withStatusCode(200)
-        .withBody("hi2"/* s"${sqsEvent.getBody()} " */)
-        .build()
     }
   }
 

@@ -8,5 +8,5 @@ jobs:
         with:
           source_repo: "lightbulb-learning/lightbulb-learning"
           source_branch: "refs/remotes/source/*"
-          destination_repo: "robert-nickel/lightbulb-learning"
+          destination_repo: "Robert-Nickel/lightbulb-learning"
           destination_branch: "refs/heads/*"

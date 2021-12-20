@@ -6,7 +6,7 @@ jobs:
       - name: git-sync
         uses: wei/git-sync@v3
         with:
-          source_repo: "Lightbulb-Learning/lightbulb-learning"
+          source_repo: "git@github.com:Lightbulb-Learning/lightbulb-learning"
           source_branch: "refs/remotes/source/*"
-          destination_repo: "Robert-Nickel/lightbulb-learning"
+          destination_repo: "git@github.com:Robert-Nickel/lightbulb-learning"
           destination_branch: "refs/heads/*"

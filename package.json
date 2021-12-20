@@ -1,7 +1,12 @@
 {
   "name": "amplify-svelte-kit-workaround",
-  "private": true,
-  "workspaces": [
-    "packages/*"
-  ]
+  "version": "1.0.0",
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
+  "dependencies": {
+    "workspaces": "^0.1.0"
+  }
 }

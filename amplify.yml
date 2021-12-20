@@ -10,7 +10,6 @@ applications:
       phases:
         preBuild:
           commands:
-            - nvm install 16
             - npm install
         build:
           commands:

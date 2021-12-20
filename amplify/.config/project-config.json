@@ -8,10 +8,10 @@
   "javascript": {
     "framework": "none",
     "config": {
-      "SourceDir": "packages/aws-exports",
-      "DistributionDir": "packages/app/build",
-      "BuildCommand": "npm workspaces app run build",
-      "StartCommand": "yarn workspaces app run preview"
+      "SourceDir": "src",
+      "DistributionDir": "public",
+      "BuildCommand": "npm run-script build",
+      "StartCommand": "npm run-script start"
     }
   }
 }

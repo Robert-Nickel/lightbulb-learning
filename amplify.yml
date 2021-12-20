@@ -11,10 +11,10 @@ applications:
         preBuild:
           commands:
             - nvm install 16
-            - npm install
+            - yarn install
         build:
           commands:
-            - npm run build -w packages/app
+            - yarn workspace app run build
       artifacts:
         baseDirectory: packages/app/build
         files:

@@ -10,15 +10,15 @@ applications:
       phases:
         preBuild:
           commands:
-            - nvm install 16
             - npm install
         build:
           commands:
-            - npm workspace app run build
+            - npm run build
       artifacts:
-        baseDirectory: packages/app/build
+        baseDirectory: /build
         files:
           - '**/*'
       cache:
         paths:
           - node_modules/**/*
+    appRoot: app

@@ -1,7 +1,0 @@
-{
-  "name": "amplify-svelte-kit-workaround",
-  "private": true,
-  "workspaces": [
-    "packages/*"
-  ]
-}

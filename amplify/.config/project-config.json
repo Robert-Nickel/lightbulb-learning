@@ -10,8 +10,8 @@
     "config": {
       "SourceDir": "packages/aws-exports",
       "DistributionDir": "packages/app/build",
-      "BuildCommand": "npm workspaces app run build",
-      "StartCommand": "yarn workspaces app run preview"
+      "BuildCommand": "npm run build -w packages/app",
+      "StartCommand": "npm run preview -w packages/app"
     }
   }
 }

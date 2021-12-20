@@ -98,7 +98,7 @@
   }
 </script>
 
-<div class="space-y-2">
+<div class="space-y-2" style="background: var(--card-sectionning-background-color)">
   {#if myOpenAnswer}
     <div class="italic mt-2 whitespace-pre">
       ✅ You have answered this question.<!--My Answer: {myOpenAnswer.answerText}-->
@@ -147,7 +147,6 @@
       {#each openAnswers as openAnswer}
         <div
           class="rounded space-y-2 p-4"
-          style="background: var(--background-color);"
         >
           <p>{openAnswer.answerText}</p>
           <OpenFeedback bind:openAnswer {baseUrl} {userId} />

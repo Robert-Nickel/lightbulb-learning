@@ -25,7 +25,7 @@
   {#each openQuestions as openQuestion}
     <div
       class="rounded p-4"
-      style="background: var(--card-sectionning-background-color);"
+      style="background: var(--card-background-color);"
     >
       <p>{openQuestion.questionText}</p>
 

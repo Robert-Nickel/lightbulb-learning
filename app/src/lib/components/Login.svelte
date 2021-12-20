@@ -22,13 +22,9 @@
 		<header class="flex justify-between items-center">
 			<h3 class="text-3xl mb-0">{mode === 'signin' ? 'Sign In' : 'Sign Up'}</h3>
 			{#if mode === 'signin'}
-				<a on:click={() => (mode = 'signup')} class="-mt-1" href="javascript:null;">
-					Switch to Sign Up
-				</a>
+				<a on:click={() => (mode = 'signup')} class="-mt-1" href="javascript:null;"> Switch to Sign Up </a>
 			{:else}
-				<a on:click={() => (mode = 'signin')} class="-mt-1" href="javascript:;">
-					Switch to Sign In
-				</a>
+				<a on:click={() => (mode = 'signin')} class="-mt-1" href="javascript:;"> Switch to Sign In </a>
 			{/if}
 		</header>
 
@@ -48,7 +44,7 @@
 					<input type="text" bind:value={$loginFormState.confirmCode} placeholder="e.g. 123456" />
 				</label>
 			{/if}
-			<button type="submit">Submit</button>
+			<button type="submit" class="outline">Submit</button>
 		</form>
 
 		{#await promise}

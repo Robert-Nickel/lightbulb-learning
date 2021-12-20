@@ -8,7 +8,7 @@
 <header class="flex justify-between bg-black p-2 items-center text-white">
 	<nav class="flex">
 		<Hamburger bind:open={sidebar} />
-		Lightbulb Learning
+		<p class="text-white mt-2">Lightbulb Learning</p>
 	</nav>
 </header>
 

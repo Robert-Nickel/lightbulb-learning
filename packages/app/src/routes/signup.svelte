@@ -1,18 +1,20 @@
 <script lang="ts">
-	import { signUp, signIn, confirmSignUp, loginFormState } from '$lib/stores/auth';
+	import { browser } from '$app/env';
 
-	export let mode = 'signup';
+	import { signUp, confirmSignUp, loginFormState } from '$lib/stores/auth';
+
+	export let confirmStep = false;
 	let promise; // nothing to start with
 
 	function handleSubmit() {
-		if (mode === 'signup') {
+		if (!confirmStep) {
 			promise = signUp().then(() => {
-				mode = 'confirm';
+				confirmStep = true;
 			});
-		} else if (mode === 'confirm') {
-			promise = confirmSignUp();
 		} else {
-			promise = signIn();
+			promise = confirmSignUp().then(() => {
+				if (browser) window.open('/', '_self');
+			});
 		}
 	}
 </script>
@@ -20,16 +22,12 @@
 <div class="flex justify-center">
 	<article class="max-w-sm">
 		<header class="flex justify-between items-center">
-			<h3 class="text-3xl mb-0">{mode === 'signin' ? 'Sign In' : 'Sign Up'}</h3>
-			{#if mode === 'signin'}
-				<a on:click={() => (mode = 'signup')} class="-mt-1" href="javascript:null;"> Switch to Sign Up </a>
-			{:else}
-				<a on:click={() => (mode = 'signin')} class="-mt-1" href="javascript:;"> Switch to Sign In </a>
-			{/if}
+			<h3 class="text-3xl mb-0">Sign Up</h3>
+			{#if !confirmStep}<a class="-mt-1" href="/signin"> Switch to Sign In </a>{/if}
 		</header>
 
 		<form on:submit|preventDefault={handleSubmit}>
-			{#if mode === 'signup' || mode === 'signin'}
+			{#if !confirmStep}
 				<label>
 					Email:
 					<input type="email" bind:value={$loginFormState.email} />
@@ -38,27 +36,19 @@
 					Password:
 					<input type="password" bind:value={$loginFormState.password} />
 				</label>
-			{:else if mode === 'confirm'}
+			{:else}
 				<label>
 					Confirm signup (check your email):
 					<input type="text" bind:value={$loginFormState.confirmCode} placeholder="e.g. 123456" />
 				</label>
 			{/if}
-			<button type="submit" class="outline">Submit</button>
+			<button type="submit" class="outline">Sign Up</button>
 		</form>
 
 		{#await promise}
-			<span aria-busy="true">Logging in...</span>
+			<span aria-busy="true">Signing up ...</span>
 		{:catch error}
 			<span class="errorMessage">Something went wrong: {error.message}</span>
 		{/await}
 	</article>
 </div>
-
-<style>
-	.errorMessage {
-		background: papayawhip;
-		color: red;
-		padding: 1rem;
-	}
-</style>

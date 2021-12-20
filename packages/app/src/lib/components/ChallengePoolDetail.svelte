@@ -2,7 +2,6 @@
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
 	import OpenQuestionDrafts from './OpenQuestionDrafts.svelte';
-	import Arrow from './Arrow.svelte';
 	import OpenQuestions from './OpenQuestions.svelte';
 
 	export let challengePool;

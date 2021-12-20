@@ -10,11 +10,10 @@ applications:
       phases:
         preBuild:
           commands:
-            - nvm install 16
-            - yarn install
+            - npm install
         build:
           commands:
-            - yarn workspace app run build
+            - npm workspace app run build
       artifacts:
         baseDirectory: packages/app/build
         files:

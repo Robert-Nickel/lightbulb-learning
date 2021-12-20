@@ -18,6 +18,4 @@
 
 <Sidebar bind:open={sidebarOpen} />
 <Navbar bind:sidebar={sidebarOpen} />
-<main class="container mx-auto py-4 px-2 max-w-screen-sm">
 	<slot />
-</main>

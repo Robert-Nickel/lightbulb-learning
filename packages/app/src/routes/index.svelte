@@ -26,7 +26,9 @@
 
 {#if $store != null}
 	{#await getUserId() then userId}
-		<ChallengePools on:toast={showToast} {baseUrl} {userId} />
+		<main class="container py-4 max-w-screen-sm">
+			<ChallengePools on:toast={showToast} {baseUrl} {userId} />
+		</main>
 	{/await}
 {:else}
 	<StartPage />
@@ -34,8 +36,3 @@
 <SvelteToast />
 
 <!--Go here to see which toasts are possible: https://zerodevx.github.io/svelte-toast/-->
-<style>
-	:global(body) {
-		padding: 0;
-	}
-</style>

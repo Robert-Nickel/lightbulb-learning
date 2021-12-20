@@ -1,23 +1,13 @@
 <script>
 	import { store } from '$lib/stores/auth';
-	import { createEventDispatcher } from 'svelte';
-	const dispatch = createEventDispatcher();
+	import { DataStore } from '@aws-amplify/datastore';
 
 	export let open = false;
 
-	function signin() {
-		open = false;
-		dispatch('signin');
-	}
-
-	function signup() {
-		open = false;
-		dispatch('signup');
-	}
-
 	function logout() {
 		open = false;
-		dispatch('signout');
+		$store = null;
+		DataStore.clear();
 	}
 </script>
 
@@ -26,10 +16,10 @@
 	class:open
 >
 	{#if $store == null}
-		<nav on:click={signin}>Sign In</nav>
-		<nav on:click={signup}>Sign Up</nav>
+		<nav on:click={() => (open = false)}><a href="/signin">Sign In</a></nav>
+		<nav on:click={() => (open = false)}><a href="/signup">Sign Up</a></nav>
 	{:else}
-		<nav on:click={logout}>Sign Out</nav>
+		<nav on:click={logout}><a href="/">Sign Out</a></nav>
 	{/if}
 </aside>
 

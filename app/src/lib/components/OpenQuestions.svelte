@@ -1,10 +1,8 @@
 <script lang="ts">
 	import { DataStore } from '@aws-amplify/datastore';
-	import { ChallengePool, OpenQuestion, OpenAnswer } from '../models';
+	import { ChallengePool, OpenQuestion } from '../models';
 	import OpenAnswers from './OpenAnswers.svelte';
 
-	export let baseUrl: string;
-	export let userId: string;
 	export let challengePool: ChallengePool;
 
 	let openQuestions: Array<OpenQuestion> = [];
@@ -23,6 +21,6 @@
 	<article>
 		<h4>{openQuestion.questionText}</h4>
 
-		<OpenAnswers bind:openQuestion {baseUrl} {userId} />
+		<OpenAnswers bind:openQuestion />
 	</article>
 {/each}

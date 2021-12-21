@@ -3,14 +3,6 @@
 	import ChallengePools from '$lib/components/ChallengePools.svelte';
 	import { SvelteToast, toast } from '@zerodevx/svelte-toast';
 	import StartPage from '$lib/components/StartPage.svelte';
-	import { Auth } from 'aws-amplify';
-
-	export let baseUrl;
-
-	export async function getUserId(): Promise<string> {
-		const user = await Auth.currentAuthenticatedUser();
-		return user.attributes.sub;
-	}
 
 	function showToast(toastEvent) {
 		let theme = {
@@ -25,9 +17,7 @@
 
 {#if $store != null}
 	<main class="container py-4 max-w-screen-sm">
-		{#await getUserId() then userId}
-			<ChallengePools on:toast={showToast} {baseUrl} {userId} />
-		{/await}
+		<ChallengePools on:toast={showToast} />
 	</main>
 {:else}
 	<StartPage />

@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { Auth } from 'aws-amplify';
+import { baseUrl } from '$lib/awsCommon';
 
-	export let baseUrl: string = 'https://yybkc7efv3.execute-api.eu-central-1.amazonaws.com';
+	import { Auth } from 'aws-amplify';
 
 	async function addUserToGroup() {
 		var myHeaders = new Headers();

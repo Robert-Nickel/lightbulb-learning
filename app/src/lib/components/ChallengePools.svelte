@@ -5,10 +5,9 @@
 	import { Hub } from 'aws-amplify';
 	import { createEventDispatcher } from 'svelte';
 	import { goto } from '$app/navigation';
+	import { user } from '$lib/stores/user';
 	const dispatch = createEventDispatcher();
 
-	export let baseUrl: string;
-	export let userId: string;
 	let challengePools: Array<ChallengePool> = [];
 
 	fetchChallengePools();
@@ -29,7 +28,7 @@
 	async function createChallengePool() {
 		const description = document.getElementById('challengePoolDescription').value;
 		try {
-			await DataStore.save(new ChallengePool({ description: description, owner: userId }));
+			await DataStore.save(new ChallengePool({ description: description, owner: $user.id }));
 		} catch (error) {
 			console.log(error);
 		}

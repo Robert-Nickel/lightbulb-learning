@@ -6,9 +6,7 @@
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
-
-	export let baseUrl: string;
-	export let userId: string;
+	import { user } from '$lib/stores/user';
 
 	let challengePool;
 	let openQuestions;
@@ -35,16 +33,10 @@
 <main class="container">
 	{#if challengePool}
 		<h1>{challengePool.description}</h1>
-		{#if userId == challengePool.owner}
+		{#if $user.id == challengePool.owner}
 			<button on:click={deletePool} class="secondary outline w-auto mb-0">Delete</button>
 		{/if}
-		<OpenQuestionDrafts
-			{challengePool}
-			on:toast
-			on:openQuestionCommitted={openQuestionCommitted}
-			{baseUrl}
-			{userId}
-		/>
-		<OpenQuestions bind:this={openQuestions} {challengePool} {baseUrl} {userId} />
+		<OpenQuestionDrafts {challengePool} on:toast on:openQuestionCommitted={openQuestionCommitted} />
+		<OpenQuestions bind:this={openQuestions} {challengePool} />
 	{/if}
 </main>

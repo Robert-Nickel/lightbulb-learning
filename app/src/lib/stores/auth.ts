@@ -1,6 +1,7 @@
 import { writable, get } from 'svelte/store';
 import Auth from '@aws-amplify/auth';
 import { browser } from '$app/env';
+import { initAmplify } from '$lib/awsCommon';
 
 let _user = undefined;
 if (browser) {
@@ -8,6 +9,8 @@ if (browser) {
 }
 
 export const store = writable(_user ? JSON.parse(_user) : null);
+
+initAmplify();
 
 if (browser) {
 	store.subscribe((value) => {
@@ -45,12 +48,10 @@ export async function confirmSignUp() {
 		console.error({ loginFormState: get(loginFormState) });
 		throw new Error('you should be confirming signup right after a signup');
 	}
-	return Auth.confirmSignUp(get(loginFormState).email, get(loginFormState).confirmCode).then(
-		(data) => {
-			console.log({ data });
+	return Auth.confirmSignUp(get(loginFormState).email, get(loginFormState).confirmCode).then((data) => {
+		console.log({ data });
 
-			store.set(get(loginFormState).confirmingUser);
-			get(loginFormState).confirmingUser = null;
-		}
-	);
+		store.set(get(loginFormState).confirmingUser);
+		get(loginFormState).confirmingUser = null;
+	});
 }

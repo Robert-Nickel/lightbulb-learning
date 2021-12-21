@@ -4,9 +4,9 @@
 	import { DataStore } from '@aws-amplify/datastore';
 	import { OpenAnswerDraft, OpenQuestion, OpenAnswer } from '../models';
 	import OpenFeedback from './OpenFeedback.svelte';
+	import { user } from '$lib/stores/user';
+	import { baseUrl } from '$lib/awsCommon';
 
-	export let baseUrl: string;
-	export let userId: string;
 	export let openQuestion: OpenQuestion;
 	let openAnswerDraft: OpenAnswerDraft;
 	let myOpenAnswer: OpenAnswer;
@@ -26,7 +26,7 @@
 	async function fetchMyOpenAnswer(openQuestion) {
 		let openAnswers = await DataStore.query(
 			OpenAnswer,
-			(a) => a.openquestionID('eq', openQuestion.id) && a.owner('eq', userId)
+			(a) => a.openquestionID('eq', openQuestion.id) && a.owner('eq', $user.id)
 		);
 		myOpenAnswer = openAnswers[0];
 	}
@@ -52,7 +52,7 @@
 		let myOpenAnswer: OpenAnswer = new OpenAnswer({
 			answerText: openAnswerDraft.answerText,
 			openquestionID: openAnswerDraft.openquestionID,
-			owner: userId
+			owner: $user.id
 		});
 		await DataStore.save(myOpenAnswer);
 		myOpenAnswer = myOpenAnswer;
@@ -106,7 +106,7 @@
 				class="w-32 secondary outline">Delete</button
 			>
 		</div>
-	{:else if openQuestion.owner != userId}
+	{:else if openQuestion.owner != $user.id}
 		<!--Create a new answer-->
 		<div class="flex justify-between space-x-2 mt-2">
 			<div class="w-full">
@@ -121,7 +121,7 @@
 		{#each openAnswers as openAnswer}
 			<div class="mt-4">
 				<b>{openAnswer.answerText}</b>
-				<OpenFeedback bind:openAnswer {baseUrl} {userId} />
+				<OpenFeedback bind:openAnswer {baseUrl} />
 			</div>
 		{/each}
 	{/if}

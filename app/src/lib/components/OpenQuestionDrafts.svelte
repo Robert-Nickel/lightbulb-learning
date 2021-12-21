@@ -3,10 +3,10 @@
 	const dispatch = createEventDispatcher();
 	import { DataStore } from '@aws-amplify/datastore';
 	import { OpenQuestionDraft, ChallengePool, OpenQuestion } from '../models';
+	import { user } from '$lib/stores/user';
+	import { baseUrl } from '$lib/awsCommon';
 
-	export let baseUrl: string;
 	export let challengePool: ChallengePool;
-	export let userId: string;
 
 	let openQuestionDrafts: Array<OpenQuestionDraft> = [];
 
@@ -56,12 +56,12 @@
 		fetchOpenQuestionDrafts();
 	}
 
-	async function commitOpenQuestion(openQuestionDraft: OpenQuestionDraft, userId: string) {
+	async function commitOpenQuestion(openQuestionDraft: OpenQuestionDraft) {
 		await DataStore.save(
 			new OpenQuestion({
 				questionText: openQuestionDraft.questionText,
 				challengepoolID: openQuestionDraft.challengepoolID,
-				owner: userId
+				owner: $user.id
 			})
 		);
 		dispatch('openQuestionCommitted');
@@ -137,7 +137,7 @@
 						</button>
 						<button
 							disabled={!openQuestionDraft.answerText}
-							on:click={() => commitOpenQuestion(openQuestionDraft, userId)}
+							on:click={() => commitOpenQuestion(openQuestionDraft)}
 							class="w-32"
 						>
 							Publish

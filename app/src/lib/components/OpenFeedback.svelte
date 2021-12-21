@@ -3,10 +3,10 @@
 	const dispatch = createEventDispatcher();
 	import { DataStore } from '@aws-amplify/datastore';
 	import { OpenFeedbackDraft, OpenFeedback, OpenAnswer } from '../models';
+	import { user } from '$lib/stores/user';
+	import { baseUrl } from '$lib/awsCommon';
 
-	export let baseUrl: string;
 	export let openAnswer: OpenAnswer;
-	export let userId: string;
 
 	let openFeedbackDraft: OpenFeedbackDraft;
 	let myOpenFeedback: OpenFeedback;
@@ -26,7 +26,7 @@
 	async function fetchMyOpenFeedback(openAnswer) {
 		let openFeedbacks = await DataStore.query(
 			OpenFeedback,
-			(f) => f.openanswerID('eq', openAnswer.id) && f.owner('eq', userId)
+			(f) => f.openanswerID('eq', openAnswer.id) && f.owner('eq', $user.id)
 		);
 		myOpenFeedback = openFeedbacks[0];
 	}
@@ -34,7 +34,7 @@
 	async function fetchOpenFeedbacks(openAnswer) {
 		openFeedbacks = await DataStore.query(
 			OpenFeedback,
-			(f) => f.openanswerID('eq', openAnswer.id) && f.owner('ne', userId)
+			(f) => f.openanswerID('eq', openAnswer.id) && f.owner('ne', $user.id)
 		);
 	}
 
@@ -55,7 +55,7 @@
 		let myOpenFeedback: OpenFeedback = new OpenFeedback({
 			feedbackText: openFeedbackDraft.feedbackText,
 			openanswerID: openFeedbackDraft.openanswerID,
-			owner: userId
+			owner: $user.id
 		});
 		await DataStore.save(myOpenFeedback);
 
@@ -97,7 +97,7 @@
 			<div class="italic">✅ This is your feedback.</div>
 			{myOpenFeedback.feedbackText}
 		</div>
-	{:else if openAnswer.owner != userId}
+	{:else if openAnswer.owner != $user.id}
 		{#if openFeedbackDraft}
 			<div class="flex justify-between space-x-2">
 				<div class="w-full">{openFeedbackDraft.feedbackText}</div>
@@ -117,7 +117,7 @@
 			</div>
 		{/if}
 	{/if}
-	{#if openAnswer.owner == userId || myOpenFeedback}
+	{#if openAnswer.owner == $user.id || myOpenFeedback}
 		<!--I can see other peoples feedback, if it was my answer or I already provided my feedback-->
 		{#if openFeedbacks && openFeedbacks.length > 0}
 			<div class="space-y-2">

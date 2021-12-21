@@ -1,14 +1,11 @@
 <script lang="ts">
-	import { browser } from '$app/env';
-
+	import { goto } from '$app/navigation';
 	import { signIn, loginFormState } from '$lib/stores/auth';
 
 	let promise; // nothing to start with
 
 	function handleSubmit() {
-		promise = signIn().then(() => {
-			if (browser) window.open('/', "_self")
-		});
+		promise = signIn().then(() => goto('/'));
 	}
 </script>
 
@@ -28,12 +25,11 @@
 				Password:
 				<input type="password" bind:value={$loginFormState.password} />
 			</label>
-
 			<button type="submit" class="outline">Sign In</button>
 		</form>
 
 		{#await promise}
-			<span aria-busy="true">Signing in ...</span>
+			<span aria-busy="true">Signing in...</span>
 		{:catch error}
 			<span class="errorMessage">Something went wrong: {error.message}</span>
 		{/await}

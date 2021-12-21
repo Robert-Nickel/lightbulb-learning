@@ -5,7 +5,12 @@
 	import StartPage from '$lib/components/StartPage.svelte';
 	import { Auth } from 'aws-amplify';
 
-	const baseUrl: string = 'https://yybkc7efv3.execute-api.eu-central-1.amazonaws.com';
+	export let baseUrl;
+
+	export async function getUserId(): Promise<string> {
+		const user = await Auth.currentAuthenticatedUser();
+		return user.attributes.sub;
+	}
 
 	function showToast(toastEvent) {
 		let theme = {
@@ -15,11 +20,6 @@
 		toast.push(toastEvent.detail.text, {
 			theme
 		});
-	}
-
-	async function getUserId(): Promise<string> {
-		const user = await Auth.currentAuthenticatedUser();
-		return user.attributes.sub;
 	}
 </script>
 

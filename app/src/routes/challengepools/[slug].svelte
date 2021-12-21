@@ -33,6 +33,7 @@
 </script>
 
 <main class="container">
+	slug is: {$page.params.slug}
 	{#if challengePool}
 		<h1>{challengePool.description}</h1>
 		{#if userId == challengePool.owner}

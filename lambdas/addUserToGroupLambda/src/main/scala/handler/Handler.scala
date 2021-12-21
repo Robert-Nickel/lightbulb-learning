@@ -7,7 +7,9 @@ import com.amazonaws.services.lambda.runtime.events.{
   SQSEvent,
   APIGatewayV2HTTPResponse
 }
-import ujson._
+
+import little.json.*
+import little.json.Implicits.{*, given}
 
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.http.apache.ApacheHttpClient;
@@ -23,31 +25,51 @@ import scala.collection.mutable.ArrayBuffer
 import scala.jdk.CollectionConverters.MapHasAsJava
 import scala.language.implicitConversions
 
+import software.amazon.awssdk.core.SdkBytes;
+
 class Handler {
   def handle(
-      sqsEvent: SQSEvent,
+      event: Object,
       context: Context
   ): Unit = {
-    println("sqsEvent")
-    println(sqsEvent)
+    println("context")
+    println(context)
 
-    if (sqsEvent != null /* && sqsEvent.getBody() != null */) {
+    println("event:")
+    println(event)
+
+    // event is: java.util.LinkedHashMap
+    
+    val groupInfo = event.asInstanceOf[GroupInfo]
+
+    // val strJson = event.toString()
+    // val groupInfo = Json.parse(event.toString()).as[GroupInfo]
+    println("GroupName!!!")
+    println(groupInfo.groupName)
+
+    // if(event.isInstanceof(String)) {
+    //   val lambdaInputJsonStr = (String)input;
+    // } else if(event.isInstanceof(Map)) {
+    //   val lambdaInputJsonStr = gson.toJson((Map)input);
+    // }
+
+    if (event != null /* && sqsEvent.getBody() != null */) {
       // TODO: groupName (TenantID) verschluesseln!
       // TODO: userAnzahl von Gruppe herausfinden
-      val records = sqsEvent.getRecords()
-      if(records.size() < 1) {
-        println("record length less than 1! ")
-        return APIGatewayV2HTTPResponse
-        .builder()
-        .withStatusCode(500)
-        .withBody("ERROR - no records provided")
-        .build()
-      } else {
-      println("the first record is:")
-      println(records.get(0))
+      // val records = event.getRecords()
+      // if(records.size() < 1) {
+      //   println("record length less than 1! ")
+      //   return APIGatewayV2HTTPResponse
+      //   .builder()
+      //   .withStatusCode(500)
+      //   .withBody("ERROR - no records provided")
+      //   .build()
+      // } else {
+      // println("the first record is:")
+      // println(records.get(0))
 
-      println("getBody of first record")
-      println(records.get(0).getBody()) // THIS IS A STRING, getMessage() / ('MESSAGE') will not work...
+      // println("getBody of first record")
+      // println(records.get(0).getBody()) // THIS IS A STRING, getMessage() / ('MESSAGE') will not work...
       // also parsing into object will not work because it is no valid JSON object for ujson...
       
       // val sampleData = ujson.read(records.get(0).getBody()).str
@@ -101,12 +123,7 @@ class Handler {
           // val response = cognitoClient.adminAddUserToGroup(adminAddUserToGroupRequest)
           // println("response:" + response)
 
-      }
-    } else {
-      /* For OPTIONS call*/
-      println(
-        "Handling request with apiGatewayEvent == null or apiGatewayEvent.body == null"
-      )
+      // }
     }
   }
 

@@ -25,6 +25,7 @@
     "@aws-cdk/aws-apigatewayv2": "1.132.0",
     "@aws-cdk/aws-apigatewayv2-integrations": "1.132.0",
     "@aws-cdk/aws-codebuild": "1.132.0",
+    "@aws-cdk/aws-cognito": "^1.136.0",
     "@aws-cdk/aws-dynamodb": "1.132.0",
     "@aws-cdk/aws-iam": "1.132.0",
     "@aws-cdk/aws-lambda": "1.132.0",

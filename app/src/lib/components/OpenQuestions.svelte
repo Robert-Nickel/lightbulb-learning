@@ -1,35 +1,28 @@
 <script lang="ts">
-  import { DataStore } from "@aws-amplify/datastore";
-  import { ChallengePool, OpenQuestion, OpenAnswer } from "../models";
-  import OpenAnswers from "./OpenAnswers.svelte";
+	import { DataStore } from '@aws-amplify/datastore';
+	import { ChallengePool, OpenQuestion, OpenAnswer } from '../models';
+	import OpenAnswers from './OpenAnswers.svelte';
 
-  export let baseUrl: string;
-  export let userId: string;
-  export let challengePool: ChallengePool;
+	export let baseUrl: string;
+	export let userId: string;
+	export let challengePool: ChallengePool;
 
-  let openQuestions: Array<OpenQuestion> = [];
+	let openQuestions: Array<OpenQuestion> = [];
 
-  fetchOpenQuestions();
+	fetchOpenQuestions();
 
-  export async function fetchOpenQuestions() {
-    openQuestions = await DataStore.query(OpenQuestion, (q) =>
-      q.challengepoolID("eq", challengePool.id)
-    );
-  }
+	export async function fetchOpenQuestions() {
+		openQuestions = await DataStore.query(OpenQuestion, (q) => q.challengepoolID('eq', challengePool.id));
+	}
 </script>
 
-<div class="space-y-2">
-  {#if openQuestions.length > 0}
-    <div class="text-xl mt-8">All Open Questions</div>
-  {/if}
-  {#each openQuestions as openQuestion}
-    <div
-      class="rounded p-4"
-      style="background: var(--card-background-color);"
-    >
-      <p>{openQuestion.questionText}</p>
+{#if openQuestions.length > 0}
+	<h3 class="mt-6">All Open Questions</h3>
+{/if}
+{#each openQuestions as openQuestion}
+	<article>
+		<h4>{openQuestion.questionText}</h4>
 
-      <OpenAnswers bind:openQuestion {baseUrl} {userId} />
-    </div>
-  {/each}
-</div>
+		<OpenAnswers bind:openQuestion {baseUrl} {userId} />
+	</article>
+{/each}

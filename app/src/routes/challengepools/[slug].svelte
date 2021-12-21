@@ -3,6 +3,7 @@
 	import { DataStore } from 'aws-amplify';
 	import OpenQuestionDrafts from '$lib/components/OpenQuestionDrafts.svelte';
 	import OpenQuestions from '$lib/components/OpenQuestions.svelte';
+	import { goto } from '$app/navigation';
 	let challengePool;
 	export let baseUrl: string;
 	export let userId: string;
@@ -20,29 +21,26 @@
 			};
 		}
 	}
-	function deleteClicked() {
-		// TODO
+	async function deletePool() {
+		await DataStore.delete(await DataStore.query(ChallengePool, challengePool.id));
+		goto('/');
 	}
 	function openQuestionCommitted() {
 		openQuestions.fetchOpenQuestions();
 	}
 </script>
 
-<main class="container py-4 max-w-screen-sm mx-auto">
-	<details class="p-8" style="background: var(--card-sectionning-background-color);">
-		<summary>{challengePool.description} </summary>
-		{#if userId == challengePool.owner}
-			<button on:click={deleteClicked} class="secondary outline w-auto mb-0">Delete</button>
-		{/if}
-		<div class="mt-2">
-			<OpenQuestionDrafts
-				{challengePool}
-				on:toast
-				on:openQuestionCommitted={openQuestionCommitted}
-				{baseUrl}
-				{userId}
-			/>
-			<OpenQuestions bind:this={openQuestions} {challengePool} {baseUrl} {userId} />
-		</div>
-	</details>
+<main class="container">
+	<h1>{challengePool.description}</h1>
+	{#if userId == challengePool.owner}
+		<button on:click={deletePool} class="secondary outline w-auto mb-0">Delete</button>
+	{/if}
+	<OpenQuestionDrafts
+		{challengePool}
+		on:toast
+		on:openQuestionCommitted={openQuestionCommitted}
+		{baseUrl}
+		{userId}
+	/>
+	<OpenQuestions bind:this={openQuestions} {challengePool} {baseUrl} {userId} />
 </main>

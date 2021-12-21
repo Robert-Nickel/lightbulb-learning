@@ -9,10 +9,15 @@ import * as subs from '@aws-cdk/aws-sns-subscriptions';
 import * as cdk from '@aws-cdk/core';
 import * as lambdaEventSources from '@aws-cdk/aws-lambda-event-sources';
 import * as iam from '@aws-cdk/aws-iam';
+import * as cognito from '@aws-cdk/aws-cognito';
 
 export class InfrastructureStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
+
+    // TODO: add for each premium user an user-pool. 
+    // Premium user can be identified via URL
+    // const pool = new cognito.UserPool(this, 'lightbulb-learning-demo');
 
     const snsPublishPolicy = new PolicyStatement({
       resources: ["arn:aws:sns:eu-central-1:532688539985:open-question-topic.fifo"],
@@ -71,7 +76,7 @@ export class InfrastructureStack extends cdk.Stack {
     const createGroupLambda = buildLambda('createGroupLambda', this, 60, 512);
     const createGroupPolicy = new PolicyStatement({
       resources: ["*"],
-      actions: ["cognito-idp:CreateGroup", "iam:PassRole", "iam:GetRole", "iam:ListRoles", "cognito-idp:AdminUpdateUserAttributes", "SNS:Publish"],
+      actions: ["cognito-idp:CreateGroup", "iam:PassRole", "iam:GetRole", "iam:ListRoles", "cognito-idp:AdminUpdateUserAttributes", "SNS:Publish", "lambda:InvokeFunction"],
       effect: Effect.ALLOW
     })
     createGroupLambda.addToRolePolicy(createGroupPolicy)

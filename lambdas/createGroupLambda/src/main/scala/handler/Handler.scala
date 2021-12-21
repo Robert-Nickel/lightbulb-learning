@@ -24,7 +24,11 @@ import software.amazon.awssdk.services.iam.model.*;
 import software.amazon.awssdk.services.iam.IamClient;
 import software.amazon.awssdk.services.iam.model.ListRolesRequest;
 import software.amazon.awssdk.services.sns.SnsClient;
-import software.amazon.awssdk.services.sns.model.{MessageAttributeValue, PublishRequest, PublishResponse}
+import software.amazon.awssdk.services.sns.model.{MessageAttributeValue, PublishRequest, PublishResponse};
+
+import software.amazon.awssdk.services.lambda.LambdaClient;
+import software.amazon.awssdk.services.lambda.model.InvokeRequest;
+import software.amazon.awssdk.core.SdkBytes;
 
 import scala.collection.JavaConverters._
 import scala.collection.mutable.ArrayBuffer
@@ -75,6 +79,26 @@ class Handler {
             .httpClient(httpClient)
             .build()
 
+      val lambdaClient = LambdaClient
+          .builder()
+          .region(Region.EU_CENTRAL_1)
+          .httpClient(httpClient)
+          .build()
+
+      val dupe = Json.toJson(eventBody)
+      println("dupe:")
+      println(dupe)
+
+      val lambdaRequest = (
+        InvokeRequest.builder()
+          .functionName("InfrastructureStack-addUserToGroupLambda87BA65DB-kMSCEsPok8P6")
+          .payload(SdkBytes.fromUtf8String(dupe))
+          .build()
+      )
+    
+
+      lambdaClient.invoke(lambdaRequest)
+
       val listRolesRequest = (
         ListRolesRequest.builder()
           .pathPrefix("/")
@@ -104,7 +128,10 @@ class Handler {
       val response = cognitoClient.createGroup(request);
       val addUserToGroupEvent = createGroupInfo.toAddUserToGroupEvent()
 
-      val publishResult = publish(addUserToGroupEvent)
+      // TODO: call addUserToGroup lambda function
+
+
+      // val publishResult = publish(addUserToGroupEvent)
 
       return APIGatewayV2HTTPResponse
         .builder()
@@ -124,36 +151,36 @@ class Handler {
     }
   }
 
-  def publish(
-      addUserToGroupEvent: AddUserToGroupEvent
-  ): PublishResponse = {
-    val httpClient = ApacheHttpClient.builder().build();
+  // def publish(
+  //     addUserToGroupEvent: AddUserToGroupEvent
+  // ): PublishResponse = {
+  //   val httpClient = ApacheHttpClient.builder().build();
 
-    val snsClient = SnsClient
-      .builder()
-      .httpClient(httpClient)
-      .region(Region.EU_CENTRAL_1)
-      .build()
+  //   val snsClient = SnsClient
+  //     .builder()
+  //     .httpClient(httpClient)
+  //     .region(Region.EU_CENTRAL_1)
+  //     .build()
 
-    val MessageAttributes =
-      Map(
-        "TYPE" -> MessageAttributeValue.builder().stringValue("ADD_USER_TO_GROUP").dataType("String").build()
-    )
+  //   val MessageAttributes =
+  //     Map(
+  //       "TYPE" -> MessageAttributeValue.builder().stringValue("ADD_USER_TO_GROUP").dataType("String").build()
+  //   )
 
-    val request: PublishRequest = PublishRequest
-      .builder()
-      .message(s"${Json.toJson(addUserToGroupEvent)}")
-      .messageGroupId(addUserToGroupEvent.groupName)
-      .messageAttributes(MessageAttributes.asJava)
-      .topicArn(
-        "arn:aws:sns:eu-central-1:532688539985:add-user-to-group-topic.fifo"
-      )
-      .build()
+  //   val request: PublishRequest = PublishRequest
+  //     .builder()
+  //     .message(s"${Json.toJson(addUserToGroupEvent)}")
+  //     .messageGroupId(addUserToGroupEvent.groupName)
+  //     .messageAttributes(MessageAttributes.asJava)
+  //     .topicArn(
+  //       "arn:aws:sns:eu-central-1:532688539985:add-user-to-group-topic.fifo"
+  //     )
+  //     .build()
 
-    val result = snsClient.publish(request)
-    println(s"publish result = ${snsClient.publish(request)}");
-    return result
-  }
+  //   val result = snsClient.publish(request)
+  //   println(s"publish result = ${snsClient.publish(request)}");
+  //   return result
+  // }
 
  
 }

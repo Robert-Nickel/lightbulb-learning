@@ -16,6 +16,7 @@ lazy val root = project
       "software.amazon.awssdk" % "apache-client" % "2.17.96",
       "software.amazon.awssdk" % "cognitoidentityprovider" % "2.17.96",
       "software.amazon.awssdk" % "iam" % "2.17.96",
+      "software.amazon.awssdk" % "lambda" % "2.17.101",
       "org.slf4j" % "slf4j-log4j12" % "1.7.32",
     )
   )

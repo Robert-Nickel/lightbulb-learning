@@ -46,7 +46,7 @@
 		</form>
 
 		{#await promise}
-			<span aria-busy="true">Signing up ...</span>
+			<span aria-busy="true">Signing up...</span>
 		{:catch error}
 			<span class="errorMessage">Something went wrong: {error.message}</span>
 		{/await}

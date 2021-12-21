@@ -85,19 +85,12 @@ class Handler {
           .httpClient(httpClient)
           .build()
 
-      val dupe = Json.toJson(eventBody)
-      println("dupe:")
-      println(dupe)
-
       val lambdaRequest = (
         InvokeRequest.builder()
           .functionName("InfrastructureStack-addUserToGroupLambda87BA65DB-kMSCEsPok8P6")
-          .payload(SdkBytes.fromUtf8String(dupe))
+          .payload(SdkBytes.fromUtf8String(Json.toJson(eventBody)))
           .build()
       )
-    
-
-      lambdaClient.invoke(lambdaRequest)
 
       val listRolesRequest = (
         ListRolesRequest.builder()
@@ -128,10 +121,7 @@ class Handler {
       val response = cognitoClient.createGroup(request);
       val addUserToGroupEvent = createGroupInfo.toAddUserToGroupEvent()
 
-      // TODO: call addUserToGroup lambda function
-
-
-      // val publishResult = publish(addUserToGroupEvent)
+      lambdaClient.invoke(lambdaRequest)
 
       return APIGatewayV2HTTPResponse
         .builder()
@@ -150,37 +140,5 @@ class Handler {
         .build()
     }
   }
-
-  // def publish(
-  //     addUserToGroupEvent: AddUserToGroupEvent
-  // ): PublishResponse = {
-  //   val httpClient = ApacheHttpClient.builder().build();
-
-  //   val snsClient = SnsClient
-  //     .builder()
-  //     .httpClient(httpClient)
-  //     .region(Region.EU_CENTRAL_1)
-  //     .build()
-
-  //   val MessageAttributes =
-  //     Map(
-  //       "TYPE" -> MessageAttributeValue.builder().stringValue("ADD_USER_TO_GROUP").dataType("String").build()
-  //   )
-
-  //   val request: PublishRequest = PublishRequest
-  //     .builder()
-  //     .message(s"${Json.toJson(addUserToGroupEvent)}")
-  //     .messageGroupId(addUserToGroupEvent.groupName)
-  //     .messageAttributes(MessageAttributes.asJava)
-  //     .topicArn(
-  //       "arn:aws:sns:eu-central-1:532688539985:add-user-to-group-topic.fifo"
-  //     )
-  //     .build()
-
-  //   val result = snsClient.publish(request)
-  //   println(s"publish result = ${snsClient.publish(request)}");
-  //   return result
-  // }
-
  
 }

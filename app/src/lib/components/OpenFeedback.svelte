@@ -99,31 +99,23 @@
 		</div>
 	{:else if openAnswer.owner != userId}
 		{#if openFeedbackDraft}
-			<div class="flex justify-between">
-				<div>{openFeedbackDraft.feedbackText}</div>
-				<div>
-					<button on:click={() => deleteMyFeedbackDraft(openFeedbackDraft, openAnswer)} class="w-32"
-						>Delete</button
-					>
-				</div>
+			<div class="flex justify-between space-x-2">
+				<div class="w-full">{openFeedbackDraft.feedbackText}</div>
+				<button
+					on:click={() => deleteMyFeedbackDraft(openFeedbackDraft, openAnswer)}
+					class="w-32 secondary outline">Delete</button
+				>
+				<button on:click={() => commitOpenFeedback(openFeedbackDraft, openAnswer)} class="w-32">Commit</button
+				>
 			</div>
 		{:else}
 			<div class="flex justify-between space-x-2 mt-2">
 				<div class="w-full">
 					<input id="openFeedbackDraft" class="w-full" placeholder="Provide feedback to this answer" />
 				</div>
-				<div>
-					<button on:click={() => saveOpenFeedbackDraft(openAnswer)} class="w-32">Save Draft</button>
-				</div>
+				<button on:click={() => saveOpenFeedbackDraft(openAnswer)} class="w-32">Save</button>
 			</div>
 		{/if}
-		<div>
-			<button
-				disabled={!openFeedbackDraft}
-				on:click={() => commitOpenFeedback(openFeedbackDraft, openAnswer)}
-				class="w-32">Commit</button
-			>
-		</div>
 	{/if}
 	{#if openAnswer.owner == userId || myOpenFeedback}
 		<!--I can see other peoples feedback, if it was my answer or I already provided my feedback-->

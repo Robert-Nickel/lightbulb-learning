@@ -17,7 +17,7 @@
 </script>
 
 {#if openQuestions.length > 0}
-	<h3 class="mt-6">Open Questions</h3>
+	<h3 class="mt-10">Open Questions</h3>
 {/if}
 {#each openQuestions as openQuestion}
 	<article>

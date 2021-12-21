@@ -6,7 +6,6 @@
 	import * as process from 'process';
 	import Sidebar from '$lib/components/Sidebar.svelte';
 	import Navbar from '$lib/components/Navbar.svelte';
-	import { Auth } from 'aws-amplify';
 
 	if (browser) {
 		Amplify.configure(aws_exports);
@@ -16,17 +15,8 @@
 	}
 
 	let sidebarOpen = false;
-
-	async function getUserId(): Promise<string> {
-		const user = await Auth.currentAuthenticatedUser();
-		return user.attributes.sub;
-	}
 </script>
 
 <Sidebar bind:open={sidebarOpen} />
 <Navbar bind:sidebar={sidebarOpen} />
-{#await getUserId() then userId}
-	<slot {userId} />
-{/await}
-
-
+<slot />

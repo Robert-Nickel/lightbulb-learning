@@ -16,8 +16,8 @@
 	class:open
 >
 	{#if $store == null}
-		<nav on:click={() => (open = false)}><a href="/signin">Sign In</a></nav>
-		<nav on:click={() => (open = false)}><a href="/signup">Sign Up</a></nav>
+		<nav on:click={() => (open = false)}><a href="/register">Register</a></nav>
+		<nav on:click={() => (open = false)}><a href="/login">Login</a></nav>
 	{:else}
 		<nav on:click={logout}><a href="/">Sign Out</a></nav>
 	{/if}

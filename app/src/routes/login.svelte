@@ -12,8 +12,8 @@
 <div class="flex justify-center">
 	<article class="max-w-sm">
 		<header class="flex justify-between items-center">
-			<h3 class="text-3xl mb-0">Sign In</h3>
-			<a class="-mt-1" href="/signup"> Switch to Sign Up </a>
+			<h3 class="text-3xl mb-0">Login</h3>
+			<a class="-mt-1" href="/register">Register</a>
 		</header>
 
 		<form on:submit|preventDefault={handleSubmit}>
@@ -25,21 +25,13 @@
 				Password:
 				<input type="password" bind:value={$loginFormState.password} />
 			</label>
-			<button type="submit" class="outline">Sign In</button>
+			<button type="submit" class="outline">Login</button>
 		</form>
 
 		{#await promise}
-			<span aria-busy="true">Signing in...</span>
+			<span aria-busy="true">Logging in...</span>
 		{:catch error}
-			<span class="errorMessage">Something went wrong: {error.message}</span>
+			<mark class="errorMessage">Something went wrong: {error.message}</mark>
 		{/await}
 	</article>
 </div>
-
-<style>
-	.errorMessage {
-		background: papayawhip;
-		color: red;
-		padding: 1rem;
-	}
-</style>

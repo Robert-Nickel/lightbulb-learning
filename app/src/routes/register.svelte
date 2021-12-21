@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { browser } from '$app/env';
-
+	import { goto } from '$app/navigation';
 	import { signUp, confirmSignUp, loginFormState } from '$lib/stores/auth';
 
 	export let confirmStep = false;
@@ -8,13 +7,9 @@
 
 	function handleSubmit() {
 		if (!confirmStep) {
-			promise = signUp().then(() => {
-				confirmStep = true;
-			});
+			promise = signUp().then(() => (confirmStep = true));
 		} else {
-			promise = confirmSignUp().then(() => {
-				if (browser) window.open('/', '_self');
-			});
+			promise = confirmSignUp().then(() => goto('/'));
 		}
 	}
 </script>
@@ -22,10 +17,9 @@
 <div class="flex justify-center">
 	<article class="max-w-sm">
 		<header class="flex justify-between items-center">
-			<h3 class="text-3xl mb-0">Sign Up</h3>
-			{#if !confirmStep}<a class="-mt-1" href="/signin"> Switch to Sign In </a>{/if}
+			<h3 class="text-3xl mb-0">Register</h3>
+			{#if !confirmStep}<a class="-mt-1" href="/login">Login</a>{/if}
 		</header>
-
 		<form on:submit|preventDefault={handleSubmit}>
 			{#if !confirmStep}
 				<label>
@@ -38,17 +32,17 @@
 				</label>
 			{:else}
 				<label>
-					Confirm signup (check your email):
+					Confirm Registration (check your email):
 					<input type="text" bind:value={$loginFormState.confirmCode} placeholder="e.g. 123456" />
 				</label>
 			{/if}
-			<button type="submit" class="outline">Sign Up</button>
+			<button type="submit" class="outline">Register</button>
 		</form>
 
 		{#await promise}
-			<span aria-busy="true">Signing up...</span>
+			<span aria-busy="true">Registering...</span>
 		{:catch error}
-			<span class="errorMessage">Something went wrong: {error.message}</span>
+			<mark>Something went wrong: {error.message}</mark>
 		{/await}
 	</article>
 </div>

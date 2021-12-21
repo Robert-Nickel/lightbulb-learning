@@ -26,17 +26,13 @@
 	}
 
 	async function createChallengePool() {
-		console.log('cereate');
 		const description = document.getElementById('challengePoolDescription').value;
 		try {
-			console.log('ss');
 			await DataStore.save(new ChallengePool({ description: description, owner: userId }));
 		} catch (error) {
 			console.log(error);
 		}
-		console.log('ss');
 		fetchChallengePools();
-		console.log('ss');
 		document.getElementById('challengePoolDescription').value = '';
 		dispatch('toast', { type: 'success', text: 'Challenge Pool created!' });
 	}

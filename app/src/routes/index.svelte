@@ -2,10 +2,10 @@
 	import { store } from '$lib/stores/auth';
 	import ChallengePools from '$lib/components/ChallengePools.svelte';
 	import { SvelteToast, toast } from '@zerodevx/svelte-toast';
-	import { Auth } from 'aws-amplify';
 	import StartPage from '$lib/components/StartPage.svelte';
 
 	const baseUrl: string = 'https://yybkc7efv3.execute-api.eu-central-1.amazonaws.com';
+	export let userId: string;
 
 	function showToast(toastEvent) {
 		let theme = {
@@ -17,18 +17,12 @@
 		});
 	}
 
-	async function getUserId(): Promise<string> {
-		const user = await Auth.currentAuthenticatedUser();
-		return user.attributes.sub;
-	}
 </script>
 
 {#if $store != null}
-	{#await getUserId() then userId}
-		<main class="container mx-auto py-4 px-2 max-w-screen-sm">
-			<ChallengePools on:toast={showToast} {baseUrl} {userId} />
-		</main>
-	{/await}
+<main class="container py-4 max-w-screen-sm">
+	<ChallengePools on:toast={showToast} {baseUrl} {userId} />
+</main>
 {:else}
 	<StartPage />
 {/if}

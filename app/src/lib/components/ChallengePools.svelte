@@ -4,6 +4,7 @@
 	import ChallengePoolDetail from './ChallengePoolDetail.svelte';
 	import { Hub } from 'aws-amplify';
 	import { createEventDispatcher } from 'svelte';
+	import { goto } from '$app/navigation';
 	const dispatch = createEventDispatcher();
 
 	export let baseUrl: string;
@@ -36,31 +37,28 @@
 		document.getElementById('challengePoolDescription').value = '';
 		dispatch('toast', { type: 'success', text: 'Challenge Pool created!' });
 	}
-
-	async function deleteChallengePool(id) {
-		await DataStore.delete(await DataStore.query(ChallengePool, id));
-		fetchChallengePools();
-	}
 </script>
 
 <div class="space-y-4">
-	{#each challengePools as challengePool}
-		<ChallengePoolDetail
-			{challengePool}
-			on:deleteClicked={() => deleteChallengePool(challengePool.id)}
-			on:toast
-			{baseUrl}
-			{userId}
-		/>
-	{/each}
-	<div class="space-y-4">
-		<div class="flex justify-between space-x-2">
-			<div class="w-full">
-				<input id="challengePoolDescription" class="w-full" placeholder="Create new Challenge Pool" />
-			</div>
-			<div>
-				<button on:click={createChallengePool} class="w-32">Create</button>
-			</div>
+	<div class="flex justify-between space-x-2">
+		<div class="w-full">
+			<input id="challengePoolDescription" class="w-full" placeholder="Create new Challenge Pool" />
+		</div>
+		<div>
+			<button on:click={createChallengePool} class="w-32">Create</button>
 		</div>
 	</div>
+</div>
+
+<div class="flex flex-wrap justify-center">
+	{#each challengePools as challengePool}
+		<article class="w-96 m-5 cursor-pointer" on:click={() => goto(`/challengepools/${challengePool.id}`)}>
+			<a href={`/challengepools/${challengePool.id}`}><h4>{challengePool.description}</h4> </a>
+
+			<!-- TODO: warum wird immer 0 angezeigt? -->
+			<div>Questions: {challengePool.OpenQuestionDrafts?.length ?? 0}</div>
+			<div>Drafts: {challengePool.OpenQuestionDrafts?.length ?? 0}</div>
+			<div>Last update: {challengePool.updatedAt}</div>
+		</article>
+	{/each}
 </div>

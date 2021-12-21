@@ -105,7 +105,8 @@
 					on:click={() => deleteMyFeedbackDraft(openFeedbackDraft, openAnswer)}
 					class="w-32 secondary outline">Delete</button
 				>
-				<button on:click={() => commitOpenFeedback(openFeedbackDraft, openAnswer)} class="w-32">Commit</button
+				<button on:click={() => commitOpenFeedback(openFeedbackDraft, openAnswer)} class="w-32"
+					>Publish</button
 				>
 			</div>
 		{:else}

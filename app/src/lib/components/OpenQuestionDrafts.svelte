@@ -132,7 +132,10 @@
 						</button>
 					{:else}
 						<b class="w-full">Answer: {openQuestionDraft.answerText}</b>
-						<button on:click={() => deleteMyAnswerFromOpenQuestionDraft(openQuestionDraft)} class="w-48">
+						<button
+							on:click={() => deleteMyAnswerFromOpenQuestionDraft(openQuestionDraft)}
+							class="w-48 outline secondary"
+						>
 							Delete Answer
 						</button>
 						<button

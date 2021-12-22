@@ -84,24 +84,18 @@ export class InfrastructureStack extends cdk.Stack {
     const addUserToGroupLambda = buildLambda('addUserToGroupLambda', this, 60);
     const addUserGroupPolicy = new PolicyStatement({
       resources: ["*"],
-      actions: ["cognito-idp:AdminAddUserToGroup", "sqs:ReceiveMessage", "sqs:DeleteMessage", "sqs:GetQueueAttributes"],
+      actions: ["cognito-idp:AdminAddUserToGroup"],
       effect: Effect.ALLOW
     })
     addUserToGroupLambda.addToRolePolicy(addUserGroupPolicy)
-    const addUserToGroupTopic = new sns.Topic(this, 'add-user-to-group-topic', {
-      topicName: 'add-user-to-group-topic',
-      displayName: 'Add User To Group Topic',
-      fifo: true,
-      contentBasedDeduplication: true
-    });
-    const addUserToGroupQueue = new sqs.Queue(this, 'add-user-to-group-queue', { 
-      fifo: true, 
-      visibilityTimeout: cdk.Duration.seconds(60)
-    });
-    addUserToGroupLambda.addEventSource(
-      new lambdaEventSources.SqsEventSource(addUserToGroupQueue)
-    );
-    addUserToGroupTopic.addSubscription(new subs.SqsSubscription(addUserToGroupQueue));
+
+    const addUserToGroupHttpLambda = buildLambda('addUserToGroupHttpLambda', this, 60)
+    const addUserToGroupHttpLambdaPolicy = new PolicyStatement({
+      resources: ["*"],
+      actions: ["lambda:InvokeFunction"],
+      effect: Effect.ALLOW
+    })
+    addUserToGroupHttpLambda.addToRolePolicy(addUserToGroupHttpLambdaPolicy)
 
 
     // This is currently not required, but might be very helpful soon.
@@ -161,7 +155,7 @@ export class InfrastructureStack extends cdk.Stack {
       path: '/addUserToGroup',
       methods: [HttpMethod.POST, HttpMethod.OPTIONS],
       integration: new LambdaProxyIntegration({
-        handler: addUserToGroupLambda,
+        handler: addUserToGroupHttpLambda,
       }),
     });
 
@@ -180,10 +174,6 @@ export class InfrastructureStack extends cdk.Stack {
     new cdk.CfnOutput(this, 'openFeedbackTopicArn', {
       value: openFeedbackTopic.topicArn,
       description: 'The arn of the open-feedback SNS topic',
-    });
-    new cdk.CfnOutput(this, 'addUserToGroupTopicArn', {
-      value: addUserToGroupTopic.topicArn,
-      description: 'The arn of the add-user-to-group SNS topic',
     });
   }
 }

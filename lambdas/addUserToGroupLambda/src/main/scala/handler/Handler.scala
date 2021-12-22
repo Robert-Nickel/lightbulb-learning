@@ -14,8 +14,10 @@ import software.amazon.awssdk.http.SdkHttpClient;
 import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.{
   CognitoIdentityProviderException,
-  AdminAddUserToGroupRequest
+  AdminAddUserToGroupRequest,
+  ListUsersInGroupRequest
 };
+
 
 import scala.collection.JavaConverters._
 import scala.collection.mutable.ArrayBuffer
@@ -30,17 +32,11 @@ class Handler {
     val groupName = groupInfoMap.get("groupName")
     val userName = groupInfoMap.get("userName")
     val userPoolId = groupInfoMap.get("userPoolId")
-    val roleType = groupInfoMap.get("roleType")
     
     println("GroupName:" + groupName)
 
       // TODO: groupName (TenantID) verschluesseln!
       // TODO: userAnzahl von Gruppe herausfinden
-    
-      // val groupName = groupInfo.groupName   // Testgruppe5
-      // val userName = groupInfo.userName     // piskdvzrxkglrtskft@kvhrw.com
-      // val userPoolId = groupInfo.userPoolId // eu-central-1_bAc9VMMys
-
       // println("groupName: " + groupName)
 
     val httpClient = ApacheHttpClient.builder().build();
@@ -49,6 +45,24 @@ class Handler {
       .region(Region.EU_CENTRAL_1)
       .httpClient(httpClient)
       .build()
+
+    /* FIXME:
+    "none of the overloaded alternatives named <init> can be accessed as a      member of software.amazon.awssdk.services.cognitoidentityprovider.model.
+      [error]    |  ListUsersInGroupRequest from class Handler." 
+    */
+
+    // val listUsersInGroupRequest = (
+    //   ListUsersInGroupRequest() 
+    //     .builder()
+    //     .userPoolId(userPoolId)
+    //     .groupName(groupName)
+    //     .build()
+    // )
+
+    // val listUsersInGroupResult = cognitoClient.listUsersInGroup(listUsersInGroupRequest)
+
+    // val amountUsers = listUsersInGroupResult.getUsers().size().toString
+    // println("amount users:" + amountUsers)
 
     val adminAddUserToGroupRequest = (
       AdminAddUserToGroupRequest

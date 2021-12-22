@@ -11,13 +11,9 @@ lazy val root = project
       "com.amazonaws" % "aws-lambda-java-core" % "1.2.1",
       "com.amazonaws" % "aws-lambda-java-events" % "3.9.0",
       "com.amazonaws" % "aws-java-sdk-dynamodb" % "1.12.106",
-      "software.amazon.awssdk" % "sns" % "2.17.82",
-      "software.amazon.awssdk" % "apache-client" % "2.17.96",
-      "software.amazon.awssdk" % "cognitoidentityprovider" % "2.17.102",
-      "software.amazon.awssdk" % "iam" % "2.17.96",
-      "software.amazon.awssdk" % "lambda" % "2.17.101",
-      "org.slf4j" % "slf4j-log4j12" % "1.7.32",
       "com.github.losizm" %% "little-json" % "9.0.0",
+      "software.amazon.awssdk" % "lambda" % "2.17.101",
+      "software.amazon.awssdk" % "apache-client" % "2.17.96"
     )
   )
 assemblyJarName in assembly := "lambda-scala-seed.jar"

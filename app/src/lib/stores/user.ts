@@ -1,3 +1,4 @@
+import { browser } from '$app/env';
 import { initAmplify } from '$lib/awsCommon';
 import type { CognitoUser } from '@aws-amplify/auth';
 import { Auth } from 'aws-amplify';
@@ -9,6 +10,8 @@ export const user = writable(null as User | undefined);
 
 initAmplify();
 
-Auth.currentAuthenticatedUser().then((x) => {
-	user.set({ ...x, id: x.attributes.sub });
-});
+if (browser) {
+	Auth.currentAuthenticatedUser().then((x) => {
+		user.set({ ...x, id: x.attributes.sub });
+	});
+}

@@ -111,7 +111,7 @@
 		{#each openQuestionDrafts as openQuestionDraft}
 			<article class="mb-8">
 				<div class="flex justify-between space-x-2">
-					<h4 class="w-full">{openQuestionDraft.questionText}</h4>
+					<p class="w-full">{openQuestionDraft.questionText}</p>
 					<button
 						on:click={() => deleteOpenQuestionDraft(openQuestionDraft.id)}
 						class="w-48 outline secondary"
@@ -120,33 +120,35 @@
 					</button>
 				</div>
 
-				<div class="flex justify-between space-x-2">
-					{#if openQuestionDraft.answerText == null}
+				{#if openQuestionDraft.answerText == null}
+					<div class="flex justify-between space-x-2">
 						<input
 							class="w-full"
 							placeholder="What is the correct answer?"
 							id="openQuestionDraftAnswerText"
 						/>
-						<button on:click={() => updateOpenQuestionDraftWithAnswer(openQuestionDraft)} class="w-32">
+						<button on:click={() => updateOpenQuestionDraftWithAnswer(openQuestionDraft)} class="w-48">
 							Save
 						</button>
-					{:else}
-						<b class="w-full">Answer: {openQuestionDraft.answerText}</b>
+					</div>
+				{:else}
+					<div class="flex justify-between space-x-2">
+						<p class="w-full"><i>Your Answer:</i> {openQuestionDraft.answerText}</p>
 						<button
 							on:click={() => deleteMyAnswerFromOpenQuestionDraft(openQuestionDraft)}
-							class="w-48 outline secondary"
+							class="w-48 outline secondary h-12"
 						>
 							Delete Answer
 						</button>
-						<button
-							disabled={!openQuestionDraft.answerText}
-							on:click={() => commitOpenQuestion(openQuestionDraft)}
-							class="w-32"
-						>
-							Publish
-						</button>
-					{/if}
-				</div>
+					</div>
+					<button
+						disabled={!openQuestionDraft.answerText}
+						on:click={() => commitOpenQuestion(openQuestionDraft)}
+						class="w-32 h-12"
+					>
+						Publish
+					</button>
+				{/if}
 			</article>
 		{/each}
 	{/if}

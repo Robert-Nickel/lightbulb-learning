@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { DataStore } from '@aws-amplify/datastore';
 	import { ChallengePool } from '../models';
-	import ChallengePoolDetail from './ChallengePoolDetail.svelte';
 	import { Hub } from 'aws-amplify';
 	import { createEventDispatcher } from 'svelte';
 	import { goto } from '$app/navigation';

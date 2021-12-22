@@ -4,7 +4,7 @@
 </script>
 
 <div
-	class="bg-center bg-contain bg-no-repeat bg-black"
+	class="bg-center bg-contain bg-no-repeat"
 	style="background-image: url('/images/lightbulb.jpeg');"
 >
 	<p class="text-7xl max-w-screen-sm mx-auto px-8 leading-snug pt-32 pb-8 text-white font-bold">

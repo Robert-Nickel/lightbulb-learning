@@ -3,7 +3,7 @@
 	export let sidebar = false;
 </script>
 
-<header class="flex bg-black p-2 items-center text-white">
+<header class="flex p-2 items-center text-white">
 	<nav class="flex">
 		<Hamburger bind:open={sidebar} />
 	</nav>

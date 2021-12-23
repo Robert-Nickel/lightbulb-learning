@@ -50,8 +50,8 @@
 
 <div class="flex flex-wrap justify-center">
 	{#each challengePools as challengePool}
-		<article class="w-96 m-5 cursor-pointer" on:click={() => goto(`/challengepools/${challengePool.id}`)}>
-			<a href={`/challengepools/${challengePool.id}`}><h4>{challengePool.description}</h4> </a>
+		<article class="w-96 m-5 cursor-pointer" on:click={() => goto(`/challengepool/${challengePool.id}`)}>
+			<a href={`/challengepool/${challengePool.id}`}><h4>{challengePool.description}</h4> </a>
 
 			<!-- TODO: warum wird immer 0 angezeigt? -->
 			<div>Questions: {challengePool.OpenQuestionDrafts?.length ?? 0}</div>

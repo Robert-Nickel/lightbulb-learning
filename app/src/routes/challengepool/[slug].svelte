@@ -11,8 +11,8 @@
 	let challengePool: ChallengePool;
 	let openQuestions: Array<OpenQuestion> = [];
 
-	onMount(async () => {
-		refresh()
+	onMount(() => {
+		refresh();
 	});
 
 	async function refresh() {
@@ -40,21 +40,24 @@
 		<h1>{challengePool.description}</h1>
 
 		<OpenQuestionDrafts {challengePool} on:toast on:openQuestionCommitted={openQuestionCommitted} />
+
 		{#if openQuestions.length > 0}
 			<h3 class="mt-10">Open Questions</h3>
 		{/if}
 		{#each openQuestions as openQuestion}
-			{#if openQuestion.owner == $user.id}
-				<article class="yours">
-					<i>You asked:</i>
-					{openQuestion.questionText}
-				</article>
-			{:else}
-				<article>
-					<p>{openQuestion.questionText}</p>
-					<OpenAnswers bind:openQuestion />
-				</article>
-			{/if}
+			<div on:click={() => goto(`/openquestion/${openQuestion.id}`)} >
+				{#if openQuestion.owner == $user.id}
+					<article class="yours question">
+						<i>You asked:</i>
+						{openQuestion.questionText}
+					</article>
+				{:else}
+					<article class="question">
+						{openQuestion.questionText}
+						<!--<OpenAnswers bind:openQuestion />-->
+					</article>
+				{/if}
+			</div>
 		{/each}
 
 		{#if $user.id == challengePool.owner}
@@ -68,5 +71,9 @@
 <style>
 	.yours {
 		border-left: 4px solid var(--primary);
+	}
+
+	.question:hover {
+		background-color: var(--card-sectionning-background-color);
 	}
 </style>

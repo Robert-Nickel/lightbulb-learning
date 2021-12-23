@@ -75,16 +75,11 @@
 		// TODO: this is ignored
 		// dispatch('toast', { type: 'success', text: 'Open Answer created!' });
 	}
-
-	async function isMyQuestion() {
-		return openQuestion.owner == $user.id;
-	}
 </script>
 
 {#if openQuestion}
 	<h1 class="yours pl-4">{openQuestion.questionText}</h1>
-	<!--If the user hasn't answered this question, he should be able to answer it here.-->
-	{#if isMyQuestion}
+	{#if openQuestion.owner == $user.id}
 		<i>This is your own question, so you cannot answer it.</i>
 	{:else if myOpenAnswer}
 		<div class="yours answer"><i>This is your answer: </i>{myOpenAnswer.answerText}</div>

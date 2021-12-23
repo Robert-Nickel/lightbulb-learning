@@ -16,6 +16,9 @@
 	fetchMyOpenAnswer(openQuestion);
 	fetchOpenAnswers(openQuestion);
 
+	console.log('owner: ' + openQuestion.owner);
+	console.log('user: ' + $user.id);
+
 	async function fetchOpenAnswerDraft(openQuestion) {
 		let openAnswerDrafts = await DataStore.query(OpenAnswerDraft, (a) =>
 			a.openquestionID('eq', openQuestion.id)
@@ -59,7 +62,8 @@
 
 		publishOpenAnswerCommittedEvent(myOpenAnswer);
 
-		dispatch('toast', { type: 'success', text: 'Open Answer created!' });
+		// TODO: this is ignored
+		// dispatch('toast', { type: 'success', text: 'Open Answer created!' });
 
 		fetchMyOpenAnswer(openQuestion);
 	}
@@ -90,20 +94,25 @@
 
 <div class="">
 	{#if myOpenAnswer}
-		<div class="italic mt-2 whitespace-pre">
-			✅ You have answered this question.<!--My Answer: {myOpenAnswer.answerText}-->
+		<div class="yours answer">
+			<p class="m-0"><i>You answered: </i>{myOpenAnswer.answerText}</p>
+			<!--TODO: Add feedback to own answer-->
+			<!--<OpenFeedback bind:openAnswer {baseUrl} />-->
 		</div>
 	{:else if openAnswerDraft}
 		<div class="flex justify-between space-x-2 mt-2">
 			<div class="w-full">{openAnswerDraft.answerText}</div>
+
+			<button
+				on:click={() => deleteMyAnswerDraft(openAnswerDraft, openQuestion)}
+				class="w-48 secondary outline">Delete</button
+			>
+		</div>
+		<div>
 			<button
 				disabled={!openAnswerDraft}
 				on:click={() => commitOpenAnswer(openAnswerDraft, openQuestion)}
 				class="w-32">Publish</button
-			>
-			<button
-				on:click={() => deleteMyAnswerDraft(openAnswerDraft, openQuestion)}
-				class="w-32 secondary outline">Delete</button
 			>
 		</div>
 	{:else if openQuestion.owner != $user.id}
@@ -117,12 +126,23 @@
 		<div />
 	{/if}
 	{#if openAnswers && openAnswers.length > 0}
-		<h4 class="my-4">Answers</h4>
+		<b>Other people's answers</b>
 		{#each openAnswers as openAnswer}
-			<div class="mt-4">
-				<b>{openAnswer.answerText}</b>
-				<OpenFeedback bind:openAnswer {baseUrl} />
+			<div class="answer mt-4">
+				<p class="mb-0">{openAnswer.answerText}</p>
+				<!--<OpenFeedback {openAnswer} />-->
 			</div>
 		{/each}
 	{/if}
 </div>
+
+<style>
+	.yours {
+		border-left: 4px solid var(--primary);
+	}
+
+	.answer {
+		@apply p-4 mb-4 rounded;
+		background: var(--card-sectionning-background-color);
+	}
+</style>

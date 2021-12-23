@@ -20,6 +20,7 @@ import software.amazon.awssdk.services.cognitoidentityprovider.model.{
 import com.amazonaws.services.cognitoidp.model.ListUsersInGroupRequest
 import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProvider;
 import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProviderClientBuilder;
+import com.amazonaws.services.cognitoidp.model.GetGroupRequest;
 
 import scala.collection.JavaConverters._
 import scala.collection.mutable.ArrayBuffer
@@ -50,6 +51,15 @@ class Handler {
     */
 
     val identityProvider =  AWSCognitoIdentityProviderClientBuilder.defaultClient()
+
+    val getGroupRequest = (
+      GetGroupRequest()
+        .withGroupName(groupName)
+        .withUserPoolId(userPoolId)
+    )
+    val groupResult = identityProvider.getGroup(getGroupRequest)
+    val roleForGroup = groupResult.getGroup().getRoleArn()
+    println("role for group:" + roleForGroup)
 
     val listUsersInGroupRequest = (
     ListUsersInGroupRequest() 

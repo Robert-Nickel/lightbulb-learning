@@ -21,11 +21,15 @@ import com.amazonaws.services.cognitoidp.model.ListUsersInGroupRequest
 import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProvider;
 import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProviderClientBuilder;
 import com.amazonaws.services.cognitoidp.model.GetGroupRequest;
+import com.amazonaws.services.cognitoidp.model.ListGroupsRequest;
 
 import scala.collection.JavaConverters._
 import scala.collection.mutable.ArrayBuffer
 import scala.jdk.CollectionConverters.MapHasAsJava
 import scala.language.implicitConversions
+
+
+case class CustomHttpResponse(statusCode: Integer, statusText: String)
 
 class Handler {
   def handle(
@@ -67,6 +71,11 @@ class Handler {
       .withUserPoolId(userPoolId)
     )
 
+    val listGroupsRequest = (
+    ListGroupsRequest() 
+      .withUserPoolId(userPoolId)
+    )
+
     val listUsersInGroupResult = identityProvider.listUsersInGroup(listUsersInGroupRequest)
 
     val amountUsers = listUsersInGroupResult.getUsers().size().toString
@@ -80,10 +89,23 @@ class Handler {
         .username(userName)
         .build()
     )
+    
 
     val response = cognitoClient.adminAddUserToGroup(adminAddUserToGroupRequest)
+    val statusCode = response.sdkHttpResponse().statusCode()
 
-    println("response:" + response)
+    val statusText = response.sdkHttpResponse().statusText().isPresent match {
+      case true => response.sdkHttpResponse().statusText().get()
+      case _ => ""
+    }
+
+    // Probably not working cause function returns "UNIT".
+    return CustomHttpResponse(
+      statusCode,
+      statusText
+    )
+
+    
   }
 
 }

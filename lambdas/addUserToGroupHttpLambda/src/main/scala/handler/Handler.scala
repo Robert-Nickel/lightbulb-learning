@@ -46,13 +46,18 @@ class Handler {
       )
       
       val response = lambdaClient.invoke(lambdaRequest)
-      val reponseStatus = 	response.statusCode
-      
+      val customHttpResponseJSON = response.payload.asUtf8String()
+      println("customHttpResponseJSON:")
+      println(customHttpResponseJSON)
+
+      val customHttpResponse = customHttpResponseJSON.as[CustomHttpResponse]
+
+      // val reponseStatus = customHttpResponse.statusCode
 
       return APIGatewayV2HTTPResponse
         .builder()
-        .withStatusCode(reponseStatus)
-        .withBody("{success: true}")
+        .withStatusCode(customHttpResponse.statusCode.toInt)
+        .withBody("{statusText: " + customHttpResponse.statusText + "}")
         .build()
     } else {
       /* For OPTIONS call*/

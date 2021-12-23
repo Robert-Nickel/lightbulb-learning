@@ -15,9 +15,11 @@ import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityPr
 import software.amazon.awssdk.services.cognitoidentityprovider.model.{
   CognitoIdentityProviderException,
   AdminAddUserToGroupRequest,
-  ListUsersInGroupRequest
 };
 
+import com.amazonaws.services.cognitoidp.model.ListUsersInGroupRequest
+import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProvider;
+import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProviderClientBuilder;
 
 import scala.collection.JavaConverters._
 import scala.collection.mutable.ArrayBuffer
@@ -35,10 +37,6 @@ class Handler {
     
     println("GroupName:" + groupName)
 
-      // TODO: groupName (TenantID) verschluesseln!
-      // TODO: userAnzahl von Gruppe herausfinden
-      // println("groupName: " + groupName)
-
     val httpClient = ApacheHttpClient.builder().build();
     val cognitoClient = CognitoIdentityProviderClient
       .builder()
@@ -46,23 +44,24 @@ class Handler {
       .httpClient(httpClient)
       .build()
 
-    /* FIXME:
+    /* INFO: WHEN USING new approach with cognitoClient following error shows up:
     "none of the overloaded alternatives named <init> can be accessed as a      member of software.amazon.awssdk.services.cognitoidentityprovider.model.
       [error]    |  ListUsersInGroupRequest from class Handler." 
     */
 
-    // val listUsersInGroupRequest = (
-    //   ListUsersInGroupRequest() 
-    //     .builder()
-    //     .userPoolId(userPoolId)
-    //     .groupName(groupName)
-    //     .build()
-    // )
+    val identityProvider =  AWSCognitoIdentityProviderClientBuilder.defaultClient()
 
-    // val listUsersInGroupResult = cognitoClient.listUsersInGroup(listUsersInGroupRequest)
+    val listUsersInGroupRequest = (
+    ListUsersInGroupRequest() 
+      .withGroupName(groupName)
+      .withUserPoolId(userPoolId)
+    )
 
-    // val amountUsers = listUsersInGroupResult.getUsers().size().toString
-    // println("amount users:" + amountUsers)
+    val listUsersInGroupResult = identityProvider.listUsersInGroup(listUsersInGroupRequest)
+
+    // getUsers needs some time (not instantly working...) 
+    val amountUsers = listUsersInGroupResult.getUsers().size().toString
+    println("amount users:" + amountUsers)
 
     val adminAddUserToGroupRequest = (
       AdminAddUserToGroupRequest

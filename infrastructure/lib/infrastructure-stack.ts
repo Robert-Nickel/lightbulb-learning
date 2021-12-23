@@ -81,10 +81,10 @@ export class InfrastructureStack extends cdk.Stack {
     })
     createGroupLambda.addToRolePolicy(createGroupPolicy)
 
-    const addUserToGroupLambda = buildLambda('addUserToGroupLambda', this, 60);
+    const addUserToGroupLambda = buildLambda('addUserToGroupLambda', this, 60, 512);
     const addUserGroupPolicy = new PolicyStatement({
       resources: ["*"],
-      actions: ["cognito-idp:AdminAddUserToGroup"],
+      actions: ["cognito-idp:AdminAddUserToGroup", "cognito-idp:ListUsersInGroup"],
       effect: Effect.ALLOW
     })
     addUserToGroupLambda.addToRolePolicy(addUserGroupPolicy)

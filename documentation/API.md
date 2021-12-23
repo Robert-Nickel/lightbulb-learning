@@ -35,14 +35,13 @@ raw/json:
 - adds a user to a group by calling `AddUserToGroupLambda` 
 
 POST: 
-`https://yybkc7efv3.execute-api.eu-central-1.amazonaws.com/createGroup`
+`https://yybkc7efv3.execute-api.eu-central-1.amazonaws.com/addUserToGroup`
 
 raw/json:
 ```json
 {
-    "groupName": "Testgruppe71",
     "userName": "piskdvzrxkglrtskft@kvhrw.com",
     "userPoolId": "eu-central-1_bAc9VMMys",
-    "roleType": "Free"
+    "groupName": "Testgruppe18"
 }
 ```

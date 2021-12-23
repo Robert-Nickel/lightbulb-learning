@@ -114,7 +114,7 @@
 				<div class="w-full">
 					<input id="openFeedbackDraft" class="w-full" placeholder="Provide feedback to this answer" />
 				</div>
-				<button on:click={() => saveOpenFeedbackDraft(openAnswer)} class="w-32">Save</button>
+				<button on:click={() => saveOpenFeedbackDraft(openAnswer)} class="w-48">Save</button>
 			</div>
 		{/if}
 	{/if}

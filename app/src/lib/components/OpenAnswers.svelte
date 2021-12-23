@@ -92,7 +92,7 @@
 	}
 </script>
 
-<div class="">
+<div>
 	{#if myOpenAnswer}
 		<div class="yours answer">
 			<p class="m-0"><i>You answered: </i>{myOpenAnswer.answerText}</p>
@@ -102,7 +102,6 @@
 	{:else if openAnswerDraft}
 		<div class="flex justify-between space-x-2 mt-2">
 			<div class="w-full">{openAnswerDraft.answerText}</div>
-
 			<button
 				on:click={() => deleteMyAnswerDraft(openAnswerDraft, openQuestion)}
 				class="w-48 secondary outline">Delete</button
@@ -121,7 +120,7 @@
 			<div class="w-full">
 				<input id="openAnswerDraft" class="w-full" placeholder="Answer this question" />
 			</div>
-			<button on:click={() => saveOpenAnswerDraft(openQuestion)} class="w-32 ">Save</button>
+			<button on:click={() => saveOpenAnswerDraft(openQuestion)} class="w-48 ">Save</button>
 		</div>
 		<div />
 	{/if}

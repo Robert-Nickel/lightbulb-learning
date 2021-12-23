@@ -69,7 +69,6 @@ class Handler {
 
     val listUsersInGroupResult = identityProvider.listUsersInGroup(listUsersInGroupRequest)
 
-    // getUsers needs some time (not instantly working...) 
     val amountUsers = listUsersInGroupResult.getUsers().size().toString
     println("amount users:" + amountUsers)
 

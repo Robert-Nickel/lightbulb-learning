@@ -8,13 +8,13 @@ import { baseUrl } from '$lib/awsCommon';
 		myHeaders.append('Content-Type', 'application/json');
 
 		const user = await Auth.currentAuthenticatedUser();
-		const username = user.attributes.email;
+		const userName = user.attributes.email;
 		// TODO: change this hardcoded userpool to be custom for premium instances
-		const userPoolId = 'lightbulblearningapp1ed418f9_userpool_1ed418f9-prod';
+		const userPoolId = 'eu-central-1_bAc9VMMys';
 
 		const groupName = document.getElementById('groupName').value;
 		const body = {
-			username,
+			userName,
 			userPoolId,
 			groupName
 		};

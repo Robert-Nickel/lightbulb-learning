@@ -14,6 +14,11 @@ raw/json:
 }
 ```
 
+Returns:
+```json
+["Testgruppe1","Testgruppe2"]
+```
+
 ## CreateGroup
 - creates a group and adds the provided username to the group and set the attribute `custom:admin_of_group` with the given username. 
 

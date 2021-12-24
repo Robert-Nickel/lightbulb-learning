@@ -12,6 +12,7 @@ import com.amazonaws.services.cognitoidp.model.{GetGroupRequest,AdminListGroupsF
 
 import little.json.*
 import little.json.Implicits.{*, given}
+import upickle.default._
 
 import scala.jdk.CollectionConverters.MapHasAsJava
 import scala.collection.JavaConverters._
@@ -42,17 +43,19 @@ class Handler {
 
       val adminlistGroupsResult =
         identityProvider.adminListGroupsForUser(adminListGroupsForUserRequest)
-
-      val userGroups = adminlistGroupsResult.getGroups()
-      val userNamesScala = userGroups.asScala.toList.map( userGroup => userGroup.getGroupName())
-
-      // TODO: use little.json instead of this funny way
-      val json = userNamesScala.mkString(""""{"groups":[{""", ",", """}]}""")
+      
+      val userGroups: List[String] = adminlistGroupsResult
+        .getGroups()
+        .asScala
+        .toList
+        .map(
+          userGroup => userGroup.getGroupName()
+        )
 
       return APIGatewayV2HTTPResponse
         .builder()
         .withStatusCode(200)
-        .withBody(json)
+        .withBody(write(userGroups))
         .build()
     } else {
       /* For OPTIONS call*/

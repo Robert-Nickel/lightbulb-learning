@@ -39,7 +39,7 @@
 	{#if challengePool}
 		<h1>{challengePool.description}</h1>
 
-		<OpenQuestionDrafts {challengePool} on:toast on:openQuestionCommitted={openQuestionCommitted} />
+		<OpenQuestionDrafts {challengePool} on:openQuestionCommitted={openQuestionCommitted} />
 
 		{#if openQuestions.length > 0}
 			<h3 class="mt-10">Open Questions</h3>

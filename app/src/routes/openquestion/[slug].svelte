@@ -5,11 +5,13 @@
 	import { DataStore } from 'aws-amplify';
 	import { user } from '$lib/stores/user';
 	import Back from '$lib/components/Back.svelte';
+	import Toast from '$lib/components/Toast.svelte';
 
 	let openQuestion: OpenQuestion;
 	let openAnswerDraft: OpenAnswerDraft;
 	let myOpenAnswer: OpenAnswer;
 	let openAnswersOfOthers: Array<OpenAnswer> = [];
+	let toast;
 
 	onMount(async () => {
 		const openQuestionId = $page.params.slug;
@@ -73,8 +75,7 @@
 
 		// TODO: publishOpenAnswerCommittedEvent(myOpenAnswer);
 
-		// TODO: this is ignored
-		// dispatch('toast', { type: 'success', text: 'Open Answer created!' });
+		toast.showSuccessToast('Open Answer created!');
 	}
 </script>
 
@@ -122,6 +123,8 @@
 		<Back text="Back to Challenge Pool" route="/challengepool/{openQuestion.challengepoolID}" />
 	{/if}
 </main>
+
+<Toast bind:this={toast} />
 
 <style>
 	.yours {

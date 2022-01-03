@@ -6,6 +6,7 @@
 	import { user } from '$lib/stores/user';
 	import Back from '$lib/components/Back.svelte';
 	import Toast from '$lib/components/Toast.svelte';
+	import { goto } from '$app/navigation';
 
 	let openQuestion: OpenQuestion;
 	let openAnswerDraft: OpenAnswerDraft;
@@ -95,7 +96,9 @@
 			<h1>{openQuestion.questionText}</h1>
 
 			{#if myOpenAnswer}
-				<div class="yours answer"><i>This is your answer: </i>{myOpenAnswer.answerText}</div>
+				<article class="yours hoverable" on:click={() => goto(`/openanswer/${myOpenAnswer.id}`)}>
+					<i>This is your answer: </i>{myOpenAnswer.answerText}
+				</article>
 			{:else if openAnswerDraft}
 				<div class="flex justify-between space-x-2 mt-2">
 					<div class="w-full">{openAnswerDraft.answerText}</div>
@@ -115,9 +118,9 @@
 		{/if}
 
 		{#each openAnswersOfOthers as openAnswerOfOther}
-			<div class="answer">
+			<article class="hoverable" on:click={() => goto(`/openanswer/${openAnswerOfOther.id}`)}>
 				{openAnswerOfOther.answerText}
-			</div>
+			</article>
 		{/each}
 
 		<Back text="Back to Challenge Pool" route="/challengepool/{openQuestion.challengepoolID}" />
@@ -131,8 +134,7 @@
 		border-left: 4px solid var(--primary);
 	}
 
-	.answer {
-		@apply p-4 mb-4 rounded;
+	.hoverable:hover {
 		background: var(--card-sectionning-background-color);
 	}
 </style>

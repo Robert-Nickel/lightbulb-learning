@@ -52,7 +52,7 @@
 						{openQuestion.questionText}
 					</article>
 				{:else}
-					<article class="question">
+					<article class="hoverable">
 						{openQuestion.questionText}
 						<!--<OpenAnswers bind:openQuestion />-->
 					</article>
@@ -75,7 +75,7 @@
 		border-left: 4px solid var(--primary);
 	}
 
-	.question:hover {
+	.hoverable:hover {
 		background-color: var(--card-sectionning-background-color);
 	}
 </style>

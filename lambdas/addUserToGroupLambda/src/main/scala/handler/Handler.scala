@@ -10,7 +10,6 @@ import com.amazonaws.services.lambda.runtime.events.{
 
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.http.apache.ApacheHttpClient;
-import software.amazon.awssdk.http.SdkHttpClient;
 import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.{
   CognitoIdentityProviderException,
@@ -28,14 +27,13 @@ import scala.collection.mutable.ArrayBuffer
 import scala.jdk.CollectionConverters.MapHasAsJava
 import scala.language.implicitConversions
 
-
 case class CustomHttpResponse(statusCode: Integer, statusText: String)
 
 class Handler {
   def handle(
       groupInfoMap: HashMap[String, String],
       context: Context
-  ): Unit = {
+  ): CustomHttpResponse  = {
     val groupName = groupInfoMap.get("groupName")
     val userName = groupInfoMap.get("userName")
     val userPoolId = groupInfoMap.get("userPoolId")
@@ -100,11 +98,10 @@ class Handler {
     }
 
     // Probably not working cause function returns "UNIT".
-    return CustomHttpResponse(
+    CustomHttpResponse(
       statusCode,
       statusText
     )
-
     
   }
 

@@ -97,6 +97,13 @@ export class InfrastructureStack extends cdk.Stack {
     })
     addUserToGroupHttpLambda.addToRolePolicy(addUserToGroupHttpLambdaPolicy)
 
+    const listUserGroupsHttpLambda = buildLambda('listUserGroupsHttpLambda', this, 60)
+    const listUserGroupsHttpLambdaPolicy = new PolicyStatement({
+      resources: ["*"], 
+      actions: ["cognito-idp:AdminListGroupsForUser"],
+      effect: Effect.ALLOW
+    })
+    listUserGroupsHttpLambda.addToRolePolicy(listUserGroupsHttpLambdaPolicy)
 
     // This is currently not required, but might be very helpful soon.
     /*
@@ -156,6 +163,13 @@ export class InfrastructureStack extends cdk.Stack {
       methods: [HttpMethod.POST, HttpMethod.OPTIONS],
       integration: new LambdaProxyIntegration({
         handler: addUserToGroupHttpLambda,
+      }),
+    });
+    httpApi.addRoutes({
+      path: '/listUserGroups',
+      methods: [HttpMethod.POST, HttpMethod.OPTIONS],
+      integration: new LambdaProxyIntegration({
+        handler: listUserGroupsHttpLambda,
       }),
     });
 

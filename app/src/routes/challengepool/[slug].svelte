@@ -6,7 +6,7 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { user } from '$lib/stores/user';
-	import OpenAnswers from '$lib/components/OpenAnswers.svelte';
+	import Back from '$lib/components/Back.svelte';
 
 	let challengePool: ChallengePool;
 	let openQuestions: Array<OpenQuestion> = [];
@@ -66,6 +66,8 @@
 			>
 		{/if}
 	{/if}
+
+	<Back text="Back to all Challenge Pools"/>
 </main>
 
 <style>

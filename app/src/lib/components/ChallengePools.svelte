@@ -5,10 +5,9 @@
 	import { createEventDispatcher } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { user } from '$lib/stores/user';
+
 	const dispatch = createEventDispatcher();
-
 	let challengePools: Array<ChallengePool> = [];
-
 	fetchChallengePools();
 
 	const listener = Hub.listen('datastore', async (hubData) => {

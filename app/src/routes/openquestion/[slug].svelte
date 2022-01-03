@@ -78,26 +78,37 @@
 </script>
 
 {#if openQuestion}
-	<h1 class="yours pl-4">{openQuestion.questionText}</h1>
 	{#if openQuestion.owner == $user.id}
-		<i>This is your own question, so you cannot answer it.</i>
-	{:else if myOpenAnswer}
-		<div class="yours answer"><i>This is your answer: </i>{myOpenAnswer.answerText}</div>
-	{:else if openAnswerDraft}
-		<div class="flex justify-between space-x-2 mt-2">
-			<div class="w-full">{openAnswerDraft.answerText}</div>
-			<button on:click={deleteMyAnswerDraft} class="w-48 secondary outline">Delete</button>
-		</div>
-		<div>
-			<button on:click={publishOpenAnswer} class="w-32">Publish</button>
+		<h1 class="yours pl-4">{openQuestion.questionText}</h1>
+
+		<div class="mb-4">
+			{#if openAnswersOfOthers.length == 0}
+				<i>No one has answered your question yet.</i>
+			{:else}
+				<i>People answered:</i>
+			{/if}
 		</div>
 	{:else}
-		<div class="flex justify-between space-x-2 mt-2">
-			<div class="w-full">
-				<input id="openAnswerDraft" class="w-full" placeholder="Answer this question" />
+		<h1>{openQuestion.questionText}</h1>
+
+		{#if myOpenAnswer}
+			<div class="yours answer"><i>This is your answer: </i>{myOpenAnswer.answerText}</div>
+		{:else if openAnswerDraft}
+			<div class="flex justify-between space-x-2 mt-2">
+				<div class="w-full">{openAnswerDraft.answerText}</div>
+				<button on:click={deleteMyAnswerDraft} class="w-48 secondary outline">Delete</button>
 			</div>
-			<button on:click={saveOpenAnswerDraft} class="w-48 ">Save</button>
-		</div>
+			<div>
+				<button on:click={publishOpenAnswer} class="w-32">Publish</button>
+			</div>
+		{:else}
+			<div class="flex justify-between space-x-2 mt-2">
+				<div class="w-full">
+					<input id="openAnswerDraft" class="w-full" placeholder="Answer this question" />
+				</div>
+				<button on:click={saveOpenAnswerDraft} class="w-48 ">Save</button>
+			</div>
+		{/if}
 	{/if}
 
 	{#each openAnswersOfOthers as openAnswerOfOther}

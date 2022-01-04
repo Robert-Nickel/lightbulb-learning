@@ -13,6 +13,7 @@
 	let myOpenAnswer: OpenAnswer;
 	let openAnswersOfOthers: Array<OpenAnswer> = [];
 	let toast;
+	let openAnswerDraftText = '';
 
 	onMount(async () => {
 		const openQuestionId = $page.params.slug;
@@ -48,23 +49,22 @@
 	}
 
 	async function saveOpenAnswerDraft() {
-		const answerText = document.getElementById('openAnswerDraft').value;
 		await DataStore.save(
 			new OpenAnswerDraft({
-				answerText,
+				answerText: openAnswerDraftText,
 				openquestionID: openQuestion.id
 			})
 		);
 		fetchOpenAnswerDraft();
 	}
 
-	async function deleteMyAnswerDraft() {
+	async function deleteMyOpenAnswerDraft() {
 		await DataStore.delete(await DataStore.query(OpenAnswerDraft, openAnswerDraft.id));
 		fetchOpenAnswerDraft();
 	}
 
 	async function publishOpenAnswer() {
-		deleteMyAnswerDraft();
+		deleteMyOpenAnswerDraft();
 
 		let myOpenAnswer: OpenAnswer = new OpenAnswer({
 			answerText: openAnswerDraft.answerText,
@@ -102,7 +102,7 @@
 			{:else if openAnswerDraft}
 				<div class="flex justify-between space-x-2 mt-2">
 					<div class="w-full">{openAnswerDraft.answerText}</div>
-					<button on:click={deleteMyAnswerDraft} class="w-48 secondary outline">Delete</button>
+					<button on:click={deleteMyOpenAnswerDraft} class="w-48 secondary outline">Delete</button>
 				</div>
 				<div>
 					<button on:click={publishOpenAnswer} class="w-32">Publish</button>
@@ -110,7 +110,7 @@
 			{:else}
 				<div class="flex justify-between space-x-2 mt-2">
 					<div class="w-full">
-						<input id="openAnswerDraft" class="w-full" placeholder="Answer this question" />
+						<input bind:value={openAnswerDraftText} class="w-full" placeholder="Answer this question" />
 					</div>
 					<button on:click={saveOpenAnswerDraft} class="w-48 ">Save</button>
 				</div>

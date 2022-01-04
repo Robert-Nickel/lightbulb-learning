@@ -2,18 +2,20 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { DataStore } from 'aws-amplify';
-	import { OpenAnswer, OpenFeedbackDraft, OpenFeedback, OpenQuestion } from '$lib/models';
+	import { OpenAnswer, OpenFeedbackDraft, OpenFeedback, OpenQuestion, OpenAnswerDraft } from '$lib/models';
 	import { user } from '$lib/stores/user';
 	import Toast from '$lib/components/Toast.svelte';
-import Back from '$lib/components/Back.svelte';
+	import Back from '$lib/components/Back.svelte';
+	import ImproveOpenAnswer from '$lib/components/ImproveOpenAnswer.svelte';
 
 	let openQuestion: OpenQuestion;
 	let openAnswer: OpenAnswer;
 	let openFeedbackDraft: OpenFeedbackDraft;
 	let myOpenFeedback: OpenFeedback;
 	let openFeedbackOfOthers: Array<OpenFeedback> = [];
-
+	let openFeedbackDraftText = '';
 	let toast;
+	let improvingAnswer = false;
 
 	onMount(async () => {
 		const openAnswerId = $page.params.slug;
@@ -51,13 +53,12 @@ import Back from '$lib/components/Back.svelte';
 		openFeedbackOfOthers = await DataStore.query(OpenFeedback, (f) =>
 			f.openanswerID('eq', openAnswer.id).owner('ne', $user.id)
 		);
-	}
+	}	
 
 	async function saveOpenFeedbackDraft() {
-		const feedbackText = document.getElementById('openFeedbackDraft').value;
 		await DataStore.save(
 			new OpenFeedbackDraft({
-				feedbackText,
+				feedbackText: openFeedbackDraftText,
 				openanswerID: openAnswer.id
 			})
 		);
@@ -79,9 +80,6 @@ import Back from '$lib/components/Back.svelte';
 		});
 		await DataStore.save(myOpenFeedback);
 		fetchMyOpenFeedback();
-
-		// TODO: publishOpenAnswerCommittedEvent(myOpenAnswer);
-
 		toast.showSuccessToast('Thanks for your Feedback!');
 	}
 </script>
@@ -106,6 +104,13 @@ import Back from '$lib/components/Back.svelte';
 						{openFeedbackOfOther.feedbackText}
 					</article>
 				{/each}
+				{#if improvingAnswer}
+					<ImproveOpenAnswer {openAnswer} />
+				{:else}
+					<div class="mb-4">Do you want to improve your answer based on this feedback?</div>
+					<button class="outline" on:click={() => (improvingAnswer = !improvingAnswer)}>Improve Answer</button
+					>
+				{/if}
 			{/if}
 		{:else}
 			<h1>{openAnswer.answerText}</h1>
@@ -125,13 +130,17 @@ import Back from '$lib/components/Back.svelte';
 			{:else}
 				<div class="flex justify-between space-x-2 mt-2">
 					<div class="w-full">
-						<input id="openFeedbackDraft" class="w-full" placeholder="Give feedback to this answer" />
+						<input
+							bind:value={openFeedbackDraftText}
+							class="w-full"
+							placeholder="Give feedback to this answer"
+						/>
 					</div>
 					<button on:click={saveOpenFeedbackDraft} class="w-48 ">Save</button>
 				</div>
 			{/if}
 		{/if}
-        <Back text="Back to Open Question" route="/openquestion/{openQuestion.id}" />
+		<Back text="Back to Open Question" route="/openquestion/{openQuestion.id}" />
 	{/if}
 </main>
 

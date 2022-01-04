@@ -54,7 +54,6 @@
 				{:else}
 					<article class="hoverable">
 						{openQuestion.questionText}
-						<!--<OpenAnswers bind:openQuestion />-->
 					</article>
 				{/if}
 			</div>

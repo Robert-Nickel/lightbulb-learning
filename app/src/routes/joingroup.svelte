@@ -3,6 +3,8 @@
 
 	import { Auth } from 'aws-amplify';
 
+	let groupName = '';
+
 	async function addUserToGroup() {
 		var myHeaders = new Headers();
 		myHeaders.append('Content-Type', 'application/json');
@@ -12,7 +14,6 @@
 		// TODO: change this hardcoded userpool to be custom for premium instances
 		const userPoolId = 'eu-central-1_bAc9VMMys';
 
-		const groupName = document.getElementById('groupName').value;
 		const body = {
 			userName,
 			userPoolId,
@@ -37,6 +38,6 @@
 	<div class="mb-4">
 		You get the group name from your professor. If you have it already, enter it below to join the group.
 	</div>
-	<input id="groupName" placeholder="Group Name" />
+	<input bind:value={groupName} placeholder="Group Name" />
 	<button on:click={addUserToGroup}>Join Group</button>
 </main>

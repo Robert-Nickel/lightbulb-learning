@@ -9,6 +9,7 @@ type OpenAnswer @model @auth(rules: [{allow: public}]) @key(name: "byOpenQuestio
   answerText: String
   owner: ID
   openquestionID: ID
+  version: Int
 }
 
 type OpenFeedbackDraft @model @auth(rules: [{allow: public}, {allow: owner}]) @key(name: "byOpenAnswer", fields: ["openanswerID"]) {

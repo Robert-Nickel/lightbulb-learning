@@ -8,6 +8,8 @@
 
 	const dispatch = createEventDispatcher();
 	let challengePools: Array<ChallengePool> = [];
+	let createChallengePoolDescription = '';
+
 	fetchChallengePools();
 
 	const listener = Hub.listen('datastore', async (hubData) => {
@@ -24,14 +26,15 @@
 	}
 
 	async function createChallengePool() {
-		const description = document.getElementById('challengePoolDescription').value;
 		try {
-			await DataStore.save(new ChallengePool({ description: description, owner: $user.id }));
+			await DataStore.save(
+				new ChallengePool({ description: createChallengePoolDescription, owner: $user.id })
+			);
 		} catch (error) {
 			console.log(error);
 		}
 		fetchChallengePools();
-		document.getElementById('challengePoolDescription').value = '';
+		createChallengePoolDescription = '';
 		dispatch('toast', { type: 'success', text: 'Challenge Pool created!' });
 	}
 </script>
@@ -51,7 +54,11 @@
 <div class="space-y-4">
 	<div class="flex justify-between space-x-2">
 		<div class="w-full">
-			<input id="challengePoolDescription" class="w-full" placeholder="Create new Challenge Pool" />
+			<input
+				bind:value={createChallengePoolDescription}
+				class="w-full"
+				placeholder="Create new Challenge Pool"
+			/>
 		</div>
 		<div>
 			<button on:click={createChallengePool} class="w-32">Create</button>

@@ -94,6 +94,5 @@
 	{:else}
 		<h1>Group created!</h1>
 		<div class="mb-4">Share <kbd>{groupName}</kbd><br> with your students, so they can join the group.</div>
-        <div></div>
 	{/if}
 </main>

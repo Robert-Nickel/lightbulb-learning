@@ -5,10 +5,9 @@
 	import { createEventDispatcher } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { user } from '$lib/stores/user';
+
 	const dispatch = createEventDispatcher();
-
 	let challengePools: Array<ChallengePool> = [];
-
 	fetchChallengePools();
 
 	const listener = Hub.listen('datastore', async (hubData) => {
@@ -37,6 +36,18 @@
 	}
 </script>
 
+<h1>Challenge Pools</h1>
+
+<main class="container">
+	{#each challengePools as challengePool}
+		<div on:click={() => goto(`/challengepool/${challengePool.id}`)}>
+			<article class="challengepool">
+				{challengePool.description}
+			</article>
+		</div>
+	{/each}
+</main>
+
 <div class="space-y-4">
 	<div class="flex justify-between space-x-2">
 		<div class="w-full">
@@ -48,15 +59,8 @@
 	</div>
 </div>
 
-<div class="flex flex-wrap justify-center">
-	{#each challengePools as challengePool}
-		<article class="w-96 m-5 cursor-pointer" on:click={() => goto(`/challengepool/${challengePool.id}`)}>
-			<a href={`/challengepool/${challengePool.id}`}><h4>{challengePool.description}</h4> </a>
-
-			<!-- TODO: warum wird immer 0 angezeigt? -->
-			<div>Questions: {challengePool.OpenQuestionDrafts?.length ?? 0}</div>
-			<div>Drafts: {challengePool.OpenQuestionDrafts?.length ?? 0}</div>
-			<div>Last update: {challengePool.updatedAt}</div>
-		</article>
-	{/each}
-</div>
+<style>
+	.challengepool:hover {
+		background-color: var(--card-sectionning-background-color);
+	}
+</style>

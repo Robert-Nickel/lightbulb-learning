@@ -6,7 +6,7 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { user } from '$lib/stores/user';
-	import OpenAnswers from '$lib/components/OpenAnswers.svelte';
+	import Back from '$lib/components/Back.svelte';
 
 	let challengePool: ChallengePool;
 	let openQuestions: Array<OpenQuestion> = [];
@@ -39,7 +39,7 @@
 	{#if challengePool}
 		<h1>{challengePool.description}</h1>
 
-		<OpenQuestionDrafts {challengePool} on:toast on:openQuestionCommitted={openQuestionCommitted} />
+		<OpenQuestionDrafts {challengePool} on:openQuestionCommitted={openQuestionCommitted} />
 
 		{#if openQuestions.length > 0}
 			<h3 class="mt-10">Open Questions</h3>
@@ -52,7 +52,7 @@
 						{openQuestion.questionText}
 					</article>
 				{:else}
-					<article class="question">
+					<article class="hoverable">
 						{openQuestion.questionText}
 						<!--<OpenAnswers bind:openQuestion />-->
 					</article>
@@ -66,6 +66,8 @@
 			>
 		{/if}
 	{/if}
+
+	<Back text="Back to all Challenge Pools"/>
 </main>
 
 <style>
@@ -73,7 +75,7 @@
 		border-left: 4px solid var(--primary);
 	}
 
-	.question:hover {
+	.hoverable:hover {
 		background-color: var(--card-sectionning-background-color);
 	}
 </style>

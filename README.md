@@ -7,7 +7,7 @@
 🔥  Try Lightbulb Learning for free - so your students can practice today what we all need them to know tomorrow.
 
 ## Stay in the loop?
-Joing the [mailing list](https://tinyletter.com/RobertNickel).
+Join the [mailing list](https://tinyletter.com/RobertNickel).
 
 This is a monthly curated newsletter about the product, stories of success and failure, lessons learned and my insights on this journey.
 

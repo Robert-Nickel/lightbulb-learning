@@ -4,11 +4,15 @@
 	import { page } from '$app/stores';
 	import { DataStore } from 'aws-amplify';
 	import { user } from '$lib/stores/user';
+	import Back from '$lib/components/Back.svelte';
+	import Toast from '$lib/components/Toast.svelte';
+	import { goto } from '$app/navigation';
 
 	let openQuestion: OpenQuestion;
 	let openAnswerDraft: OpenAnswerDraft;
 	let myOpenAnswer: OpenAnswer;
 	let openAnswersOfOthers: Array<OpenAnswer> = [];
+	let toast;
 
 	onMount(async () => {
 		const openQuestionId = $page.params.slug;
@@ -72,48 +76,65 @@
 
 		// TODO: publishOpenAnswerCommittedEvent(myOpenAnswer);
 
-		// TODO: this is ignored
-		// dispatch('toast', { type: 'success', text: 'Open Answer created!' });
+		toast.showSuccessToast('Open Answer created!');
 	}
 </script>
 
-{#if openQuestion}
-	<h1 class="yours pl-4">{openQuestion.questionText}</h1>
-	{#if openQuestion.owner == $user.id}
-		<i>This is your own question, so you cannot answer it.</i>
-	{:else if myOpenAnswer}
-		<div class="yours answer"><i>This is your answer: </i>{myOpenAnswer.answerText}</div>
-	{:else if openAnswerDraft}
-		<div class="flex justify-between space-x-2 mt-2">
-			<div class="w-full">{openAnswerDraft.answerText}</div>
-			<button on:click={deleteMyAnswerDraft} class="w-48 secondary outline">Delete</button>
-		</div>
-		<div>
-			<button on:click={publishOpenAnswer} class="w-32">Publish</button>
-		</div>
-	{:else}
-		<div class="flex justify-between space-x-2 mt-2">
-			<div class="w-full">
-				<input id="openAnswerDraft" class="w-full" placeholder="Answer this question" />
-			</div>
-			<button on:click={saveOpenAnswerDraft} class="w-48 ">Save</button>
-		</div>
-	{/if}
+<main class="container">
+	{#if openQuestion}
+		{#if openQuestion.owner == $user.id}
+			<h1 class="yours pl-4">{openQuestion.questionText}</h1>
 
-	{#each openAnswersOfOthers as openAnswerOfOther}
-		<div class="answer">
-			{openAnswerOfOther.answerText}
-		</div>
-	{/each}
-{/if}
+			<div class="mb-4">
+				{#if openAnswersOfOthers.length == 0}
+					<i>No one has answered your question yet.</i>
+				{:else}
+					<i>People answered:</i>
+				{/if}
+			</div>
+		{:else}
+			<h1>{openQuestion.questionText}</h1>
+
+			{#if myOpenAnswer}
+				<article class="yours hoverable" on:click={() => goto(`/openanswer/${myOpenAnswer.id}`)}>
+					<i>This is your answer: </i>{myOpenAnswer.answerText}
+				</article>
+			{:else if openAnswerDraft}
+				<div class="flex justify-between space-x-2 mt-2">
+					<div class="w-full">{openAnswerDraft.answerText}</div>
+					<button on:click={deleteMyAnswerDraft} class="w-48 secondary outline">Delete</button>
+				</div>
+				<div>
+					<button on:click={publishOpenAnswer} class="w-32">Publish</button>
+				</div>
+			{:else}
+				<div class="flex justify-between space-x-2 mt-2">
+					<div class="w-full">
+						<input id="openAnswerDraft" class="w-full" placeholder="Answer this question" />
+					</div>
+					<button on:click={saveOpenAnswerDraft} class="w-48 ">Save</button>
+				</div>
+			{/if}
+		{/if}
+
+		{#each openAnswersOfOthers as openAnswerOfOther}
+			<article class="hoverable" on:click={() => goto(`/openanswer/${openAnswerOfOther.id}`)}>
+				{openAnswerOfOther.answerText}
+			</article>
+		{/each}
+
+		<Back text="Back to Challenge Pool" route="/challengepool/{openQuestion.challengepoolID}" />
+	{/if}
+</main>
+
+<Toast bind:this={toast} />
 
 <style>
 	.yours {
 		border-left: 4px solid var(--primary);
 	}
 
-	.answer {
-		@apply p-4 mb-4 rounded;
+	.hoverable:hover {
 		background: var(--card-sectionning-background-color);
 	}
 </style>

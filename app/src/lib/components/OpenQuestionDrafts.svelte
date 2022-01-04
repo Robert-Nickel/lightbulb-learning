@@ -5,10 +5,12 @@
 	import { OpenQuestionDraft, ChallengePool, OpenQuestion } from '../models';
 	import { user } from '$lib/stores/user';
 	import { baseUrl } from '$lib/awsCommon';
+	import Toast from './Toast.svelte';
 
 	export let challengePool: ChallengePool;
 
 	let openQuestionDrafts: Array<OpenQuestionDraft> = [];
+	let toast;
 
 	fetchOpenQuestionDrafts();
 
@@ -68,7 +70,7 @@
 
 		publishOpenQuestionCommittedEvent(openQuestionDraft);
 
-		dispatch('toast', { type: 'success', text: 'Open Question created!' });
+		toast.showSuccessToast('Open Question created');
 
 		await DataStore.delete(await DataStore.query(OpenQuestionDraft, openQuestionDraft.id));
 		fetchOpenQuestionDrafts();
@@ -153,3 +155,5 @@
 		{/each}
 	{/if}
 </div>
+
+<Toast bind:this={toast} />

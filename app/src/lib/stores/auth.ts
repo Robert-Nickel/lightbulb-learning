@@ -12,6 +12,16 @@ export const store = writable(_user ? JSON.parse(_user) : null);
 
 initAmplify();
 
+export function printToken() {
+	Auth.currentSession().then(res=>{
+		let accessToken = res.getAccessToken()
+		let jwt = accessToken.getJwtToken()
+		//You can print them to see the full objects
+		console.log(`------------------ myAccessToken: ${JSON.stringify(accessToken)} -------------------- `)
+		console.log(`myJwt: ${jwt}`)
+	  })	
+}
+
 if (browser) {
 	store.subscribe((value) => {
 		if (value) localStorage.setItem('amplifyUser', JSON.stringify(value));
@@ -28,7 +38,10 @@ export const loginFormState = writable({
 });
 export async function signIn() {
 	return Auth.signIn(get(loginFormState).email, get(loginFormState).password).then(
-		(data) => void store.set(data)
+		(data) =>  { 
+			printToken();
+			void store.set(data) 
+		}
 	);
 }
 export async function signUp() {

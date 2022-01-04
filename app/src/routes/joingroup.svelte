@@ -1,5 +1,5 @@
 <script lang="ts">
-import { baseUrl } from '$lib/awsCommon';
+	import { baseUrl } from '$lib/awsCommon';
 
 	import { Auth } from 'aws-amplify';
 
@@ -33,6 +33,10 @@ import { baseUrl } from '$lib/awsCommon';
 </script>
 
 <main class="container pt-4">
+	<h1>Join Group</h1>
+	<div class="mb-4">
+		You get the group name from your professor. If you have it already, enter it below to join the group.
+	</div>
 	<input id="groupName" placeholder="Group Name" />
 	<button on:click={addUserToGroup}>Join Group</button>
 </main>

@@ -2,7 +2,7 @@ import * as lambda from '@aws-cdk/aws-lambda';
 import * as path from 'path';
 import { Effect, PolicyStatement } from '@aws-cdk/aws-iam';
 import { CorsHttpMethod, HttpApi, HttpMethod } from '@aws-cdk/aws-apigatewayv2';
-import { LambdaProxyIntegration } from '@aws-cdk/aws-apigatewayv2-integrations';
+import { HttpLambdaIntegration } from '@aws-cdk/aws-apigatewayv2-integrations';
 import * as sns from '@aws-cdk/aws-sns';
 import * as sqs from '@aws-cdk/aws-sqs';
 import * as subs from '@aws-cdk/aws-sns-subscriptions';
@@ -10,6 +10,8 @@ import * as cdk from '@aws-cdk/core';
 import * as lambdaEventSources from '@aws-cdk/aws-lambda-event-sources';
 import * as iam from '@aws-cdk/aws-iam';
 import * as cognito from '@aws-cdk/aws-cognito';
+import { HttpLambdaAuthorizer, HttpLambdaResponseType } from '@aws-cdk/aws-apigatewayv2-authorizers';
+
 
 export class InfrastructureStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
@@ -115,6 +117,17 @@ export class InfrastructureStack extends cdk.Stack {
     commitOpenAnswerLambda.addToRolePolicy(dynamoGetItemPolicy)
     */
 
+    const handler = buildLambdaJS('authorizationLambdaJS', this);
+    const authorizerPolicy = new PolicyStatement({
+      resources: ["*"], 
+      actions: ["lambda:InvokeFunction"],
+      effect: Effect.ALLOW
+    })
+    handler.addToRolePolicy(authorizerPolicy)
+    const authorizer = new HttpLambdaAuthorizer('authorizationLambdaJS', handler, {
+      responseTypes: [HttpLambdaResponseType.IAM]
+    });
+
     const httpApi = new HttpApi(this, 'lightbulb-learning-api-gateway', {
       /* description: 'Learning API', */
       corsPreflight: {
@@ -133,44 +146,40 @@ export class InfrastructureStack extends cdk.Stack {
     httpApi.addRoutes({
       path: '/commitOpenQuestion',
       methods: [HttpMethod.POST, HttpMethod.OPTIONS],
-      integration: new LambdaProxyIntegration({
-        handler: commitOpenQuestionLambda,
-      }),
+      integration: new HttpLambdaIntegration('commitOpenQuestion', commitOpenQuestionLambda,
+      ),
     });
     httpApi.addRoutes({
       path: '/commitOpenAnswer',
       methods: [HttpMethod.POST, HttpMethod.OPTIONS],
-      integration: new LambdaProxyIntegration({
-        handler: commitOpenAnswerLambda,
-      }),
+      integration: new HttpLambdaIntegration('commitOpenAnswer',commitOpenAnswerLambda),
     });
     httpApi.addRoutes({
       path: '/commitOpenFeedback',
       methods: [HttpMethod.POST, HttpMethod.OPTIONS],
-      integration: new LambdaProxyIntegration({
-        handler: commitOpenFeedbackLambda,
-      }),
+      integration: new HttpLambdaIntegration('commitOpenFeedback', commitOpenFeedbackLambda),
     });
     httpApi.addRoutes({
       path: '/createGroup',
       methods: [HttpMethod.POST, HttpMethod.OPTIONS],
-      integration: new LambdaProxyIntegration({
-        handler: createGroupLambda,
-      }),
+      integration: new HttpLambdaIntegration('createGroupLambda', createGroupLambda),
     });
     httpApi.addRoutes({
       path: '/addUserToGroup',
       methods: [HttpMethod.POST, HttpMethod.OPTIONS],
-      integration: new LambdaProxyIntegration({
-        handler: addUserToGroupHttpLambda,
-      }),
+      integration: new HttpLambdaIntegration('addUserToGroup', addUserToGroupHttpLambda),
     });
     httpApi.addRoutes({
       path: '/listUserGroups',
       methods: [HttpMethod.POST, HttpMethod.OPTIONS],
-      integration: new LambdaProxyIntegration({
-        handler: listUserGroupsHttpLambda,
-      }),
+      integration: new HttpLambdaIntegration('listUserGroups', listUserGroupsHttpLambda),
+      authorizer: authorizer,
+      
+    });
+    httpApi.addRoutes({
+      path: '/authenticaterequest',
+      methods: [HttpMethod.GET],
+      integration: new HttpLambdaIntegration('authenticaterequest', listUserGroupsHttpLambda)
     });
 
     new cdk.CfnOutput(this, 'API Gateway URL', {
@@ -199,5 +208,15 @@ function buildLambda(lambdaName: string, scope: cdk.Construct, timeout = 30, cus
     memorySize: customMemorySize,
     handler: 'handler.Handler::handle',
     code: lambda.Code.fromAsset(path.join(__dirname, `../../lambdas/${lambdaName}/target/scala-3.0.1/lambda-scala-seed.jar`)),
+  })
+}
+
+function buildLambdaJS(lambdaName: string, scope: cdk.Construct, timeout = 30, customMemorySize=256) {
+  return new lambda.Function(scope, lambdaName, {
+    runtime: lambda.Runtime.NODEJS_14_X,
+    timeout: cdk.Duration.seconds(timeout),
+    memorySize: customMemorySize,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(path.join(__dirname, `../${lambdaName}`)),
   })
 }

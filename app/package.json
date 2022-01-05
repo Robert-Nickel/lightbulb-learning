@@ -18,9 +18,13 @@
 		"@typescript-eslint/eslint-plugin": "^5.7.0",
 		"@typescript-eslint/parser": "^5.7.0",
 		"@zerodevx/svelte-toast": "^0.6.2",
+		"autoprefixer": "^10.4.0",
+		"cssnano": "^5.0.13",
 		"eslint": "^8.4.1",
 		"eslint-config-prettier": "^8.3.0",
 		"eslint-plugin-svelte3": "^3.2.1",
+		"postcss": "^8.4.5",
+		"postcss-load-config": "^3.1.0",
 		"prettier": "^2.5.1",
 		"prettier-plugin-svelte": "^2.5.1",
 		"svelte": "^3.44.3",
@@ -28,16 +32,13 @@
 		"svelte-preprocess": "^4.10.1",
 		"tailwindcss": "^3.0.6",
 		"tslib": "^2.3.1",
-		"typescript": "^4.5.4",
-		"postcss": "^8.4.5",
-		"postcss-load-config": "^3.1.0",
-		"autoprefixer": "^10.4.0",
-		"cssnano": "^5.0.13"
+		"typescript": "^4.5.4"
 	},
 	"type": "module",
 	"dependencies": {
 		"@aws-amplify/auth": "^4.3.19",
 		"@aws-amplify/core": "^4.3.11",
+		"@supabase/supabase-js": "^1.29.1",
 		"aws-amplify": "^4.3.11",
 		"process": "^0.11.10"
 	}

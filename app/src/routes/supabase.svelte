@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createClient } from '@supabase/supabase-js';
 	import { onMount } from 'svelte';
-	import type { definitions } from '../../supabase';
+	import type { definitions } from '../lib/models/supabase';
 	type challenge_pools2 = definitions['challenge_pools'];
 	const supabaseUrl = 'https://rkpsxesguhibbzhylmsd.supabase.co';
 	const supabaseKey = 'TODO';

@@ -1,41 +1,30 @@
 <script lang="ts">
-	import { DataStore } from '@aws-amplify/datastore';
-	import { ChallengePool } from '../models';
-	import { Hub } from 'aws-amplify';
-	import { createEventDispatcher } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { user } from '$lib/stores/user';
+	import { user } from '$lib/stores/sessionStore';
+	import { supabase } from '$lib/supabaseClient';
+	import type { definitions } from '$lib/models/supabase';
 
-	const dispatch = createEventDispatcher();
-	let challengePools: Array<ChallengePool> = [];
+	type challenge_pools = definitions['challenge_pools'];
+	const challengePoolsTable = 'challenge_pools';
+	let challengePools: Array<challenge_pools> = [];
 	let createChallengePoolDescription = '';
 
 	fetchChallengePools();
 
-	const listener = Hub.listen('datastore', async (hubData) => {
-		const { event, data } = hubData.payload;
-		if (event === 'ready') {
-			fetchChallengePools();
-			// This removes the listener
-			listener();
-		}
-	});
-
 	async function fetchChallengePools() {
-		challengePools = await DataStore.query(ChallengePool);
+		let { data, error, status } = await supabase.from<challenge_pools>(challengePoolsTable).select();
+		challengePools = data;
 	}
 
 	async function createChallengePool() {
-		try {
-			await DataStore.save(
-				new ChallengePool({ description: createChallengePoolDescription, owner: $user.id })
-			);
-		} catch (error) {
-			console.log(error);
-		}
+		await supabase
+			.from<challenge_pools>(challengePoolsTable)
+			.insert([{ description: createChallengePoolDescription }]);
 		fetchChallengePools();
+
 		createChallengePoolDescription = '';
-		dispatch('toast', { type: 'success', text: 'Challenge Pool created!' });
+
+		// TODO: Success Toast
 	}
 </script>
 

@@ -102,6 +102,105 @@ export interface paths {
       };
     };
   };
+  "/profiles": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.profiles.id"];
+          updated_at?: parameters["rowFilter.profiles.updated_at"];
+          username?: parameters["rowFilter.profiles.username"];
+          avatar_url?: parameters["rowFilter.profiles.avatar_url"];
+          website?: parameters["rowFilter.profiles.website"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["profiles"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** profiles */
+          profiles?: definitions["profiles"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.profiles.id"];
+          updated_at?: parameters["rowFilter.profiles.updated_at"];
+          username?: parameters["rowFilter.profiles.username"];
+          avatar_url?: parameters["rowFilter.profiles.avatar_url"];
+          website?: parameters["rowFilter.profiles.website"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.profiles.id"];
+          updated_at?: parameters["rowFilter.profiles.updated_at"];
+          username?: parameters["rowFilter.profiles.username"];
+          avatar_url?: parameters["rowFilter.profiles.avatar_url"];
+          website?: parameters["rowFilter.profiles.website"];
+        };
+        body: {
+          /** profiles */
+          profiles?: definitions["profiles"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
 }
 
 export interface definitions {
@@ -115,6 +214,22 @@ export interface definitions {
     id: string;
     /** Format: text */
     description: string;
+  };
+  profiles: {
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    id: string;
+    /** Format: timestamp with time zone */
+    updated_at?: string;
+    /** Format: text */
+    username?: string;
+    /** Format: text */
+    avatar_url?: string;
+    /** Format: text */
+    website?: string;
   };
 }
 
@@ -148,6 +263,18 @@ export interface parameters {
   "rowFilter.challenge_pools.id": string;
   /** Format: text */
   "rowFilter.challenge_pools.description": string;
+  /** @description profiles */
+  "body.profiles": definitions["profiles"];
+  /** Format: uuid */
+  "rowFilter.profiles.id": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.profiles.updated_at": string;
+  /** Format: text */
+  "rowFilter.profiles.username": string;
+  /** Format: text */
+  "rowFilter.profiles.avatar_url": string;
+  /** Format: text */
+  "rowFilter.profiles.website": string;
 }
 
 export interface operations {}

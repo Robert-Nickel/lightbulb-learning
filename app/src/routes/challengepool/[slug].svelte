@@ -3,16 +3,11 @@
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
-	import { user } from '$lib/stores/user';
 	import Back from '$lib/components/Back.svelte';
-	import { challengePoolsTable, openQuestionsTable, supabase } from '$lib/supabaseClient';
-	import type { definitions } from '$lib/models/supabase';
+	import { challengePoolsTable, openQuestionsTable, supabase, challengePoolType, openQuestionsType } from '$lib/supabaseClient';
 
-	type challenge_pool = definitions['challenge_pools'];
-	type open_question = definitions['open_questions'];
-
-	let challengePool: challenge_pool;
-	let openQuestions: Array<open_question> = [];
+	let challengePool: challengePoolType;
+	let openQuestions: Array<openQuestionsType> = [];
 
 	onMount(() => {
 		refresh();
@@ -21,10 +16,10 @@
 	async function refresh() {
 		const id = $page.params.slug;
 		challengePool = await (
-			await supabase.from<challenge_pool>(challengePoolsTable).select().eq('id', id).single()
+			await supabase.from<challengePoolType>(challengePoolsTable).select().eq('id', id).single()
 		).data;
 		openQuestions = await (
-			await supabase.from<open_question>(openQuestionsTable).select().eq('challenge_pool', id)
+			await supabase.from<openQuestionsType>(openQuestionsTable).select().eq('challenge_pool', id)
 		).data;
 	}
 

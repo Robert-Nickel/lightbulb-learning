@@ -1,21 +1,19 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { supabase, challengePoolsTable } from '$lib/supabaseClient';
-	import type { definitions } from '$lib/models/supabase';
+	import { supabase, challengePoolsTable, challengePoolType } from '$lib/supabaseClient';
 
-	type challenge_pools = definitions['challenge_pools'];
-	let challengePools: Array<challenge_pools> = [];
+	let challengePools: Array<challengePoolType> = [];
 	let createChallengePoolDescription = '';
 
 	fetchChallengePools();
 
 	async function fetchChallengePools() {
-		challengePools = await (await supabase.from<challenge_pools>(challengePoolsTable).select()).data;
+		challengePools = await (await supabase.from<challengePoolType>(challengePoolsTable).select()).data;
 	}
 
 	async function createChallengePool() {
 		await supabase
-			.from<challenge_pools>(challengePoolsTable)
+			.from<challengePoolType>(challengePoolsTable)
 			.insert([{ description: createChallengePoolDescription, owner: supabase.auth.user().id }]);
 		fetchChallengePools();
 

@@ -4,10 +4,16 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import Back from '$lib/components/Back.svelte';
-	import { challengePoolsTable, openQuestionsTable, supabase, challengePoolType, openQuestionsType } from '$lib/supabaseClient';
+	import {
+		challengePoolsTable,
+		openQuestionsTable,
+		supabase,
+		ChallengePoolType,
+		OpenQuestionType
+	} from '$lib/supabaseClient';
 
-	let challengePool: challengePoolType;
-	let openQuestions: Array<openQuestionsType> = [];
+	let challengePool: ChallengePoolType;
+	let openQuestions: Array<OpenQuestionType> = [];
 
 	onMount(() => {
 		refresh();
@@ -16,10 +22,10 @@
 	async function refresh() {
 		const id = $page.params.slug;
 		challengePool = await (
-			await supabase.from<challengePoolType>(challengePoolsTable).select().eq('id', id).single()
+			await supabase.from<ChallengePoolType>(challengePoolsTable).select().eq('id', id).single()
 		).data;
 		openQuestions = await (
-			await supabase.from<openQuestionsType>(openQuestionsTable).select().eq('challenge_pool', id)
+			await supabase.from<OpenQuestionType>(openQuestionsTable).select().eq('challengePool', id)
 		).data;
 	}
 

@@ -1,33 +1,38 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
-	import { DataStore } from '@aws-amplify/datastore';
-	import { OpenQuestionDraft, ChallengePool, OpenQuestion } from '../models';
-	import { user } from '$lib/stores/user';
-	import { baseUrl } from '$lib/awsCommon';
 	import Toast from './Toast.svelte';
+	import {
+		supabase,
+		ChallengePoolType,
+		OpenQuestionDraftType,
+		OpenQuestionType,
+		openQuestionDraftsTable,
+		openQuestionsTable
+	} from '$lib/supabaseClient';
 
-	export let challengePool: ChallengePool;
+	export let challengePool: ChallengePoolType;
 
-	let openQuestionDrafts: Array<OpenQuestionDraft> = [];
+	let openQuestionDrafts: Array<OpenQuestionDraftType> = [];
 	let toast;
 
 	fetchOpenQuestionDrafts();
 
 	async function fetchOpenQuestionDrafts() {
-		openQuestionDrafts = await DataStore.query(OpenQuestionDraft, (q) =>
-			q.challengepoolID('eq', challengePool.id)
-		);
+		openQuestionDrafts = await (
+			await supabase
+				.from<OpenQuestionDraftType>(openQuestionDraftsTable)
+				.select()
+				.eq('owner', supabase.auth.user().id)
+				.eq('challengePool', challengePool.id)
+		).data;
 	}
 
 	async function createOpenQuestionDraft() {
 		const questionText = document.getElementById('openQuestionDraftQuestionText').value;
-		await DataStore.save(
-			new OpenQuestionDraft({
-				questionText,
-				challengepoolID: challengePool.id
-			})
-		);
+		await supabase
+			.from<OpenQuestionDraftType>(openQuestionDraftsTable)
+			.insert({ questionText, challengePool: challengePool.id, owner: supabase.auth.user().id });
 		document.getElementById('openQuestionDraftQuestionText').value = '';
 
 		await fetchOpenQuestionDrafts();
@@ -36,62 +41,44 @@
 
 	async function updateOpenQuestionDraftWithAnswer(openQuestionDraft: OpenQuestionDraft) {
 		const answerText = document.getElementById('openQuestionDraftAnswerText').value;
-		await DataStore.save(
-			OpenQuestionDraft.copyOf(openQuestionDraft, (updated) => {
-				updated.answerText = answerText;
-			})
-		);
+		await supabase
+			.from<OpenQuestionDraftType>(openQuestionDraftsTable)
+			.update({ answerText })
+			.eq('id', openQuestionDraft.id);
+
 		fetchOpenQuestionDrafts();
 	}
 
 	async function deleteOpenQuestionDraft(id) {
-		await DataStore.delete(await DataStore.query(OpenQuestionDraft, id));
+		await supabase.from<OpenQuestionDraftType>(openQuestionDraftsTable).delete().eq('id', id);
 		fetchOpenQuestionDrafts();
 	}
 
 	async function deleteMyAnswerFromOpenQuestionDraft(openQuestionDraft) {
-		await DataStore.save(
-			OpenQuestionDraft.copyOf(openQuestionDraft, (updated) => {
-				updated.answerText = null;
-			})
-		);
+		await supabase
+			.from<OpenQuestionDraftType>(openQuestionDraftsTable)
+			.update({ answerText: null })
+			.eq('id', openQuestionDraft.id);
+
 		fetchOpenQuestionDrafts();
 	}
 
-	async function commitOpenQuestion(openQuestionDraft: OpenQuestionDraft) {
-		await DataStore.save(
-			new OpenQuestion({
-				questionText: openQuestionDraft.questionText,
-				challengepoolID: openQuestionDraft.challengepoolID,
-				owner: $user.id
-			})
-		);
-		dispatch('openQuestionCommitted');
+	async function commitOpenQuestion(openQuestionDraft: OpenQuestionDraftType) {
+		await supabase.from<OpenQuestionType>(openQuestionsTable).insert({
+			questionText: openQuestionDraft.questionText,
+			challengePool: openQuestionDraft.challengePool,
+			owner: supabase.auth.user().id
+		});
 
-		publishOpenQuestionCommittedEvent(openQuestionDraft);
+		dispatch('openQuestionCommitted');
 
 		toast.showSuccessToast('Open Question created');
 
-		await DataStore.delete(await DataStore.query(OpenQuestionDraft, openQuestionDraft.id));
+		await supabase
+			.from<OpenQuestionDraftType>(openQuestionDraftsTable)
+			.delete()
+			.eq('id', openQuestionDraft.id);
 		fetchOpenQuestionDrafts();
-	}
-
-	async function publishOpenQuestionCommittedEvent(openQuestionDraft: OpenQuestionDraft) {
-		var myHeaders = new Headers();
-		myHeaders.append('Content-Type', 'application/json');
-
-		var raw = JSON.stringify(openQuestionDraft);
-
-		var requestOptions = {
-			method: 'POST',
-			headers: myHeaders,
-			body: raw
-		};
-
-		fetch(`${baseUrl}/commitOpenQuestion`, requestOptions)
-			.then((response) => response.text())
-			.then((result) => console.log(result))
-			.catch((error) => console.log('error', error));
 	}
 </script>
 

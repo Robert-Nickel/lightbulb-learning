@@ -105,13 +105,112 @@ export interface paths {
       };
     };
   };
+  "/open_question_drafts": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.open_question_drafts.id"];
+          questionText?: parameters["rowFilter.open_question_drafts.questionText"];
+          answerText?: parameters["rowFilter.open_question_drafts.answerText"];
+          owner?: parameters["rowFilter.open_question_drafts.owner"];
+          challengePool?: parameters["rowFilter.open_question_drafts.challengePool"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["open_question_drafts"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** open_question_drafts */
+          open_question_drafts?: definitions["open_question_drafts"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.open_question_drafts.id"];
+          questionText?: parameters["rowFilter.open_question_drafts.questionText"];
+          answerText?: parameters["rowFilter.open_question_drafts.answerText"];
+          owner?: parameters["rowFilter.open_question_drafts.owner"];
+          challengePool?: parameters["rowFilter.open_question_drafts.challengePool"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.open_question_drafts.id"];
+          questionText?: parameters["rowFilter.open_question_drafts.questionText"];
+          answerText?: parameters["rowFilter.open_question_drafts.answerText"];
+          owner?: parameters["rowFilter.open_question_drafts.owner"];
+          challengePool?: parameters["rowFilter.open_question_drafts.challengePool"];
+        };
+        body: {
+          /** open_question_drafts */
+          open_question_drafts?: definitions["open_question_drafts"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
   "/open_questions": {
     get: {
       parameters: {
         query: {
           id?: parameters["rowFilter.open_questions.id"];
           questionText?: parameters["rowFilter.open_questions.questionText"];
-          challenge_pool?: parameters["rowFilter.open_questions.challenge_pool"];
+          challengePool?: parameters["rowFilter.open_questions.challengePool"];
           owner?: parameters["rowFilter.open_questions.owner"];
           /** Filtering Columns */
           select?: parameters["select"];
@@ -165,7 +264,7 @@ export interface paths {
         query: {
           id?: parameters["rowFilter.open_questions.id"];
           questionText?: parameters["rowFilter.open_questions.questionText"];
-          challenge_pool?: parameters["rowFilter.open_questions.challenge_pool"];
+          challengePool?: parameters["rowFilter.open_questions.challengePool"];
           owner?: parameters["rowFilter.open_questions.owner"];
         };
         header: {
@@ -183,7 +282,7 @@ export interface paths {
         query: {
           id?: parameters["rowFilter.open_questions.id"];
           questionText?: parameters["rowFilter.open_questions.questionText"];
-          challenge_pool?: parameters["rowFilter.open_questions.challenge_pool"];
+          challengePool?: parameters["rowFilter.open_questions.challengePool"];
           owner?: parameters["rowFilter.open_questions.owner"];
         };
         body: {
@@ -316,6 +415,27 @@ export interface definitions {
     /** Format: uuid */
     owner: string;
   };
+  open_question_drafts: {
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     * @default extensions.uuid_generate_v4()
+     */
+    id: string;
+    /** Format: text */
+    questionText: string;
+    /** Format: text */
+    answerText?: string;
+    /** Format: uuid */
+    owner: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `challenge_pools.id`.<fk table='challenge_pools' column='id'/>
+     */
+    challengePool: string;
+  };
   open_questions: {
     /**
      * Format: uuid
@@ -331,7 +451,7 @@ export interface definitions {
      * @description Note:
      * This is a Foreign Key to `challenge_pools.id`.<fk table='challenge_pools' column='id'/>
      */
-    challenge_pool: string;
+    challengePool: string;
     /** Format: uuid */
     owner: string;
   };
@@ -385,6 +505,18 @@ export interface parameters {
   "rowFilter.challenge_pools.description": string;
   /** Format: uuid */
   "rowFilter.challenge_pools.owner": string;
+  /** @description open_question_drafts */
+  "body.open_question_drafts": definitions["open_question_drafts"];
+  /** Format: uuid */
+  "rowFilter.open_question_drafts.id": string;
+  /** Format: text */
+  "rowFilter.open_question_drafts.questionText": string;
+  /** Format: text */
+  "rowFilter.open_question_drafts.answerText": string;
+  /** Format: uuid */
+  "rowFilter.open_question_drafts.owner": string;
+  /** Format: uuid */
+  "rowFilter.open_question_drafts.challengePool": string;
   /** @description open_questions */
   "body.open_questions": definitions["open_questions"];
   /** Format: uuid */
@@ -392,7 +524,7 @@ export interface parameters {
   /** Format: text */
   "rowFilter.open_questions.questionText": string;
   /** Format: uuid */
-  "rowFilter.open_questions.challenge_pool": string;
+  "rowFilter.open_questions.challengePool": string;
   /** Format: uuid */
   "rowFilter.open_questions.owner": string;
   /** @description profiles */

@@ -16,6 +16,8 @@ export function printToken() {
 	Auth.currentSession().then(res=>{
 		let accessToken = res.getAccessToken()
 		let jwt = accessToken.getJwtToken()
+		console.log("ID TOKEN:")
+		console.log(res.getIdToken())
 		//You can print them to see the full objects
 		console.log(`------------------ myAccessToken: ${JSON.stringify(accessToken)} -------------------- `)
 		console.log(`myJwt: ${jwt}`)

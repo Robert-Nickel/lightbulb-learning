@@ -1,8 +1,9 @@
 import adapter from '@sveltejs/adapter-static';
 import preprocess from 'svelte-preprocess';
+import json from '@rollup/plugin-json'
 
 /** @type {import('@sveltejs/kit').Config} */
-const config = {
+const config1 = {
 	// Consult https://github.com/sveltejs/svelte-preprocess
 	// for more information about preprocessors
 	preprocess: [
@@ -22,11 +23,14 @@ const config = {
 					alias: {
 						'./runtimeConfig': './runtimeConfig.browser'
 					}
-				}
+				},
+				plugins: [
+					json(),
+				]
 			};
 		},
 		ssr: false
 	}
 };
 
-export default config;
+export default config1;

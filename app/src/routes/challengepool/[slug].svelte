@@ -1,32 +1,35 @@
 <script lang="ts">
-	import { ChallengePool, OpenQuestion } from '$lib/models';
-	import { DataStore } from 'aws-amplify';
 	import OpenQuestionDrafts from '$lib/components/OpenQuestionDrafts.svelte';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { user } from '$lib/stores/user';
 	import Back from '$lib/components/Back.svelte';
+	import { challengePoolsTable, openQuestionsTable, supabase } from '$lib/supabaseClient';
+	import type { definitions } from '$lib/models/supabase';
 
-	let challengePool: ChallengePool;
-	let openQuestions: Array<OpenQuestion> = [];
+	type challenge_pool = definitions['challenge_pools'];
+	type open_question = definitions['open_questions'];
+
+	let challengePool: challenge_pool;
+	let openQuestions: Array<open_question> = [];
 
 	onMount(() => {
 		refresh();
 	});
 
 	async function refresh() {
-		const poolId = $page.params.slug;
-		try {
-			challengePool = await DataStore.query(ChallengePool, poolId);
-			openQuestions = await DataStore.query(OpenQuestion, (q) => q.challengepoolID('eq', challengePool.id));
-		} catch (error) {
-			throw error;
-		}
+		const id = $page.params.slug;
+		challengePool = await (
+			await supabase.from<challenge_pool>(challengePoolsTable).select().eq('id', id).single()
+		).data;
+		openQuestions = await (
+			await supabase.from<open_question>(openQuestionsTable).select().eq('challenge_pool', id)
+		).data;
 	}
 
 	async function deletePool() {
-		await DataStore.delete(await DataStore.query(ChallengePool, challengePool.id));
+		await supabase.from('challenge_pools').delete().eq('id', challengePool.id);
 		goto('/');
 	}
 
@@ -45,8 +48,8 @@
 			<h3 class="mt-10">Open Questions</h3>
 		{/if}
 		{#each openQuestions as openQuestion}
-			<div on:click={() => goto(`/openquestion/${openQuestion.id}`)} >
-				{#if openQuestion.owner == $user.id}
+			<div on:click={() => goto(`/openquestion/${openQuestion.id}`)}>
+				{#if openQuestion.owner == supabase.auth.user().id}
 					<article class="yours question">
 						<i>You asked:</i>
 						{openQuestion.questionText}
@@ -59,14 +62,14 @@
 			</div>
 		{/each}
 
-		{#if $user.id == challengePool.owner}
+		{#if supabase.auth.user().id == challengePool.owner}
 			<button on:click={deletePool} class="secondary outline w-auto mb-0"
 				>Delete {challengePool.description}</button
 			>
 		{/if}
 	{/if}
 
-	<Back text="Back to all Challenge Pools"/>
+	<Back text="Back to all Challenge Pools" />
 </main>
 
 <style>

@@ -125,7 +125,7 @@ export class InfrastructureStack extends cdk.Stack {
     })
     handler.addToRolePolicy(authorizerPolicy)
     const authorizer = new HttpLambdaAuthorizer('authorizationLambdaJS', handler, {
-      responseTypes: [HttpLambdaResponseType.IAM]
+      responseTypes: [HttpLambdaResponseType.SIMPLE]
     });
 
     const httpApi = new HttpApi(this, 'lightbulb-learning-api-gateway', {

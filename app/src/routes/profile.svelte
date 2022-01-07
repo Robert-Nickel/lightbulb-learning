@@ -1,6 +1,6 @@
 <script>
 	import { supabase } from '$lib/supabaseClient';
-	import { user } from '$lib/stores/sessionStore';
+	import { user } from '$lib/stores/user'
 
 	let loading = true;
 	let username = null;
@@ -10,12 +10,11 @@
 	async function getProfile() {
 		try {
 			loading = true;
-			const user = supabase.auth.user();
 
 			let { data, error, status } = await supabase
 				.from('profiles')
 				.select(`username, website, avatar_url`)
-				.eq('id', user.id)
+				.eq('id', $user.id)
 				.single();
 
 			if (error && status !== 406) throw error;
@@ -35,10 +34,9 @@
 	async function updateProfile() {
 		try {
 			loading = true;
-			const user = supabase.auth.user();
 
 			const updates = {
-				id: user.id,
+				id: $user.id,
 				username,
 				website,
 				avatar_url,

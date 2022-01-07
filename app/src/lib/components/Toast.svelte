@@ -13,3 +13,5 @@
 </script>
 
 <SvelteToast />
+<!--Go here to see which toasts are possible: https://zerodevx.github.io/svelte-toast/-->
+

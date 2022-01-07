@@ -2,7 +2,7 @@
 	import StartPage from '$lib/components/StartPage.svelte';
 	import ChallengePools from '$lib/components/ChallengePools.svelte';
 
-	import { user } from '$lib/stores/sessionStore';
+	import { user } from '$lib/stores/user';
 	import { supabase } from '$lib/supabaseClient';
 
 	user.set(supabase.auth.user());

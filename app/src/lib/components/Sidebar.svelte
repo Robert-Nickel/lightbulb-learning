@@ -1,17 +1,16 @@
 <script>
-	import { supabase } from '$lib/supabaseClient';
-	import { user } from '$lib/stores/sessionStore';
+import { goto } from '$app/navigation';
+
+	import { user } from '$lib/stores/user';
+import { supabase } from '$lib/supabaseClient';
 
 	export let open = false;
 
 	async function logout() {
 		open = false;
-		try {
-			let { error } = await supabase.auth.signOut();
-			if (error) throw error;
-		} catch (error) {
-			alert(error.message);
-		}
+		// TODO: This throws an error. We don't handle it. See https://github.com/supabase/supabase/discussions/3468?sort=top
+		supabase.auth.signOut();
+		goto('/');
 	}
 </script>
 
@@ -20,7 +19,7 @@
 	class:open
 >
 	{#if $user}
-		<nav on:click={logout}><a href="/">Logout</a></nav>
+		<nav on:click={logout}><a href="/logout">Logout</a></nav>
 	{:else}
 		<nav on:click={() => (open = false)}><a href="/login">Login</a></nav>
 	{/if}

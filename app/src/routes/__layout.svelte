@@ -2,7 +2,7 @@
 	import '../app.css';
 	import Sidebar from '$lib/components/Sidebar.svelte';
 	import Navbar from '$lib/components/Navbar.svelte';
-	import { user } from '$lib/stores/sessionStore';
+	import { user } from '$lib/stores/user';
 
 	let sidebarOpen = false;
 </script>

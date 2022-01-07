@@ -1,48 +1,60 @@
 <script lang="ts">
-	import { OpenAnswer, OpenAnswerDraft } from '$lib/models';
-	import { DataStore } from 'aws-amplify';
+	import {
+		openAnswerDraftsTable,
+		OpenAnswerDraftType,
+		openAnswersTable,
+		OpenAnswerType,
+		supabase
+	} from '$lib/supabaseClient';
+
 	import Toast from './Toast.svelte';
 
-	export let openAnswer: OpenAnswer;
-	let openAnswerDraft: OpenAnswerDraft;
+	export let openAnswer: OpenAnswerType;
+	let openAnswerDraft: OpenAnswerDraftType;
 	let openAnswerDraftText = '';
 	let toast;
 
 	fetchOpenAnswerDraft();
 
 	async function fetchOpenAnswerDraft() {
-		let openAnswerDrafts = await DataStore.query(OpenAnswerDraft, (a) =>
-			a.openquestionID('eq', openAnswer.openquestionID)
-		);
-		openAnswerDraft = openAnswerDrafts[0];
+		openAnswerDraft = await (
+			await supabase
+				.from<OpenAnswerDraftType>(openAnswerDraftsTable)
+				.select()
+				.eq('openQuestion', openAnswer.openQuestion)
+				.eq('owner', supabase.auth.user().id)
+				.single()
+		).data;
 	}
 
 	async function deleteMyOpenAnswerDraft() {
-		await DataStore.delete(await DataStore.query(OpenAnswerDraft, openAnswerDraft.id));
+		await supabase.from<OpenAnswerDraftType>(openAnswerDraftsTable).delete().eq('id', openAnswerDraft.id);
 		openAnswerDraftText = '';
 		fetchOpenAnswerDraft();
 	}
 
 	async function saveOpenAnswerDraft() {
-		await DataStore.save(
-			new OpenAnswerDraft({
-				answerText: openAnswerDraftText,
-				openquestionID: openAnswer.openquestionID
-			})
-		);
+		await supabase.from<OpenAnswerDraftType>(openAnswerDraftsTable).insert({
+			answerText: openAnswerDraftText,
+			openQuestion: openAnswer.openQuestion,
+			owner: supabase.auth.user().id,
+			originalOpenAnswer: openAnswer.id
+		});
 		fetchOpenAnswerDraft();
 	}
 
 	async function publishImprovedOpenAnswer() {
 		deleteMyOpenAnswerDraft();
-		let currentVersion = openAnswer.version ? openAnswer.version : 0;
-		let myImprovedOpenAnswer: OpenAnswer = new OpenAnswer({
+		let improvedVersion = openAnswer.version++;
+
+		await supabase.from<OpenAnswerType>(openAnswersTable).insert({
 			answerText: openAnswerDraft.answerText,
-			version: currentVersion + 1,
-			openquestionID: openAnswerDraft.openquestionID,
-			owner: supabase.auth.user().id
+			version: improvedVersion,
+			openQuestion: openAnswerDraft.openQuestion,
+			owner: supabase.auth.user().id,
+			originalOpenAnswer: openAnswerDraft.originalOpenAnswer
 		});
-		await DataStore.save(myImprovedOpenAnswer);
+		fetchOpenAnswerDraft();
 		toast.showSuccessToast('Open Answer improved!');
 	}
 </script>

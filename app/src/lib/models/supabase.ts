@@ -113,6 +113,7 @@ export interface paths {
           answerText?: parameters["rowFilter.open_answer_drafts.answerText"];
           openQuestion?: parameters["rowFilter.open_answer_drafts.openQuestion"];
           owner?: parameters["rowFilter.open_answer_drafts.owner"];
+          originalOpenAnswer?: parameters["rowFilter.open_answer_drafts.originalOpenAnswer"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -167,6 +168,7 @@ export interface paths {
           answerText?: parameters["rowFilter.open_answer_drafts.answerText"];
           openQuestion?: parameters["rowFilter.open_answer_drafts.openQuestion"];
           owner?: parameters["rowFilter.open_answer_drafts.owner"];
+          originalOpenAnswer?: parameters["rowFilter.open_answer_drafts.originalOpenAnswer"];
         };
         header: {
           /** Preference */
@@ -185,6 +187,7 @@ export interface paths {
           answerText?: parameters["rowFilter.open_answer_drafts.answerText"];
           openQuestion?: parameters["rowFilter.open_answer_drafts.openQuestion"];
           owner?: parameters["rowFilter.open_answer_drafts.owner"];
+          originalOpenAnswer?: parameters["rowFilter.open_answer_drafts.originalOpenAnswer"];
         };
         body: {
           /** open_answer_drafts */
@@ -211,7 +214,7 @@ export interface paths {
           version?: parameters["rowFilter.open_answers.version"];
           openQuestion?: parameters["rowFilter.open_answers.openQuestion"];
           /** If this is an improvement, the original answer (version 1, not current version-1) is stored here. */
-          originalAnswer?: parameters["rowFilter.open_answers.originalAnswer"];
+          originalOpenAnswer?: parameters["rowFilter.open_answers.originalOpenAnswer"];
           owner?: parameters["rowFilter.open_answers.owner"];
           /** Filtering Columns */
           select?: parameters["select"];
@@ -269,7 +272,7 @@ export interface paths {
           version?: parameters["rowFilter.open_answers.version"];
           openQuestion?: parameters["rowFilter.open_answers.openQuestion"];
           /** If this is an improvement, the original answer (version 1, not current version-1) is stored here. */
-          originalAnswer?: parameters["rowFilter.open_answers.originalAnswer"];
+          originalOpenAnswer?: parameters["rowFilter.open_answers.originalOpenAnswer"];
           owner?: parameters["rowFilter.open_answers.owner"];
         };
         header: {
@@ -291,7 +294,7 @@ export interface paths {
           version?: parameters["rowFilter.open_answers.version"];
           openQuestion?: parameters["rowFilter.open_answers.openQuestion"];
           /** If this is an improvement, the original answer (version 1, not current version-1) is stored here. */
-          originalAnswer?: parameters["rowFilter.open_answers.originalAnswer"];
+          originalOpenAnswer?: parameters["rowFilter.open_answers.originalOpenAnswer"];
           owner?: parameters["rowFilter.open_answers.owner"];
         };
         body: {
@@ -829,6 +832,12 @@ export interface definitions {
     openQuestion: string;
     /** Format: uuid */
     owner: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `open_answers.id`.<fk table='open_answers' column='id'/>
+     */
+    originalOpenAnswer?: string;
   };
   open_answers: {
     /**
@@ -858,7 +867,7 @@ export interface definitions {
      * Note:
      * This is a Foreign Key to `open_answers.id`.<fk table='open_answers' column='id'/>
      */
-    originalAnswer?: string;
+    originalOpenAnswer?: string;
     /** Format: uuid */
     owner: string;
   };
@@ -867,6 +876,7 @@ export interface definitions {
      * Format: uuid
      * @description Note:
      * This is a Primary Key.<pk/>
+     * @default extensions.uuid_generate_v4()
      */
     id: string;
     /** Format: text */
@@ -885,6 +895,7 @@ export interface definitions {
      * Format: uuid
      * @description Note:
      * This is a Primary Key.<pk/>
+     * @default extensions.uuid_generate_v4()
      */
     id: string;
     /** Format: text */
@@ -998,6 +1009,8 @@ export interface parameters {
   "rowFilter.open_answer_drafts.openQuestion": string;
   /** Format: uuid */
   "rowFilter.open_answer_drafts.owner": string;
+  /** Format: uuid */
+  "rowFilter.open_answer_drafts.originalOpenAnswer": string;
   /** @description open_answers */
   "body.open_answers": definitions["open_answers"];
   /** Format: uuid */
@@ -1015,7 +1028,7 @@ export interface parameters {
    * Format: uuid
    * @description If this is an improvement, the original answer (version 1, not current version-1) is stored here.
    */
-  "rowFilter.open_answers.originalAnswer": string;
+  "rowFilter.open_answers.originalOpenAnswer": string;
   /** Format: uuid */
   "rowFilter.open_answers.owner": string;
   /** @description open_feedback */

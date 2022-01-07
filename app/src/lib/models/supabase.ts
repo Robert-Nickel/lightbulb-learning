@@ -309,6 +309,198 @@ export interface paths {
       };
     };
   };
+  "/open_feedback": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.open_feedback.id"];
+          feedbackText?: parameters["rowFilter.open_feedback.feedbackText"];
+          openAnswer?: parameters["rowFilter.open_feedback.openAnswer"];
+          owner?: parameters["rowFilter.open_feedback.owner"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["open_feedback"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** open_feedback */
+          open_feedback?: definitions["open_feedback"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.open_feedback.id"];
+          feedbackText?: parameters["rowFilter.open_feedback.feedbackText"];
+          openAnswer?: parameters["rowFilter.open_feedback.openAnswer"];
+          owner?: parameters["rowFilter.open_feedback.owner"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.open_feedback.id"];
+          feedbackText?: parameters["rowFilter.open_feedback.feedbackText"];
+          openAnswer?: parameters["rowFilter.open_feedback.openAnswer"];
+          owner?: parameters["rowFilter.open_feedback.owner"];
+        };
+        body: {
+          /** open_feedback */
+          open_feedback?: definitions["open_feedback"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
+  "/open_feedback_drafts": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.open_feedback_drafts.id"];
+          feedbackText?: parameters["rowFilter.open_feedback_drafts.feedbackText"];
+          openAnswer?: parameters["rowFilter.open_feedback_drafts.openAnswer"];
+          owner?: parameters["rowFilter.open_feedback_drafts.owner"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["open_feedback_drafts"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** open_feedback_drafts */
+          open_feedback_drafts?: definitions["open_feedback_drafts"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.open_feedback_drafts.id"];
+          feedbackText?: parameters["rowFilter.open_feedback_drafts.feedbackText"];
+          openAnswer?: parameters["rowFilter.open_feedback_drafts.openAnswer"];
+          owner?: parameters["rowFilter.open_feedback_drafts.owner"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.open_feedback_drafts.id"];
+          feedbackText?: parameters["rowFilter.open_feedback_drafts.feedbackText"];
+          openAnswer?: parameters["rowFilter.open_feedback_drafts.openAnswer"];
+          owner?: parameters["rowFilter.open_feedback_drafts.owner"];
+        };
+        body: {
+          /** open_feedback_drafts */
+          open_feedback_drafts?: definitions["open_feedback_drafts"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
   "/open_question_drafts": {
     get: {
       parameters: {
@@ -670,6 +862,42 @@ export interface definitions {
     /** Format: uuid */
     owner: string;
   };
+  open_feedback: {
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    id: string;
+    /** Format: text */
+    feedbackText: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `open_answers.id`.<fk table='open_answers' column='id'/>
+     */
+    openAnswer: string;
+    /** Format: uuid */
+    owner: string;
+  };
+  open_feedback_drafts: {
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    id: string;
+    /** Format: text */
+    feedbackText: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `open_answers.id`.<fk table='open_answers' column='id'/>
+     */
+    openAnswer: string;
+    /** Format: uuid */
+    owner: string;
+  };
   open_question_drafts: {
     /**
      * Format: uuid
@@ -790,6 +1018,26 @@ export interface parameters {
   "rowFilter.open_answers.originalAnswer": string;
   /** Format: uuid */
   "rowFilter.open_answers.owner": string;
+  /** @description open_feedback */
+  "body.open_feedback": definitions["open_feedback"];
+  /** Format: uuid */
+  "rowFilter.open_feedback.id": string;
+  /** Format: text */
+  "rowFilter.open_feedback.feedbackText": string;
+  /** Format: uuid */
+  "rowFilter.open_feedback.openAnswer": string;
+  /** Format: uuid */
+  "rowFilter.open_feedback.owner": string;
+  /** @description open_feedback_drafts */
+  "body.open_feedback_drafts": definitions["open_feedback_drafts"];
+  /** Format: uuid */
+  "rowFilter.open_feedback_drafts.id": string;
+  /** Format: text */
+  "rowFilter.open_feedback_drafts.feedbackText": string;
+  /** Format: uuid */
+  "rowFilter.open_feedback_drafts.openAnswer": string;
+  /** Format: uuid */
+  "rowFilter.open_feedback_drafts.owner": string;
   /** @description open_question_drafts */
   "body.open_question_drafts": definitions["open_question_drafts"];
   /** Format: uuid */

@@ -1,83 +1,108 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
-	import { DataStore } from 'aws-amplify';
-	import { OpenAnswer, OpenFeedbackDraft, OpenFeedback, OpenQuestion, OpenAnswerDraft } from '$lib/models';
 	import Toast from '$lib/components/Toast.svelte';
 	import Back from '$lib/components/Back.svelte';
 	import ImproveOpenAnswer from '$lib/components/ImproveOpenAnswer.svelte';
+	import {
+		openAnswersTable,
+		OpenAnswerType,
+		openFeedbackDraftsTable,
+		OpenFeedbackDraftType,
+		openFeedbackTable,
+		OpenFeedbackType,
+		openQuestionsTable,
+		OpenQuestionType,
+		supabase
+	} from '$lib/supabaseClient';
 
-	let openQuestion: OpenQuestion;
-	let openAnswer: OpenAnswer;
-	let openFeedbackDraft: OpenFeedbackDraft;
-	let myOpenFeedback: OpenFeedback;
-	let openFeedbackOfOthers: Array<OpenFeedback> = [];
+	let openQuestion: OpenQuestionType;
+	let openAnswer: OpenAnswerType;
+	let openFeedbackDraft: OpenFeedbackDraftType;
+	let myOpenFeedback: OpenFeedbackType;
+	let openFeedbackOfOthers: Array<OpenFeedbackType> = [];
 	let openFeedbackDraftText = '';
 	let toast;
 	let improvingAnswer = false;
 
 	onMount(async () => {
 		const openAnswerId = $page.params.slug;
-		try {
-			openAnswer = await DataStore.query(OpenAnswer, openAnswerId);
-			fetchOpenQuestion();
-			fetchOpenFeedbackDraft();
-			fetchMyOpenFeedback();
-			fetchOpenFeedbackOfOthers();
-		} catch (error) {
-			throw error;
-		}
+		openAnswer = await (
+			await supabase.from<OpenAnswerType>(openAnswersTable).select().eq('id', openAnswerId).single()
+		).data;
+		fetchOpenQuestion();
+		fetchOpenFeedbackDraft();
+		fetchMyOpenFeedback();
+		fetchOpenFeedbackOfOthers();
 	});
 
 	async function fetchOpenQuestion() {
-		openQuestion = await DataStore.query(OpenQuestion, openAnswer.openquestionID);
+		openQuestion = await (
+			await supabase
+				.from<OpenQuestionType>(openQuestionsTable)
+				.select()
+				.eq('id', openAnswer.openQuestion)
+				.single()
+		).data;
 	}
 
 	async function fetchOpenFeedbackDraft() {
-		let openFeedbackDrafts = await DataStore.query(OpenFeedbackDraft, (f) =>
-			f.openanswerID('eq', openAnswer.id)
-		);
-		openFeedbackDraft = openFeedbackDrafts[0];
+		openFeedbackDraft = await (
+			await supabase
+				.from<OpenFeedbackDraftType>(openFeedbackDraftsTable)
+				.select()
+				.eq('owner', supabase.auth.user().id)
+				.eq('openAnswer', openAnswer.id)
+				.single()
+		).data;
 	}
 
 	async function fetchMyOpenFeedback() {
-		let myOpenFeedbacks = await DataStore.query(
-			OpenFeedback,
-			(f) => f.openanswerID('eq', openAnswer.id) && f.owner('eq', supabase.auth.user().id)
-		);
-		myOpenFeedback = myOpenFeedbacks[0];
+		myOpenFeedback = await (
+			await supabase
+				.from<OpenFeedbackType>(openFeedbackTable)
+				.select()
+				.eq('owner', supabase.auth.user().id)
+				.eq('openAnswer', openAnswer.id)
+				.single()
+		).data;
 	}
 
 	async function fetchOpenFeedbackOfOthers() {
-		openFeedbackOfOthers = await DataStore.query(OpenFeedback, (f) =>
-			f.openanswerID('eq', openAnswer.id).owner('ne', supabase.auth.user().id)
-		);
-	}	
+		openFeedbackOfOthers = await (
+			await supabase
+				.from<OpenFeedbackType>(openFeedbackTable)
+				.select()
+				.eq('openAnswer', openAnswer.id)
+				.neq('owner', supabase.auth.user().id)
+		).data;
+	}
 
 	async function saveOpenFeedbackDraft() {
-		await DataStore.save(
-			new OpenFeedbackDraft({
-				feedbackText: openFeedbackDraftText,
-				openanswerID: openAnswer.id
-			})
-		);
+		await supabase.from<OpenFeedbackDraftType>(openFeedbackDraftsTable).insert({
+			feedbackText: openFeedbackDraftText,
+			openAnswer: openAnswer.id,
+			owner: supabase.auth.user().id
+		});
 		fetchOpenFeedbackDraft();
 	}
 
 	async function deleteMyFeedbackDraft() {
-		await DataStore.delete(await DataStore.query(OpenFeedbackDraft, openFeedbackDraft.id));
+		await supabase
+			.from<OpenFeedbackDraftType>(openFeedbackDraftsTable)
+			.delete()
+			.eq('id', openFeedbackDraft.id);
 		fetchOpenFeedbackDraft();
 	}
 
 	async function publishOpenFeedback() {
 		deleteMyFeedbackDraft();
-
-		let myOpenFeedback: OpenFeedback = new OpenFeedback({
+		await supabase.from<OpenFeedbackType>(openFeedbackTable).insert({
 			feedbackText: openFeedbackDraft.feedbackText,
-			openanswerID: openFeedbackDraft.openanswerID,
+			openAnswer: openFeedbackDraft.openAnswer,
 			owner: supabase.auth.user().id
 		});
-		await DataStore.save(myOpenFeedback);
+
 		fetchMyOpenFeedback();
 		toast.showSuccessToast('Thanks for your Feedback!');
 	}

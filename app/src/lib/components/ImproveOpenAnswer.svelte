@@ -1,15 +1,14 @@
 <script lang="ts">
 	import { OpenAnswer, OpenAnswerDraft } from '$lib/models';
 	import { DataStore } from 'aws-amplify';
-	import { user } from '$lib/stores/user';
-import Toast from './Toast.svelte';
+	import Toast from './Toast.svelte';
 
 	export let openAnswer: OpenAnswer;
 	let openAnswerDraft: OpenAnswerDraft;
 	let openAnswerDraftText = '';
 	let toast;
 
-    fetchOpenAnswerDraft();
+	fetchOpenAnswerDraft();
 
 	async function fetchOpenAnswerDraft() {
 		let openAnswerDrafts = await DataStore.query(OpenAnswerDraft, (a) =>
@@ -20,8 +19,8 @@ import Toast from './Toast.svelte';
 
 	async function deleteMyOpenAnswerDraft() {
 		await DataStore.delete(await DataStore.query(OpenAnswerDraft, openAnswerDraft.id));
-        openAnswerDraftText = "";
-        fetchOpenAnswerDraft()
+		openAnswerDraftText = '';
+		fetchOpenAnswerDraft();
 	}
 
 	async function saveOpenAnswerDraft() {
@@ -41,10 +40,10 @@ import Toast from './Toast.svelte';
 			answerText: openAnswerDraft.answerText,
 			version: currentVersion + 1,
 			openquestionID: openAnswerDraft.openquestionID,
-			owner: $user.id
+			owner: supabase.auth.user().id
 		});
 		await DataStore.save(myImprovedOpenAnswer);
-        toast.showSuccessToast('Open Answer improved!');
+		toast.showSuccessToast('Open Answer improved!');
 	}
 </script>
 

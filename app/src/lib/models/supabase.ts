@@ -105,6 +105,210 @@ export interface paths {
       };
     };
   };
+  "/open_answer_drafts": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.open_answer_drafts.id"];
+          answerText?: parameters["rowFilter.open_answer_drafts.answerText"];
+          openQuestion?: parameters["rowFilter.open_answer_drafts.openQuestion"];
+          owner?: parameters["rowFilter.open_answer_drafts.owner"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["open_answer_drafts"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** open_answer_drafts */
+          open_answer_drafts?: definitions["open_answer_drafts"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.open_answer_drafts.id"];
+          answerText?: parameters["rowFilter.open_answer_drafts.answerText"];
+          openQuestion?: parameters["rowFilter.open_answer_drafts.openQuestion"];
+          owner?: parameters["rowFilter.open_answer_drafts.owner"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.open_answer_drafts.id"];
+          answerText?: parameters["rowFilter.open_answer_drafts.answerText"];
+          openQuestion?: parameters["rowFilter.open_answer_drafts.openQuestion"];
+          owner?: parameters["rowFilter.open_answer_drafts.owner"];
+        };
+        body: {
+          /** open_answer_drafts */
+          open_answer_drafts?: definitions["open_answer_drafts"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
+  "/open_answers": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.open_answers.id"];
+          answerText?: parameters["rowFilter.open_answers.answerText"];
+          /** Incremented for the new row if the user improves his answer. */
+          version?: parameters["rowFilter.open_answers.version"];
+          openQuestion?: parameters["rowFilter.open_answers.openQuestion"];
+          /** If this is an improvement, the original answer (version 1, not current version-1) is stored here. */
+          originalAnswer?: parameters["rowFilter.open_answers.originalAnswer"];
+          owner?: parameters["rowFilter.open_answers.owner"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["open_answers"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** open_answers */
+          open_answers?: definitions["open_answers"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.open_answers.id"];
+          answerText?: parameters["rowFilter.open_answers.answerText"];
+          /** Incremented for the new row if the user improves his answer. */
+          version?: parameters["rowFilter.open_answers.version"];
+          openQuestion?: parameters["rowFilter.open_answers.openQuestion"];
+          /** If this is an improvement, the original answer (version 1, not current version-1) is stored here. */
+          originalAnswer?: parameters["rowFilter.open_answers.originalAnswer"];
+          owner?: parameters["rowFilter.open_answers.owner"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.open_answers.id"];
+          answerText?: parameters["rowFilter.open_answers.answerText"];
+          /** Incremented for the new row if the user improves his answer. */
+          version?: parameters["rowFilter.open_answers.version"];
+          openQuestion?: parameters["rowFilter.open_answers.openQuestion"];
+          /** If this is an improvement, the original answer (version 1, not current version-1) is stored here. */
+          originalAnswer?: parameters["rowFilter.open_answers.originalAnswer"];
+          owner?: parameters["rowFilter.open_answers.owner"];
+        };
+        body: {
+          /** open_answers */
+          open_answers?: definitions["open_answers"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
   "/open_question_drafts": {
     get: {
       parameters: {
@@ -415,6 +619,57 @@ export interface definitions {
     /** Format: uuid */
     owner: string;
   };
+  open_answer_drafts: {
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     * @default extensions.uuid_generate_v4()
+     */
+    id: string;
+    /** Format: text */
+    answerText: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `open_questions.id`.<fk table='open_questions' column='id'/>
+     */
+    openQuestion: string;
+    /** Format: uuid */
+    owner: string;
+  };
+  open_answers: {
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     * @default extensions.uuid_generate_v4()
+     */
+    id: string;
+    /** Format: text */
+    answerText: string;
+    /**
+     * Format: bigint
+     * @description Incremented for the new row if the user improves his answer.
+     */
+    version: number;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `open_questions.id`.<fk table='open_questions' column='id'/>
+     */
+    openQuestion: string;
+    /**
+     * Format: uuid
+     * @description If this is an improvement, the original answer (version 1, not current version-1) is stored here.
+     *
+     * Note:
+     * This is a Foreign Key to `open_answers.id`.<fk table='open_answers' column='id'/>
+     */
+    originalAnswer?: string;
+    /** Format: uuid */
+    owner: string;
+  };
   open_question_drafts: {
     /**
      * Format: uuid
@@ -505,6 +760,36 @@ export interface parameters {
   "rowFilter.challenge_pools.description": string;
   /** Format: uuid */
   "rowFilter.challenge_pools.owner": string;
+  /** @description open_answer_drafts */
+  "body.open_answer_drafts": definitions["open_answer_drafts"];
+  /** Format: uuid */
+  "rowFilter.open_answer_drafts.id": string;
+  /** Format: text */
+  "rowFilter.open_answer_drafts.answerText": string;
+  /** Format: uuid */
+  "rowFilter.open_answer_drafts.openQuestion": string;
+  /** Format: uuid */
+  "rowFilter.open_answer_drafts.owner": string;
+  /** @description open_answers */
+  "body.open_answers": definitions["open_answers"];
+  /** Format: uuid */
+  "rowFilter.open_answers.id": string;
+  /** Format: text */
+  "rowFilter.open_answers.answerText": string;
+  /**
+   * Format: bigint
+   * @description Incremented for the new row if the user improves his answer.
+   */
+  "rowFilter.open_answers.version": string;
+  /** Format: uuid */
+  "rowFilter.open_answers.openQuestion": string;
+  /**
+   * Format: uuid
+   * @description If this is an improvement, the original answer (version 1, not current version-1) is stored here.
+   */
+  "rowFilter.open_answers.originalAnswer": string;
+  /** Format: uuid */
+  "rowFilter.open_answers.owner": string;
   /** @description open_question_drafts */
   "body.open_question_drafts": definitions["open_question_drafts"];
   /** Format: uuid */

@@ -1,88 +1,98 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { OpenAnswerDraft, OpenQuestion, OpenAnswer } from '$lib/models';
 	import { page } from '$app/stores';
-	import { DataStore } from 'aws-amplify';
-	import { user } from '$lib/stores/user';
 	import Back from '$lib/components/Back.svelte';
 	import Toast from '$lib/components/Toast.svelte';
 	import { goto } from '$app/navigation';
+	import {
+		openAnswerDraftsTable,
+		OpenAnswerDraftType,
+		openAnswersTable,
+		OpenAnswerType,
+		openQuestionsTable,
+		OpenQuestionType,
+		supabase
+	} from '$lib/supabaseClient';
 
-	let openQuestion: OpenQuestion;
-	let openAnswerDraft: OpenAnswerDraft;
-	let myOpenAnswer: OpenAnswer;
-	let openAnswersOfOthers: Array<OpenAnswer> = [];
+	let openQuestion: OpenQuestionType;
+	let openAnswerDraft: OpenAnswerDraftType;
+	let myOpenAnswer: OpenAnswerType;
+	let openAnswersOfOthers: Array<OpenAnswerType> = [];
 	let toast;
 	let openAnswerDraftText = '';
 
 	onMount(async () => {
 		const openQuestionId = $page.params.slug;
-		try {
-			openQuestion = await DataStore.query(OpenQuestion, openQuestionId);
-		} catch (error) {
-			throw error;
-		}
+		openQuestion = await (
+			await supabase.from<OpenQuestionType>(openQuestionsTable).select().eq('id', openQuestionId).single()
+		).data;
 		fetchOpenAnswerDraft();
 		fetchMyOpenAnswer();
 		fetchOpenAnswersOfOthers();
 	});
 
 	async function fetchOpenAnswerDraft() {
-		let openAnswerDrafts = await DataStore.query(OpenAnswerDraft, (a) =>
-			a.openquestionID('eq', openQuestion.id)
-		);
-		openAnswerDraft = openAnswerDrafts[0];
+		openAnswerDraft = await (
+			await supabase
+				.from<OpenAnswerDraftType>(openAnswerDraftsTable)
+				.select()
+				.eq('openQuestion', openQuestion.id)
+				.eq('owner', supabase.auth.user().id)
+				.single()
+		).data;
 	}
 
 	async function fetchMyOpenAnswer() {
-		let openAnswers = await DataStore.query(
-			OpenAnswer,
-			(a) => a.openquestionID('eq', openQuestion.id) && a.owner('eq', $user.id)
-		);
-		myOpenAnswer = openAnswers[0];
+		myOpenAnswer = await (
+			await supabase
+				.from<OpenAnswerType>(openAnswersTable)
+				.select()
+				.eq('openQuestion', openQuestion.id)
+				.eq('owner', supabase.auth.user().id)
+				.single()
+		).data;
 	}
 
 	async function fetchOpenAnswersOfOthers() {
-		openAnswersOfOthers = await DataStore.query(OpenAnswer, (a) =>
-			a.openquestionID('eq', openQuestion.id).owner('ne', $user.id)
-		);
+		openAnswersOfOthers = await (
+			await supabase
+				.from<OpenAnswerType>(openAnswersTable)
+				.select()
+				.eq('openQuestion', openQuestion.id)
+				.neq('owner', supabase.auth.user().id)
+		).data;
 	}
 
 	async function saveOpenAnswerDraft() {
-		await DataStore.save(
-			new OpenAnswerDraft({
-				answerText: openAnswerDraftText,
-				openquestionID: openQuestion.id
-			})
-		);
+		await supabase.from<OpenAnswerDraftType>(openAnswerDraftsTable).insert({
+			answerText: openAnswerDraftText,
+			openQuestion: openQuestion.id,
+			owner: supabase.auth.user().id
+		});
 		fetchOpenAnswerDraft();
 	}
 
 	async function deleteMyOpenAnswerDraft() {
-		await DataStore.delete(await DataStore.query(OpenAnswerDraft, openAnswerDraft.id));
+		await supabase.from<OpenAnswerDraftType>(openAnswerDraftsTable).delete().eq('id', openAnswerDraft.id);
 		fetchOpenAnswerDraft();
 	}
 
 	async function publishOpenAnswer() {
 		deleteMyOpenAnswerDraft();
-
-		let myOpenAnswer: OpenAnswer = new OpenAnswer({
+		await supabase.from<OpenAnswerType>(openAnswersTable).insert({
 			answerText: openAnswerDraft.answerText,
-			openquestionID: openAnswerDraft.openquestionID,
-			owner: $user.id
+			openQuestion: openAnswerDraft.openQuestion,
+			owner: supabase.auth.user().id,
+			version: 1
 		});
-		await DataStore.save(myOpenAnswer);
 		fetchMyOpenAnswer();
-
-		// TODO: publishOpenAnswerCommittedEvent(myOpenAnswer);
-
 		toast.showSuccessToast('Open Answer created!');
 	}
 </script>
 
 <main class="container">
 	{#if openQuestion}
-		{#if openQuestion.owner == $user.id}
+		{#if openQuestion.owner == supabase.auth.user().id}
 			<h1 class="yours pl-4">{openQuestion.questionText}</h1>
 
 			<div class="mb-4">
@@ -123,7 +133,7 @@
 			</article>
 		{/each}
 
-		<Back text="Back to Challenge Pool" route="/challengepool/{openQuestion.challengepoolID}" />
+		<Back text="Back to Challenge Pool" route="/challengepool/{openQuestion.challengePool}" />
 	{/if}
 </main>
 

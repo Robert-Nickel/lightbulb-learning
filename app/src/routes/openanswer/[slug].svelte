@@ -3,7 +3,6 @@
 	import { page } from '$app/stores';
 	import { DataStore } from 'aws-amplify';
 	import { OpenAnswer, OpenFeedbackDraft, OpenFeedback, OpenQuestion, OpenAnswerDraft } from '$lib/models';
-	import { user } from '$lib/stores/user';
 	import Toast from '$lib/components/Toast.svelte';
 	import Back from '$lib/components/Back.svelte';
 	import ImproveOpenAnswer from '$lib/components/ImproveOpenAnswer.svelte';
@@ -44,14 +43,14 @@
 	async function fetchMyOpenFeedback() {
 		let myOpenFeedbacks = await DataStore.query(
 			OpenFeedback,
-			(f) => f.openanswerID('eq', openAnswer.id) && f.owner('eq', $user.id)
+			(f) => f.openanswerID('eq', openAnswer.id) && f.owner('eq', supabase.auth.user().id)
 		);
 		myOpenFeedback = myOpenFeedbacks[0];
 	}
 
 	async function fetchOpenFeedbackOfOthers() {
 		openFeedbackOfOthers = await DataStore.query(OpenFeedback, (f) =>
-			f.openanswerID('eq', openAnswer.id).owner('ne', $user.id)
+			f.openanswerID('eq', openAnswer.id).owner('ne', supabase.auth.user().id)
 		);
 	}	
 
@@ -76,7 +75,7 @@
 		let myOpenFeedback: OpenFeedback = new OpenFeedback({
 			feedbackText: openFeedbackDraft.feedbackText,
 			openanswerID: openFeedbackDraft.openanswerID,
-			owner: $user.id
+			owner: supabase.auth.user().id
 		});
 		await DataStore.save(myOpenFeedback);
 		fetchMyOpenFeedback();
@@ -86,13 +85,13 @@
 
 <main class="container">
 	{#if openAnswer && openQuestion}
-		{#if openQuestion.owner == $user.id}
+		{#if openQuestion.owner == supabase.auth.user().id}
 			<div class="mb-4 yours pl-4">Your Question: {openQuestion.questionText}</div>
 		{:else}
 			<div class="mb-4">Question: {openQuestion.questionText}</div>
 		{/if}
 
-		{#if openAnswer.owner == $user.id}
+		{#if openAnswer.owner == supabase.auth.user().id}
 			<h1 class="yours pl-4">Your Answer: {openAnswer.answerText}</h1>
 
 			{#if openFeedbackOfOthers.length == 0}

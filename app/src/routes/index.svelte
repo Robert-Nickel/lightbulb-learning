@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { store } from '$lib/stores/auth';
 	import StartPage from '$lib/components/StartPage.svelte';
 	import ChallengePools from '$lib/components/ChallengePools.svelte';
 

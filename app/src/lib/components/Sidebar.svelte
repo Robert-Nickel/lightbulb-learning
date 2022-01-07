@@ -1,13 +1,17 @@
 <script>
-	import { store } from '$lib/stores/auth';
-	import { DataStore } from '@aws-amplify/datastore';
+	import { supabase } from '$lib/supabaseClient';
+	import { user } from '$lib/stores/sessionStore';
 
 	export let open = false;
 
-	function logout() {
+	async function logout() {
 		open = false;
-		$store = null;
-		DataStore.clear();
+		try {
+			let { error } = await supabase.auth.signOut();
+			if (error) throw error;
+		} catch (error) {
+			alert(error.message);
+		}
 	}
 </script>
 
@@ -15,10 +19,10 @@
 	class="absolute w-64 h-full bg-gray-800 text-white shadow-lg z-10 p-8 pt-24 space-y-2 text-xl cursor-default"
 	class:open
 >
-	{#if $store == null}
-		<nav on:click={() => (open = false)}><a href="/login">Login</a></nav>
-	{:else}
+	{#if $user}
 		<nav on:click={logout}><a href="/">Logout</a></nav>
+	{:else}
+		<nav on:click={() => (open = false)}><a href="/login">Login</a></nav>
 	{/if}
 </aside>
 

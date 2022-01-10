@@ -107,6 +107,16 @@ export class InfrastructureStack extends cdk.Stack {
     })
     listUserGroupsHttpLambda.addToRolePolicy(listUserGroupsHttpLambdaPolicy)
 
+    const updateGroupHttpLambda = buildLambda('updateGroupLambda', this, 60, 512)
+    const updateGroupHttpLambdaPolicy = new PolicyStatement({
+      resources: ["*"], 
+      actions: ["cognito-idp:AdminListGroupsForUser",
+      "cognito-idp:UpdateGroup", "iam:PassRole", "iam:GetRole", "iam:ListRoles","SNS:Publish"
+    ],
+      effect: Effect.ALLOW
+    })
+    updateGroupHttpLambda.addToRolePolicy(updateGroupHttpLambdaPolicy)
+
     // This is currently not required, but might be very helpful soon.
     /*
     const dynamoGetItemPolicy = new PolicyStatement({
@@ -174,7 +184,12 @@ export class InfrastructureStack extends cdk.Stack {
       methods: [HttpMethod.POST, HttpMethod.OPTIONS],
       integration: new HttpLambdaIntegration('listUserGroups', listUserGroupsHttpLambda),
       authorizer: authorizer,
-      
+    });
+    httpApi.addRoutes({
+      path: '/updateGroup',
+      methods: [HttpMethod.POST, HttpMethod.OPTIONS],
+      integration: new HttpLambdaIntegration('updateGroup', updateGroupHttpLambda),
+      // authorizer: authorizer,
     });
     httpApi.addRoutes({
       path: '/authenticaterequest',

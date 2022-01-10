@@ -13,7 +13,7 @@ export const store = writable(_user ? JSON.parse(_user) : null);
 initAmplify();
 
 export function printToken() {
-	Auth.currentSession().then(res=>{
+	Auth.currentSession().then(res => {
 		let accessToken = res.getAccessToken()
 		let jwt = accessToken.getJwtToken()
 		console.log("ID TOKEN:")
@@ -21,7 +21,14 @@ export function printToken() {
 		//You can print them to see the full objects
 		console.log(`------------------ myAccessToken: ${JSON.stringify(accessToken)} -------------------- `)
 		console.log(`myJwt: ${jwt}`)
-	  })	
+	})
+}
+
+export async function getGroup() {
+	const res = await Auth.currentSession()
+	const group = res.getIdToken().payload["cognito:groups"]
+	return group
+
 }
 
 if (browser) {
@@ -40,9 +47,9 @@ export const loginFormState = writable({
 });
 export async function signIn() {
 	return Auth.signIn(get(loginFormState).email, get(loginFormState).password).then(
-		(data) =>  { 
+		(data) => {
 			printToken();
-			void store.set(data) 
+			void store.set(data)
 		}
 	);
 }

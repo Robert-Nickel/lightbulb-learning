@@ -57,7 +57,7 @@
 		{:else if role == 'university'}
 			<h1>Welcome!</h1>
 			<div>
-				With a university-wide accout for Lightbulb Learning you have unlimited access for all of your
+				With an university-wide accout for Lightbulb Learning you have unlimited access for all of your
 				professors and students.
 				<br /><a href="mailto:lightbulb-learning@robertnickel.online">Contact us</a> for pricing information, a
 				complete feature list and to tell us your requirements for the system.

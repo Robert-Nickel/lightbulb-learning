@@ -483,6 +483,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "groupID": {
+                    "name": "owner",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "OpenQuestions": {
                     "name": "OpenQuestions",
                     "isArray": true,

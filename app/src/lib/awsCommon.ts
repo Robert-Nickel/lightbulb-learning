@@ -1,6 +1,6 @@
 import { browser } from '$app/env';
 import Amplify from 'aws-amplify';
-import aws_exports from '../aws-exports.cjs';
+import aws_exports from '../aws-exports.js';
 import * as process from 'process';
 
 export function initAmplify() {

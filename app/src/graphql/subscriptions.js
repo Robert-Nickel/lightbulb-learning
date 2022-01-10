@@ -1,6 +1,51 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const onCreateOpenAnswerDraft = /* GraphQL */ `
+  subscription OnCreateOpenAnswerDraft($owner: String) {
+    onCreateOpenAnswerDraft(owner: $owner) {
+      id
+      answerText
+      openquestionID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onUpdateOpenAnswerDraft = /* GraphQL */ `
+  subscription OnUpdateOpenAnswerDraft($owner: String) {
+    onUpdateOpenAnswerDraft(owner: $owner) {
+      id
+      answerText
+      openquestionID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onDeleteOpenAnswerDraft = /* GraphQL */ `
+  subscription OnDeleteOpenAnswerDraft($owner: String) {
+    onDeleteOpenAnswerDraft(owner: $owner) {
+      id
+      answerText
+      openquestionID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
 export const onCreateOpenAnswer = /* GraphQL */ `
   subscription OnCreateOpenAnswer {
     onCreateOpenAnswer {
@@ -46,6 +91,51 @@ export const onDeleteOpenAnswer = /* GraphQL */ `
       _lastChangedAt
       createdAt
       updatedAt
+    }
+  }
+`;
+export const onCreateOpenFeedbackDraft = /* GraphQL */ `
+  subscription OnCreateOpenFeedbackDraft($owner: String) {
+    onCreateOpenFeedbackDraft(owner: $owner) {
+      id
+      feedbackText
+      openanswerID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onUpdateOpenFeedbackDraft = /* GraphQL */ `
+  subscription OnUpdateOpenFeedbackDraft($owner: String) {
+    onUpdateOpenFeedbackDraft(owner: $owner) {
+      id
+      feedbackText
+      openanswerID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onDeleteOpenFeedbackDraft = /* GraphQL */ `
+  subscription OnDeleteOpenFeedbackDraft($owner: String) {
+    onDeleteOpenFeedbackDraft(owner: $owner) {
+      id
+      feedbackText
+      openanswerID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      owner
     }
   }
 `;
@@ -101,22 +191,6 @@ export const onCreateOpenQuestion = /* GraphQL */ `
       questionText
       challengepoolID
       owner
-      OpenAnswers {
-        items {
-          id
-          answerText
-          owner
-          openquestionID
-          version
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        nextToken
-        startedAt
-      }
       _version
       _deleted
       _lastChangedAt
@@ -133,6 +207,22 @@ export const onCreateOpenQuestion = /* GraphQL */ `
           createdAt
           updatedAt
           owner
+        }
+        nextToken
+        startedAt
+      }
+      OpenAnswers {
+        items {
+          id
+          answerText
+          owner
+          openquestionID
+          version
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
         }
         nextToken
         startedAt
@@ -147,22 +237,6 @@ export const onUpdateOpenQuestion = /* GraphQL */ `
       questionText
       challengepoolID
       owner
-      OpenAnswers {
-        items {
-          id
-          answerText
-          owner
-          openquestionID
-          version
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        nextToken
-        startedAt
-      }
       _version
       _deleted
       _lastChangedAt
@@ -179,6 +253,22 @@ export const onUpdateOpenQuestion = /* GraphQL */ `
           createdAt
           updatedAt
           owner
+        }
+        nextToken
+        startedAt
+      }
+      OpenAnswers {
+        items {
+          id
+          answerText
+          owner
+          openquestionID
+          version
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
         }
         nextToken
         startedAt
@@ -193,22 +283,6 @@ export const onDeleteOpenQuestion = /* GraphQL */ `
       questionText
       challengepoolID
       owner
-      OpenAnswers {
-        items {
-          id
-          answerText
-          owner
-          openquestionID
-          version
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        nextToken
-        startedAt
-      }
       _version
       _deleted
       _lastChangedAt
@@ -229,6 +303,22 @@ export const onDeleteOpenQuestion = /* GraphQL */ `
         nextToken
         startedAt
       }
+      OpenAnswers {
+        items {
+          id
+          answerText
+          owner
+          openquestionID
+          version
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
     }
   }
 `;
@@ -238,6 +328,12 @@ export const onCreateChallengePool = /* GraphQL */ `
       id
       description
       owner
+      groupID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       OpenQuestions {
         items {
           id
@@ -253,11 +349,6 @@ export const onCreateChallengePool = /* GraphQL */ `
         nextToken
         startedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
       OpenQuestionDrafts {
         items {
           id
@@ -283,6 +374,12 @@ export const onUpdateChallengePool = /* GraphQL */ `
       id
       description
       owner
+      groupID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       OpenQuestions {
         items {
           id
@@ -298,11 +395,6 @@ export const onUpdateChallengePool = /* GraphQL */ `
         nextToken
         startedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
       OpenQuestionDrafts {
         items {
           id
@@ -328,6 +420,12 @@ export const onDeleteChallengePool = /* GraphQL */ `
       id
       description
       owner
+      groupID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       OpenQuestions {
         items {
           id
@@ -343,11 +441,6 @@ export const onDeleteChallengePool = /* GraphQL */ `
         nextToken
         startedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
       OpenQuestionDrafts {
         items {
           id
@@ -364,96 +457,6 @@ export const onDeleteChallengePool = /* GraphQL */ `
         nextToken
         startedAt
       }
-    }
-  }
-`;
-export const onCreateOpenAnswerDraft = /* GraphQL */ `
-  subscription OnCreateOpenAnswerDraft($owner: String) {
-    onCreateOpenAnswerDraft(owner: $owner) {
-      id
-      answerText
-      openquestionID
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const onUpdateOpenAnswerDraft = /* GraphQL */ `
-  subscription OnUpdateOpenAnswerDraft($owner: String) {
-    onUpdateOpenAnswerDraft(owner: $owner) {
-      id
-      answerText
-      openquestionID
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const onDeleteOpenAnswerDraft = /* GraphQL */ `
-  subscription OnDeleteOpenAnswerDraft($owner: String) {
-    onDeleteOpenAnswerDraft(owner: $owner) {
-      id
-      answerText
-      openquestionID
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const onCreateOpenFeedbackDraft = /* GraphQL */ `
-  subscription OnCreateOpenFeedbackDraft($owner: String) {
-    onCreateOpenFeedbackDraft(owner: $owner) {
-      id
-      feedbackText
-      openanswerID
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const onUpdateOpenFeedbackDraft = /* GraphQL */ `
-  subscription OnUpdateOpenFeedbackDraft($owner: String) {
-    onUpdateOpenFeedbackDraft(owner: $owner) {
-      id
-      feedbackText
-      openanswerID
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const onDeleteOpenFeedbackDraft = /* GraphQL */ `
-  subscription OnDeleteOpenFeedbackDraft($owner: String) {
-    onDeleteOpenFeedbackDraft(owner: $owner) {
-      id
-      feedbackText
-      openanswerID
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-      owner
     }
   }
 `;

@@ -518,6 +518,13 @@ export const schema = {
                         "associatedWith": "challengepoolID"
                     }
                 },
+                "groupID": {
+                    "name": "groupID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -668,5 +675,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "200767f56481acf6a79c28661dc31b3b"
+    "version": "7d2ecce7a8b13e3144f58269deb815eb"
 };

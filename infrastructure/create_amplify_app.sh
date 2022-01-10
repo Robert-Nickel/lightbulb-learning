@@ -14,8 +14,7 @@ git branch $university
 git checkout $university
 git push -u origin $university
 
-# Then do this
-
+# OPTIONAL:
 # Open amplify in aws console
 # Open new app
 # Backend environment

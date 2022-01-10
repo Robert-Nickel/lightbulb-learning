@@ -94,6 +94,7 @@ export declare class ChallengePool {
   readonly owner?: string;
   readonly OpenQuestions?: (OpenQuestion | null)[];
   readonly OpenQuestionDrafts?: (OpenQuestionDraft | null)[];
+  readonly groupID?: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<ChallengePool, ChallengePoolMetaData>);

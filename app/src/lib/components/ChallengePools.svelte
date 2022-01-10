@@ -10,7 +10,7 @@
 	const dispatch = createEventDispatcher();
 	let challengePools: Array<ChallengePool> = [];
 	let createChallengePoolDescription = '';
-	let groupID: String = "some_default";
+	let groupID: string = "some_default";
 
 	fetchChallengePools();
 

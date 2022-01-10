@@ -5,10 +5,12 @@
 	import { createEventDispatcher } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { user } from '$lib/stores/user';
+	import { getGroup } from '$lib/stores/auth';
 
 	const dispatch = createEventDispatcher();
 	let challengePools: Array<ChallengePool> = [];
 	let createChallengePoolDescription = '';
+	let groupID: String = "some_default";
 
 	fetchChallengePools();
 
@@ -22,13 +24,15 @@
 	});
 
 	async function fetchChallengePools() {
-		challengePools = await DataStore.query(ChallengePool);
+		groupID = await getGroup();
+		console.log('Filtering challenge pools with groupId: ' + groupID);
+		challengePools = await DataStore.query(ChallengePool, (p) => p.groupID('eq', groupID));
 	}
 
 	async function createChallengePool() {
 		try {
 			await DataStore.save(
-				new ChallengePool({ description: createChallengePoolDescription, owner: $user.id })
+				new ChallengePool({ description: createChallengePoolDescription, owner: $user.id, groupID })
 			);
 		} catch (error) {
 			console.log(error);

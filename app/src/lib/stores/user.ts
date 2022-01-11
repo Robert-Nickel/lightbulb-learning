@@ -4,14 +4,14 @@ import type { CognitoUser } from '@aws-amplify/auth';
 import { Auth } from 'aws-amplify';
 import { writable } from 'svelte/store';
 
-export type User = CognitoUser & { id: string };
+export type User = CognitoUser & { id: string } & { groupID: string };
 
 export const user = writable(null as User | undefined);
 
 initAmplify();
 
 if (browser) {
-	Auth.currentAuthenticatedUser().then((x) => {
-		user.set({ ...x, id: x.attributes.sub });
+	Auth.currentAuthenticatedUser().then((cognitoUser) => {
+		user.set({ ...cognitoUser, id: cognitoUser.signInUserSession.getIdToken().payload["cognito:groups"] });
 	});
 }

@@ -39,6 +39,7 @@ if (browser) {
 }
 
 export const logout = () => store.set(null);
+
 export const loginFormState = writable({
 	email: '',
 	password: '',

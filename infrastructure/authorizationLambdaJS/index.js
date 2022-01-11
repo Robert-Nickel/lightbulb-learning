@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const jwkToPem = require('jwk-to-pem');
 const axios = require('axios');
 const jwt_decode = require("jwt-decode");
+const { CognitoIdentityServiceProvider } = require('aws-sdk')
 
 /** This authorization lambda function is expected to provide an ACCESS token, to validate the request for upgrading a group from free to standard. Only users who have an ADMIN_OF_GROUP property can upgrade this group. */
 exports.handler = function (event, context, callback) {
@@ -18,7 +19,18 @@ exports.handler = function (event, context, callback) {
             } else {
                 jwk = valid_jwks[0];
                 const decoded = jwt.verify(jwt_token, jwkToPem(jwk))
-                console.log(decoded)
+                console.log("decoded", decoded)
+
+                // if decoded doesn't contain admin_of_group property...
+                // use fresh identity token ;) or below code...
+                
+                //   var provider =  new aws.CognitoIdentityServiceProvider();
+                //   provider.getUser({
+                //     AccessToken: jwt_token
+                //   }, function(err, data) {
+                //     if (err) console.log(err, err.stack); // an error occurred
+                //     else     console.log(data);           // successful response
+                //   });
                 const admin_of_group = decoded['custom:admin_of_group'];
                 console.log("admin of group", admin_of_group)
                 if (admin_of_group.length > 0) {

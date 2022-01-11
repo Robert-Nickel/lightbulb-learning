@@ -27,7 +27,7 @@ import software.amazon.awssdk.services.sns.SnsClient;
 import software.amazon.awssdk.services.sns.model.{MessageAttributeValue, PublishRequest, PublishResponse};
 
 import software.amazon.awssdk.services.lambda.LambdaClient;
-import software.amazon.awssdk.services.lambda.model.InvokeRequest;
+import software.amazon.awssdk.services.lambda.model.{InvokeRequest, ListFunctionsRequest};
 import software.amazon.awssdk.core.SdkBytes;
 
 import scala.collection.JavaConverters._
@@ -85,9 +85,28 @@ class Handler {
           .httpClient(httpClient)
           .build()
 
+      val lambdaListFunctionsRequest = (
+      ListFunctionsRequest.builder()
+        .build()
+      )
+
+      val lambdaListFunctions = lambdaClient.listFunctions(lambdaListFunctionsRequest).functions()
+
+      val validInvokeFunctions = lambdaListFunctions.asScala.filter(x => x.functionName().startsWith("InfrastructureStack-addUserToGroupLambda")).toArray
+
+      var lambdaName = ""
+      if(validInvokeFunctions.length > 0) {
+        lambdaName = validInvokeFunctions(0).functionName()
+      } else {
+        println("No valid invoke function found! [addUserToGroup]")
+      }
+
+      println("lambdaName: " + lambdaName)  
+      // val lambdaName = "InfrastructureStack-addUserToGroupLambda87BA65DB-f1AgUynB3tqA"
+
       val lambdaRequest = (
         InvokeRequest.builder()
-          .functionName("InfrastructureStack-addUserToGroupLambda87BA65DB-kMSCEsPok8P6")
+          .functionName(lambdaName)
           .payload(SdkBytes.fromUtf8String(Json.toJson(eventBody)))
           .build()
       )
@@ -98,23 +117,11 @@ class Handler {
           .build()
       )
 
-      val roleListResponse = iamClient.listRoles(listRolesRequest)
-      val filteredResultForRole = roleListResponse.roles().asScala.filter(x => x.roleName.startsWith("InfrastructureStack-lightbulblearning" + roleType + "Role")).toArray
-
-      var roleARN = ""
-      if(filteredResultForRole.length > 0) {
-        roleARN = filteredResultForRole(0).arn()
-      } else {
-        println("no role found!")
-      }
-
-      println("roleARN:" + roleARN)  
-
       val request: CreateGroupRequest = (
       CreateGroupRequest.builder()
         .groupName(groupName)
         .userPoolId(userPoolId)
-        .roleArn(roleARN)
+        .description(roleType)
         .build()
       )
       

@@ -5,7 +5,7 @@ const jwt_decode = require("jwt-decode");
 
 /** This authorization lambda function is expected to provide an ACCESS token, to validate the request for upgrading a group from free to standard. Only users who have an ADMIN_OF_GROUP property can upgrade this group. */
 exports.handler = function (event, context, callback) {
-    axios.get("https://cognito-idp.eu-central-1.amazonaws.com/eu-central-1_bAc9VMMys/.well-known/jwks.json").then(
+    axios.get("https://cognito-idp.eu-central-1.amazonaws.com/eu-central-1_ioweDqC3S/.well-known/jwks.json").then(
         response => {
             console.log(event.headers.authorization);
             const jwt_token = JSON.parse(event.headers.authorization).jwtToken;

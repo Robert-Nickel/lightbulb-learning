@@ -7,26 +7,28 @@
 </script>
 
 {#if $store != null}
-	{#if $user && $user.groupID}
-		<main class="container py-4 max-w-screen-sm"><ChallengePools /></main>
-	{:else}
-		<h1>Start here!</h1>
-		<div class="mb-8">
-			In most cases, you want to join a already existing group. In case you are a professor, you can create a
-			new group and invite your students.
-		</div>
-		<button
-			on:click={() => {
-				goto('/joingroup');
-			}}>Join Group</button
-		>
-		<button
-			on:click={() => {
-				goto('/creategroup');
-			}}
-			class="outline">Create Group</button
-		>
-	{/if}
+	<main class="container py-4 max-w-screen-sm">
+		{#if $user && $user.groupID}
+			<ChallengePools />
+		{:else}
+			<h1>Start here!</h1>
+			<div class="mb-8">
+				In most cases, you want to join a already existing group. In case you are a professor, you can create
+				a new group and invite your students.
+			</div>
+			<button
+				on:click={() => {
+					goto('/joingroup');
+				}}>Join Group</button
+			>
+			<button
+				on:click={() => {
+					goto('/creategroup');
+				}}
+				class="outline">Create Group</button
+			>
+		{/if}
+	</main>
 {:else}
 	<StartPage />
 {/if}

@@ -79,7 +79,7 @@ export class InfrastructureStack extends cdk.Stack {
     const addUserToGroupHttpLambda = buildLambda('addUserToGroupHttpLambda', this, 60)
     const addUserToGroupHttpLambdaPolicy = new PolicyStatement({
       resources: ["*"],
-      actions: ["lambda:InvokeFunction"],
+      actions: ["lambda:InvokeFunction", "lambda:ListFunctions"],
       effect: Effect.ALLOW
     })
     addUserToGroupHttpLambda.addToRolePolicy(addUserToGroupHttpLambdaPolicy)
@@ -112,16 +112,24 @@ export class InfrastructureStack extends cdk.Stack {
     commitOpenAnswerLambda.addToRolePolicy(dynamoGetItemPolicy)
     */
 
-    const handler = buildLambdaJS('authorizationLambdaJS', this);
+    const authHandler = buildLambdaJS('authorizationLambdaJS', this);
     const authorizerPolicy = new PolicyStatement({
       resources: ["*"], 
       actions: ["lambda:InvokeFunction"],
       effect: Effect.ALLOW
     })
-    handler.addToRolePolicy(authorizerPolicy)
-    const authorizer = new HttpLambdaAuthorizer('authorizationLambdaJS', handler, {
+    authHandler.addToRolePolicy(authorizerPolicy)
+    const authorizer = new HttpLambdaAuthorizer('authorizationLambdaJS', authHandler, {
       responseTypes: [HttpLambdaResponseType.SIMPLE]
     });
+
+    const jwtHandler = buildLambdaJS('jwtHandler', this);
+    const jwtHandlerPolicy = new PolicyStatement({
+      resources: ["*"], 
+      actions: ["lambda:InvokeFunction"],
+      effect: Effect.ALLOW
+    })
+    jwtHandler.addToRolePolicy(jwtHandlerPolicy)
 
     const httpApi = new HttpApi(this, 'lightbulb-learning-api-gateway', {
       /* description: 'Learning API', */
@@ -217,6 +225,6 @@ function buildLambdaJS(lambdaName: string, scope: cdk.Construct, timeout = 30, c
     timeout: cdk.Duration.seconds(timeout),
     memorySize: customMemorySize,
     handler: 'index.handler',
-    code: lambda.Code.fromAsset(path.join(__dirname, `../${lambdaName}`)),
+    code: lambda.Code.fromAsset(path.join(__dirname, `../../js_lambdas/${lambdaName}`)),
   })
 }

@@ -6,21 +6,15 @@
 	let groupName = '';
 
 	async function addUserToGroup() {
-		var myHeaders = new Headers();
+		const jwtToken = await (await Auth.currentSession()).getAccessToken().getJwtToken()
+
+		let myHeaders = new Headers();
 		myHeaders.append('Content-Type', 'application/json');
+		// myHeaders.append('Authorization', jwtToken);
 
-		const user = await Auth.currentAuthenticatedUser();
-		const userName = user.attributes.email;
-		// TODO: change this hardcoded userpool to be custom for premium instances
-		const userPoolId = 'eu-central-1_bAc9VMMys';
+		const body = { groupName, jwtToken } ;
 
-		const body = {
-			userName,
-			userPoolId,
-			groupName
-		};
-
-		var requestOptions = {
+		const requestOptions = {
 			method: 'POST',
 			headers: myHeaders,
 			body: JSON.stringify(body)

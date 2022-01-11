@@ -7,8 +7,11 @@ import scala.language.implicitConversions
 given jsonToGroupInfo: JsonInput[GroupInfo] with
   def apply(json: JsonValue) = GroupInfo(
     json("groupName"),
-    json("userName"),
-    json("userPoolId")
+    json("usermail"),
+    json("userpool")
     )
 
-case class GroupInfo(groupName: String, userName: String, userPoolId: String) {}
+given groupInfoToJson: JsonOutput[GroupInfo] with
+  def apply(u: GroupInfo) = Json.obj("groupName" -> u.groupName, "usermail" -> u.usermail, "userpool" -> u.userpool)
+
+case class GroupInfo(groupName: String, usermail: String, userpool: String) {}

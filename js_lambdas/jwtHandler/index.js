@@ -7,6 +7,8 @@ exports.handler = function (event, context, callback) {
     const jwt_token = event.jwtToken;
     const decoded_token = jwt_decode(jwt_token);
     const decoded_token_header = jwt_decode(jwt_token, { header: true })
+    console.log(`userpool: ${decoded_token['iss']}`)
+    
     axios.get(`${decoded_token['iss']}/.well-known/jwks.json`).then(
         response => {
             const valid_jwks = response
@@ -21,7 +23,7 @@ exports.handler = function (event, context, callback) {
                 jwk = valid_jwks[0];
                 const decoded = jwt.verify(jwt_token, jwkToPem(jwk))
                 console.log("decoded", decoded)
-                callback(decoded);
+                callback(null, decoded);
             }
         }
     )

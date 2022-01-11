@@ -59,21 +59,6 @@ export class InfrastructureStack extends cdk.Stack {
       new lambdaEventSources.SqsEventSource(createOpenQuestionQueue)
     );
     openQuestionTopic.addSubscription(new subs.SqsSubscription(createOpenQuestionQueue));
-  
-    const freeRole = new iam.Role(this, 'lightbulb-learning-FreeRole', {
-      assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
-      description: 'Lightbulb-Learning Free Role',
-    });
-
-    const standardRole = new iam.Role(this, 'lightbulb-learning-StandardRole', {
-      assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
-      description: 'Lightbulb-Learning Standard Role',
-    });
-
-    const premiumRole = new iam.Role(this, 'lightbulb-learning-PremiumRole', {
-      assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
-      description: 'Lightbulb-Learning Premium Role',
-    });
 
     const createGroupLambda = buildLambda('createGroupLambda', this, 60, 512);
     const createGroupPolicy = new PolicyStatement({
@@ -111,7 +96,7 @@ export class InfrastructureStack extends cdk.Stack {
     const updateGroupHttpLambdaPolicy = new PolicyStatement({
       resources: ["*"], 
       actions: ["cognito-idp:AdminListGroupsForUser",
-      "cognito-idp:UpdateGroup", "iam:PassRole", "iam:GetRole", "iam:ListRoles","SNS:Publish"
+      "cognito-idp:UpdateGroup", "iam:PassRole", "iam:GetRole", "iam:ListRoles","SNS:Publish", "cognito-idp:GetGroup"
     ],
       effect: Effect.ALLOW
     })
@@ -189,7 +174,7 @@ export class InfrastructureStack extends cdk.Stack {
       path: '/updateGroup',
       methods: [HttpMethod.POST, HttpMethod.OPTIONS],
       integration: new HttpLambdaIntegration('updateGroup', updateGroupHttpLambda),
-      // authorizer: authorizer,
+      authorizer: authorizer,
     });
     httpApi.addRoutes({
       path: '/authenticaterequest',

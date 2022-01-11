@@ -20,6 +20,8 @@ import software.amazon.awssdk.services.cognitoidentityprovider.model.CognitoIden
 import software.amazon.awssdk.services.cognitoidentityprovider.model.UpdateGroupRequest;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.AdminUpdateUserAttributesRequest;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.AttributeType;
+import software.amazon.awssdk.services.cognitoidentityprovider.model.GetGroupRequest;
+
 import software.amazon.awssdk.services.iam.model.*;
 import software.amazon.awssdk.services.iam.IamClient;
 import software.amazon.awssdk.services.iam.model.ListRolesRequest;
@@ -43,8 +45,6 @@ class Handler {
       val userName =  updateGroupInfo.userName      // "piskdvzrxkglrtskft@kvhrw.com"
       val userPoolId = updateGroupInfo.userPoolId   // "eu-central-1_bAc9VMMys"
       val roleType = "Standard"
-      
-      println("HEY!")
 
       val httpClient = ApacheHttpClient.builder().build();
       val cognitoClient = CognitoIdentityProviderClient
@@ -58,35 +58,23 @@ class Handler {
             .region(Region.AWS_GLOBAL)
             .httpClient(httpClient)
             .build()
+   
+      // val getGroupRequest = (
+      //   GetGroupRequest.builder()
+      //     .groupName(groupName)
+      //     .userPoolId(userPoolId)
+      //     .build()
+      // )
 
-      val listRolesRequest = (
-        ListRolesRequest.builder()
-          .pathPrefix("/")
-          .build()
-      )
+      // val groupDescription = cognitoClient.getGroup(getGroupRequest).group().description()
 
-      println("HEY2!")
-
-      val roleListResponse = iamClient.listRoles(listRolesRequest)
-      val filteredResultForRole = roleListResponse.roles().asScala.filter(x => x.roleName.startsWith("InfrastructureStack-lightbulblearningStandardRole")).toArray
-
-      roleListResponse.roles().asScala.map( r => println(r.roleName))
-
-      println("HEY3!")
-
-      var roleARN = ""
-      if(filteredResultForRole.length > 0) {
-        roleARN = filteredResultForRole(0).arn()
-      } else {
-        println("no role found!")
-      }
-      println("roleARN:" + roleARN)  
+      // println("groupDescription: " + groupDescription)
 
       val request: UpdateGroupRequest = (
       UpdateGroupRequest.builder()
         .groupName(groupName)
         .userPoolId(userPoolId)
-        .roleArn(roleARN)
+        .description(roleType)
         .build()
       )
       val response = cognitoClient.updateGroup(request);

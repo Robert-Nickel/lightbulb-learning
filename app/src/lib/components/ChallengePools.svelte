@@ -10,7 +10,7 @@
 	const dispatch = createEventDispatcher();
 	let challengePools: Array<ChallengePool> = [];
 	let createChallengePoolDescription = '';
-	let groupID: string = "some_default";
+	let groupID: string = 'some_default';
 
 	fetchChallengePools();
 
@@ -24,7 +24,11 @@
 	});
 
 	async function fetchChallengePools() {
-		groupID = await getGroup();
+		try {
+			groupID = await getGroup();
+		} catch (error) {
+			console.error(error);
+		}
 		console.log('Filtering challenge pools with groupId: ' + groupID);
 		challengePools = await DataStore.query(ChallengePool, (p) => p.groupID('eq', groupID));
 	}

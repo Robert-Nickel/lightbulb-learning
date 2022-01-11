@@ -76,7 +76,7 @@ export class InfrastructureStack extends cdk.Stack {
     })
     addUserToGroupLambda.addToRolePolicy(addUserGroupPolicy)
 
-    const addUserToGroupHttpLambda = buildLambda('addUserToGroupHttpLambda', this, 60)
+    const addUserToGroupHttpLambda = buildLambda('addUserToGroupHttpLambda', this, 120)
     const addUserToGroupHttpLambdaPolicy = new PolicyStatement({
       resources: ["*"],
       actions: ["lambda:InvokeFunction", "lambda:ListFunctions"],

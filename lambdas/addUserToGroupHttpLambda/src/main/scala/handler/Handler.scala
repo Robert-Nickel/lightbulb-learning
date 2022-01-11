@@ -14,6 +14,7 @@ import software.amazon.awssdk.http.SdkHttpClient;
 import software.amazon.awssdk.services.lambda.LambdaClient;
 import software.amazon.awssdk.services.lambda.model.{InvokeRequest, ListFunctionsRequest};
 import software.amazon.awssdk.core.SdkBytes;
+import java.nio.charset.StandardCharsets
 
 import little.json.*
 import little.json.Implicits.{*, given}
@@ -42,6 +43,9 @@ class Handler {
       .httpClient(ApacheHttpClient.builder().build())
       .build()
       
+      println("eventInfoBody")
+      println(eventInfoBody)
+
       val jwtLambdaName = findFunctionName(lambdaClient, "InfrastructureStack-jwtHandler")
       val jwtLambdaRequest = (
         InvokeRequest.builder()
@@ -51,25 +55,39 @@ class Handler {
       )
 
       val jwtResponse = lambdaClient.invoke(jwtLambdaRequest)
-      // TODO: somehow not working... wrong encoding / charset maybe?
-      val myString = jwtResponse.payload().asUtf8String()
-      println("myString: " + myString)
-      val parsedResponseJson = Json.parse(myString)
-      val parsedResponse = parsedResponseJson.as[JWTResponse]
+      val parsedResponse = Json.parse(new String(jwtResponse.payload().asByteArray(), StandardCharsets.ISO_8859_1)).as[JWTResponse]
 
       val addUserLambdaName = findFunctionName(lambdaClient, "InfrastructureStack-addUserToGroupLambda")
 
-      val groupInfo = GroupInfo(eventInfo.groupName, parsedResponse.usermail, parsedResponse.userpool)
+      val groupInfo = GroupInfo(
+        eventInfo.groupName, 
+        parsedResponse.usermail, 
+        parsedResponse.userpool
+      )
+
+      println("groupInfo")
+      println(groupInfo)
+
+      println("addUserLambdaName: " + addUserLambdaName)
+
+      val objToSend = Json.toJson(groupInfo)
+      println("objToSend")
+      println(objToSend)
+
+      val sdkByte = SdkBytes.fromByteArray(objToSend.getBytes)
+      println("sdkBytes")
+      println(sdkByte)
 
       val lambdaRequest = (
         InvokeRequest.builder()
           .functionName(addUserLambdaName)
-          .payload(SdkBytes.fromUtf8String(Json.toJson(groupInfo)))
+          .payload(sdkByte)
           .build()
       )
+      println("here")
       
       val response = lambdaClient.invoke(lambdaRequest)
-      val customHttpResponseJSON = response.payload.asUtf8String()
+      val customHttpResponseJSON = response.payload().asUtf8String()
       println("customHttpResponseJSON:")
       println(customHttpResponseJSON)
 

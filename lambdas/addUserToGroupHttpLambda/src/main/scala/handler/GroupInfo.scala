@@ -12,6 +12,6 @@ given jsonToGroupInfo: JsonInput[GroupInfo] with
     )
 
 given groupInfoToJson: JsonOutput[GroupInfo] with
-  def apply(u: GroupInfo) = Json.obj("groupName" -> u.groupName, "usermail" -> u.usermail, "userpool" -> u.userpool)
+  def apply(g: GroupInfo) = Json.obj("groupName" -> g.groupname, "userName" -> g.usermail, "userPoolId" -> g.userpool)
 
-case class GroupInfo(groupName: String, usermail: String, userpool: String) {}
+case class GroupInfo(groupname: String, usermail: String, userpool: String) {}

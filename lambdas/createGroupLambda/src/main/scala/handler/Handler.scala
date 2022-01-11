@@ -16,10 +16,7 @@ import little.json.Implicits.{*, given}
 
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
-import software.amazon.awssdk.services.cognitoidentityprovider.model.CognitoIdentityProviderException;
-import software.amazon.awssdk.services.cognitoidentityprovider.model.CreateGroupRequest;
-import software.amazon.awssdk.services.cognitoidentityprovider.model.AdminUpdateUserAttributesRequest;
-import software.amazon.awssdk.services.cognitoidentityprovider.model.AttributeType;
+import software.amazon.awssdk.services.cognitoidentityprovider.model.{CognitoIdentityProviderException, CreateGroupRequest, AdminUpdateUserAttributesRequest, AttributeType};
 import software.amazon.awssdk.services.iam.model.*;
 import software.amazon.awssdk.services.iam.IamClient;
 import software.amazon.awssdk.services.iam.model.ListRolesRequest;
@@ -111,11 +108,6 @@ class Handler {
           .build()
       )
 
-      val listRolesRequest = (
-        ListRolesRequest.builder()
-          .pathPrefix("/")
-          .build()
-      )
 
       val request: CreateGroupRequest = (
       CreateGroupRequest.builder()

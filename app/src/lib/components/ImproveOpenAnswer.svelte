@@ -1,6 +1,6 @@
 <script lang="ts">
 	import {
-		deleteMyOpenAnswerDraft,
+		deleteOpenAnswerDraft,
 		fetchMyOpenAnswerDraft,
 		OpenAnswerDraftType,
 		OpenAnswerType,
@@ -25,7 +25,7 @@
 		<div class="w-full">{myOpenAnswerDraft.answerText}</div>
 		<button
 			on:click={async () => {
-				await deleteMyOpenAnswerDraft(myOpenAnswerDraft.id);
+				await deleteOpenAnswerDraft(myOpenAnswerDraft.id);
 				openAnswerDraftText = '';
 				myOpenAnswerDraft = await fetchMyOpenAnswerDraft(openAnswer.openQuestion);
 			}}
@@ -35,7 +35,7 @@
 	<div>
 		<button
 			on:click={async () => {
-				await deleteMyOpenAnswerDraft(myOpenAnswerDraft.id);
+				await deleteOpenAnswerDraft(myOpenAnswerDraft.id);
 				myOpenAnswerDraft = await fetchMyOpenAnswerDraft(openAnswer.openQuestion);
 
 				await saveOpenAnswer(

@@ -5,7 +5,7 @@
 	import Toast from '$lib/components/Toast.svelte';
 	import { goto } from '$app/navigation';
 	import {
-		deleteMyOpenAnswerDraft,
+		deleteOpenAnswerDraft,
 		fetchMyOpenAnswer,
 		fetchMyOpenAnswerDraft,
 		fetchOpenAnswersOfOthers,
@@ -34,7 +34,7 @@
 	});
 
 	async function publishOpenAnswer() {
-		await deleteMyOpenAnswerDraft(myOpenAnswerDraft.id);
+		await deleteOpenAnswerDraft(myOpenAnswerDraft.id);
 		myOpenAnswerDraft = await fetchMyOpenAnswerDraft(openQuestion.id);
 
 		await saveOpenAnswer(myOpenAnswerDraft.answerText, myOpenAnswerDraft.openQuestion);
@@ -67,7 +67,7 @@
 					<div class="w-full">{myOpenAnswerDraft.answerText}</div>
 					<button
 						on:click={async () => {
-							await deleteMyOpenAnswerDraft(myOpenAnswerDraft.id);
+							await deleteOpenAnswerDraft(myOpenAnswerDraft.id);
 							myOpenAnswerDraft = await fetchMyOpenAnswerDraft(openQuestion.id);
 						}}
 						class="w-48 secondary outline">Delete</button

@@ -11,15 +11,13 @@
 		fetchOpenQuestion,
 		fetchOpenFeedbackOfOthers,
 		OpenAnswerType,
-		openFeedbackDraftsTable,
 		OpenFeedbackDraftType,
-		openFeedbackTable,
 		OpenFeedbackType,
 		OpenQuestionType,
 		supabase,
-		saveMyOpenFeedbackDraft,
-		deleteMyFeedbackDraft,
-		saveMyOpenFeedback
+		saveOpenFeedbackDraft,
+		deleteOpenFeedbackDraft,
+		saveOpenFeedback
 	} from '$lib/supabaseClient';
 
 	let openQuestion: OpenQuestionType;
@@ -41,9 +39,9 @@
 	});
 
 	async function publishOpenFeedback() {
-		await deleteMyFeedbackDraft(openAnswer.id);
+		await deleteOpenFeedbackDraft(openAnswer.id);
 		await fetchMyOpenFeedbackDraft(openAnswer.id);
-		await saveMyOpenFeedback(myOpenFeedbackDraft.feedbackText, myOpenFeedbackDraft.openAnswer);
+		await saveOpenFeedback(myOpenFeedbackDraft.feedbackText, myOpenFeedbackDraft.openAnswer);
 		await fetchMyOpenFeedback(openAnswer.id);
 		toast.showSuccessToast('Thanks for your Feedback!');
 	}
@@ -89,7 +87,7 @@
 					<div class="w-full">{myOpenFeedbackDraft.feedbackText}</div>
 					<button
 						on:click={async () => {
-							await deleteMyFeedbackDraft(myOpenFeedbackDraft.id);
+							await deleteOpenFeedbackDraft(myOpenFeedbackDraft.id);
 							myOpenFeedbackDraft = await fetchMyOpenFeedbackDraft(openAnswer.id);
 						}}
 						class="w-48 secondary outline">Delete</button
@@ -110,7 +108,7 @@
 					<button
 						on:click={async () => {
 							// TODO: careful! When creating feedback on a newer version of the open answer than the one in the url!
-							await saveMyOpenFeedbackDraft(openFeedbackDraftText, openAnswer.id);
+							await saveOpenFeedbackDraft(openFeedbackDraftText, openAnswer.id);
 							myOpenFeedback = await fetchMyOpenFeedback(openAnswer.id);
 						}}
 						class="w-48 ">Save</button

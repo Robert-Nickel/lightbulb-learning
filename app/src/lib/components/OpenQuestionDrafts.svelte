@@ -1,93 +1,43 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
 	const dispatch = createEventDispatcher();
 	import Toast from './Toast.svelte';
 	import {
-		supabase,
 		ChallengePoolType,
 		OpenQuestionDraftType,
-		OpenQuestionType,
-		openQuestionDraftsTable,
-		openQuestionsTable
+		fetchMyOpenQuestionDrafts,
+		saveOpenQuestionDraft,
+		updateOpenQuestionDraftWithAnswer,
+		deleteAnswerFromOpenQuestionDraft,
+		saveOpenQuestion,
+		deleteOpenQuestionDraft
 	} from '$lib/supabaseClient';
 
 	export let challengePool: ChallengePoolType;
 
-	let openQuestionDrafts: Array<OpenQuestionDraftType> = [];
+	let openQuestionDrafts: OpenQuestionDraftType[] = [];
+	let newOpenQuestionDraftText;
 	let toast;
 
-	fetchOpenQuestionDrafts();
-
-	async function fetchOpenQuestionDrafts() {
-		openQuestionDrafts = await (
-			await supabase
-				.from<OpenQuestionDraftType>(openQuestionDraftsTable)
-				.select()
-				.eq('owner', supabase.auth.user().id)
-				.eq('challenge_pool', challengePool.id)
-		).data;
-	}
-
-	async function createOpenQuestionDraft() {
-		const questionText = document.getElementById('openQuestionDraftQuestionText').value;
-		await supabase
-			.from<OpenQuestionDraftType>(openQuestionDraftsTable)
-			.insert({ questionText, challengePool: challengePool.id, owner: supabase.auth.user().id });
-		document.getElementById('openQuestionDraftQuestionText').value = '';
-
-		await fetchOpenQuestionDrafts();
-		document.getElementById('openQuestionDraftAnswerText').focus();
-	}
-
-	async function updateOpenQuestionDraftWithAnswer(openQuestionDraft: OpenQuestionDraft) {
-		const answerText = document.getElementById('openQuestionDraftAnswerText').value;
-		await supabase
-			.from<OpenQuestionDraftType>(openQuestionDraftsTable)
-			.update({ answerText })
-			.eq('id', openQuestionDraft.id);
-
-		fetchOpenQuestionDrafts();
-	}
-
-	async function deleteOpenQuestionDraft(id) {
-		await supabase.from<OpenQuestionDraftType>(openQuestionDraftsTable).delete().eq('id', id);
-		fetchOpenQuestionDrafts();
-	}
-
-	async function deleteMyAnswerFromOpenQuestionDraft(openQuestionDraft) {
-		await supabase
-			.from<OpenQuestionDraftType>(openQuestionDraftsTable)
-			.update({ answerText: null })
-			.eq('id', openQuestionDraft.id);
-
-		fetchOpenQuestionDrafts();
-	}
-
-	async function commitOpenQuestion(openQuestionDraft: OpenQuestionDraftType) {
-		await supabase.from<OpenQuestionType>(openQuestionsTable).insert({
-			questionText: openQuestionDraft.questionText,
-			challengePool: openQuestionDraft.challengePool,
-			owner: supabase.auth.user().id
-		});
-
-		dispatch('openQuestionCommitted');
-
-		toast.showSuccessToast('Open Question created');
-
-		await supabase
-			.from<OpenQuestionDraftType>(openQuestionDraftsTable)
-			.delete()
-			.eq('id', openQuestionDraft.id);
-		fetchOpenQuestionDrafts();
-	}
+	onMount(async () => {
+		openQuestionDrafts = await fetchMyOpenQuestionDrafts(challengePool.id);
+	});
 </script>
 
 <div class="flex justify-between space-x-2">
 	<div class="w-full mt-4">
-		<input class="w-full" placeholder="Create an open question" id="openQuestionDraftQuestionText" />
+		<input class="w-full" placeholder="Create an open question" bind:value={newOpenQuestionDraftText} />
 	</div>
 	<div>
-		<button on:click={createOpenQuestionDraft} class="w-32 mt-4">Save</button>
+		<button
+			on:click={async () => {
+				await saveOpenQuestionDraft(newOpenQuestionDraftText, challengePool.id);
+				newOpenQuestionDraftText = '';
+				openQuestionDrafts = await fetchMyOpenQuestionDrafts(challengePool.id);
+				document.getElementById('openQuestionDraftAnswerText').focus();
+			}}
+			class="w-32 mt-4">Save</button
+		>
 	</div>
 </div>
 
@@ -116,7 +66,14 @@
 							placeholder="What is the correct answer?"
 							id="openQuestionDraftAnswerText"
 						/>
-						<button on:click={() => updateOpenQuestionDraftWithAnswer(openQuestionDraft)} class="w-48">
+						<button
+							on:click={async () => {
+								const answerText = document.getElementById('openQuestionDraftAnswerText').value;
+								await updateOpenQuestionDraftWithAnswer(openQuestionDraft.id, answerText);
+								openQuestionDrafts = await fetchMyOpenQuestionDrafts(challengePool.id);
+							}}
+							class="w-48"
+						>
 							Save
 						</button>
 					</div>
@@ -124,7 +81,10 @@
 					<div class="flex justify-between space-x-2">
 						<p class="w-full"><i>Your Answer:</i> {openQuestionDraft.answerText}</p>
 						<button
-							on:click={() => deleteMyAnswerFromOpenQuestionDraft(openQuestionDraft)}
+							on:click={async () => {
+								deleteAnswerFromOpenQuestionDraft(openQuestionDraft.id);
+								openQuestionDrafts = await fetchMyOpenQuestionDrafts(challengePool.id);
+							}}
 							class="w-48 outline secondary h-12"
 						>
 							Delete Answer
@@ -132,7 +92,13 @@
 					</div>
 					<button
 						disabled={!openQuestionDraft.answerText}
-						on:click={() => commitOpenQuestion(openQuestionDraft)}
+						on:click={async () => {
+							await saveOpenQuestion(openQuestionDraft.questionText, openQuestionDraft.challengePool);
+							dispatch('openQuestionCommitted');
+							toast.showSuccessToast('Open Question created');
+							await deleteOpenQuestionDraft(openQuestionDraft.id);
+							openQuestionDrafts = await fetchMyOpenQuestionDrafts(challengePool.id);
+						}}
 						class="w-32 h-12"
 					>
 						Publish

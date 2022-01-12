@@ -95,8 +95,7 @@
 							await saveOpenQuestion(openQuestionDraft.questionText, openQuestionDraft.challengePool);
 							dispatch('openQuestionCommitted');
 							toast.showSuccessToast('Open Question created');
-							await deleteOpenQuestionDraft(openQuestionDraft.id);
-							openQuestionDrafts = null;
+							openQuestionDrafts = await deleteOpenQuestionDraft(openQuestionDraft.id);
 						}}
 						class="w-32 h-12"
 					>

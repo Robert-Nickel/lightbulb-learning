@@ -39,9 +39,8 @@
 	});
 
 	async function publishOpenFeedback() {
-		await deleteOpenFeedbackDraft(openAnswer.id);
-		myOpenFeedbackDraft = null;
 		myOpenFeedback = await saveOpenFeedback(myOpenFeedbackDraft.feedbackText, myOpenFeedbackDraft.openAnswer);
+		myOpenFeedbackDraft = await deleteOpenFeedbackDraft(openAnswer.id);
 		toast.showSuccessToast('Thanks for your Feedback!');
 	}
 </script>
@@ -86,8 +85,7 @@
 					<div class="w-full">{myOpenFeedbackDraft.feedbackText}</div>
 					<button
 						on:click={async () => {
-							await deleteOpenFeedbackDraft(myOpenFeedbackDraft.id);
-							myOpenFeedbackDraft = await fetchMyOpenFeedbackDraft(openAnswer.id);
+							myOpenFeedbackDraft = await deleteOpenFeedbackDraft(myOpenFeedbackDraft.id);
 						}}
 						class="w-48 secondary outline">Delete</button
 					>

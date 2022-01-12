@@ -25,9 +25,8 @@
 		<div class="w-full">{myOpenAnswerDraft.answerText}</div>
 		<button
 			on:click={async () => {
-				await deleteOpenAnswerDraft(myOpenAnswerDraft.id);
+				myOpenAnswerDraft = await deleteOpenAnswerDraft(myOpenAnswerDraft.id);
 				openAnswerDraftText = '';
-				myOpenAnswerDraft = await fetchMyOpenAnswerDraft(openAnswer.openQuestion);
 			}}
 			class="w-48 secondary outline">Delete</button
 		>

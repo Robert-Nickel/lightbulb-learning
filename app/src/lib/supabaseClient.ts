@@ -74,6 +74,7 @@ export async function deleteAnswerFromOpenQuestionDraft(id: string) {
 export async function deleteOpenQuestionDraft(id: string) {
     const { error } = await supabase.from<OpenQuestionDraftTypeDB>(openQuestionDraftsTable).delete().eq('id', id);
     printIf(error)
+    return null
 }
 
 export async function fetchOpenQuestions(challengePoolId): Promise<OpenQuestionType[]> {
@@ -129,6 +130,7 @@ export async function saveOpenAnswerDraft(openAnswerDraftText: string, openQuest
 export async function deleteOpenAnswerDraft(id) {
     const { error } = await supabase.from<OpenAnswerDraftTypeDB>(openAnswerDraftsTable).delete().eq('id', id)
     printIf(error)
+    return null
 }
 
 export async function fetchOpenAnswer(id: string): Promise<OpenAnswerType> {
@@ -198,6 +200,7 @@ export async function deleteOpenFeedbackDraft(id: string) {
         .delete()
         .eq('id', id)
     printIf(error)
+    return null
 }
 
 export async function fetchMyOpenFeedback(openAnswerId: string): Promise<OpenFeedbackType> {

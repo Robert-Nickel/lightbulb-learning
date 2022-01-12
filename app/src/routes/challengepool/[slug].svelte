@@ -5,11 +5,12 @@
 	import { page } from '$app/stores';
 	import Back from '$lib/components/Back.svelte';
 	import {
-		challengePoolsTable,
-		openQuestionsTable,
 		supabase,
 		ChallengePoolType,
-		OpenQuestionType
+		OpenQuestionType,
+		fetchChallengePool,
+		fetchOpenQuestions,
+		deleteChallengePool
 	} from '$lib/supabaseClient';
 
 	let challengePool: ChallengePoolType;
@@ -21,21 +22,8 @@
 
 	async function refresh() {
 		const id = $page.params.slug;
-		challengePool = await (
-			await supabase.from<ChallengePoolType>(challengePoolsTable).select().eq('id', id).single()
-		).data;
-		openQuestions = await (
-			await supabase.from<OpenQuestionType>(openQuestionsTable).select().eq('challengePool', id)
-		).data;
-	}
-
-	async function deletePool() {
-		await supabase.from('challenge_pools').delete().eq('id', challengePool.id);
-		goto('/');
-	}
-
-	function openQuestionCommitted() {
-		refresh();
+		challengePool = await fetchChallengePool(id);
+		openQuestions = await fetchOpenQuestions(challengePool.id);
 	}
 </script>
 
@@ -43,7 +31,7 @@
 	{#if challengePool}
 		<h1>{challengePool.description}</h1>
 
-		<OpenQuestionDrafts {challengePool} on:openQuestionCommitted={openQuestionCommitted} />
+		<OpenQuestionDrafts {challengePool} on:openQuestionCommitted={refresh} />
 
 		{#if openQuestions.length > 0}
 			<h3 class="mt-10">Open Questions</h3>
@@ -64,8 +52,12 @@
 		{/each}
 
 		{#if supabase.auth.user().id == challengePool.owner}
-			<button on:click={deletePool} class="secondary outline w-auto mb-0"
-				>Delete {challengePool.description}</button
+			<button
+				on:click={async () => {
+					await deleteChallengePool(challengePool.id);
+					goto('/');
+				}}
+				class="secondary outline w-auto mb-0">Delete {challengePool.description}</button
 			>
 		{/if}
 	{/if}

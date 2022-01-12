@@ -1,26 +1,14 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { supabase, challengePoolsTable, challengePoolType } from '$lib/supabaseClient';
+	import { fetchChallengePools, ChallengePoolType, saveChallengePool } from '$lib/supabaseClient';
+	import { onMount } from 'svelte';
 
-	let challengePools: Array<challengePoolType> = [];
+	let challengePools: ChallengePoolType[] = [];
 	let createChallengePoolDescription = '';
 
-	fetchChallengePools();
-
-	async function fetchChallengePools() {
-		challengePools = await (await supabase.from<challengePoolType>(challengePoolsTable).select()).data;
-	}
-
-	async function createChallengePool() {
-		await supabase
-			.from<challengePoolType>(challengePoolsTable)
-			.insert([{ description: createChallengePoolDescription, owner: supabase.auth.user().id }]);
-		fetchChallengePools();
-
-		createChallengePoolDescription = '';
-
-		// TODO: Success Toast
-	}
+	onMount(async () => {
+		challengePools = await fetchChallengePools();
+	});
 </script>
 
 <h1>Challenge Pools</h1>
@@ -45,7 +33,15 @@
 			/>
 		</div>
 		<div>
-			<button on:click={createChallengePool} class="w-32">Create</button>
+			<button
+				on:click={async () => {
+					saveChallengePool(createChallengePoolDescription);
+					createChallengePoolDescription = '';
+					challengePools = await fetchChallengePools();
+					// TODO: Success Toast
+				}}
+				class="w-32">Create</button
+			>
 		</div>
 	</div>
 </div>

@@ -5,20 +5,26 @@
 	import Back from '$lib/components/Back.svelte';
 	import ImproveOpenAnswer from '$lib/components/ImproveOpenAnswer.svelte';
 	import {
-		openAnswersTable,
+		fetchMyOpenFeedback,
+		fetchMyOpenFeedbackDraft,
+		fetchOpenAnswer,
+		fetchOpenQuestion,
+		fetchOpenFeedbackOfOthers,
 		OpenAnswerType,
 		openFeedbackDraftsTable,
 		OpenFeedbackDraftType,
 		openFeedbackTable,
 		OpenFeedbackType,
-		openQuestionsTable,
 		OpenQuestionType,
-		supabase
+		supabase,
+		saveMyOpenFeedbackDraft,
+		deleteMyFeedbackDraft,
+		saveMyOpenFeedback
 	} from '$lib/supabaseClient';
 
 	let openQuestion: OpenQuestionType;
 	let openAnswer: OpenAnswerType;
-	let openFeedbackDraft: OpenFeedbackDraftType;
+	let myOpenFeedbackDraft: OpenFeedbackDraftType;
 	let myOpenFeedback: OpenFeedbackType;
 	let openFeedbackOfOthers: Array<OpenFeedbackType> = [];
 	let openFeedbackDraftText = '';
@@ -27,83 +33,18 @@
 
 	onMount(async () => {
 		const openAnswerId = $page.params.slug;
-		openAnswer = await (
-			await supabase.from<OpenAnswerType>(openAnswersTable).select().eq('id', openAnswerId).single()
-		).data;
-		fetchOpenQuestion();
-		fetchOpenFeedbackDraft();
-		fetchMyOpenFeedback();
-		fetchOpenFeedbackOfOthers();
+		openAnswer = await fetchOpenAnswer(openAnswerId);
+		openQuestion = await fetchOpenQuestion(openAnswer.openQuestion);
+		myOpenFeedbackDraft = await fetchMyOpenFeedbackDraft(openAnswer.id);
+		myOpenFeedback = await fetchMyOpenFeedback(openAnswer.id);
+		openFeedbackOfOthers = await fetchOpenFeedbackOfOthers(openAnswer.id);
 	});
 
-	async function fetchOpenQuestion() {
-		openQuestion = await (
-			await supabase
-				.from<OpenQuestionType>(openQuestionsTable)
-				.select()
-				.eq('id', openAnswer.openQuestion)
-				.single()
-		).data;
-	}
-
-	async function fetchOpenFeedbackDraft() {
-		openFeedbackDraft = await (
-			await supabase
-				.from<OpenFeedbackDraftType>(openFeedbackDraftsTable)
-				.select()
-				.eq('owner', supabase.auth.user().id)
-				.eq('openAnswer', openAnswer.id)
-				.single()
-		).data;
-	}
-
-	async function fetchMyOpenFeedback() {
-		myOpenFeedback = await (
-			await supabase
-				.from<OpenFeedbackType>(openFeedbackTable)
-				.select()
-				.eq('owner', supabase.auth.user().id)
-				.eq('openAnswer', openAnswer.id)
-				.single()
-		).data;
-	}
-
-	async function fetchOpenFeedbackOfOthers() {
-		openFeedbackOfOthers = await (
-			await supabase
-				.from<OpenFeedbackType>(openFeedbackTable)
-				.select()
-				.eq('openAnswer', openAnswer.id)
-				.neq('owner', supabase.auth.user().id)
-		).data;
-	}
-
-	async function saveOpenFeedbackDraft() {
-		await supabase.from<OpenFeedbackDraftType>(openFeedbackDraftsTable).insert({
-			feedbackText: openFeedbackDraftText,
-			openAnswer: openAnswer.id,
-			owner: supabase.auth.user().id
-		});
-		fetchOpenFeedbackDraft();
-	}
-
-	async function deleteMyFeedbackDraft() {
-		await supabase
-			.from<OpenFeedbackDraftType>(openFeedbackDraftsTable)
-			.delete()
-			.eq('id', openFeedbackDraft.id);
-		fetchOpenFeedbackDraft();
-	}
-
 	async function publishOpenFeedback() {
-		deleteMyFeedbackDraft();
-		await supabase.from<OpenFeedbackType>(openFeedbackTable).insert({
-			feedbackText: openFeedbackDraft.feedbackText,
-			openAnswer: openFeedbackDraft.openAnswer,
-			owner: supabase.auth.user().id
-		});
-
-		fetchMyOpenFeedback();
+		await deleteMyFeedbackDraft(openAnswer.id);
+		await fetchMyOpenFeedbackDraft(openAnswer.id);
+		await saveMyOpenFeedback(myOpenFeedbackDraft.feedbackText, myOpenFeedbackDraft.openAnswer);
+		await fetchMyOpenFeedback(openAnswer.id);
 		toast.showSuccessToast('Thanks for your Feedback!');
 	}
 </script>
@@ -143,10 +84,16 @@
 				<article class="yours">
 					<i>This is your feedback: </i>{myOpenFeedback.feedbackText}
 				</article>
-			{:else if openFeedbackDraft}
+			{:else if myOpenFeedbackDraft}
 				<div class="flex justify-between space-x-2 mt-2">
-					<div class="w-full">{openFeedbackDraft.feedbackText}</div>
-					<button on:click={deleteMyFeedbackDraft} class="w-48 secondary outline">Delete</button>
+					<div class="w-full">{myOpenFeedbackDraft.feedbackText}</div>
+					<button
+						on:click={async () => {
+							await deleteMyFeedbackDraft(myOpenFeedbackDraft.id);
+							myOpenFeedbackDraft = await fetchMyOpenFeedbackDraft(openAnswer.id);
+						}}
+						class="w-48 secondary outline">Delete</button
+					>
 				</div>
 				<div>
 					<button on:click={publishOpenFeedback} class="w-32">Publish</button>
@@ -160,7 +107,14 @@
 							placeholder="Give feedback to this answer"
 						/>
 					</div>
-					<button on:click={saveOpenFeedbackDraft} class="w-48 ">Save</button>
+					<button
+						on:click={async () => {
+							// TODO: careful! When creating feedback on a newer version of the open answer than the one in the url!
+							await saveMyOpenFeedbackDraft(openFeedbackDraftText, openAnswer.id);
+							myOpenFeedback = await fetchMyOpenFeedback(openAnswer.id);
+						}}
+						class="w-48 ">Save</button
+					>
 				</div>
 			{/if}
 		{/if}

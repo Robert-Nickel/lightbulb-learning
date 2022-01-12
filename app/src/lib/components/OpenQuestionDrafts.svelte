@@ -24,7 +24,7 @@
 				.from<OpenQuestionDraftType>(openQuestionDraftsTable)
 				.select()
 				.eq('owner', supabase.auth.user().id)
-				.eq('challengePool', challengePool.id)
+				.eq('challenge_pool', challengePool.id)
 		).data;
 	}
 

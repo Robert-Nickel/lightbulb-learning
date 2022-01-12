@@ -40,6 +40,7 @@
 	"type": "module",
 	"dependencies": {
 		"@supabase/supabase-js": "^1.29.1",
+		"object-key-convert": "^0.0.10",
 		"process": "^0.11.10"
 	}
 }

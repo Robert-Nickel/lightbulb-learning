@@ -86,6 +86,7 @@
 					<button
 						on:click={async () => {
 							myOpenFeedbackDraft = await deleteOpenFeedbackDraft(myOpenFeedbackDraft.id);
+							openFeedbackDraftText = '';
 						}}
 						class="w-48 secondary outline">Delete</button
 					>

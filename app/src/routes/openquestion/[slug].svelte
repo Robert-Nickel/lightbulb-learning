@@ -32,14 +32,6 @@
 		myOpenAnswerDraft = await fetchMyOpenAnswerDraft(openQuestion.id);
 		openAnswersOfOthers = await fetchOpenAnswersOfOthers(openQuestion.id);
 	});
-
-	async function publishOpenAnswer() {
-		await deleteOpenAnswerDraft(myOpenAnswerDraft.id);
-		myOpenAnswerDraft = null;
-
-		myOpenAnswer = await saveOpenAnswer(myOpenAnswerDraft.answerText, myOpenAnswerDraft.openQuestion);
-		toast.showSuccessToast('Open Answer created!');
-	}
 </script>
 
 <main class="container">
@@ -73,7 +65,17 @@
 					>
 				</div>
 				<div>
-					<button on:click={publishOpenAnswer} class="w-32">Publish</button>
+					<button
+						on:click={async () => {
+							myOpenAnswer = await saveOpenAnswer(
+								myOpenAnswerDraft.answerText,
+								myOpenAnswerDraft.openQuestion
+							);
+							myOpenAnswerDraft = await deleteOpenAnswerDraft(myOpenAnswerDraft.id);
+							toast.showSuccessToast('Open Answer created!');
+						}}
+						class="w-32">Publish</button
+					>
 				</div>
 			{:else}
 				<div class="flex justify-between space-x-2 mt-2">

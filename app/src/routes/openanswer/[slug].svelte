@@ -40,9 +40,9 @@
 
 	async function publishOpenFeedback() {
 		await deleteOpenFeedbackDraft(openAnswer.id);
-		await fetchMyOpenFeedbackDraft(openAnswer.id);
+		myOpenFeedbackDraft = await fetchMyOpenFeedbackDraft(openAnswer.id);
 		await saveOpenFeedback(myOpenFeedbackDraft.feedbackText, myOpenFeedbackDraft.openAnswer);
-		await fetchMyOpenFeedback(openAnswer.id);
+		myOpenFeedback = await fetchMyOpenFeedback(openAnswer.id);
 		toast.showSuccessToast('Thanks for your Feedback!');
 	}
 </script>

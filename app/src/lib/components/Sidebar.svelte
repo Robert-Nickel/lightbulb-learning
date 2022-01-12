@@ -19,7 +19,7 @@ import { supabase } from '$lib/supabaseClient';
 	class:open
 >
 	{#if $user}
-		<nav on:click={logout}><a href="/logout">Logout</a></nav>
+		<nav on:click={logout}><a href="/">Logout</a></nav>
 	{:else}
 		<nav on:click={() => (open = false)}><a href="/login">Login</a></nav>
 	{/if}

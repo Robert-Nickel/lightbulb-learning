@@ -107,7 +107,7 @@
 					<button
 						on:click={async () => {
 							// TODO: careful! When creating feedback on a newer version of the open answer than the one in the url!
-							myOpenFeedback = await saveOpenFeedbackDraft(openFeedbackDraftText, openAnswer.id);
+							myOpenFeedbackDraft = await saveOpenFeedbackDraft(openFeedbackDraftText, openAnswer.id);
 						}}
 						class="w-48 ">Save</button
 					>

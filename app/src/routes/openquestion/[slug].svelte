@@ -28,8 +28,8 @@
 	onMount(async () => {
 		const openQuestionId = $page.params.slug;
 		openQuestion = await fetchOpenQuestion(openQuestionId);
-		myOpenAnswerDraft = await fetchMyOpenAnswerDraft(openQuestion.id);
 		myOpenAnswer = await fetchMyOpenAnswer(openQuestion.id);
+		myOpenAnswerDraft = await fetchMyOpenAnswerDraft(openQuestion.id);
 		openAnswersOfOthers = await fetchOpenAnswersOfOthers(openQuestion.id);
 	});
 

@@ -33,8 +33,8 @@
 		const openAnswerId = $page.params.slug;
 		openAnswer = await fetchOpenAnswer(openAnswerId);
 		openQuestion = await fetchOpenQuestion(openAnswer.openQuestion);
-		myOpenFeedbackDraft = await fetchMyOpenFeedbackDraft(openAnswer.id);
 		myOpenFeedback = await fetchMyOpenFeedback(openAnswer.id);
+		myOpenFeedbackDraft = await fetchMyOpenFeedbackDraft(openAnswer.id);
 		openFeedbackOfOthers = await fetchOpenFeedbackOfOthers(openAnswer.id);
 	});
 

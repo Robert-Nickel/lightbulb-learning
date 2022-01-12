@@ -31,9 +31,8 @@
 	<div>
 		<button
 			on:click={async () => {
-				await saveOpenQuestionDraft(newOpenQuestionDraftText, challengePool.id);
+				openQuestionDrafts.push(await saveOpenQuestionDraft(newOpenQuestionDraftText, challengePool.id));
 				newOpenQuestionDraftText = '';
-				openQuestionDrafts = await fetchMyOpenQuestionDrafts(challengePool.id);
 				document.getElementById('openQuestionDraftAnswerText').focus();
 			}}
 			class="w-32 mt-4">Save</button
@@ -97,7 +96,7 @@
 							dispatch('openQuestionCommitted');
 							toast.showSuccessToast('Open Question created');
 							await deleteOpenQuestionDraft(openQuestionDraft.id);
-							openQuestionDrafts = await fetchMyOpenQuestionDrafts(challengePool.id);
+							openQuestionDrafts = null;
 						}}
 						class="w-32 h-12"
 					>

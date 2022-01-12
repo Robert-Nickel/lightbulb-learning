@@ -36,7 +36,7 @@
 		<button
 			on:click={async () => {
 				await deleteOpenAnswerDraft(myOpenAnswerDraft.id);
-				myOpenAnswerDraft = await fetchMyOpenAnswerDraft(openAnswer.openQuestion);
+				myOpenAnswerDraft = null;
 
 				await saveOpenAnswer(
 					myOpenAnswerDraft.answerText,
@@ -55,8 +55,7 @@
 		</div>
 		<button
 			on:click={async () => {
-				await saveOpenAnswerDraft(openAnswerDraftText, openAnswer.openQuestion);
-				myOpenAnswerDraft = await fetchMyOpenAnswerDraft(openAnswer.openQuestion);
+				myOpenAnswerDraft = await saveOpenAnswerDraft(openAnswerDraftText, openAnswer.openQuestion);
 			}}
 			class="w-48 ">Save</button
 		>

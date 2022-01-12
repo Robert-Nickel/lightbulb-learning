@@ -7,8 +7,78 @@ const supabaseAnonKey = import.meta.env.VITE_SVELTE_APP_SUPABASE_ANON_KEY;
 
 export const supabase = createClient(supabaseUrl.toString(), supabaseAnonKey.toString())
 
-export async function fetchOpenAnswer(id: string): Promise<OpenAnswerType> {
-    const { data, error } = await supabase.from<OpenAnswerTypeDB>(openAnswersTable).select().eq('id', id).maybeSingle()
+export async function fetchChallengePools(): Promise<ChallengePoolType[]> {
+    const { data, error } = await supabase.from<ChallengePoolTypeDB>(challengePoolsTable).select()
+    printIf(error)
+    return keysToCamelCase(data)
+}
+
+export async function saveChallengePool(description): Promise<ChallengePoolType> {
+    const { data, error } = await supabase
+        .from<ChallengePoolTypeDB>(challengePoolsTable)
+        .insert([{ description, owner: supabase.auth.user().id }])
+        .single()
+    printIf(error)
+    return keysToCamelCase(data)
+}
+
+export async function fetchChallengePool(id: string): Promise<ChallengePoolType> {
+    const { data, error } = await supabase.from<ChallengePoolTypeDB>(challengePoolsTable).select().eq('id', id).maybeSingle()
+    printIf(error)
+    return keysToCamelCase(data)
+}
+
+export async function deleteChallengePool(id: string) {
+    const { error } = await supabase.from<ChallengePoolTypeDB>(challengePoolsTable).delete().eq('id', id)
+    printIf(error)
+}
+
+export async function fetchMyOpenQuestionDrafts(challengePoolId): Promise<OpenQuestionDraftType[]> {
+    const { data, error } = await supabase
+        .from<OpenQuestionDraftTypeDB>(openQuestionDraftsTable)
+        .select()
+        .eq('owner', supabase.auth.user().id)
+        .eq('challenge_pool', challengePoolId)
+    printIf(error)
+    return keysToCamelCase(data)
+}
+
+export async function saveOpenQuestionDraft(questionText: string, challengePoolId: string): Promise<OpenQuestionDraftType> {
+    const { data, error } = await supabase
+        .from<OpenQuestionDraftTypeDB>(openQuestionDraftsTable)
+        .insert({
+            question_text: questionText,
+            challenge_pool: challengePoolId,
+            owner: supabase.auth.user().id
+        }).single()
+    printIf(error)
+    return keysToCamelCase(data)
+}
+
+export async function updateOpenQuestionDraftWithAnswer(id: string, answerText: string) {
+    const { error } = await supabase
+        .from<OpenQuestionDraftTypeDB>(openQuestionDraftsTable)
+        .update({ answer_text: answerText })
+        .eq('id', id)
+    printIf(error)
+}
+
+export async function deleteAnswerFromOpenQuestionDraft(id: string) {
+    const { error } = await supabase
+        .from<OpenQuestionDraftTypeDB>(openQuestionDraftsTable)
+        .update({ answer_text: null })
+        .eq('id', id);
+    printIf(error)
+}
+
+export async function deleteOpenQuestionDraft(id: string) {
+    const { error } = await supabase.from<OpenQuestionDraftTypeDB>(openQuestionDraftsTable).delete().eq('id', id);
+    printIf(error)
+}
+
+export async function fetchOpenQuestions(challengePoolId): Promise<OpenQuestionType[]> {
+    const { data, error } =
+        await supabase.from<OpenQuestionTypeDB>(openQuestionsTable).select().eq('challenge_pool', challengePoolId)
     printIf(error)
     return keysToCamelCase(data)
 }
@@ -24,90 +94,14 @@ export async function fetchOpenQuestion(id: string): Promise<OpenQuestionType> {
     return keysToCamelCase(data)
 }
 
-export async function fetchMyOpenFeedbackDraft(openAnswerId: string): Promise<OpenFeedbackDraftType> {
-    const { data, error } =
-        await supabase
-            .from<OpenFeedbackDraftTypeDB>(openFeedbackDraftsTable)
-            .select()
-            .eq('owner', supabase.auth.user().id)
-            .eq('open_answer', openAnswerId)
-            .maybeSingle()
-    printIf(error)
-    return keysToCamelCase(data)
-}
-
-export async function fetchMyOpenFeedback(openAnswerId: string): Promise<OpenFeedbackType> {
-    const { data, error } =
-        await supabase
-            .from<OpenFeedbackTypeDB>(openFeedbackTable)
-            .select()
-            .eq('owner', supabase.auth.user().id)
-            .eq('open_answer', openAnswerId)
-            .maybeSingle()
-    printIf(error)
-    return keysToCamelCase(data)
-}
-
-export async function fetchOpenFeedbackOfOthers(openAnswerId: string): Promise<OpenFeedbackType[]> {
-    const { data, error } =
-        await supabase
-            .from<OpenFeedbackTypeDB>(openFeedbackTable)
-            .select()
-            .eq('open_answer', openAnswerId)
-            .neq('owner', supabase.auth.user().id)
-    printIf(error)
-    return keysToCamelCase(data)
-}
-
-export async function saveOpenFeedbackDraft(openFeedbackDraftText: string, openAnswerId: string) {
-    const { error } = await supabase.from<OpenFeedbackDraftTypeDB>(openFeedbackDraftsTable).insert({
-        feedback_text: openFeedbackDraftText,
-        open_answer: openAnswerId,
+export async function saveOpenQuestion(questionText: string, challengePoolId: string): Promise<OpenQuestionType> {
+    const { data, error } = await supabase.from<OpenQuestionTypeDB>(openQuestionsTable).insert({
+        question_text: questionText,
+        challenge_pool: challengePoolId,
         owner: supabase.auth.user().id
-    })
-    printIf(error)
-}
-
-export async function saveChallengePool(description) {
-    const { error } = await supabase
-        .from<ChallengePoolTypeDB>(challengePoolsTable)
-        .insert([{ description, owner: supabase.auth.user().id }]);
-    printIf(error)
-}
-
-export async function deleteOpenFeedbackDraft(id) {
-    const { error } = await supabase
-        .from<OpenFeedbackDraftTypeDB>(openFeedbackDraftsTable)
-        .delete()
-        .eq('id', id)
-    printIf(error)
-}
-
-export async function saveOpenFeedback(feedbackText: string, openAnswerId: string) {
-    const { error } = await supabase.from<OpenFeedbackTypeDB>(openFeedbackTable).insert({
-        feedback_text: feedbackText,
-        open_answer: openAnswerId,
-        owner: supabase.auth.user().id
-    })
-    printIf(error)
-}
-
-export async function fetchChallengePool(id: string): Promise<ChallengePoolType> {
-    const { data, error } = await supabase.from<ChallengePoolTypeDB>(challengePoolsTable).select().eq('id', id).maybeSingle()
+    }).single()
     printIf(error)
     return keysToCamelCase(data)
-}
-
-export async function fetchOpenQuestions(challengePoolId): Promise<OpenQuestionType[]> {
-    const { data, error } =
-        await supabase.from<OpenQuestionTypeDB>(openQuestionsTable).select().eq('challenge_pool', challengePoolId)
-    printIf(error)
-    return keysToCamelCase(data)
-}
-
-export async function deleteChallengePool(id: string) {
-    const { error } = await supabase.from<ChallengePoolTypeDB>(challengePoolsTable).delete().eq('id', id)
-    printIf(error)
 }
 
 export async function fetchMyOpenAnswerDraft(openQuestionId: string): Promise<OpenAnswerDraftType> {
@@ -118,6 +112,27 @@ export async function fetchMyOpenAnswerDraft(openQuestionId: string): Promise<Op
             .eq('open_question', openQuestionId)
             .eq('owner', supabase.auth.user().id)
             .maybeSingle()
+    printIf(error)
+    return keysToCamelCase(data)
+}
+
+export async function saveOpenAnswerDraft(openAnswerDraftText: string, openQuestionId: string): Promise<OpenAnswerDraftType> {
+    const { data, error } = await supabase.from<OpenAnswerDraftTypeDB>(openAnswerDraftsTable).insert({
+        answer_text: openAnswerDraftText,
+        open_question: openQuestionId,
+        owner: supabase.auth.user().id
+    }).single()
+    printIf(error)
+    return keysToCamelCase(data)
+}
+
+export async function deleteOpenAnswerDraft(id) {
+    const { error } = await supabase.from<OpenAnswerDraftTypeDB>(openAnswerDraftsTable).delete().eq('id', id)
+    printIf(error)
+}
+
+export async function fetchOpenAnswer(id: string): Promise<OpenAnswerType> {
+    const { data, error } = await supabase.from<OpenAnswerTypeDB>(openAnswersTable).select().eq('id', id).maybeSingle()
     printIf(error)
     return keysToCamelCase(data)
 }
@@ -144,85 +159,78 @@ export async function fetchOpenAnswersOfOthers(openQuestionId): Promise<OpenAnsw
     return keysToCamelCase(data)
 }
 
-export async function saveOpenAnswerDraft(openAnswerDraftText: string, openQuestionId: string) {
-    const { error } = await supabase.from<OpenAnswerDraftTypeDB>(openAnswerDraftsTable).insert({
-        answer_text: openAnswerDraftText,
-        open_question: openQuestionId,
-        owner: supabase.auth.user().id
-    })
-    printIf(error)
-}
-
-export async function deleteOpenAnswerDraft(id) {
-    const { error } = await supabase.from<OpenAnswerDraftTypeDB>(openAnswerDraftsTable).delete().eq('id', id)
-    printIf(error)
-
-}
-
-export async function saveOpenAnswer(answerText: string, openQuestionId: string, version = 1) {
-    const { error } = await supabase.from<OpenAnswerTypeDB>(openAnswersTable).insert({
+export async function saveOpenAnswer(answerText: string, openQuestionId: string, version = 1): Promise<OpenAnswerType> {
+    const { data, error } = await supabase.from<OpenAnswerTypeDB>(openAnswersTable).insert({
         answer_text: answerText,
         open_question: openQuestionId,
         owner: supabase.auth.user().id,
         version
-    })
-    printIf(error)
-}
-
-export async function fetchChallengePools(): Promise<ChallengePoolType[]> {
-    const { data, error } = await supabase.from<ChallengePoolTypeDB>(challengePoolsTable).select()
+    }).single()
     printIf(error)
     return keysToCamelCase(data)
 }
 
-export async function fetchMyOpenQuestionDrafts(challengePoolId): Promise<OpenQuestionDraftType[]> {
-    const { data, error } = await supabase
-        .from<OpenQuestionDraftTypeDB>(openQuestionDraftsTable)
-        .select()
-        .eq('owner', supabase.auth.user().id)
-        .eq('challenge_pool', challengePoolId)
+export async function fetchMyOpenFeedbackDraft(openAnswerId: string): Promise<OpenFeedbackDraftType> {
+    const { data, error } =
+        await supabase
+            .from<OpenFeedbackDraftTypeDB>(openFeedbackDraftsTable)
+            .select()
+            .eq('owner', supabase.auth.user().id)
+            .eq('open_answer', openAnswerId)
+            .maybeSingle()
     printIf(error)
     return keysToCamelCase(data)
 }
 
-export async function saveOpenQuestionDraft(questionText: string, challengePoolId: string) {
-    const { error } = await supabase
-        .from<OpenQuestionDraftTypeDB>(openQuestionDraftsTable)
-        .insert({
-            question_text: questionText,
-            challenge_pool: challengePoolId,
-            owner: supabase.auth.user().id
-        });
-    printIf(error)
-}
-
-export async function updateOpenQuestionDraftWithAnswer(id: string, answerText: string) {
-    const { error } = await supabase
-        .from<OpenQuestionDraftTypeDB>(openQuestionDraftsTable)
-        .update({ answer_text: answerText })
-        .eq('id', id);
-    printIf(error)
-}
-
-export async function deleteAnswerFromOpenQuestionDraft(id: string) {
-    const { error } = await supabase
-        .from<OpenQuestionDraftTypeDB>(openQuestionDraftsTable)
-        .update({ answer_text: null })
-        .eq('id', id);
-    printIf(error)
-}
-
-export async function saveOpenQuestion(questionText: string, challengePoolId: string) {
-    await supabase.from<OpenQuestionTypeDB>(openQuestionsTable).insert({
-        question_text: questionText,
-        challenge_pool: challengePoolId,
+export async function saveOpenFeedbackDraft(openFeedbackDraftText: string, openAnswerId: string): Promise<OpenFeedbackDraftType> {
+    const { data, error } = await supabase.from<OpenFeedbackDraftTypeDB>(openFeedbackDraftsTable).insert({
+        feedback_text: openFeedbackDraftText,
+        open_answer: openAnswerId,
         owner: supabase.auth.user().id
-    });
+    }).single()
+    printIf(error)
+    return keysToCamelCase(data)
 }
 
-export async function deleteOpenQuestionDraft(id: string) {
-    const { error } = await supabase.from<OpenQuestionDraftTypeDB>(openQuestionDraftsTable).delete().eq('id', id);
+export async function deleteOpenFeedbackDraft(id: string) {
+    const { error } = await supabase
+        .from<OpenFeedbackDraftTypeDB>(openFeedbackDraftsTable)
+        .delete()
+        .eq('id', id)
     printIf(error)
+}
+
+export async function fetchMyOpenFeedback(openAnswerId: string): Promise<OpenFeedbackType> {
+    const { data, error } =
+        await supabase
+            .from<OpenFeedbackTypeDB>(openFeedbackTable)
+            .select()
+            .eq('owner', supabase.auth.user().id)
+            .eq('open_answer', openAnswerId)
+            .maybeSingle()
+    printIf(error)
+    return keysToCamelCase(data)
+}
+
+export async function fetchOpenFeedbackOfOthers(openAnswerId: string): Promise<OpenFeedbackType[]> {
+    const { data, error } =
+        await supabase
+            .from<OpenFeedbackTypeDB>(openFeedbackTable)
+            .select()
+            .eq('open_answer', openAnswerId)
+            .neq('owner', supabase.auth.user().id)
+    printIf(error)
+    return keysToCamelCase(data)
+}
+
+export async function saveOpenFeedback(feedbackText: string, openAnswerId: string): Promise<OpenFeedbackType> {
+    const { data, error } = await supabase.from<OpenFeedbackTypeDB>(openFeedbackTable).insert({
+        feedback_text: feedbackText,
+        open_answer: openAnswerId,
+        owner: supabase.auth.user().id
+    }).single()
+    printIf(error)
+    return keysToCamelCase(data)
 }
 
 function printIf(error) {

@@ -35,10 +35,9 @@
 
 	async function publishOpenAnswer() {
 		await deleteOpenAnswerDraft(myOpenAnswerDraft.id);
-		myOpenAnswerDraft = await fetchMyOpenAnswerDraft(openQuestion.id);
+		myOpenAnswerDraft = null;
 
-		await saveOpenAnswer(myOpenAnswerDraft.answerText, myOpenAnswerDraft.openQuestion);
-		myOpenAnswer = await fetchMyOpenAnswer(openQuestion.id);
+		myOpenAnswer = await saveOpenAnswer(myOpenAnswerDraft.answerText, myOpenAnswerDraft.openQuestion);
 		toast.showSuccessToast('Open Answer created!');
 	}
 </script>
@@ -83,8 +82,7 @@
 					</div>
 					<button
 						on:click={async () => {
-							await saveOpenAnswerDraft(openAnswerDraftText, openQuestion.id);
-							myOpenAnswerDraft = await fetchMyOpenAnswerDraft(openQuestion.id);
+							myOpenAnswerDraft = await saveOpenAnswerDraft(openAnswerDraftText, openQuestion.id);
 						}}
 						class="w-48 ">Save</button
 					>

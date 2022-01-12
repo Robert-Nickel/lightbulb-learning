@@ -40,9 +40,8 @@
 
 	async function publishOpenFeedback() {
 		await deleteOpenFeedbackDraft(openAnswer.id);
-		myOpenFeedbackDraft = await fetchMyOpenFeedbackDraft(openAnswer.id);
-		await saveOpenFeedback(myOpenFeedbackDraft.feedbackText, myOpenFeedbackDraft.openAnswer);
-		myOpenFeedback = await fetchMyOpenFeedback(openAnswer.id);
+		myOpenFeedbackDraft = null;
+		myOpenFeedback = await saveOpenFeedback(myOpenFeedbackDraft.feedbackText, myOpenFeedbackDraft.openAnswer);
 		toast.showSuccessToast('Thanks for your Feedback!');
 	}
 </script>
@@ -108,8 +107,7 @@
 					<button
 						on:click={async () => {
 							// TODO: careful! When creating feedback on a newer version of the open answer than the one in the url!
-							await saveOpenFeedbackDraft(openFeedbackDraftText, openAnswer.id);
-							myOpenFeedback = await fetchMyOpenFeedback(openAnswer.id);
+							myOpenFeedback = await saveOpenFeedbackDraft(openFeedbackDraftText, openAnswer.id);
 						}}
 						class="w-48 ">Save</button
 					>

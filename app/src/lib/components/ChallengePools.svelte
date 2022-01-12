@@ -35,9 +35,8 @@
 		<div>
 			<button
 				on:click={async () => {
-					await saveChallengePool(createChallengePoolDescription);
+					challengePools.push(await saveChallengePool(createChallengePoolDescription));
 					createChallengePoolDescription = '';
-					challengePools = await fetchChallengePools();
 					// TODO: Success Toast
 				}}
 				class="w-32">Create</button

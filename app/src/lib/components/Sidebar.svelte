@@ -1,8 +1,8 @@
 <script>
-import { goto } from '$app/navigation';
+	import { goto } from '$app/navigation';
 
 	import { user } from '$lib/stores/user';
-import { supabase } from '$lib/supabaseClient';
+	import { supabase } from '$lib/supabaseClient';
 
 	export let open = false;
 
@@ -18,6 +18,7 @@ import { supabase } from '$lib/supabaseClient';
 	class="absolute w-64 h-full bg-gray-800 text-white shadow-lg z-10 p-8 pt-24 space-y-2 text-xl cursor-default"
 	class:open
 >
+	<!-- Ignore this -->
 	{#if $user}
 		<nav on:click={logout}><a href="/">Logout</a></nav>
 	{:else}

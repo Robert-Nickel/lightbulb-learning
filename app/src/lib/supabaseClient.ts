@@ -138,16 +138,28 @@ export async function fetchOpenAnswer(id: string): Promise<OpenAnswerType> {
     return keysToCamelCase(data)
 }
 
-export async function fetchMyOpenAnswer(openQuestionId): Promise<OpenAnswerType> {
+export async function fetchMyOpenAnswers(openQuestionId): Promise<OpenAnswerType[]> {
     const { data, error } =
         await supabase
             .from<OpenAnswerTypeDB>(openAnswersTable)
             .select()
             .eq('open_question', openQuestionId)
             .eq('owner', supabase.auth.user().id)
-            .maybeSingle()
     printIf(error)
     return keysToCamelCase(data)
+}
+
+export async function fetchMyLatestOpenAnswer(openQuestionId): Promise<OpenAnswerType> {
+    const { data, error } =
+        await supabase
+            .from<OpenAnswerTypeDB>(openAnswersTable)
+            .select()
+            .eq('open_question', openQuestionId)
+            .eq('owner', supabase.auth.user().id)
+            .order('version', { ascending: false })
+            .limit(1)
+    printIf(error)
+    return keysToCamelCase(data[0])
 }
 
 export async function fetchOpenAnswersOfOthers(openQuestionId): Promise<OpenAnswerType[]> {
@@ -160,7 +172,7 @@ export async function fetchOpenAnswersOfOthers(openQuestionId): Promise<OpenAnsw
     return keysToCamelCase(data)
 }
 
-export async function saveOpenAnswer(answerText: string, openQuestionId: string, version = 1): Promise<OpenAnswerType> {
+export async function saveOpenAnswer(answerText: string, openQuestionId: string, version: number = 1): Promise<OpenAnswerType> {
     const { data, error } = await supabase.from<OpenAnswerTypeDB>(openAnswersTable).insert({
         answer_text: answerText,
         open_question: openQuestionId,

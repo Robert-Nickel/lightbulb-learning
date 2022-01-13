@@ -6,7 +6,7 @@
 	import { goto } from '$app/navigation';
 	import {
 		deleteOpenAnswerDraft,
-		fetchMyOpenAnswer,
+		fetchMyOpenAnswers,
 		fetchMyOpenAnswerDraft,
 		fetchOpenAnswersOfOthers,
 		fetchOpenQuestion,
@@ -15,7 +15,8 @@
 		OpenQuestionType,
 		saveOpenAnswer,
 		saveOpenAnswerDraft,
-		supabase
+		supabase,
+		fetchMyLatestOpenAnswer
 	} from '$lib/supabaseClient';
 
 	let openQuestion: OpenQuestionType;
@@ -28,7 +29,7 @@
 	onMount(async () => {
 		const openQuestionId = $page.params.slug;
 		openQuestion = await fetchOpenQuestion(openQuestionId);
-		myOpenAnswer = await fetchMyOpenAnswer(openQuestion.id);
+		myOpenAnswer = await fetchMyLatestOpenAnswer(openQuestion.id);
 		myOpenAnswerDraft = await fetchMyOpenAnswerDraft(openQuestion.id);
 		openAnswersOfOthers = await fetchOpenAnswersOfOthers(openQuestion.id);
 	});

@@ -17,8 +17,10 @@
 		supabase,
 		saveOpenFeedbackDraft,
 		deleteOpenFeedbackDraft,
-		saveOpenFeedback
+		saveOpenFeedback,
+		fetchMyLatestOpenAnswer
 	} from '$lib/supabaseClient';
+	import { goto } from '$app/navigation';
 
 	let openQuestion: OpenQuestionType;
 	let openAnswer: OpenAnswerType;
@@ -28,15 +30,25 @@
 	let openFeedbackDraftText = '';
 	let toast;
 	let improvingAnswer = false;
+	let latestOpenAnswer;
+	let isLatest = false;
 
 	onMount(async () => {
-		const openAnswerId = $page.params.slug;
+		console.log('on mount...');
+		refresh($page.params.slug);
+	});
+
+	async function refresh(openAnswerId) {
+		console.log('refreshing ...');
 		openAnswer = await fetchOpenAnswer(openAnswerId);
+		latestOpenAnswer = await fetchMyLatestOpenAnswer(openAnswer.openQuestion);
+		isLatest = latestOpenAnswer.version == openAnswer.version;
+
 		openQuestion = await fetchOpenQuestion(openAnswer.openQuestion);
 		myOpenFeedback = await fetchMyOpenFeedback(openAnswer.id);
 		myOpenFeedbackDraft = await fetchMyOpenFeedbackDraft(openAnswer.id);
 		openFeedbackOfOthers = await fetchOpenFeedbackOfOthers(openAnswer.id);
-	});
+	}
 
 	async function publishOpenFeedback() {
 		myOpenFeedback = await saveOpenFeedback(myOpenFeedbackDraft.feedbackText, myOpenFeedbackDraft.openAnswer);
@@ -65,11 +77,22 @@
 						{openFeedbackOfOther.feedbackText}
 					</article>
 				{/each}
-				{#if improvingAnswer}
-					<ImproveOpenAnswer {openAnswer} />
+				{#if isLatest}
+					{#if improvingAnswer}
+						<ImproveOpenAnswer {openAnswer} />
+					{:else}
+						<div class="mb-4">Do you want to improve your answer based on this feedback?</div>
+						<button class="outline" on:click={() => (improvingAnswer = !improvingAnswer)}
+							>Improve Answer</button
+						>
+					{/if}
 				{:else}
-					<div class="mb-4">Do you want to improve your answer based on this feedback?</div>
-					<button class="outline" on:click={() => (improvingAnswer = !improvingAnswer)}>Improve Answer</button
+					<div class="mb-4"><i>Attention: This is an old version of your answer.</i></div>
+					<button
+						on:click={() => {
+							goto('/openanswer/' + latestOpenAnswer.id);
+							refresh(latestOpenAnswer.id);
+						}}>Go to Latest Version</button
 					>
 				{/if}
 			{/if}

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
+
 	import {
 		deleteOpenAnswerDraft,
 		fetchMyOpenAnswerDraft,
@@ -12,7 +14,7 @@
 
 	export let openAnswer: OpenAnswerType;
 	let myOpenAnswerDraft: OpenAnswerDraftType;
-	let openAnswerDraftText = '';
+	let openAnswerDraftText;
 	let toast;
 
 	onMount(async () => {
@@ -34,15 +36,14 @@
 	<div>
 		<button
 			on:click={async () => {
-				await deleteOpenAnswerDraft(myOpenAnswerDraft.id);
-				myOpenAnswerDraft = null;
-
-				await saveOpenAnswer(
+				const improvedOpenAnswer = await saveOpenAnswer(
 					myOpenAnswerDraft.answerText,
 					myOpenAnswerDraft.openQuestion,
 					openAnswer.version++
 				);
+				myOpenAnswerDraft = await deleteOpenAnswerDraft(myOpenAnswerDraft.id);
 				toast.showSuccessToast('Open Answer improved!');
+				await goto('/openanswer/' + improvedOpenAnswer.id);
 			}}
 			class="w-32">Publish</button
 		>

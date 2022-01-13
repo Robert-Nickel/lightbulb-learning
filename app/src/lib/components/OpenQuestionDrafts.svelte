@@ -31,7 +31,8 @@
 	<div>
 		<button
 			on:click={async () => {
-				openQuestionDrafts.push(await saveOpenQuestionDraft(newOpenQuestionDraftText, challengePool.id));
+				const newOpenQuestionDraft = await saveOpenQuestionDraft(newOpenQuestionDraftText, challengePool.id);
+				openQuestionDrafts.push(newOpenQuestionDraft);
 				newOpenQuestionDraftText = '';
 				document.getElementById('openQuestionDraftAnswerText').focus();
 			}}
@@ -51,7 +52,10 @@
 				<div class="flex justify-between space-x-2">
 					<p class="w-full">{openQuestionDraft.questionText}</p>
 					<button
-						on:click={() => deleteOpenQuestionDraft(openQuestionDraft.id)}
+						on:click={async () => {
+							await deleteOpenQuestionDraft(openQuestionDraft.id);
+							openQuestionDrafts = await fetchMyOpenQuestionDrafts(challengePool.id);
+						}}
 						class="w-48 outline secondary"
 					>
 						Delete Question
@@ -95,7 +99,8 @@
 							await saveOpenQuestion(openQuestionDraft.questionText, openQuestionDraft.challengePool);
 							dispatch('openQuestionCommitted');
 							toast.showSuccessToast('Open Question created');
-							openQuestionDrafts = await deleteOpenQuestionDraft(openQuestionDraft.id);
+							await deleteOpenQuestionDraft(openQuestionDraft.id);
+							openQuestionDrafts = await fetchMyOpenQuestionDrafts(openQuestionDraft.challengePool);
 						}}
 						class="w-32 h-12"
 					>

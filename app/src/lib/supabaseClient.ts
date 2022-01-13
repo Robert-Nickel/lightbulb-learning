@@ -33,7 +33,7 @@ export async function deleteChallengePool(id: string) {
     printIf(error)
 }
 
-export async function fetchMyOpenQuestionDrafts(challengePoolId): Promise<OpenQuestionDraftType[]> {
+export async function fetchMyOpenQuestionDrafts(challengePoolId: string): Promise<OpenQuestionDraftType[]> {
     const { data, error } = await supabase
         .from<OpenQuestionDraftTypeDB>(openQuestionDraftsTable)
         .select()
@@ -74,7 +74,6 @@ export async function deleteAnswerFromOpenQuestionDraft(id: string) {
 export async function deleteOpenQuestionDraft(id: string) {
     const { error } = await supabase.from<OpenQuestionDraftTypeDB>(openQuestionDraftsTable).delete().eq('id', id);
     printIf(error)
-    return null
 }
 
 export async function fetchOpenQuestions(challengePoolId): Promise<OpenQuestionType[]> {

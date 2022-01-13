@@ -18,10 +18,11 @@ import java.nio.charset.StandardCharsets
 
 import little.json.*
 import little.json.Implicits.{*, given}
-import java.nio.charset.Charset;
 
 import scala.collection.JavaConverters._
 import scala.jdk.CollectionConverters.MapHasAsJava
+
+import java.io.StringWriter
 
 class Handler {
   def handle(
@@ -31,8 +32,6 @@ class Handler {
     if (apiGatewayEvent != null && apiGatewayEvent.getBody() != null) {
       val eventInfoBody = apiGatewayEvent.getBody()
       val eventInfo = Json.parse(eventInfoBody).as[EventInfo]
-      // pass this JWT token to JS function which return the decoded token
-      // get userPoolID & userID from JWTToken
 
       println("eventInfo:")
       println(eventInfo)
@@ -42,9 +41,6 @@ class Handler {
       .region(Region.EU_CENTRAL_1)
       .httpClient(ApacheHttpClient.builder().build())
       .build()
-      
-      println("eventInfoBody")
-      println(eventInfoBody)
 
       val jwtLambdaName = findFunctionName(lambdaClient, "InfrastructureStack-jwtHandler")
       val jwtLambdaRequest = (
@@ -59,32 +55,24 @@ class Handler {
 
       val addUserLambdaName = findFunctionName(lambdaClient, "InfrastructureStack-addUserToGroupLambda")
 
-      val groupInfo = GroupInfo(
-        eventInfo.groupName, 
-        parsedResponse.usermail, 
-        parsedResponse.userpool
-      )
-
-      println("groupInfo")
-      println(groupInfo)
-
       println("addUserLambdaName: " + addUserLambdaName)
 
-      val objToSend = Json.toJson(groupInfo)
-      println("objToSend")
-      println(objToSend)
+      val jsonGroupInfo = Json.obj(
+        "groupName" ->  eventInfo.groupName, 
+        "userName" -> parsedResponse.usermail,
+        "userPoolId" ->  parsedResponse.userpool
+      )
 
-      val sdkByte = SdkBytes.fromByteArray(objToSend.getBytes)
-      println("sdkBytes")
-      println(sdkByte)
+      val buf = StringWriter()
+      val out = JsonWriter(buf)
+      out.write(jsonGroupInfo)
 
       val lambdaRequest = (
         InvokeRequest.builder()
           .functionName(addUserLambdaName)
-          .payload(sdkByte)
+          .payload(SdkBytes.fromUtf8String(buf.toString))
           .build()
       )
-      println("here")
       
       val response = lambdaClient.invoke(lambdaRequest)
       val customHttpResponseJSON = response.payload().asUtf8String()
@@ -92,7 +80,6 @@ class Handler {
       println(customHttpResponseJSON)
 
       val customHttpResponse = customHttpResponseJSON.as[CustomHttpResponse]
-
       // val reponseStatus = customHttpResponse.statusCode
 
       return APIGatewayV2HTTPResponse

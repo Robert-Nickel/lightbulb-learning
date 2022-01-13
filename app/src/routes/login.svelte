@@ -3,40 +3,35 @@
 
 	let loading = false;
 	let email;
+	let showCheckMail = false;
 
 	const handleLogin = async () => {
 		try {
 			loading = true;
 			const { error } = await supabase.auth.signIn({ email });
 			if (error) throw error;
-			alert('Check your email for the login link!');
 		} catch (error) {
-			alert(error.error_description || error.message);
+			console.log(error.error_description || error.message);
 		} finally {
 			loading = false;
+			showCheckMail = true;
 		}
 	};
 </script>
 
 <div class="flex justify-center">
-	<article class="max-w-sm">
-		<header class="flex justify-between items-center">
+	<article>
+		<header>
 			<h3 class="text-3xl mb-0">Login</h3>
 		</header>
-		<form class="row flex flex-center" on:submit|preventDefault={handleLogin}>
-			<div class="col-6 form-widget">
+		<form on:submit|preventDefault={handleLogin}>
+			<div>
 				<p class="description">Login via magic link</p>
 				<div>
-					<input class="inputField" type="email" placeholder="Your email" bind:value={email} />
+					<input type="email" placeholder="learn@everyday.org" bind:value={email} />
+					<input type="submit" value={'Send magic link'} disabled={loading} />
 				</div>
-				<div>
-					<input
-						type="submit"
-						class="button block"
-						value={loading ? 'Loading' : 'Send magic link'}
-						disabled={loading}
-					/>
-				</div>
+				{#if showCheckMail}<b>Check your email for the login link!</b>{/if}
 			</div>
 		</form>
 	</article>

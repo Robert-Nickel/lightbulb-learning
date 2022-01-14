@@ -21,6 +21,7 @@
 		fetchMyLatestOpenAnswer
 	} from '$lib/supabaseClient';
 	import { goto } from '$app/navigation';
+	import { user } from '$lib/stores/user';
 
 	let openQuestion: OpenQuestionType;
 	let openAnswer: OpenAnswerType;
@@ -59,13 +60,13 @@
 
 <main class="container">
 	{#if openAnswer && openQuestion}
-		{#if openQuestion.owner == supabase.auth.user().id}
+		{#if openQuestion.owner == $user.id}
 			<div class="mb-4 yours pl-4">Your Question: {openQuestion.questionText}</div>
 		{:else}
 			<div class="mb-4">Question: {openQuestion.questionText}</div>
 		{/if}
 
-		{#if openAnswer.owner == supabase.auth.user().id}
+		{#if openAnswer.owner == $user.id}
 			<h1 class="yours pl-4">Your Answer: {openAnswer.answerText}</h1>
 
 			{#if openFeedbackOfOthers.length == 0}

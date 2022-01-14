@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { supabase } from '$lib/supabaseClient';
+	import { user } from '$lib/stores/user';
 
 	let loading = false;
 	let email;
@@ -8,7 +8,7 @@
 	const handleLogin = async () => {
 		try {
 			loading = true;
-			const { error } = await supabase.auth.signIn({ email });
+			const { error } = await user.signIn(email);
 			if (error) throw error;
 		} catch (error) {
 			console.log(error.error_description || error.message);

@@ -5,13 +5,13 @@
 	import { page } from '$app/stores';
 	import Back from '$lib/components/Back.svelte';
 	import {
-		supabase,
 		ChallengePoolType,
 		OpenQuestionType,
 		fetchChallengePool,
 		fetchOpenQuestions,
 		deleteChallengePool
 	} from '$lib/supabaseClient';
+	import { user } from '$lib/stores/user';
 
 	let challengePool: ChallengePoolType;
 	let openQuestions: Array<OpenQuestionType> = [];
@@ -38,7 +38,7 @@
 		{/if}
 		{#each openQuestions as openQuestion}
 			<div on:click={() => goto(`/openquestion/${openQuestion.id}`)}>
-				{#if openQuestion.owner == supabase.auth.user().id}
+				{#if openQuestion.owner == $user.id}
 					<article class="yours question">
 						<i>You asked:</i>
 						{openQuestion.questionText}
@@ -51,7 +51,7 @@
 			</div>
 		{/each}
 
-		{#if supabase.auth.user().id == challengePool.owner}
+		{#if $user.id == challengePool.owner}
 			<button
 				on:click={async () => {
 					await deleteChallengePool(challengePool.id);

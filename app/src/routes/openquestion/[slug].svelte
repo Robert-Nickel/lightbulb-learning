@@ -18,6 +18,7 @@
 		supabase,
 		fetchMyLatestOpenAnswer
 	} from '$lib/supabaseClient';
+	import { user } from '$lib/stores/user';
 
 	let openQuestion: OpenQuestionType;
 	let myOpenAnswerDraft: OpenAnswerDraftType;
@@ -37,7 +38,7 @@
 
 <main class="container">
 	{#if openQuestion}
-		{#if openQuestion.owner == supabase.auth.user().id}
+		{#if openQuestion.owner == $user.id}
 			<h1 class="yours pl-4">{openQuestion.questionText}</h1>
 
 			<div class="mb-4">

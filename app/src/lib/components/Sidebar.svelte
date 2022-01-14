@@ -2,15 +2,14 @@
 	import { goto } from '$app/navigation';
 
 	import { user } from '$lib/stores/user';
-	import { supabase } from '$lib/supabaseClient';
 
 	export let open = false;
 
 	async function logout() {
 		open = false;
 		// TODO: This throws an error. We don't handle it. See https://github.com/supabase/supabase/discussions/3468?sort=top
-		supabase.auth.signOut();
-		goto('/');
+		user.signOut();
+		goto('/login');
 	}
 </script>
 

@@ -3,15 +3,12 @@
 	import ChallengePools from '$lib/components/ChallengePools.svelte';
 
 	import { user } from '$lib/stores/user';
-	import { supabase } from '$lib/supabaseClient';
 </script>
 
-<div class="container" style="padding: 50px 0 100px 0;">
-	{#if $user}
-		<main class="container py-4 max-w-screen-sm"><ChallengePools /></main>
-	{:else}
-		<StartPage />
-	{/if}
-</div>
+{#if $user}
+	<main class="container py-4 max-w-screen-sm"><ChallengePools /></main>
+{:else}
+	<StartPage />
+{/if}
 
 <!--Go here to see which toasts are possible: https://zerodevx.github.io/svelte-toast/-->

@@ -10,7 +10,8 @@
 		"check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --ignore-path .gitignore --check --plugin-search-dir=. . && eslint --ignore-path .gitignore .",
 		"format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. .",
-		"compile": "tsc"
+		"compile": "tsc",
+		"genTypes": "dotenv npx openapi-typescript %VITE_SVELTE_APP_SUPABASE_URL%/rest/v1/?apikey=%VITE_SVELTE_APP_SUPABASE_ANON_KEY% -- --output src/lib/models/supabase.ts"
 	},
 	"devDependencies": {
 		"@rollup/plugin-json": "^4.1.0",
@@ -23,6 +24,7 @@
 		"autoprefixer": "^10.4.0",
 		"cssnano": "^5.0.13",
 		"dotenv": "^10.0.0",
+		"dotenv-cli": "^4.1.1",
 		"eslint": "^8.4.1",
 		"eslint-config-prettier": "^8.3.0",
 		"eslint-plugin-svelte3": "^3.2.1",

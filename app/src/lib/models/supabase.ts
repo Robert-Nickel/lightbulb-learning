@@ -19,6 +19,7 @@ export interface paths {
           id?: parameters["rowFilter.challenge_pools.id"];
           description?: parameters["rowFilter.challenge_pools.description"];
           owner?: parameters["rowFilter.challenge_pools.owner"];
+          created_at?: parameters["rowFilter.challenge_pools.created_at"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -72,6 +73,7 @@ export interface paths {
           id?: parameters["rowFilter.challenge_pools.id"];
           description?: parameters["rowFilter.challenge_pools.description"];
           owner?: parameters["rowFilter.challenge_pools.owner"];
+          created_at?: parameters["rowFilter.challenge_pools.created_at"];
         };
         header: {
           /** Preference */
@@ -89,6 +91,7 @@ export interface paths {
           id?: parameters["rowFilter.challenge_pools.id"];
           description?: parameters["rowFilter.challenge_pools.description"];
           owner?: parameters["rowFilter.challenge_pools.owner"];
+          created_at?: parameters["rowFilter.challenge_pools.created_at"];
         };
         body: {
           /** challenge_pools */
@@ -113,7 +116,7 @@ export interface paths {
           answer_text?: parameters["rowFilter.open_answer_drafts.answer_text"];
           open_question?: parameters["rowFilter.open_answer_drafts.open_question"];
           owner?: parameters["rowFilter.open_answer_drafts.owner"];
-          original_open_answer?: parameters["rowFilter.open_answer_drafts.original_open_answer"];
+          created_at?: parameters["rowFilter.open_answer_drafts.created_at"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -168,7 +171,7 @@ export interface paths {
           answer_text?: parameters["rowFilter.open_answer_drafts.answer_text"];
           open_question?: parameters["rowFilter.open_answer_drafts.open_question"];
           owner?: parameters["rowFilter.open_answer_drafts.owner"];
-          original_open_answer?: parameters["rowFilter.open_answer_drafts.original_open_answer"];
+          created_at?: parameters["rowFilter.open_answer_drafts.created_at"];
         };
         header: {
           /** Preference */
@@ -187,7 +190,7 @@ export interface paths {
           answer_text?: parameters["rowFilter.open_answer_drafts.answer_text"];
           open_question?: parameters["rowFilter.open_answer_drafts.open_question"];
           owner?: parameters["rowFilter.open_answer_drafts.owner"];
-          original_open_answer?: parameters["rowFilter.open_answer_drafts.original_open_answer"];
+          created_at?: parameters["rowFilter.open_answer_drafts.created_at"];
         };
         body: {
           /** open_answer_drafts */
@@ -214,6 +217,7 @@ export interface paths {
           version?: parameters["rowFilter.open_answers.version"];
           open_question?: parameters["rowFilter.open_answers.open_question"];
           owner?: parameters["rowFilter.open_answers.owner"];
+          created_at?: parameters["rowFilter.open_answers.created_at"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -270,6 +274,7 @@ export interface paths {
           version?: parameters["rowFilter.open_answers.version"];
           open_question?: parameters["rowFilter.open_answers.open_question"];
           owner?: parameters["rowFilter.open_answers.owner"];
+          created_at?: parameters["rowFilter.open_answers.created_at"];
         };
         header: {
           /** Preference */
@@ -290,6 +295,7 @@ export interface paths {
           version?: parameters["rowFilter.open_answers.version"];
           open_question?: parameters["rowFilter.open_answers.open_question"];
           owner?: parameters["rowFilter.open_answers.owner"];
+          created_at?: parameters["rowFilter.open_answers.created_at"];
         };
         body: {
           /** open_answers */
@@ -314,6 +320,7 @@ export interface paths {
           feedback_text?: parameters["rowFilter.open_feedback.feedback_text"];
           open_answer?: parameters["rowFilter.open_feedback.open_answer"];
           owner?: parameters["rowFilter.open_feedback.owner"];
+          created_at?: parameters["rowFilter.open_feedback.created_at"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -368,6 +375,7 @@ export interface paths {
           feedback_text?: parameters["rowFilter.open_feedback.feedback_text"];
           open_answer?: parameters["rowFilter.open_feedback.open_answer"];
           owner?: parameters["rowFilter.open_feedback.owner"];
+          created_at?: parameters["rowFilter.open_feedback.created_at"];
         };
         header: {
           /** Preference */
@@ -386,6 +394,7 @@ export interface paths {
           feedback_text?: parameters["rowFilter.open_feedback.feedback_text"];
           open_answer?: parameters["rowFilter.open_feedback.open_answer"];
           owner?: parameters["rowFilter.open_feedback.owner"];
+          created_at?: parameters["rowFilter.open_feedback.created_at"];
         };
         body: {
           /** open_feedback */
@@ -410,6 +419,7 @@ export interface paths {
           feedback_text?: parameters["rowFilter.open_feedback_drafts.feedback_text"];
           open_answer?: parameters["rowFilter.open_feedback_drafts.open_answer"];
           owner?: parameters["rowFilter.open_feedback_drafts.owner"];
+          created_at?: parameters["rowFilter.open_feedback_drafts.created_at"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -464,6 +474,7 @@ export interface paths {
           feedback_text?: parameters["rowFilter.open_feedback_drafts.feedback_text"];
           open_answer?: parameters["rowFilter.open_feedback_drafts.open_answer"];
           owner?: parameters["rowFilter.open_feedback_drafts.owner"];
+          created_at?: parameters["rowFilter.open_feedback_drafts.created_at"];
         };
         header: {
           /** Preference */
@@ -482,6 +493,7 @@ export interface paths {
           feedback_text?: parameters["rowFilter.open_feedback_drafts.feedback_text"];
           open_answer?: parameters["rowFilter.open_feedback_drafts.open_answer"];
           owner?: parameters["rowFilter.open_feedback_drafts.owner"];
+          created_at?: parameters["rowFilter.open_feedback_drafts.created_at"];
         };
         body: {
           /** open_feedback_drafts */
@@ -507,6 +519,7 @@ export interface paths {
           answer_text?: parameters["rowFilter.open_question_drafts.answer_text"];
           owner?: parameters["rowFilter.open_question_drafts.owner"];
           challenge_pool?: parameters["rowFilter.open_question_drafts.challenge_pool"];
+          created_at?: parameters["rowFilter.open_question_drafts.created_at"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -562,6 +575,7 @@ export interface paths {
           answer_text?: parameters["rowFilter.open_question_drafts.answer_text"];
           owner?: parameters["rowFilter.open_question_drafts.owner"];
           challenge_pool?: parameters["rowFilter.open_question_drafts.challenge_pool"];
+          created_at?: parameters["rowFilter.open_question_drafts.created_at"];
         };
         header: {
           /** Preference */
@@ -581,6 +595,7 @@ export interface paths {
           answer_text?: parameters["rowFilter.open_question_drafts.answer_text"];
           owner?: parameters["rowFilter.open_question_drafts.owner"];
           challenge_pool?: parameters["rowFilter.open_question_drafts.challenge_pool"];
+          created_at?: parameters["rowFilter.open_question_drafts.created_at"];
         };
         body: {
           /** open_question_drafts */
@@ -605,6 +620,7 @@ export interface paths {
           question_text?: parameters["rowFilter.open_questions.question_text"];
           challenge_pool?: parameters["rowFilter.open_questions.challenge_pool"];
           owner?: parameters["rowFilter.open_questions.owner"];
+          created_at?: parameters["rowFilter.open_questions.created_at"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -659,6 +675,7 @@ export interface paths {
           question_text?: parameters["rowFilter.open_questions.question_text"];
           challenge_pool?: parameters["rowFilter.open_questions.challenge_pool"];
           owner?: parameters["rowFilter.open_questions.owner"];
+          created_at?: parameters["rowFilter.open_questions.created_at"];
         };
         header: {
           /** Preference */
@@ -677,6 +694,7 @@ export interface paths {
           question_text?: parameters["rowFilter.open_questions.question_text"];
           challenge_pool?: parameters["rowFilter.open_questions.challenge_pool"];
           owner?: parameters["rowFilter.open_questions.owner"];
+          created_at?: parameters["rowFilter.open_questions.created_at"];
         };
         body: {
           /** open_questions */
@@ -708,6 +726,11 @@ export interface definitions {
     description: string;
     /** Format: uuid */
     owner: string;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at: string;
   };
   open_answer_drafts: {
     /**
@@ -728,11 +751,10 @@ export interface definitions {
     /** Format: uuid */
     owner: string;
     /**
-     * Format: uuid
-     * @description Note:
-     * This is a Foreign Key to `open_answers.id`.<fk table='open_answers' column='id'/>
+     * Format: timestamp with time zone
+     * @default now()
      */
-    original_open_answer?: string;
+    created_at: string;
   };
   open_answers: {
     /**
@@ -757,6 +779,11 @@ export interface definitions {
     open_question: string;
     /** Format: uuid */
     owner: string;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at: string;
   };
   open_feedback: {
     /**
@@ -776,6 +803,11 @@ export interface definitions {
     open_answer: string;
     /** Format: uuid */
     owner: string;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at: string;
   };
   open_feedback_drafts: {
     /**
@@ -795,6 +827,11 @@ export interface definitions {
     open_answer: string;
     /** Format: uuid */
     owner: string;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at: string;
   };
   open_question_drafts: {
     /**
@@ -816,6 +853,11 @@ export interface definitions {
      * This is a Foreign Key to `challenge_pools.id`.<fk table='challenge_pools' column='id'/>
      */
     challenge_pool: string;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at: string;
   };
   open_questions: {
     /**
@@ -835,15 +877,29 @@ export interface definitions {
     challenge_pool: string;
     /** Format: uuid */
     owner: string;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at: string;
   };
 }
 
 export interface parameters {
-  /** @description Preference */
+  /**
+   * @description Preference
+   * @enum {string}
+   */
   preferParams: "params=single-object";
-  /** @description Preference */
+  /**
+   * @description Preference
+   * @enum {string}
+   */
   preferReturn: "return=representation" | "return=minimal" | "return=none";
-  /** @description Preference */
+  /**
+   * @description Preference
+   * @enum {string}
+   */
   preferCount: "count=none";
   /** @description Filtering Columns */
   select: string;
@@ -870,6 +926,8 @@ export interface parameters {
   "rowFilter.challenge_pools.description": string;
   /** Format: uuid */
   "rowFilter.challenge_pools.owner": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.challenge_pools.created_at": string;
   /** @description open_answer_drafts */
   "body.open_answer_drafts": definitions["open_answer_drafts"];
   /** Format: uuid */
@@ -880,8 +938,8 @@ export interface parameters {
   "rowFilter.open_answer_drafts.open_question": string;
   /** Format: uuid */
   "rowFilter.open_answer_drafts.owner": string;
-  /** Format: uuid */
-  "rowFilter.open_answer_drafts.original_open_answer": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.open_answer_drafts.created_at": string;
   /** @description open_answers */
   "body.open_answers": definitions["open_answers"];
   /** Format: uuid */
@@ -897,6 +955,8 @@ export interface parameters {
   "rowFilter.open_answers.open_question": string;
   /** Format: uuid */
   "rowFilter.open_answers.owner": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.open_answers.created_at": string;
   /** @description open_feedback */
   "body.open_feedback": definitions["open_feedback"];
   /** Format: uuid */
@@ -907,6 +967,8 @@ export interface parameters {
   "rowFilter.open_feedback.open_answer": string;
   /** Format: uuid */
   "rowFilter.open_feedback.owner": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.open_feedback.created_at": string;
   /** @description open_feedback_drafts */
   "body.open_feedback_drafts": definitions["open_feedback_drafts"];
   /** Format: uuid */
@@ -917,6 +979,8 @@ export interface parameters {
   "rowFilter.open_feedback_drafts.open_answer": string;
   /** Format: uuid */
   "rowFilter.open_feedback_drafts.owner": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.open_feedback_drafts.created_at": string;
   /** @description open_question_drafts */
   "body.open_question_drafts": definitions["open_question_drafts"];
   /** Format: uuid */
@@ -929,6 +993,8 @@ export interface parameters {
   "rowFilter.open_question_drafts.owner": string;
   /** Format: uuid */
   "rowFilter.open_question_drafts.challenge_pool": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.open_question_drafts.created_at": string;
   /** @description open_questions */
   "body.open_questions": definitions["open_questions"];
   /** Format: uuid */
@@ -939,6 +1005,8 @@ export interface parameters {
   "rowFilter.open_questions.challenge_pool": string;
   /** Format: uuid */
   "rowFilter.open_questions.owner": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.open_questions.created_at": string;
 }
 
 export interface operations {}

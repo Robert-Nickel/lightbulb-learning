@@ -34,6 +34,9 @@ class Handler {
       groupInfoMap: HashMap[String, String],
       context: Context
   ): CustomHttpResponse  = {
+    val maxAmountFreeUsers = 2;
+    val maxAmountStandardUsers = 4;
+
     val groupName = groupInfoMap.get("groupName")
     val userName = groupInfoMap.get("userName")
     val userPoolId = groupInfoMap.get("userPoolId")
@@ -60,7 +63,7 @@ class Handler {
         .withUserPoolId(userPoolId)
     )
     val groupResult = identityProvider.getGroup(getGroupRequest)
-    val roleForGroup = groupResult.getGroup().getRoleArn()
+    val roleForGroup = groupResult.getGroup().getDescription()
     println("role for group:" + roleForGroup)
 
     val listUsersInGroupRequest = (
@@ -76,9 +79,16 @@ class Handler {
 
     val listUsersInGroupResult = identityProvider.listUsersInGroup(listUsersInGroupRequest)
 
-    val amountUsers = listUsersInGroupResult.getUsers().size().toString
-    println("amount users:" + amountUsers)
+    val amountUsers = listUsersInGroupResult.getUsers().size()
+    println("amount users:" + amountUsers.toString)
 
+    if((roleForGroup == "Free" && amountUsers >= maxAmountFreeUsers) || 
+      (roleForGroup == "Standard" && amountUsers >= maxAmountStandardUsers)) {
+        println("Maximum amount of users reached!")
+       return CustomHttpResponse(500,"Maximum amount of users reached"
+      )
+    }
+    
     val adminAddUserToGroupRequest = (
       AdminAddUserToGroupRequest
         .builder()
@@ -88,10 +98,8 @@ class Handler {
         .build()
     )
     
-
     val response = cognitoClient.adminAddUserToGroup(adminAddUserToGroupRequest)
     val statusCode = response.sdkHttpResponse().statusCode()
-
     val statusText = response.sdkHttpResponse().statusText().isPresent match {
       case true => response.sdkHttpResponse().statusText().get()
       case _ => ""

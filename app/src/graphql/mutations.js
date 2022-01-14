@@ -1,60 +1,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createOpenAnswerDraft = /* GraphQL */ `
-  mutation CreateOpenAnswerDraft(
-    $input: CreateOpenAnswerDraftInput!
-    $condition: ModelOpenAnswerDraftConditionInput
-  ) {
-    createOpenAnswerDraft(input: $input, condition: $condition) {
-      id
-      answerText
-      openquestionID
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const updateOpenAnswerDraft = /* GraphQL */ `
-  mutation UpdateOpenAnswerDraft(
-    $input: UpdateOpenAnswerDraftInput!
-    $condition: ModelOpenAnswerDraftConditionInput
-  ) {
-    updateOpenAnswerDraft(input: $input, condition: $condition) {
-      id
-      answerText
-      openquestionID
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const deleteOpenAnswerDraft = /* GraphQL */ `
-  mutation DeleteOpenAnswerDraft(
-    $input: DeleteOpenAnswerDraftInput!
-    $condition: ModelOpenAnswerDraftConditionInput
-  ) {
-    deleteOpenAnswerDraft(input: $input, condition: $condition) {
-      id
-      answerText
-      openquestionID
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
 export const createOpenAnswer = /* GraphQL */ `
   mutation CreateOpenAnswer(
     $input: CreateOpenAnswerInput!
@@ -112,60 +58,6 @@ export const deleteOpenAnswer = /* GraphQL */ `
     }
   }
 `;
-export const createOpenFeedbackDraft = /* GraphQL */ `
-  mutation CreateOpenFeedbackDraft(
-    $input: CreateOpenFeedbackDraftInput!
-    $condition: ModelOpenFeedbackDraftConditionInput
-  ) {
-    createOpenFeedbackDraft(input: $input, condition: $condition) {
-      id
-      feedbackText
-      openanswerID
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const updateOpenFeedbackDraft = /* GraphQL */ `
-  mutation UpdateOpenFeedbackDraft(
-    $input: UpdateOpenFeedbackDraftInput!
-    $condition: ModelOpenFeedbackDraftConditionInput
-  ) {
-    updateOpenFeedbackDraft(input: $input, condition: $condition) {
-      id
-      feedbackText
-      openanswerID
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const deleteOpenFeedbackDraft = /* GraphQL */ `
-  mutation DeleteOpenFeedbackDraft(
-    $input: DeleteOpenFeedbackDraftInput!
-    $condition: ModelOpenFeedbackDraftConditionInput
-  ) {
-    deleteOpenFeedbackDraft(input: $input, condition: $condition) {
-      id
-      feedbackText
-      openanswerID
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
 export const createOpenFeedback = /* GraphQL */ `
   mutation CreateOpenFeedback(
     $input: CreateOpenFeedbackInput!
@@ -220,6 +112,114 @@ export const deleteOpenFeedback = /* GraphQL */ `
     }
   }
 `;
+export const createOpenAnswerDraft = /* GraphQL */ `
+  mutation CreateOpenAnswerDraft(
+    $input: CreateOpenAnswerDraftInput!
+    $condition: ModelOpenAnswerDraftConditionInput
+  ) {
+    createOpenAnswerDraft(input: $input, condition: $condition) {
+      id
+      answerText
+      openquestionID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const updateOpenAnswerDraft = /* GraphQL */ `
+  mutation UpdateOpenAnswerDraft(
+    $input: UpdateOpenAnswerDraftInput!
+    $condition: ModelOpenAnswerDraftConditionInput
+  ) {
+    updateOpenAnswerDraft(input: $input, condition: $condition) {
+      id
+      answerText
+      openquestionID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const deleteOpenAnswerDraft = /* GraphQL */ `
+  mutation DeleteOpenAnswerDraft(
+    $input: DeleteOpenAnswerDraftInput!
+    $condition: ModelOpenAnswerDraftConditionInput
+  ) {
+    deleteOpenAnswerDraft(input: $input, condition: $condition) {
+      id
+      answerText
+      openquestionID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const createOpenFeedbackDraft = /* GraphQL */ `
+  mutation CreateOpenFeedbackDraft(
+    $input: CreateOpenFeedbackDraftInput!
+    $condition: ModelOpenFeedbackDraftConditionInput
+  ) {
+    createOpenFeedbackDraft(input: $input, condition: $condition) {
+      id
+      feedbackText
+      openanswerID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const updateOpenFeedbackDraft = /* GraphQL */ `
+  mutation UpdateOpenFeedbackDraft(
+    $input: UpdateOpenFeedbackDraftInput!
+    $condition: ModelOpenFeedbackDraftConditionInput
+  ) {
+    updateOpenFeedbackDraft(input: $input, condition: $condition) {
+      id
+      feedbackText
+      openanswerID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const deleteOpenFeedbackDraft = /* GraphQL */ `
+  mutation DeleteOpenFeedbackDraft(
+    $input: DeleteOpenFeedbackDraftInput!
+    $condition: ModelOpenFeedbackDraftConditionInput
+  ) {
+    deleteOpenFeedbackDraft(input: $input, condition: $condition) {
+      id
+      feedbackText
+      openanswerID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
 export const createOpenQuestion = /* GraphQL */ `
   mutation CreateOpenQuestion(
     $input: CreateOpenQuestionInput!
@@ -230,6 +230,22 @@ export const createOpenQuestion = /* GraphQL */ `
       questionText
       challengepoolID
       owner
+      OpenAnswers {
+        items {
+          id
+          answerText
+          owner
+          openquestionID
+          version
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
       _version
       _deleted
       _lastChangedAt
@@ -246,22 +262,6 @@ export const createOpenQuestion = /* GraphQL */ `
           createdAt
           updatedAt
           owner
-        }
-        nextToken
-        startedAt
-      }
-      OpenAnswers {
-        items {
-          id
-          answerText
-          owner
-          openquestionID
-          version
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
         }
         nextToken
         startedAt
@@ -279,6 +279,22 @@ export const updateOpenQuestion = /* GraphQL */ `
       questionText
       challengepoolID
       owner
+      OpenAnswers {
+        items {
+          id
+          answerText
+          owner
+          openquestionID
+          version
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
       _version
       _deleted
       _lastChangedAt
@@ -295,22 +311,6 @@ export const updateOpenQuestion = /* GraphQL */ `
           createdAt
           updatedAt
           owner
-        }
-        nextToken
-        startedAt
-      }
-      OpenAnswers {
-        items {
-          id
-          answerText
-          owner
-          openquestionID
-          version
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
         }
         nextToken
         startedAt
@@ -328,6 +328,22 @@ export const deleteOpenQuestion = /* GraphQL */ `
       questionText
       challengepoolID
       owner
+      OpenAnswers {
+        items {
+          id
+          answerText
+          owner
+          openquestionID
+          version
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
       _version
       _deleted
       _lastChangedAt
@@ -348,22 +364,6 @@ export const deleteOpenQuestion = /* GraphQL */ `
         nextToken
         startedAt
       }
-      OpenAnswers {
-        items {
-          id
-          answerText
-          owner
-          openquestionID
-          version
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        nextToken
-        startedAt
-      }
     }
   }
 `;
@@ -376,12 +376,6 @@ export const createChallengePool = /* GraphQL */ `
       id
       description
       owner
-      groupID
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
       OpenQuestions {
         items {
           id
@@ -397,6 +391,12 @@ export const createChallengePool = /* GraphQL */ `
         nextToken
         startedAt
       }
+      groupID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       OpenQuestionDrafts {
         items {
           id
@@ -425,12 +425,6 @@ export const updateChallengePool = /* GraphQL */ `
       id
       description
       owner
-      groupID
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
       OpenQuestions {
         items {
           id
@@ -446,6 +440,12 @@ export const updateChallengePool = /* GraphQL */ `
         nextToken
         startedAt
       }
+      groupID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       OpenQuestionDrafts {
         items {
           id
@@ -474,12 +474,6 @@ export const deleteChallengePool = /* GraphQL */ `
       id
       description
       owner
-      groupID
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
       OpenQuestions {
         items {
           id
@@ -495,6 +489,12 @@ export const deleteChallengePool = /* GraphQL */ `
         nextToken
         startedAt
       }
+      groupID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       OpenQuestionDrafts {
         items {
           id

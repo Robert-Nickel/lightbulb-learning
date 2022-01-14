@@ -4,11 +4,25 @@
 	import ChallengePools from '$lib/components/ChallengePools.svelte';
 	import { user } from '$lib/stores/user';
 	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
+	import { Auth } from 'aws-amplify';
+
+	let groupId;
+
+	onMount( () => {
+		Auth.currentAuthenticatedUser().then((cognitoUser) => {
+			console.log(cognitoUser)
+			groupId = cognitoUser.signInUserSession.getIdToken().payload["cognito:groups"]
+			console.log("groupId: " + groupId );
+			console.log("$user")
+			console.log($user)
+		});
+	})
 </script>
 
 {#if $store != null}
 	<main class="container py-4 max-w-screen-sm">
-		{#if $user && $user.groupID}
+		{#if $user && groupId}
 			<ChallengePools />
 		{:else}
 			<h1>Start here!</h1>

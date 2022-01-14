@@ -10,6 +10,7 @@ amplify init
 echo "amplify push"
 amplify push
 echo "creating branch " + $university
+echo "lightbulb-learning-cad-git-$university-lightbulb-learning.vercel.app"
 git branch $university
 git checkout $university
 git push -u origin $university

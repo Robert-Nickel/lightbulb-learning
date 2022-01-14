@@ -35,8 +35,15 @@
 
 	async function createChallengePool() {
 		try {
+			const ownerString = $user.id.toString();
+			console.log("os", ownerString);
+
 			await DataStore.save(
-				new ChallengePool({ description: createChallengePoolDescription, owner: $user.id, groupID })
+				new ChallengePool({ 
+					description: createChallengePoolDescription, 
+					owner: "ownerString",
+					groupID 
+				})
 			);
 		} catch (error) {
 			console.log(error);

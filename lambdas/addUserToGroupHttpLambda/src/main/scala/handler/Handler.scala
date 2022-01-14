@@ -53,6 +53,17 @@ class Handler {
       val jwtResponse = lambdaClient.invoke(jwtLambdaRequest)
       val parsedResponse = Json.parse(new String(jwtResponse.payload().asByteArray(), StandardCharsets.ISO_8859_1)).as[JWTResponse]
 
+      val amountOfGroups = parsedResponse.amountOfGroups
+      println("amountOfGroups:" + amountOfGroups)
+
+      if(amountOfGroups != 0) {
+            return APIGatewayV2HTTPResponse
+        .builder()
+        .withStatusCode(500)
+        .withBody("{\"statusText\": \"User ist bereits in einer Gruppe!\"}")
+        .build()
+      }
+
       val addUserLambdaName = findFunctionName(lambdaClient, "InfrastructureStack-addUserToGroupLambda")
 
       println("addUserLambdaName: " + addUserLambdaName)

@@ -62,6 +62,17 @@ class Handler {
       val userPoolId = parsedResponse.userpool
       val userName = parsedResponse.usermail
       
+      val amountOfGroups = parsedResponse.amountOfGroups
+      println("amountOfGroups:" + amountOfGroups)
+
+      if(amountOfGroups != 0) {
+            return APIGatewayV2HTTPResponse
+        .builder()
+        .withStatusCode(500)
+        .withBody("{\"statusText\": \"User ist bereits in einer Gruppe!\"}")
+        .build()
+      }
+
       val httpClient = ApacheHttpClient.builder().build();
       val cognitoClient = CognitoIdentityProviderClient
         .builder()

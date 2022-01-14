@@ -25,7 +25,7 @@
 
 	async function fetchChallengePools() {
 		try {
-			groupID = await getGroup();
+			groupID = await getGroup()[0];
 		} catch (error) {
 			console.error(error);
 		}
@@ -35,16 +35,11 @@
 
 	async function createChallengePool() {
 		try {
-			const ownerString = $user.id.toString();
-			console.log("os", ownerString);
-
-			await DataStore.save(
-				new ChallengePool({ 
-					description: createChallengePoolDescription, 
-					owner: "ownerString",
-					groupID 
-				})
-			);
+			await DataStore.save(new ChallengePool({
+				description: createChallengePoolDescription,
+				owner: $user.id,
+				groupID
+			}));
 		} catch (error) {
 			console.log(error);
 		}

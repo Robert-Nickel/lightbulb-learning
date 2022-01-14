@@ -9,7 +9,6 @@ import com.amazonaws.services.lambda.runtime.events.{
 import software.amazon.awssdk.http.apache.ApacheHttpClient;
 import scala.language.implicitConversions
 import software.amazon.awssdk.http.SdkHttpClient;
-// import scala.jdk.CollectionConverters.MapHasAsJava
 
 import little.json.*
 import little.json.Implicits.{*, given}
@@ -22,13 +21,14 @@ import software.amazon.awssdk.services.iam.IamClient;
 import software.amazon.awssdk.services.iam.model.ListRolesRequest;
 import software.amazon.awssdk.services.sns.SnsClient;
 import software.amazon.awssdk.services.sns.model.{MessageAttributeValue, PublishRequest, PublishResponse};
-
 import software.amazon.awssdk.services.lambda.LambdaClient;
 import software.amazon.awssdk.services.lambda.model.{InvokeRequest, ListFunctionsRequest};
 import software.amazon.awssdk.core.SdkBytes;
+import java.nio.charset.StandardCharsets
 
 import scala.collection.JavaConverters._
 import scala.collection.mutable.ArrayBuffer
+import java.io.StringWriter
 
 class Handler {
   def handle(
@@ -38,11 +38,29 @@ class Handler {
     if (apiGatewayEvent != null && apiGatewayEvent.getBody() != null) {
 
       val eventBody = apiGatewayEvent.getBody()
-      val createGroupInfo = Json.parse(eventBody).as[CreateGroupInfo]
-      val groupName = createGroupInfo.groupName     // "Testgruppe5"
-      val userName =  createGroupInfo.userName      // "piskdvzrxkglrtskft@kvhrw.com"
-      val userPoolId = createGroupInfo.userPoolId   // "eu-central-1_bAc9VMMys"
-      val roleType = createGroupInfo.roleType       // "Free" // Standard | Premium
+      val eventInfo = Json.parse(eventBody).as[EventInfo]
+      val groupName = eventInfo.groupName     // "Testgruppe5"
+      val roleType = eventInfo.roleType
+      
+      val lambdaClient = LambdaClient
+      .builder()
+      .region(Region.EU_CENTRAL_1)
+      .httpClient(ApacheHttpClient.builder().build())
+      .build()
+      
+      val jwtLambdaName = findFunctionName(lambdaClient, "InfrastructureStack-jwtHandler")
+
+      val jwtLambdaRequest = (
+        InvokeRequest.builder()
+          .functionName(jwtLambdaName)
+          .payload(SdkBytes.fromUtf8String(Json.toJson(eventBody)))
+          .build()
+      )
+
+      val jwtResponse = lambdaClient.invoke(jwtLambdaRequest)
+      val parsedResponse = Json.parse(new String(jwtResponse.payload().asByteArray(), StandardCharsets.ISO_8859_1)).as[JWTResponse]
+      val userPoolId = parsedResponse.userpool
+      val userName = parsedResponse.usermail
       
       val httpClient = ApacheHttpClient.builder().build();
       val cognitoClient = CognitoIdentityProviderClient
@@ -76,38 +94,27 @@ class Handler {
             .httpClient(httpClient)
             .build()
 
-      val lambdaClient = LambdaClient
-          .builder()
-          .region(Region.EU_CENTRAL_1)
-          .httpClient(httpClient)
-          .build()
-
-      val lambdaListFunctionsRequest = (
-      ListFunctionsRequest.builder()
-        .build()
-      )
-
-      val lambdaListFunctions = lambdaClient.listFunctions(lambdaListFunctionsRequest).functions()
-
-      val validInvokeFunctions = lambdaListFunctions.asScala.filter(x => x.functionName().startsWith("InfrastructureStack-addUserToGroupLambda")).toArray
-
-      var lambdaName = ""
-      if(validInvokeFunctions.length > 0) {
-        lambdaName = validInvokeFunctions(0).functionName()
-      } else {
-        println("No valid invoke function found! [addUserToGroup]")
-      }
-
+      val lambdaName = findFunctionName(lambdaClient, "InfrastructureStack-addUserToGroupLambda")
       println("lambdaName: " + lambdaName)  
-      // val lambdaName = "InfrastructureStack-addUserToGroupLambda87BA65DB-f1AgUynB3tqA"
+
+
+      val jsonGroupInfo = Json.obj(
+        "groupName" ->  groupName, 
+        "userName" -> userName,
+        "userPoolId" ->  userPoolId
+      )
+      val buf = StringWriter()
+      val out = JsonWriter(buf)
+      out.write(jsonGroupInfo)
+      println("jsonGroupInfo")
+      println(jsonGroupInfo)
 
       val lambdaRequest = (
         InvokeRequest.builder()
           .functionName(lambdaName)
-          .payload(SdkBytes.fromUtf8String(Json.toJson(eventBody)))
+          .payload(SdkBytes.fromUtf8String(buf.toString))
           .build()
       )
-
 
       val request: CreateGroupRequest = (
       CreateGroupRequest.builder()
@@ -116,7 +123,8 @@ class Handler {
         .description(roleType)
         .build()
       )
-      
+
+      val createGroupInfo = CreateGroupInfo(groupName, userName, userPoolId, roleType)
       val response = cognitoClient.createGroup(request);
       val addUserToGroupEvent = createGroupInfo.toAddUserToGroupEvent()
 
@@ -138,6 +146,24 @@ class Handler {
         .withBody(s"${apiGatewayEvent.getBody()}")
         .build()
     }
+  }
+
+    def findFunctionName(lambdaClient: LambdaClient, findFunctionName: String): String = { 
+      val lambdaListFunctionsRequest = (ListFunctionsRequest.builder().build())
+      val lambdaListFunctions = lambdaClient.listFunctions(lambdaListFunctionsRequest).functions()
+
+      val validInvokeFunctions = lambdaListFunctions
+        .asScala
+        .filter(x => x.functionName().startsWith(findFunctionName))
+        .toArray
+
+      var lambdaName = ""
+      if(validInvokeFunctions.length > 0) {
+        lambdaName = validInvokeFunctions(0).functionName()
+      } else {
+        println("No valid invoke function found!" +  findFunctionName )
+      }
+      lambdaName
   }
  
 }

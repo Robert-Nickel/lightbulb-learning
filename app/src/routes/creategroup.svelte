@@ -24,17 +24,15 @@
 			return;
 		}
 
+		const jwtToken = await (await Auth.currentSession()).getAccessToken().getJwtToken()
+
 		var myHeaders = new Headers();
 		myHeaders.append('Content-Type', 'application/json');
 
-		// TODO: change this hardcoded userpool to be custom for premium instances
-		const userPoolId = 'eu-central-1_ioweDqC3S';
-
 		const body = {
-			userName,
-			userPoolId,
 			groupName,
-			roleType
+			roleType,
+			jwtToken
 		};
 
 		var requestOptions = {

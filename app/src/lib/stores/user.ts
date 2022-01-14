@@ -2,7 +2,7 @@ import { writable } from 'svelte/store';
 import type { User } from '@supabase/supabase-js';
 import { supabase } from '$lib/supabaseClient';
 
-export const { set, subscribe } = writable<User>(supabase.auth.user());
+const { set, subscribe } = writable<User>(supabase.auth.user());
 
 supabase.auth.onAuthStateChange((event, session) => {
 	if (event == 'SIGNED_OUT') {

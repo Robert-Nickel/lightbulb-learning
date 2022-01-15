@@ -11,7 +11,7 @@ rm -rf src/aws-exports.js
 echo "amplify push"
 amplify push
 sleep 2
-rm -rf src/aws-exports.js
+mv src/aws-exports.js src/aws-exports.cjs
 echo "creating branch " + $university
 echo "lightbulb-learning-cad-git-$university-lightbulb-learning.vercel.app"
 git branch $university

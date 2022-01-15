@@ -2,13 +2,14 @@ echo "What is the name of the university"
 read university
 mv ../app/amplify/team-provider-info.json ../app/amplify/team-provider-info-old.json 
 cd ../app
+cp src/aws-exports.js src/aws-exports.cjs
 echo "amplify init"
 echo "prod" | amplify init
-cp src/aws-exports.js src/aws-exports.cjs
-echo "amplify re-init"
-amplify init
+sleep 2
+rm -rf src/aws-exports.js
 echo "amplify push"
 amplify push
+rm -rf src/aws-exports.js
 echo "creating branch " + $university
 echo "lightbulb-learning-cad-git-$university-lightbulb-learning.vercel.app"
 git branch $university

@@ -16,11 +16,7 @@ echo "creating branch " + $university
 echo "lightbulb-learning-cad-git-$university-lightbulb-learning.vercel.app"
 git branch $university
 git checkout $university
+sed -i 's/long run./long run at $university./' ./src/lib/components/StartPage.svelte
+git add .
+git commit -m "initial commit for $university"
 git push -u origin $university
-
-# OPTIONAL:
-# Open amplify in aws console
-# Open new app
-# Backend environment
-# Set up Amplify Studio -> On
-# Data -> Save and deploy -> Deploy

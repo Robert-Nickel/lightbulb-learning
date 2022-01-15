@@ -21,3 +21,11 @@ git commit -m "initial commit for $university"
 git push -u origin $university
 echo "---------------------------------------ENJOY------------------------------------------"
 echo "https://lightbulb-learning-cad-git-$university-lightbulb-learning.vercel.app"
+
+echo "Next step is to add custom admin_of_group Attribute"
+# Next Steps -> add custom admin_of_group Attribute
+# user.custom:admin_of_group: Attribute does not exist in the schema.
+echo "Select User Pool"
+amplify console auth
+echo "Next click on Attributes in the left hand navigation and click Add custom attribute."
+echo "Create admin_of_group of type String with default settings"

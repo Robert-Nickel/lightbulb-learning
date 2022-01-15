@@ -43,6 +43,10 @@ Ein Beispiel: Legt ein Nutzer eine offene Frage an, so wirft die App ein "OpenQu
     - Version Control (Git)
 ## Multi-User
 ## Multi-Tenancy
+To add a premium tenant run the script [create_amplify_app.sh](../infrastructure/create_amplify_app.sh) and follow the instructions. 
+
+// TODO: describe free and standard Multi-Tenancy with Groups 
+
 ## Commercial SaaS
   - Cost analysis
   - Commercial Model

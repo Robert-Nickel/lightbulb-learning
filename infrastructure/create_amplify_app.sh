@@ -13,10 +13,11 @@ amplify push
 sleep 2
 mv src/aws-exports.js src/aws-exports.cjs
 echo "creating branch " + $university
-echo "lightbulb-learning-cad-git-$university-lightbulb-learning.vercel.app"
 git branch $university
 git checkout $university
-sed -i 's/long run./long run at $university./' ./src/lib/components/StartPage.svelte
+sed -i "s/long run./long run at $university./" ./src/lib/components/StartPage.svelte
 git add .
 git commit -m "initial commit for $university"
 git push -u origin $university
+echo "---------------------------------------ENJOY------------------------------------------"
+echo "https://lightbulb-learning-cad-git-$university-lightbulb-learning.vercel.app"

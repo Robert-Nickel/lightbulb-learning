@@ -13,15 +13,13 @@
 
 <h1>Challenge Pools</h1>
 
-<main class="container">
-	{#each challengePools as challengePool}
-		<div on:click={() => goto(`/challengepool/${challengePool.id}`)}>
-			<article class="challengepool">
-				{challengePool.description}
-			</article>
-		</div>
-	{/each}
-</main>
+{#each challengePools as challengePool}
+	<div on:click={() => goto(`/challengepool/${challengePool.id}`)}>
+		<article class="challengepool">
+			{challengePool.description}
+		</article>
+	</div>
+{/each}
 
 <div class="space-y-4">
 	<div class="flex justify-between space-x-2">

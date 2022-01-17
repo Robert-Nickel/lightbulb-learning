@@ -3,7 +3,7 @@
  * Do not make direct changes to the file.
  */
 
- export interface paths {
+export interface paths {
   "/": {
     get: {
       responses: {
@@ -1129,11 +1129,20 @@ export interface definitions {
 }
 
 export interface parameters {
-  /** @description Preference */
+  /**
+   * @description Preference
+   * @enum {string}
+   */
   preferParams: "params=single-object";
-  /** @description Preference */
+  /**
+   * @description Preference
+   * @enum {string}
+   */
   preferReturn: "return=representation" | "return=minimal" | "return=none";
-  /** @description Preference */
+  /**
+   * @description Preference
+   * @enum {string}
+   */
   preferCount: "count=none";
   /** @description Filtering Columns */
   select: string;

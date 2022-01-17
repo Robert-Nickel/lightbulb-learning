@@ -202,13 +202,13 @@ export async function fetchMyOpenAnswers(openQuestionId): Promise<OpenAnswerType
     return keysToCamelCase(data)
 }
 
-export async function fetchMyLatestOpenAnswer(openQuestionId): Promise<OpenAnswerType> {
+export async function fetchLatestOpenAnswer(openQuestionId, userId): Promise<OpenAnswerType> {
     const { data, error } =
         await supabase
             .from<OpenAnswerTypeDB>(openAnswersTable)
             .select()
             .eq('open_question', openQuestionId)
-            .eq('owner', supabase.auth.user().id)
+            .eq('owner', userId)
             .order('version', { ascending: false })
             .limit(1)
     printIf(error)

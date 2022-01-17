@@ -16,7 +16,7 @@
 		saveOpenAnswer,
 		saveOpenAnswerDraft,
 		supabase,
-		fetchMyLatestOpenAnswer
+		fetchLatestOpenAnswer
 	} from '$lib/supabaseClient';
 	import { user } from '$lib/stores/user';
 
@@ -30,7 +30,7 @@
 	onMount(async () => {
 		const openQuestionId = $page.params.slug;
 		openQuestion = await fetchOpenQuestion(openQuestionId);
-		myOpenAnswer = await fetchMyLatestOpenAnswer(openQuestion.id);
+		myOpenAnswer = await fetchLatestOpenAnswer(openQuestion.id, supabase.auth.user().id);
 		myOpenAnswerDraft = await fetchMyOpenAnswerDraft(openQuestion.id);
 		openAnswersOfOthers = await fetchOpenAnswersOfOthers(openQuestion.id);
 	});

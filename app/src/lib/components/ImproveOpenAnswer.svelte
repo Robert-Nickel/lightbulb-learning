@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-
 	import {
 		deleteOpenAnswerDraft,
 		fetchMyOpenAnswerDraft,
@@ -9,8 +8,9 @@
 		saveOpenAnswer,
 		saveOpenAnswerDraft
 	} from '$lib/supabaseClient';
-	import { onMount } from 'svelte';
 	import Toast from './Toast.svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
+	const dispatch = createEventDispatcher();
 
 	export let openAnswer: OpenAnswerType;
 	let myOpenAnswerDraft: OpenAnswerDraftType;
@@ -39,11 +39,11 @@
 				const improvedOpenAnswer = await saveOpenAnswer(
 					myOpenAnswerDraft.answerText,
 					myOpenAnswerDraft.openQuestion,
-					openAnswer.version++
+					openAnswer.version + 1
 				);
 				myOpenAnswerDraft = await deleteOpenAnswerDraft(myOpenAnswerDraft.id);
 				toast.showSuccessToast('Open Answer improved!');
-				await goto('/openanswer/' + improvedOpenAnswer.id);
+				dispatch('openAnswerImproved', improvedOpenAnswer.id);
 			}}
 			class="w-32">Publish</button
 		>

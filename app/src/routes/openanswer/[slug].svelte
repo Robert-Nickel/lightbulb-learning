@@ -14,11 +14,10 @@
 		OpenFeedbackDraftType,
 		OpenFeedbackType,
 		OpenQuestionType,
-		supabase,
 		saveOpenFeedbackDraft,
 		deleteOpenFeedbackDraft,
 		saveOpenFeedback,
-		fetchMyLatestOpenAnswer
+		fetchLatestOpenAnswer
 	} from '$lib/supabaseClient';
 	import { goto } from '$app/navigation';
 	import { user } from '$lib/stores/user';
@@ -35,14 +34,14 @@
 	let isLatest = false;
 
 	onMount(async () => {
-		console.log('on mount...');
 		refresh($page.params.slug);
 	});
 
 	async function refresh(openAnswerId) {
 		console.log('refreshing ...');
 		openAnswer = await fetchOpenAnswer(openAnswerId);
-		latestOpenAnswer = await fetchMyLatestOpenAnswer(openAnswer.openQuestion);
+		latestOpenAnswer = await fetchLatestOpenAnswer(openAnswer.openQuestion, openAnswer.owner);
+		console.log({ latestOpenAnswer });
 		if (latestOpenAnswer) {
 			isLatest = latestOpenAnswer.version == openAnswer.version;
 		}
@@ -82,7 +81,7 @@
 				{/each}
 				{#if isLatest}
 					{#if improvingAnswer}
-						<ImproveOpenAnswer {openAnswer} />
+						<ImproveOpenAnswer {openAnswer} on:openAnswerImproved={(e) => refresh(e.detail)} />
 					{:else}
 						<div class="mb-4">Do you want to improve your answer based on this feedback?</div>
 						<button class="outline" on:click={() => (improvingAnswer = !improvingAnswer)}
@@ -90,7 +89,7 @@
 						>
 					{/if}
 				{:else}
-					<div class="mb-4"><i>Attention: This is an old version of your answer.</i></div>
+					<div class="mb-4"><i>Attention: This is an old version.</i></div>
 					<button
 						on:click={() => {
 							goto('/openanswer/' + latestOpenAnswer.id);

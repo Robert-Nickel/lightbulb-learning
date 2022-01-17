@@ -52,7 +52,7 @@
 			<h1>{openQuestion.questionText}</h1>
 
 			{#if myOpenAnswer}
-				<a href={`/openanswer/${myOpenAnswer.id}`}>
+				<a href={`/openanswer/${myOpenAnswer.id}`} class="light-link">
 					<article class="yours hoverable">
 						<i>This is your answer: </i>{myOpenAnswer.answerText}
 					</article>

@@ -14,7 +14,7 @@
 <h1>Challenge Pools</h1>
 
 {#each challengePools as challengePool}
-	<a href={`/challengepool/${challengePool.id}`}>
+	<a href={`/challengepool/${challengePool.id}`} class="light-link">
 		<article class="challengepool">
 			{challengePool.description}
 		</article>

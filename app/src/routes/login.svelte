@@ -3,19 +3,17 @@
 
 	let loading = false;
 	let email;
-	let showCheckMail = false;
+	let message;
 
 	const handleLogin = async () => {
-		try {
-			loading = true;
-			const { error } = await user.signIn(email);
-			if (error) throw error;
-		} catch (error) {
-			console.log(error.error_description || error.message);
-		} finally {
-			loading = false;
-			showCheckMail = true;
+		loading = true;
+		const { error } = await user.signIn(email);
+		if (error) {
+			message = error.message;
+		} else {
+			message = 'Check your email for the login link!';
 		}
+		loading = false;
 	};
 </script>
 
@@ -31,7 +29,7 @@
 					<input type="email" placeholder="learn@everyday.org" bind:value={email} />
 					<input type="submit" value={'Send magic link'} disabled={loading} />
 				</div>
-				{#if showCheckMail}<b>Check your email for the login link!</b>{/if}
+				{#if message}<b>{message}</b>{/if}
 			</div>
 		</form>
 	</article>

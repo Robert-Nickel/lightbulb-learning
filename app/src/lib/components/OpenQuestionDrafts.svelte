@@ -34,7 +34,7 @@
 				const newOpenQuestionDraft = await saveOpenQuestionDraft(newOpenQuestionDraftText, challengePool.id);
 				openQuestionDrafts.push(newOpenQuestionDraft);
 				newOpenQuestionDraftText = '';
-				document.getElementById('openQuestionDraftAnswerText').focus();
+				// TODO: focus the answer input
 			}}
 			class="w-32 mt-4">Save</button
 		>

@@ -97,6 +97,8 @@ export async function fetchMyOpenQuestionDrafts(challengePoolId: string): Promis
 }
 
 export async function saveOpenQuestionDraft(questionText: string, challengePoolId: string): Promise<OpenQuestionDraftType> {
+    console.log("saving open question draft: " + questionText + " challenge pool id: " + challengePoolId)
+
     const { data, error } = await supabase
         .from<OpenQuestionDraftTypeDB>(openQuestionDraftsTable)
         .insert({

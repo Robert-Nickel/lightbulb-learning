@@ -84,13 +84,14 @@
 						<ImproveOpenAnswer {openAnswer} on:openAnswerImproved={(e) => refresh(e.detail)} />
 					{:else}
 						<div class="mb-4">Do you want to improve your answer based on this feedback?</div>
-						<button class="outline" on:click={() => (improvingAnswer = !improvingAnswer)}
+						<button class="outline w-48" on:click={() => (improvingAnswer = !improvingAnswer)}
 							>Improve Answer</button
 						>
 					{/if}
 				{:else}
 					<div class="mb-4"><i>Attention: This is an old version.</i></div>
 					<button
+					class="w-48"
 						on:click={() => {
 							goto('/openanswer/' + latestOpenAnswer.id);
 							refresh(latestOpenAnswer.id);

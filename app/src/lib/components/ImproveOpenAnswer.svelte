@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import {
 		deleteOpenAnswerDraft,
 		fetchMyOpenAnswerDraft,
+		fetchMyOpenAnswers,
 		OpenAnswerDraftType,
 		OpenAnswerType,
 		saveOpenAnswer,
@@ -19,6 +19,7 @@
 
 	onMount(async () => {
 		myOpenAnswerDraft = await fetchMyOpenAnswerDraft(openAnswer.openQuestion);
+		openAnswerDraftText = openAnswer.answerText;
 	});
 </script>
 

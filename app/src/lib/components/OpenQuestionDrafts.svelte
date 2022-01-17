@@ -31,9 +31,8 @@
 	<div>
 		<button
 			on:click={async () => {
-				const newOpenQuestionDraft = await saveOpenQuestionDraft(newOpenQuestionDraftText, challengePool.id);
-				console.log({ newOpenQuestionDraft });
-				openQuestionDrafts.push(newOpenQuestionDraft);
+				await saveOpenQuestionDraft(newOpenQuestionDraftText, challengePool.id);
+				openQuestionDrafts = await fetchMyOpenQuestionDrafts(challengePool.id);
 				newOpenQuestionDraftText = '';
 				// TODO: focus the answer input
 			}}

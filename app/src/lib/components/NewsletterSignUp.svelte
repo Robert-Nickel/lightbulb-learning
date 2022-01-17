@@ -9,7 +9,7 @@
 		>
 			<input type="text" name="email" placeholder="email@example.com" id="tlemail" />
 			<input type="hidden" value="1" name="embed" />
-			<input type="submit" value="Subscribe" />
+			<input type="submit" class="outline" value="Subscribe" />
 			<p>
 				This is a monthly curated newsletter about the product, stories of success and failure, lessons
 				learned and my insights on this journey.

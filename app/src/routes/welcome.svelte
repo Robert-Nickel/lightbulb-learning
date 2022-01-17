@@ -7,7 +7,6 @@
 		updateProfile,
 		saveUniversity,
 		saveProfile,
-		ProfileType,
 		fetchUniversity
 	} from '$lib/supabaseClient';
 	import { onMount } from 'svelte';

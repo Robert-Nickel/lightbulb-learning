@@ -43,7 +43,9 @@
 		console.log('refreshing ...');
 		openAnswer = await fetchOpenAnswer(openAnswerId);
 		latestOpenAnswer = await fetchMyLatestOpenAnswer(openAnswer.openQuestion);
-		isLatest = latestOpenAnswer.version == openAnswer.version;
+		if (latestOpenAnswer) {
+			isLatest = latestOpenAnswer.version == openAnswer.version;
+		}
 
 		openQuestion = await fetchOpenQuestion(openAnswer.openQuestion);
 		myOpenFeedback = await fetchMyOpenFeedback(openAnswer.id);

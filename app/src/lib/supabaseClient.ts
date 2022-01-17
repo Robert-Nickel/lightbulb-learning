@@ -109,11 +109,12 @@ export async function saveOpenQuestionDraft(questionText: string, challengePoolI
 }
 
 export async function updateOpenQuestionDraftWithAnswer(id: string, answerText: string) {
-    const { error } = await supabase
+    const { data, error } = await supabase
         .from<OpenQuestionDraftTypeDB>(openQuestionDraftsTable)
         .update({ answer_text: answerText })
         .eq('id', id)
     printIf(error)
+    return data
 }
 
 export async function deleteAnswerFromOpenQuestionDraft(id: string) {

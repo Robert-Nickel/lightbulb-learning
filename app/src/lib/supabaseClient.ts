@@ -7,6 +7,59 @@ const supabaseAnonKey = import.meta.env.VITE_SVELTE_APP_SUPABASE_ANON_KEY;
 
 export const supabase = createClient(supabaseUrl.toString(), supabaseAnonKey.toString())
 
+export async function fetchMyProfile(): Promise<ProfileType> {
+    const { data, error } = await supabase.from<ProfileTypeDB>(profilesTable)
+        .select()
+        .eq('user_id', supabase.auth.user().id)
+        .maybeSingle();
+    printIf(error)
+    return keysToCamelCase(data)
+}
+
+export async function saveProfile(firstName: string, lastName: string, university: UniversityType): Promise<ProfileType> {
+    const { data, error } = await supabase.from<ProfileTypeDB>(profilesTable)
+        .insert({
+            user_id: supabase.auth.user().id,
+            first_name: firstName,
+            last_name: lastName,
+            university: university.id
+        })
+        .single()
+    printIf(error)
+    return keysToCamelCase(data)
+}
+
+export async function updateProfile(id: string, firstName: string, lastName: string, university: UniversityType): Promise<ProfileType> {
+    const { data, error } = await supabase.from<ProfileTypeDB>(profilesTable)
+        .update({
+            id,
+            user_id: supabase.auth.user().id,
+            first_name: firstName,
+            last_name: lastName,
+            university: university.id
+        })
+        .single()
+    printIf(error)
+    return keysToCamelCase(data)
+}
+
+export async function fetchUniversity(id: string): Promise<UniversityType> {
+    const { data, error } = await supabase.from<UniversityTypeDB>(universitiesTable).select().eq('id', id).maybeSingle()
+    printIf(error)
+    return keysToCamelCase(data)
+}
+export async function fetchUniversityByName(name: string): Promise<UniversityType> {
+    const { data, error } = await supabase.from<UniversityTypeDB>(universitiesTable).select().eq('name', name).maybeSingle()
+    printIf(error)
+    return keysToCamelCase(data)
+}
+
+export async function saveUniversity(name: string) {
+    const { data, error } = await supabase.from<UniversityTypeDB>(universitiesTable).insert({ name }).single()
+    printIf(error)
+    return keysToCamelCase(data)
+}
+
 export async function fetchChallengePools(): Promise<ChallengePoolType[]> {
     const { data, error } = await supabase.from<ChallengePoolTypeDB>(challengePoolsTable).select()
     printIf(error)
@@ -258,6 +311,8 @@ export const openAnswerDraftsTable = 'open_answer_drafts';
 export const openAnswersTable = 'open_answers';
 export const openFeedbackDraftsTable = 'open_feedback_drafts';
 export const openFeedbackTable = 'open_feedback';
+export const profilesTable = 'profiles';
+export const universitiesTable = 'universities';
 
 export type ChallengePoolType = CamelCasedPropertiesDeep<definitions['challenge_pools']>;
 export type OpenQuestionDraftType = CamelCasedPropertiesDeep<definitions['open_question_drafts']>;
@@ -266,6 +321,8 @@ export type OpenAnswerDraftType = CamelCasedPropertiesDeep<definitions['open_ans
 export type OpenAnswerType = CamelCasedPropertiesDeep<definitions['open_answers']>;
 export type OpenFeedbackDraftType = CamelCasedPropertiesDeep<definitions['open_feedback_drafts']>;
 export type OpenFeedbackType = CamelCasedPropertiesDeep<definitions['open_feedback']>;
+export type ProfileType = CamelCasedPropertiesDeep<definitions['profiles']>;
+export type UniversityType = CamelCasedPropertiesDeep<definitions['universities']>;
 
 export type ChallengePoolTypeDB = definitions['challenge_pools'];
 export type OpenQuestionDraftTypeDB = definitions['open_question_drafts'];
@@ -274,3 +331,5 @@ export type OpenAnswerDraftTypeDB = definitions['open_answer_drafts'];
 export type OpenAnswerTypeDB = definitions['open_answers'];
 export type OpenFeedbackDraftTypeDB = definitions['open_feedback_drafts'];
 export type OpenFeedbackTypeDB = definitions['open_feedback'];
+export type ProfileTypeDB = definitions['profiles'];
+export type UniversityTypeDB = definitions['universities'];

@@ -42,3 +42,8 @@ npm run build
 ```
 
 > You can preview the built app with `npm run preview`, regardless of whether you installed an adapter. This should _not_ be used to serve your app in production.
+
+Clone schema from LightbulbLearningDev to LightbulbLearning
+`pg_dump --schema=public -h db.ckjsuzpqlhcjbonsnuzp.supabase.co -U postgres > db_dump.sql`
+
+`psql -h db.rkpsxesguhibbzhylmsd.supabase.co -U postgres < db_dump.sql`

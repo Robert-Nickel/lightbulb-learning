@@ -3,7 +3,7 @@
  * Do not make direct changes to the file.
  */
 
-export interface paths {
+ export interface paths {
   "/": {
     get: {
       responses: {
@@ -711,6 +711,201 @@ export interface paths {
       };
     };
   };
+  "/profiles": {
+    get: {
+      parameters: {
+        query: {
+          created_at?: parameters["rowFilter.profiles.created_at"];
+          id?: parameters["rowFilter.profiles.id"];
+          first_name?: parameters["rowFilter.profiles.first_name"];
+          last_name?: parameters["rowFilter.profiles.last_name"];
+          university?: parameters["rowFilter.profiles.university"];
+          user_id?: parameters["rowFilter.profiles.user_id"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["profiles"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** profiles */
+          profiles?: definitions["profiles"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          created_at?: parameters["rowFilter.profiles.created_at"];
+          id?: parameters["rowFilter.profiles.id"];
+          first_name?: parameters["rowFilter.profiles.first_name"];
+          last_name?: parameters["rowFilter.profiles.last_name"];
+          university?: parameters["rowFilter.profiles.university"];
+          user_id?: parameters["rowFilter.profiles.user_id"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          created_at?: parameters["rowFilter.profiles.created_at"];
+          id?: parameters["rowFilter.profiles.id"];
+          first_name?: parameters["rowFilter.profiles.first_name"];
+          last_name?: parameters["rowFilter.profiles.last_name"];
+          university?: parameters["rowFilter.profiles.university"];
+          user_id?: parameters["rowFilter.profiles.user_id"];
+        };
+        body: {
+          /** profiles */
+          profiles?: definitions["profiles"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
+  "/universities": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.universities.id"];
+          created_at?: parameters["rowFilter.universities.created_at"];
+          name?: parameters["rowFilter.universities.name"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["universities"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** universities */
+          universities?: definitions["universities"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.universities.id"];
+          created_at?: parameters["rowFilter.universities.created_at"];
+          name?: parameters["rowFilter.universities.name"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.universities.id"];
+          created_at?: parameters["rowFilter.universities.created_at"];
+          name?: parameters["rowFilter.universities.name"];
+        };
+        body: {
+          /** universities */
+          universities?: definitions["universities"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
 }
 
 export interface definitions {
@@ -883,23 +1078,62 @@ export interface definitions {
      */
     created_at: string;
   };
+  profiles: {
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at?: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     * @default extensions.uuid_generate_v4()
+     */
+    id: string;
+    /**
+     * Format: text
+     * @default Unknown
+     */
+    first_name: string;
+    /**
+     * Format: text
+     * @default Stranger
+     */
+    last_name: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `universities.id`.<fk table='universities' column='id'/>
+     */
+    university?: string;
+    /** Format: uuid */
+    user_id: string;
+  };
+  universities: {
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     * @default extensions.uuid_generate_v4()
+     */
+    id: string;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at?: string;
+    /** Format: text */
+    name: string;
+  };
 }
 
 export interface parameters {
-  /**
-   * @description Preference
-   * @enum {string}
-   */
+  /** @description Preference */
   preferParams: "params=single-object";
-  /**
-   * @description Preference
-   * @enum {string}
-   */
+  /** @description Preference */
   preferReturn: "return=representation" | "return=minimal" | "return=none";
-  /**
-   * @description Preference
-   * @enum {string}
-   */
+  /** @description Preference */
   preferCount: "count=none";
   /** @description Filtering Columns */
   select: string;
@@ -1007,6 +1241,28 @@ export interface parameters {
   "rowFilter.open_questions.owner": string;
   /** Format: timestamp with time zone */
   "rowFilter.open_questions.created_at": string;
+  /** @description profiles */
+  "body.profiles": definitions["profiles"];
+  /** Format: timestamp with time zone */
+  "rowFilter.profiles.created_at": string;
+  /** Format: uuid */
+  "rowFilter.profiles.id": string;
+  /** Format: text */
+  "rowFilter.profiles.first_name": string;
+  /** Format: text */
+  "rowFilter.profiles.last_name": string;
+  /** Format: uuid */
+  "rowFilter.profiles.university": string;
+  /** Format: uuid */
+  "rowFilter.profiles.user_id": string;
+  /** @description universities */
+  "body.universities": definitions["universities"];
+  /** Format: uuid */
+  "rowFilter.universities.id": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.universities.created_at": string;
+  /** Format: text */
+  "rowFilter.universities.name": string;
 }
 
 export interface operations {}

@@ -54,7 +54,7 @@
 			{#if myOpenAnswer}
 				<a href={`/openanswer/${myOpenAnswer.id}`} class="light-link">
 					<article class="yours hoverable">
-						<i>This is your answer: </i>{myOpenAnswer.answerText}
+						<i>Your answer: </i>{myOpenAnswer.answerText}
 					</article>
 				</a>
 			{:else if myOpenAnswerDraft}

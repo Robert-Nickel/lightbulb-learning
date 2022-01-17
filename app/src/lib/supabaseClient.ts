@@ -2,8 +2,8 @@ import { createClient } from '@supabase/supabase-js'
 import type { definitions } from '$lib/models/supabase';
 import { CamelCasedPropertiesDeep, keysToCamelCase } from 'object-key-convert';
 
-const supabaseUrl = import.meta.env.VITE_SVELTE_APP_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SVELTE_APP_SUPABASE_ANON_KEY;
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 export const supabase = createClient(supabaseUrl.toString(), supabaseAnonKey.toString())
 

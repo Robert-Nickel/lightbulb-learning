@@ -5,9 +5,9 @@
 	export let route = '/';
 </script>
 
-<div class="back mt-8 text-sm" on:click={() => goto(route)}>
+<a class="back mt-8 text-sm block" href={route}>
 	{text}
-</div>
+</a>
 
 <style>
 	.back {

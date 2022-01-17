@@ -37,7 +37,7 @@
 			<h3 class="mt-10">Open Questions</h3>
 		{/if}
 		{#each openQuestions as openQuestion}
-			<div on:click={() => goto(`/openquestion/${openQuestion.id}`)}>
+			<a href={`/openquestion/${openQuestion.id}`}>
 				{#if openQuestion.owner == $user.id}
 					<article class="yours question">
 						<i>You asked:</i>
@@ -48,7 +48,7 @@
 						{openQuestion.questionText}
 					</article>
 				{/if}
-			</div>
+			</a>
 		{/each}
 
 		{#if $user.id == challengePool.owner}

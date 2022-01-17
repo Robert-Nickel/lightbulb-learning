@@ -52,9 +52,11 @@
 			<h1>{openQuestion.questionText}</h1>
 
 			{#if myOpenAnswer}
-				<article class="yours hoverable" on:click={() => goto(`/openanswer/${myOpenAnswer.id}`)}>
-					<i>This is your answer: </i>{myOpenAnswer.answerText}
-				</article>
+				<a href={`/openanswer/${myOpenAnswer.id}`}>
+					<article class="yours hoverable">
+						<i>This is your answer: </i>{myOpenAnswer.answerText}
+					</article>
+				</a>
 			{:else if myOpenAnswerDraft}
 				<div class="flex justify-between space-x-2 mt-2">
 					<div class="w-full">{myOpenAnswerDraft.answerText}</div>
@@ -94,7 +96,7 @@
 		{/if}
 
 		{#each openAnswersOfOthers as openAnswerOfOther}
-			<article class="hoverable" on:click={() => goto(`/openanswer/${openAnswerOfOther.id}`)}>
+			<article class="hoverable" href={`/openanswer/${openAnswerOfOther.id}`}>
 				{openAnswerOfOther.answerText}
 			</article>
 		{/each}

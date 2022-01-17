@@ -14,11 +14,11 @@
 <h1>Challenge Pools</h1>
 
 {#each challengePools as challengePool}
-	<div on:click={() => goto(`/challengepool/${challengePool.id}`)}>
+	<a href={`/challengepool/${challengePool.id}`}>
 		<article class="challengepool">
 			{challengePool.description}
 		</article>
-	</div>
+	</a>
 {/each}
 
 <div class="space-y-4">

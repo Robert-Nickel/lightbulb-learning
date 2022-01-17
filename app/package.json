@@ -3,7 +3,7 @@
 	"version": "0.0.1",
 	"scripts": {
 		"dev": "npm run genTypes && svelte-kit dev",
-		"build": "svelte-kit build",
+		"build": "npm run genTypes && svelte-kit build",
 		"package": "svelte-kit package",
 		"preview": "svelte-kit preview",
 		"check": "svelte-check --tsconfig ./tsconfig.json",
@@ -11,7 +11,7 @@
 		"lint": "prettier --ignore-path .gitignore --check --plugin-search-dir=. . && eslint --ignore-path .gitignore .",
 		"format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. .",
 		"compile": "tsc",
-		"genTypes": "npx openapi-typescript https://ckjsuzpqlhcjbonsnuzp.supabase.co/rest/v1/?apikey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MjA2NjY2MCwiZXhwIjoxOTU3NjQyNjYwfQ.mcsY3yNw8SMmcd_ltjLIRpnvnH2Kr1mq-IC2bXUFuSI -- --output src/lib/models/supabase.ts"
+		"genTypes": "npx openapi-typescript https://ckjsuzpqlhcjbonsnuzp.supabase.co/rest/v1/?apikey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MjA2NjY2MCwiZXhwIjoxOTU3NjQyNjYwfQ.mcsY3yNw8SMmcd_ltjLIRpnvnH2Kr1mq-IC2bXUFuSI > src/lib/models/supabase.ts"
 	},
 	"devDependencies": {
 		"@rollup/plugin-json": "^4.1.0",

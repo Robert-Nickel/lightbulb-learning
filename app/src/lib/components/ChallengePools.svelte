@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import { fetchChallengePools, ChallengePoolType, saveChallengePool } from '$lib/supabaseClient';
 	import { onMount } from 'svelte';
 
@@ -15,7 +14,7 @@
 
 {#each challengePools as challengePool}
 	<a href={`/challengepool/${challengePool.id}`} class="light-link">
-		<article class="challengepool">
+		<article class="hoverable">
 			{challengePool.description}
 		</article>
 	</a>
@@ -45,7 +44,7 @@
 </div>
 
 <style>
-	.challengepool:hover {
+	.hoverable:hover {
 		background-color: var(--card-sectionning-background-color);
 	}
 </style>

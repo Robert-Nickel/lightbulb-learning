@@ -6,3 +6,7 @@
 .light-link {
 	color: inherit;
 }
+
+.light-link:hover {
+	text-decoration: none;
+}

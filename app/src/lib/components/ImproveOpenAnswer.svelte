@@ -31,7 +31,7 @@
 				myOpenAnswerDraft = await deleteOpenAnswerDraft(myOpenAnswerDraft.id);
 				openAnswerDraftText = '';
 			}}
-			class="w-48 secondary outline">Delete</button
+			class="w-48 h-12 secondary outline">Delete</button
 		>
 	</div>
 	<div>
@@ -46,7 +46,7 @@
 				toast.showSuccessToast('Open Answer improved!');
 				dispatch('openAnswerImproved', improvedOpenAnswer.id);
 			}}
-			class="w-32">Publish</button
+			class="w-32 mt-4">Publish</button
 		>
 	</div>
 {:else}

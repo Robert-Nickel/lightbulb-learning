@@ -3,10 +3,8 @@
 	import { page } from '$app/stores';
 	import Back from '$lib/components/Back.svelte';
 	import Toast from '$lib/components/Toast.svelte';
-	import { goto } from '$app/navigation';
 	import {
 		deleteOpenAnswerDraft,
-		fetchMyOpenAnswers,
 		fetchMyOpenAnswerDraft,
 		fetchOpenAnswersOfOthers,
 		fetchOpenQuestion,
@@ -89,7 +87,7 @@
 						on:click={async () => {
 							myOpenAnswerDraft = await deleteOpenAnswerDraft(myOpenAnswerDraft.id);
 						}}
-						class="w-48 secondary outline">Delete</button
+						class="w-48 h-12 secondary outline">Delete</button
 					>
 				</div>
 				<div>
@@ -102,7 +100,7 @@
 							myOpenAnswerDraft = await deleteOpenAnswerDraft(myOpenAnswerDraft.id);
 							toast.showSuccessToast('Open Answer created!');
 						}}
-						class="w-32">Publish</button
+						class="w-32 mt-4">Publish</button
 					>
 				</div>
 			{:else}

@@ -114,11 +114,11 @@
 							myOpenFeedbackDraft = await deleteOpenFeedbackDraft(myOpenFeedbackDraft.id);
 							openFeedbackDraftText = '';
 						}}
-						class="w-48 secondary outline">Delete</button
+						class="w-48 h-12 secondary outline">Delete</button
 					>
 				</div>
 				<div>
-					<button on:click={publishOpenFeedback} class="w-32">Publish</button>
+					<button on:click={publishOpenFeedback} class="w-32 mt-4">Publish</button>
 				</div>
 			{:else}
 				<div class="flex justify-between space-x-2 mt-2">

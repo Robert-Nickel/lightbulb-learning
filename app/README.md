@@ -47,3 +47,15 @@ Clone schema from LightbulbLearningDev to LightbulbLearning
 `pg_dump --schema=public -h db.ckjsuzpqlhcjbonsnuzp.supabase.co -U postgres > db_dump.sql`
 
 `psql -h db.rkpsxesguhibbzhylmsd.supabase.co -U postgres < db_dump.sql`
+
+Clone schema from LightbulbLearning to LightbulbLearningDev
+`pg_dump --schema=public -h db.rkpsxesguhibbzhylmsd.supabase.co -U postgres > db_dump.sql`
+
+`psql -h db.ckjsuzpqlhcjbonsnuzp.supabase.co -U postgres < db_dump.sql`
+
+create table if not exists public.open_feedback_drafts (
+    id uuid not null primary key DEFAULT uuid_generate_v4 (),
+    feedback_text text not null,
+    open_answer uuid references public.open_answers on delete cascade not null,
+    created_at timestamp with time zone default now() not null
+);

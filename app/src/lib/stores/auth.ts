@@ -25,8 +25,6 @@ export function printToken() {
 }
 
 export async function getJWTToken() {
-	// const res = await Auth.currentSession()
-	// return res.getIdToken()
 	const res = await Auth.currentSession()
 	return res.getAccessToken().getJwtToken()
 }

@@ -10,17 +10,16 @@ import { onMount } from 'svelte';
 	let level = 'Free';
 
 	onMount( async () => {
-		var myHeaders = new Headers();
+		let myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-		let jwtToken = await getJWTToken();
+		const jwtToken = await getJWTToken();
 		console.log("jwtToken", jwtToken)
-		var raw = JSON.stringify({'jwtToken': jwtToken});
-		var requestOptions = {
+		const raw = JSON.stringify({'jwtToken': jwtToken});
+		const requestOptions = {
             method: "POST",
             headers: myHeaders,
             body: raw,
         };
-
 		fetch(`${baseUrl}/getGroup`, requestOptions)
             .then((response) => response.json())
             .then((result) => { 
@@ -36,7 +35,7 @@ import { onMount } from 'svelte';
 		<Hamburger bind:open={sidebar} />
 	</nav>
 	<nav><a href="/" class="text-white">Lightbulb Learning</a></nav>
-	<nav class="ml-4">{level}</nav>
+	<nav class="ml-4"><a href="/upgrade" class="text-white">{level}</a></nav>
 </header>
 
 <!--

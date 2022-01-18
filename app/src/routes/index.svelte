@@ -4,14 +4,15 @@
 
 	import { user } from '$lib/stores/user';
 	import { onMount } from 'svelte';
-	import { fetchMyProfile } from '$lib/supabaseClient';
+	import { fetchProfile } from '$lib/supabaseClient';
 	import { goto } from '$app/navigation';
 
 	onMount(async () => {
-		const profile = await fetchMyProfile();
-		console.log({ profile });
-		if (!profile) {
-			goto('/welcome');
+		if ($user) {
+			const profile = await fetchProfile($user.id);
+			if (!profile) {
+				goto('/welcome');
+			}
 		}
 	});
 </script>

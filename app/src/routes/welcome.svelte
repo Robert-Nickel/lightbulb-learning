@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-
+	import { user } from '$lib/stores/user';
 	import {
-		fetchMyProfile,
+		fetchProfile,
 		fetchUniversityByName,
 		updateProfile,
 		saveUniversity,
@@ -19,7 +19,7 @@
 	let profileId: string;
 
 	onMount(async () => {
-		const profile = await fetchMyProfile();
+		const profile = await fetchProfile($user.id);
 		if (profile) {
 			profileId = profile.id;
 			firstName = profile.firstName;

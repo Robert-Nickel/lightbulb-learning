@@ -1129,20 +1129,11 @@ export interface definitions {
 }
 
 export interface parameters {
-  /**
-   * @description Preference
-   * @enum {string}
-   */
+  /** @description Preference */
   preferParams: "params=single-object";
-  /**
-   * @description Preference
-   * @enum {string}
-   */
+  /** @description Preference */
   preferReturn: "return=representation" | "return=minimal" | "return=none";
-  /**
-   * @description Preference
-   * @enum {string}
-   */
+  /** @description Preference */
   preferCount: "count=none";
   /** @description Filtering Columns */
   select: string;

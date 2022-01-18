@@ -7,10 +7,10 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 export const supabase = createClient(supabaseUrl.toString(), supabaseAnonKey.toString())
 
-export async function fetchMyProfile(): Promise<ProfileType> {
+export async function fetchProfile(userId: string): Promise<ProfileType> {
     const { data, error } = await supabase.from<ProfileTypeDB>(profilesTable)
         .select()
-        .eq('user_id', supabase.auth.user().id)
+        .eq('user_id', userId)
         .maybeSingle();
     printIf(error)
     return keysToCamelCase(data)

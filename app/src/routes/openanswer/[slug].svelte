@@ -91,7 +91,7 @@
 				{:else}
 					<div class="mb-4"><i>Attention: This is an old version.</i></div>
 					<button
-					class="w-48"
+						class="w-48"
 						on:click={() => {
 							goto('/openanswer/' + latestOpenAnswer.id);
 							refresh(latestOpenAnswer.id);
@@ -137,6 +137,7 @@
 						class="w-48 ">Save</button
 					>
 				</div>
+				<i>The feedback is private - only you and the owner of the answer can see it.</i>
 			{/if}
 		{/if}
 		<Back text="Back to Open Question" route="/openquestion/{openQuestion.id}" />

@@ -32,8 +32,38 @@
 		openQuestion = await fetchOpenQuestion(openQuestionId);
 		myOpenAnswer = await fetchLatestOpenAnswer(openQuestion.id, supabase.auth.user().id);
 		myOpenAnswerDraft = await fetchMyOpenAnswerDraft(openQuestion.id);
-		openAnswersOfOthers = await fetchOpenAnswersOfOthers(openQuestion.id);
+		const openAnswersOfOthersWithNonLatest = await fetchOpenAnswersOfOthers(openQuestion.id);
+		openAnswersOfOthers = await filterNonLatest(openAnswersOfOthersWithNonLatest);
 	});
+
+	async function filterNonLatest(openAnswersOfOthers) {
+		// O(n^2) <- thats though, isn't there a better way?
+		// It filters out the non-latest open answers
+		let openAnswers = openAnswersOfOthers;
+		console.log('open answers of others: ', openAnswers);
+		let indizesToRemove: number[] = [];
+		for (let i = 0; i < openAnswers.length; i++) {
+			console.log('starting loop. i = ' + i);
+			let openAnswer = openAnswers[i];
+			for (let otherOpenAnswer of openAnswers) {
+				if (openAnswer.owner == otherOpenAnswer.owner) {
+					console.log('openAnswer.version' + openAnswer.version);
+					console.log('otherOpenAnswer.version' + otherOpenAnswer.version);
+					if (openAnswer.version < otherOpenAnswer.version) {
+						indizesToRemove.push(i);
+						console.log('pushing ' + i + ' to be removed');
+						break;
+					}
+				}
+			}
+		}
+		indizesToRemove
+			.sort((a, b) => 0 - (a > b ? 1 : -1)) // sort descending
+			.forEach((index) => {
+				openAnswers.splice(index, 1);
+			});
+		return openAnswers;
+	}
 </script>
 
 <main class="container">
@@ -95,6 +125,7 @@
 			{/if}
 		{/if}
 
+		<!-- This shows the old and the new versions of the answers! -->
 		{#each openAnswersOfOthers as openAnswerOfOther}
 			<a href={`/openanswer/${openAnswerOfOther.id}`} class="light-link">
 				<article class="hoverable">

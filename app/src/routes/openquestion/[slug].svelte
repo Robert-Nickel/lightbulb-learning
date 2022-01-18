@@ -40,18 +40,13 @@
 		// O(n^2) <- thats though, isn't there a better way?
 		// It filters out the non-latest open answers
 		let openAnswers = openAnswersOfOthers;
-		console.log('open answers of others: ', openAnswers);
 		let indizesToRemove: number[] = [];
 		for (let i = 0; i < openAnswers.length; i++) {
-			console.log('starting loop. i = ' + i);
 			let openAnswer = openAnswers[i];
 			for (let otherOpenAnswer of openAnswers) {
-				if (openAnswer.owner == otherOpenAnswer.owner) {
-					console.log('openAnswer.version' + openAnswer.version);
-					console.log('otherOpenAnswer.version' + otherOpenAnswer.version);
+				if (openAnswer.owner == otherOpenAnswer.owner) {					
 					if (openAnswer.version < otherOpenAnswer.version) {
 						indizesToRemove.push(i);
-						console.log('pushing ' + i + ' to be removed');
 						break;
 					}
 				}

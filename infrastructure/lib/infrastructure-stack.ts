@@ -131,6 +131,14 @@ export class InfrastructureStack extends cdk.Stack {
     })
     jwtHandler.addToRolePolicy(jwtHandlerPolicy)
 
+    const getGroupInformation = buildLambdaJS('getGroupInformation', this);
+    const getGroupInformationPolicy = new PolicyStatement({
+      resources: ["*"], 
+      actions: ["lambda:InvokeFunction", "cognito-idp:GetGroup"],
+      effect: Effect.ALLOW
+    })
+    getGroupInformation.addToRolePolicy(getGroupInformationPolicy)
+
     const httpApi = new HttpApi(this, 'lightbulb-learning-api-gateway', {
       /* description: 'Learning API', */
       corsPreflight: {
@@ -188,6 +196,11 @@ export class InfrastructureStack extends cdk.Stack {
       path: '/authenticaterequest',
       methods: [HttpMethod.GET],
       integration: new HttpLambdaIntegration('authenticaterequest', listUserGroupsHttpLambda)
+    });
+    httpApi.addRoutes({
+      path: '/get-group',
+      methods: [HttpMethod.POST, HttpMethod.OPTIONS],
+      integration: new HttpLambdaIntegration('getGroupInformation', getGroupInformation)
     });
 
     new cdk.CfnOutput(this, 'API Gateway URL', {

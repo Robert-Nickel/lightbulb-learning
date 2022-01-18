@@ -39,7 +39,7 @@
 		{#each openQuestions as openQuestion}
 			<a href={`/openquestion/${openQuestion.id}`} class="light-link">
 				{#if openQuestion.owner == $user.id}
-					<article class="yours question">
+					<article class="yours hoverable">
 						<i>You asked:</i>
 						{openQuestion.questionText}
 					</article>

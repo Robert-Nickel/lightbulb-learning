@@ -96,9 +96,11 @@
 		{/if}
 
 		{#each openAnswersOfOthers as openAnswerOfOther}
-			<article class="hoverable" href={`/openanswer/${openAnswerOfOther.id}`}>
-				{openAnswerOfOther.answerText}
-			</article>
+			<a href={`/openanswer/${openAnswerOfOther.id}`} class="light-link">
+				<article class="hoverable">
+					{openAnswerOfOther.answerText}
+				</article>
+			</a>
 		{/each}
 
 		<Back text="Back to Challenge Pool" route="/challengepool/{openQuestion.challengePool}" />

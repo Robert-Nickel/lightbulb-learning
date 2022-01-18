@@ -5,6 +5,20 @@ const jwt_decode = require("jwt-decode");
 const { CognitoIdentityServiceProvider } = require('aws-sdk')
 
 exports.handler = function (event, context, callback) {
+    console.log("event", event);
+    // if event == OPTIONS return 200!
+    if(event.requestContext.http.method === 'OPTIONS') {
+        const response = {
+            statusCode: 200,
+            headers: {
+            //   "Access-Control-Allow-Origin" : "*", // Required for CORS support to work
+            //   "Access-Control-Allow-Credentials" : true // Required for cookies, authorization headers with HTTPS
+            },
+            body: JSON.stringify({ "message": "Hello World!" })
+          };
+        callback(null, response);
+    }
+
     const jwt_token = event.jwtToken; // for userPool
     const decoded_token = jwt_decode(jwt_token);
     const decoded_token_header = jwt_decode(jwt_token, { header: true })

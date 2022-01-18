@@ -198,7 +198,7 @@ export class InfrastructureStack extends cdk.Stack {
       integration: new HttpLambdaIntegration('authenticaterequest', listUserGroupsHttpLambda)
     });
     httpApi.addRoutes({
-      path: '/get-group',
+      path: '/getGroup',
       methods: [HttpMethod.POST, HttpMethod.OPTIONS],
       integration: new HttpLambdaIntegration('getGroupInformation', getGroupInformation)
     });

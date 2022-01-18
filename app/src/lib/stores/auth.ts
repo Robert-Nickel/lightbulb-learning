@@ -24,11 +24,17 @@ export function printToken() {
 	})
 }
 
+export async function getJWTToken() {
+	// const res = await Auth.currentSession()
+	// return res.getIdToken()
+	const res = await Auth.currentSession()
+	return res.getAccessToken().getJwtToken()
+}
+
 export async function getGroup() {
 	const res = await Auth.currentSession()
 	const group = res.getIdToken().payload["cognito:groups"]
 	return group
-
 }
 
 if (browser) {

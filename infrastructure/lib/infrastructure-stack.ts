@@ -189,8 +189,8 @@ export class InfrastructureStack extends cdk.Stack {
     httpApi.addRoutes({
       path: '/updateGroup',
       methods: [HttpMethod.POST, HttpMethod.OPTIONS],
-      integration: new HttpLambdaIntegration('updateGroup', updateGroupHttpLambda),
-      authorizer: authorizer,
+      integration: new HttpLambdaIntegration('updateGroup', updateGroupHttpLambda)
+      // authorizer: authorizer,
     });
     httpApi.addRoutes({
       path: '/authenticaterequest',

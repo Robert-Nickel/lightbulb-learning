@@ -1,7 +1,7 @@
 <script lang="ts">
-	import OpenQuestionDrafts from '$lib/components/OpenQuestionDrafts.svelte';
+	import CreateOpenQuestion from '$lib/components/CreateOpenQuestion.svelte';
 	import { goto } from '$app/navigation';
-	import { onMount } from 'svelte';
+	import { onMount } from 'svelte'
 	import { page } from '$app/stores';
 	import Back from '$lib/components/Back.svelte';
 	import {
@@ -31,7 +31,7 @@
 	{#if challengePool}
 		<h1>{challengePool.description}</h1>
 
-		<OpenQuestionDrafts {challengePool} on:openQuestionCommitted={refresh} />
+		<CreateOpenQuestion {challengePool} on:openQuestionCommitted={refresh} />
 
 		{#if openQuestions.length > 0}
 			<h3 class="mt-10">Open Questions</h3>

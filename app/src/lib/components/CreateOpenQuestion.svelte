@@ -10,7 +10,8 @@
 		updateOpenQuestionDraftWithAnswer,
 		deleteAnswerFromOpenQuestionDraft,
 		saveOpenQuestion,
-		deleteOpenQuestionDraft
+		deleteOpenQuestionDraft,
+		saveCorrectOpenAnswer
 	} from '$lib/supabaseClient';
 
 	export let challengePool: ChallengePoolType;
@@ -96,7 +97,11 @@
 					<button
 						disabled={!openQuestionDraft.answerText}
 						on:click={async () => {
-							await saveOpenQuestion(openQuestionDraft.questionText, openQuestionDraft.challengePool);
+							const openQuestion = await saveOpenQuestion(
+								openQuestionDraft.questionText,
+								openQuestionDraft.challengePool
+							);
+							await saveCorrectOpenAnswer(openQuestionDraft.answerText, openQuestion.id);
 							dispatch('openQuestionCommitted');
 							toast.showSuccessToast('Open Question created');
 							await deleteOpenQuestionDraft(openQuestionDraft.id);

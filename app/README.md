@@ -53,9 +53,15 @@ Clone schema from LightbulbLearning to LightbulbLearningDev
 
 `psql -h db.ckjsuzpqlhcjbonsnuzp.supabase.co -U postgres < db_dump.sql`
 
-create table if not exists public.open_feedback_drafts (
+Connect to LightbulbLearningDev
+`psql -h db.ckjsuzpqlhcjbonsnuzp.supabase.co -U postgres`
+
+Create a table with delete cascade
+```
+create table if not exists public.correct_open_answers (
     id uuid not null primary key DEFAULT uuid_generate_v4 (),
-    feedback_text text not null,
-    open_answer uuid references public.open_answers on delete cascade not null,
+    answer_text text not null,
+    open_question uuid references public.open_questions on delete cascade not null,
     created_at timestamp with time zone default now() not null
 );
+```

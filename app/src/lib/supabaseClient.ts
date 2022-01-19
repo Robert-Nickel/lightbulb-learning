@@ -160,6 +160,16 @@ export async function saveOpenQuestion(questionText: string, challengePoolId: st
     return keysToCamelCase(data)
 }
 
+export async function saveCorrectOpenAnswer(answerText: string, openQuestionId: string): Promise<CorrectOpenAnswerType> {
+    const { data, error } = await supabase.from<CorrectOpenAnswerTypeDB>(correctAnswersTable).insert({
+        answer_text: answerText,
+        open_question: openQuestionId,
+        owner: supabase.auth.user().id
+    }).single()
+    printIf(error)
+    return keysToCamelCase(data)
+}
+
 export async function fetchMyOpenAnswerDraft(openQuestionId: string): Promise<OpenAnswerDraftType> {
     const { data, error } =
         await supabase
@@ -310,6 +320,7 @@ function printIf(error) {
 export const challengePoolsTable = 'challenge_pools';
 export const openQuestionDraftsTable = 'open_question_drafts';
 export const openQuestionsTable = 'open_questions';
+export const correctAnswersTable = 'correct_open_answers';
 export const openAnswerDraftsTable = 'open_answer_drafts';
 export const openAnswersTable = 'open_answers';
 export const openFeedbackDraftsTable = 'open_feedback_drafts';
@@ -320,6 +331,7 @@ export const universitiesTable = 'universities';
 export type ChallengePoolType = CamelCasedPropertiesDeep<definitions['challenge_pools']>;
 export type OpenQuestionDraftType = CamelCasedPropertiesDeep<definitions['open_question_drafts']>;
 export type OpenQuestionType = CamelCasedPropertiesDeep<definitions['open_questions']>;
+export type CorrectOpenAnswerType = CamelCasedPropertiesDeep<definitions['correct_open_answers']>;
 export type OpenAnswerDraftType = CamelCasedPropertiesDeep<definitions['open_answer_drafts']>;
 export type OpenAnswerType = CamelCasedPropertiesDeep<definitions['open_answers']>;
 export type OpenFeedbackDraftType = CamelCasedPropertiesDeep<definitions['open_feedback_drafts']>;
@@ -330,6 +342,7 @@ export type UniversityType = CamelCasedPropertiesDeep<definitions['universities'
 export type ChallengePoolTypeDB = definitions['challenge_pools'];
 export type OpenQuestionDraftTypeDB = definitions['open_question_drafts'];
 export type OpenQuestionTypeDB = definitions['open_questions'];
+export type CorrectOpenAnswerTypeDB = definitions['correct_open_answers'];
 export type OpenAnswerDraftTypeDB = definitions['open_answer_drafts'];
 export type OpenAnswerTypeDB = definitions['open_answers'];
 export type OpenFeedbackDraftTypeDB = definitions['open_feedback_drafts'];

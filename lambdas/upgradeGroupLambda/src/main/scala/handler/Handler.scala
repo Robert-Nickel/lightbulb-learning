@@ -31,14 +31,18 @@ import software.amazon.awssdk.core.SdkBytes;
 
 import scala.collection.JavaConverters._
 import scala.collection.mutable.ArrayBuffer
+// import scala.collection.mutable.HashMap
 
 class Handler {
   def handle(
       apiGatewayEvent: APIGatewayV2HTTPEvent,
       context: Context
   ): APIGatewayV2HTTPResponse = {
+    println("apiGatewayEvent")
+    println(apiGatewayEvent)
     if (apiGatewayEvent != null && apiGatewayEvent.getBody() != null) {
 
+      println("POST...")
       val eventBody = apiGatewayEvent.getBody()
       val updateGroupInfo = Json.parse(eventBody).as[UpdateGroupInfo]
       val groupName = updateGroupInfo.groupName     // "Testgruppe5"
@@ -58,17 +62,6 @@ class Handler {
             .region(Region.AWS_GLOBAL)
             .httpClient(httpClient)
             .build()
-   
-      // val getGroupRequest = (
-      //   GetGroupRequest.builder()
-      //     .groupName(groupName)
-      //     .userPoolId(userPoolId)
-      //     .build()
-      // )
-
-      // val groupDescription = cognitoClient.getGroup(getGroupRequest).group().description()
-
-      // println("groupDescription: " + groupDescription)
 
       val request: UpdateGroupRequest = (
       UpdateGroupRequest.builder()

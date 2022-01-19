@@ -160,6 +160,16 @@ export async function saveOpenQuestion(questionText: string, challengePoolId: st
     return keysToCamelCase(data)
 }
 
+export async function fetchCorrectOpenAnswer(openQuestionId: string): Promise<CorrectOpenAnswerType> {
+    const { data, error } = await supabase.from<CorrectOpenAnswerTypeDB>(correctAnswersTable)
+        .select()
+        .eq('open_question', openQuestionId)
+        .eq('owner', supabase.auth.user().id)
+        .maybeSingle()
+    printIf(error)
+    return keysToCamelCase(data)
+}
+
 export async function saveCorrectOpenAnswer(answerText: string, openQuestionId: string): Promise<CorrectOpenAnswerType> {
     const { data, error } = await supabase.from<CorrectOpenAnswerTypeDB>(correctAnswersTable).insert({
         answer_text: answerText,

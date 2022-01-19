@@ -14,20 +14,24 @@
 		saveOpenAnswer,
 		saveOpenAnswerDraft,
 		supabase,
-		fetchLatestOpenAnswer
+		fetchLatestOpenAnswer,
+		CorrectOpenAnswerType,
+		fetchCorrectOpenAnswer
 	} from '$lib/supabaseClient';
 	import { user } from '$lib/stores/user';
 
 	let openQuestion: OpenQuestionType;
+	let correctOpenAnswer: CorrectOpenAnswerType;
 	let myOpenAnswerDraft: OpenAnswerDraftType;
 	let myOpenAnswer: OpenAnswerType;
 	let openAnswersOfOthers: OpenAnswerType[] = [];
-	let toast;
 	let openAnswerDraftText = '';
+	let toast;
 
 	onMount(async () => {
 		const openQuestionId = $page.params.slug;
 		openQuestion = await fetchOpenQuestion(openQuestionId);
+		correctOpenAnswer = await fetchCorrectOpenAnswer(openQuestionId);
 		myOpenAnswer = await fetchLatestOpenAnswer(openQuestion.id, supabase.auth.user().id);
 		myOpenAnswerDraft = await fetchMyOpenAnswerDraft(openQuestion.id);
 		const openAnswersOfOthersWithNonLatest = await fetchOpenAnswersOfOthers(openQuestion.id);
@@ -42,7 +46,7 @@
 		for (let i = 0; i < openAnswers.length; i++) {
 			let openAnswer = openAnswers[i];
 			for (let otherOpenAnswer of openAnswers) {
-				if (openAnswer.owner == otherOpenAnswer.owner) {					
+				if (openAnswer.owner == otherOpenAnswer.owner) {
 					if (openAnswer.version < otherOpenAnswer.version) {
 						indizesToRemove.push(i);
 						break;
@@ -63,7 +67,9 @@
 	{#if openQuestion}
 		{#if openQuestion.owner == $user.id}
 			<h1 class="yours pl-4">{openQuestion.questionText}</h1>
-
+			{#if correctOpenAnswer}
+				<div class="mb-4"><i>Correct answer: </i>{correctOpenAnswer.answerText}</div>
+			{/if}
 			<div class="mb-4">
 				{#if openAnswersOfOthers.length == 0}
 					<i>No one has answered your question yet.</i>

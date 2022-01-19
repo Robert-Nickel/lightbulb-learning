@@ -10,7 +10,7 @@
 	});
 </script>
 
-<h1>Challenge Pools</h1>
+<h1 id="challenge-pools-title">Challenge Pools</h1>
 
 {#each challengePools as challengePool}
 	<a href={`/challengepool/${challengePool.id}`} class="light-link">

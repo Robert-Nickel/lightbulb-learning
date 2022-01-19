@@ -13,7 +13,7 @@
 			myHeaders.append('Content-Type', 'application/json');
 			const jwtToken = await getJWTToken();
 			const raw = JSON.stringify({
-				'Authorization': JSON.stringify(jwtToken)
+				'jwtToken': JSON.stringify(jwtToken)
 			});
 			const requestOptions = {
 				method: 'POST',

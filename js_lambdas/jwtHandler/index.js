@@ -41,7 +41,8 @@ exports.handler = function (event, context, callback) {
                         returnObj = {
                             'usermail': usermail.Value, 
                             'userpool': userpool,
-                            'amount_of_groups': decoded['cognito:groups'] ? decoded['cognito:groups'].length : 0
+                            'amount_of_groups': decoded['cognito:groups'] ? decoded['cognito:groups'].length : 0,
+                            'admin_of_group' : decoded['custom:admin_of_group']
                         }
                         callback(null, returnObj);
                     }

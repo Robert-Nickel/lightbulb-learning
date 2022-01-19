@@ -1,5 +1,5 @@
 <p class="principle">
-    💡&nbsp;&nbsp;Our vision is to optimize for the learning itself - because
+    💡&nbsp;&nbsp;Our vision is to optimize for learning itself - because
     the demands to the graduates of the future are different from those of the
     past. They need to communicate, collaborate, analyze complex problems and
     develop solutions in teams. Using access to the internet and knowing how to

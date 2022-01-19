@@ -57,7 +57,7 @@
 					await deleteChallengePool(challengePool.id);
 					goto('/');
 				}}
-				class="secondary outline w-auto mb-0 hover:text-orange-700">Delete {challengePool.description}</button
+				class="secondary outline w-auto mb-0 hover-red">Delete {challengePool.description}</button
 			>
 		{/if}
 	{/if}

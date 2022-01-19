@@ -10,3 +10,7 @@
 .light-link:hover {
 	text-decoration: none;
 }
+
+.hover-red:hover {
+	@apply text-orange-700
+}

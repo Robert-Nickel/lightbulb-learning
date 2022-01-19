@@ -3,7 +3,7 @@
 
 	async function signIn() {
 		const res = await supabase.auth.signIn({ provider: 'github' });
-		console.log({ res });
+		console.log('signIn result', JSON.stringify(res, null, 2));
 	}
 </script>
 

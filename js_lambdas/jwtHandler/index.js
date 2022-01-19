@@ -5,6 +5,7 @@ const jwt_decode = require("jwt-decode");
 const { CognitoIdentityServiceProvider } = require('aws-sdk')
 
 exports.handler = function (event, context, callback) {
+    console.log("event", event);
     const jwt_token = event.jwtToken;
     const decoded_token = jwt_decode(jwt_token);
     const decoded_token_header = jwt_decode(jwt_token, { header: true })
@@ -44,6 +45,8 @@ exports.handler = function (event, context, callback) {
                             'amount_of_groups': decoded['cognito:groups'] ? decoded['cognito:groups'].length : 0,
                             'admin_of_group' : decoded['custom:admin_of_group']
                         }
+
+                        console.log("returnObj: ", returnObj);
                         callback(null, returnObj);
                     }
                 });

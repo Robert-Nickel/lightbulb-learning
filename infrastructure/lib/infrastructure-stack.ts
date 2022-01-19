@@ -96,7 +96,7 @@ export class InfrastructureStack extends cdk.Stack {
     const upgradeGroupHttpLambdaPolicy = new PolicyStatement({
       resources: ["*"], 
       actions: ["cognito-idp:AdminListGroupsForUser",
-      "cognito-idp:UpdateGroup", "iam:PassRole", "iam:GetRole", "iam:ListRoles","SNS:Publish", "cognito-idp:GetGroup"
+      "cognito-idp:UpdateGroup", "iam:PassRole", "iam:GetRole", "iam:ListRoles","SNS:Publish", "cognito-idp:GetGroup", "lambda:ListFunctions", "lambda:InvokeFunction"
     ],
       effect: Effect.ALLOW
     })

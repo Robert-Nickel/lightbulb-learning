@@ -92,15 +92,15 @@ export class InfrastructureStack extends cdk.Stack {
     })
     listUserGroupsHttpLambda.addToRolePolicy(listUserGroupsHttpLambdaPolicy)
 
-    const updateGroupHttpLambda = buildLambda('updateGroupLambda', this, 60, 512)
-    const updateGroupHttpLambdaPolicy = new PolicyStatement({
+    const upgradeGroupHttpLambda = buildLambda('upgradeGroupLambda', this, 60, 512)
+    const upgradeGroupHttpLambdaPolicy = new PolicyStatement({
       resources: ["*"], 
       actions: ["cognito-idp:AdminListGroupsForUser",
       "cognito-idp:UpdateGroup", "iam:PassRole", "iam:GetRole", "iam:ListRoles","SNS:Publish", "cognito-idp:GetGroup"
     ],
       effect: Effect.ALLOW
     })
-    updateGroupHttpLambda.addToRolePolicy(updateGroupHttpLambdaPolicy)
+    upgradeGroupHttpLambda.addToRolePolicy(upgradeGroupHttpLambdaPolicy)
 
     // This is currently not required, but might be very helpful soon.
     /*
@@ -187,9 +187,9 @@ export class InfrastructureStack extends cdk.Stack {
       authorizer: authorizer,
     });
     httpApi.addRoutes({
-      path: '/updateGroup',
+      path: '/upgradeGroup',
       methods: [HttpMethod.POST, HttpMethod.OPTIONS],
-      integration: new HttpLambdaIntegration('updateGroup', updateGroupHttpLambda)
+      integration: new HttpLambdaIntegration('upgradeGroup', upgradeGroupHttpLambda),
       // authorizer: authorizer,
     });
     httpApi.addRoutes({

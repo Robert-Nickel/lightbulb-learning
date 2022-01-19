@@ -12,15 +12,15 @@
 			let myHeaders = new Headers();
 			myHeaders.append('Content-Type', 'application/json');
 			const jwtToken = await getJWTToken();
-			console.log('jwtToken', jwtToken);
-			myHeaders.append('Authorization', JSON.stringify(jwtToken));
-			const raw = JSON.stringify({});
+			const raw = JSON.stringify({
+				'Authorization': JSON.stringify(jwtToken)
+			});
 			const requestOptions = {
 				method: 'POST',
 				headers: myHeaders,
 				body: raw
 			};
-			fetch(`${baseUrl}/updateGroup`, requestOptions)
+			fetch(`${baseUrl}/upgradeGroup`, requestOptions)
 				.then((response) => response.json())
 				.then((result) => {
 					console.log(result);

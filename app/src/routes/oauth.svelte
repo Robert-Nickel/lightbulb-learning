@@ -2,7 +2,8 @@
 	import { supabase } from '$lib/supabaseClient';
 
 	async function signIn() {
-		supabase.auth.signIn({ provider: 'github' });
+		const res = await supabase.auth.signIn({ provider: 'github' });
+		console.log({ res });
 	}
 </script>
 

@@ -14,7 +14,8 @@
 		"genTypes": "npx openapi-typescript https://ckjsuzpqlhcjbonsnuzp.supabase.co/rest/v1/?apikey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MjA2NjY2MCwiZXhwIjoxOTU3NjQyNjYwfQ.mcsY3yNw8SMmcd_ltjLIRpnvnH2Kr1mq-IC2bXUFuSI > src/lib/models/supabase.ts",
 		"cypress": "cypress run",
 		"cypress:gui": "cypress open",
-		"cypress:ci": "concurrently -k -s last npm:preview npm:cypress"
+		"cypress:ci": "npm run cypress:install && concurrently -k -s last npm:preview npm:cypress",
+		"cypress:install": "cypress install"
 	},
 	"devDependencies": {
 		"@rollup/plugin-json": "^4.1.0",

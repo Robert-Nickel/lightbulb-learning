@@ -916,7 +916,6 @@ export interface paths {
     get: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.test_tokens.id"];
           refresh_token?: parameters["rowFilter.test_tokens.refresh_token"];
           email?: parameters["rowFilter.test_tokens.email"];
           created_at?: parameters["rowFilter.test_tokens.created_at"];
@@ -970,7 +969,6 @@ export interface paths {
     delete: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.test_tokens.id"];
           refresh_token?: parameters["rowFilter.test_tokens.refresh_token"];
           email?: parameters["rowFilter.test_tokens.email"];
           created_at?: parameters["rowFilter.test_tokens.created_at"];
@@ -988,7 +986,6 @@ export interface paths {
     patch: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.test_tokens.id"];
           refresh_token?: parameters["rowFilter.test_tokens.refresh_token"];
           email?: parameters["rowFilter.test_tokens.email"];
           created_at?: parameters["rowFilter.test_tokens.created_at"];
@@ -1331,16 +1328,14 @@ export interface definitions {
   };
   /** @description Used to sync refresh_tokens across cypress test executions */
   test_tokens: {
+    /** Format: text */
+    refresh_token?: string;
     /**
-     * Format: bigint
+     * Format: text
      * @description Note:
      * This is a Primary Key.<pk/>
      */
-    id: number;
-    /** Format: text */
-    refresh_token?: string;
-    /** Format: text */
-    email?: string;
+    email: string;
     /**
      * Format: timestamp with time zone
      * @default now()
@@ -1515,8 +1510,6 @@ export interface parameters {
   "rowFilter.profiles.user_id": string;
   /** @description test_tokens */
   "body.test_tokens": definitions["test_tokens"];
-  /** Format: bigint */
-  "rowFilter.test_tokens.id": string;
   /** Format: text */
   "rowFilter.test_tokens.refresh_token": string;
   /** Format: text */

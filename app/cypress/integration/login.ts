@@ -1,5 +1,5 @@
 import promisify from 'cypress-promise';
-import { studentEmail1, supabaseLogin } from '../../plugins/supabaseLogin';
+import { studentEmail1, supabaseLogin } from '../plugins/supabaseLogin';
 
 describe('Login', () => {
 	beforeEach(async () => {

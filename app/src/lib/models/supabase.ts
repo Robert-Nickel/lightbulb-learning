@@ -912,6 +912,102 @@ export interface paths {
       };
     };
   };
+  "/test_tokens": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.test_tokens.id"];
+          refresh_token?: parameters["rowFilter.test_tokens.refresh_token"];
+          email?: parameters["rowFilter.test_tokens.email"];
+          created_at?: parameters["rowFilter.test_tokens.created_at"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["test_tokens"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** test_tokens */
+          test_tokens?: definitions["test_tokens"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.test_tokens.id"];
+          refresh_token?: parameters["rowFilter.test_tokens.refresh_token"];
+          email?: parameters["rowFilter.test_tokens.email"];
+          created_at?: parameters["rowFilter.test_tokens.created_at"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.test_tokens.id"];
+          refresh_token?: parameters["rowFilter.test_tokens.refresh_token"];
+          email?: parameters["rowFilter.test_tokens.email"];
+          created_at?: parameters["rowFilter.test_tokens.created_at"];
+        };
+        body: {
+          /** test_tokens */
+          test_tokens?: definitions["test_tokens"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
   "/universities": {
     get: {
       parameters: {
@@ -1233,6 +1329,24 @@ export interface definitions {
     /** Format: uuid */
     user_id: string;
   };
+  /** @description Used to sync refresh_tokens across cypress test executions */
+  test_tokens: {
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    id: number;
+    /** Format: text */
+    refresh_token?: string;
+    /** Format: text */
+    email?: string;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at?: string;
+  };
   universities: {
     /**
      * Format: uuid
@@ -1252,11 +1366,20 @@ export interface definitions {
 }
 
 export interface parameters {
-  /** @description Preference */
+  /**
+   * @description Preference
+   * @enum {string}
+   */
   preferParams: "params=single-object";
-  /** @description Preference */
+  /**
+   * @description Preference
+   * @enum {string}
+   */
   preferReturn: "return=representation" | "return=minimal" | "return=none";
-  /** @description Preference */
+  /**
+   * @description Preference
+   * @enum {string}
+   */
   preferCount: "count=none";
   /** @description Filtering Columns */
   select: string;
@@ -1390,6 +1513,16 @@ export interface parameters {
   "rowFilter.profiles.university": string;
   /** Format: uuid */
   "rowFilter.profiles.user_id": string;
+  /** @description test_tokens */
+  "body.test_tokens": definitions["test_tokens"];
+  /** Format: bigint */
+  "rowFilter.test_tokens.id": string;
+  /** Format: text */
+  "rowFilter.test_tokens.refresh_token": string;
+  /** Format: text */
+  "rowFilter.test_tokens.email": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.test_tokens.created_at": string;
   /** @description universities */
   "body.universities": definitions["universities"];
   /** Format: uuid */

@@ -8,6 +8,7 @@ supabase.auth.onAuthStateChange((event, session) => {
 	if (event == 'SIGNED_OUT') {
 		set(null);
 	} else {
+		if (!session) return; // happens on test runs
 		set(session.user);
 	}
 });

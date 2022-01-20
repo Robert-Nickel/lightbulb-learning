@@ -23,6 +23,7 @@
 		"@zerodevx/svelte-toast": "^0.6.2",
 		"autoprefixer": "^10.4.0",
 		"cssnano": "^5.0.13",
+		"cypress-promise": "^1.1.0",
 		"cypress-social-logins": "^1.13.0",
 		"dotenv": "^10.0.0",
 		"dotenv-cli": "^4.1.1",

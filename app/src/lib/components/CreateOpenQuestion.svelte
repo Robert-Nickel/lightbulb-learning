@@ -57,7 +57,7 @@
 							await deleteOpenQuestionDraft(openQuestionDraft.id);
 							openQuestionDrafts = await fetchMyOpenQuestionDrafts(challengePool.id);
 						}}
-						class="w-48 outline secondary"
+						class="w-48 outline secondary h-12 hover-red"
 					>
 						Delete Question
 					</button>
@@ -89,7 +89,7 @@
 								deleteAnswerFromOpenQuestionDraft(openQuestionDraft.id);
 								openQuestionDrafts = await fetchMyOpenQuestionDrafts(challengePool.id);
 							}}
-							class="w-48 outline secondary h-12"
+							class="w-48 outline secondary h-12  hover-red"
 						>
 							Delete Answer
 						</button>

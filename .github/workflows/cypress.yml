@@ -4,6 +4,10 @@ on:
   push:
     branches: [supabase]
 
+env:
+  VITE_SUPABASE_URL: https://ckjsuzpqlhcjbonsnuzp.supabase.co
+  VITE_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MjA2NjY2MCwiZXhwIjoxOTU3NjQyNjYwfQ.mcsY3yNw8SMmcd_ltjLIRpnvnH2Kr1mq-IC2bXUFuSI
+
 jobs:
   cypress-run:
     runs-on: ubuntu-latest

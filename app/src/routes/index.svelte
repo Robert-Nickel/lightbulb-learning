@@ -11,11 +11,7 @@
 
 	onMount(() => {
 		Auth.currentAuthenticatedUser().then((cognitoUser) => {
-			console.log(cognitoUser);
 			groupId = cognitoUser.signInUserSession.getIdToken().payload['cognito:groups'];
-			console.log('groupId: ' + groupId);
-			console.log('$user');
-			console.log($user);
 		});
 	});
 </script>

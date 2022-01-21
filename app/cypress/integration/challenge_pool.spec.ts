@@ -16,7 +16,7 @@ describe('Challenge Pools', () => {
         cy.get('.hoverable').last().should("have.text", challengePoolName);
     });
 
-    it('open a challenge pool', () => {
+    it('opens a challenge pool', () => {
         // given
         const challengePoolName = createChallengePool()
 

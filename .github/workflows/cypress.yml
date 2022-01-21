@@ -23,16 +23,6 @@ jobs:
         run: npm run build
         working-directory: app
 
-      - name: print envs
-        env:
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY_DEV }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID_DEV }}
-        run: | 
-          echo "CYPRESS_RECORD_KEY=$CYPRESS_RECORD_KEY" \
-          echo "GITHUB_TOKEN=$GITHUB_TOKEN" \
-          echo "CYPRESS_PROJECT_ID=$CYPRESS_PROJECT_ID" \
-
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:

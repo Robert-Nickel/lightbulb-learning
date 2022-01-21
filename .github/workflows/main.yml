@@ -27,26 +27,32 @@ jobs:
       - name: install npm
         run: "sudo apt update -y && sudo apt install nodejs npm -y"
 
-      - name: install JDK
-        run: "sudo apt-get install default-jdk -y"
+      - name: Setup JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: temurin
+          java-version: 8
 
-      - name: download scala
-        run: "wget www.scala-lang.org/files/archive/scala-2.13.0.deb"
+      - name: Build and Test
+        run: sbt -v +test
 
-      - name: install scala
-        run: "sudo dpkg -i scala*.deb"
+      # - name: download scala
+      #   run: "wget www.scala-lang.org/files/archive/scala-2.13.0.deb"
 
-      - name: add sbt repo
-        run: echo deb "https://dl.bintray.com/sbt/debian /" | sudo tee -a /etc/apt/sources.list.d/sbt.list
+      # - name: install scala
+      #   run: "sudo dpkg -i scala*.deb"
 
-      - name: add public key
-        run: "sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2EE0EA64E40A89B84B2DF73499E82A75642AC823"
+      # - name: add sbt repo
+      #   run: echo deb "https://dl.bintray.com/sbt/debian /" | sudo tee -a /etc/apt/sources.list.d/sbt.list
 
-      - name: install SBT
-        run: "sudo apt-get install sbt -y"
+      # - name: add public key
+      #   run: "sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2EE0EA64E40A89B84B2DF73499E82A75642AC823"
 
-      - name: test sbt
-        run: "sbt test"
+      # - name: install SBT
+      #   run: "sudo apt-get install sbt -y"
+
+      # - name: test sbt
+      #   run: "sbt test"
 
       - name: Install AWS CDK
         run: "sudo npm install -g aws-cdk"

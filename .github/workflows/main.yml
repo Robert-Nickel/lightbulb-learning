@@ -32,6 +32,7 @@ jobs:
 
       - name: Install CDK dependencies
         run: "sudo npm install"
+        working-directory: infrastructure
 
       - name: CDK Synth
         run: cdk synth

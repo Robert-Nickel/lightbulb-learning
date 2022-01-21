@@ -10,7 +10,7 @@ describe('Challenge Pools', () => {
     it('creates a challenge pool', () => {
         // when
         const challengePoolName = createChallengePool()
-        cy.wait(500)
+        cy.wait(2000)
 
         // then
         cy.get('.hoverable').last().should("have.text", challengePoolName);
@@ -22,7 +22,7 @@ describe('Challenge Pools', () => {
 
         // when
         cy.contains(challengePoolName).click()
-        cy.wait(2_000)
+        cy.wait(2000)
 
         // then
         cy.get("h1").contains(challengePoolName)

@@ -97,7 +97,7 @@
 						<small class="text-orange-600">You have to agree to pay for a standard group.</small>
 					{/if}
 				</fieldset>
-				<button on:click={createGroup}>Create Group</button>
+				<button on:click={createGroup} class="w-48">Create Group</button>
 			{/if}
 		{:else}
 			<h1>Group created!</h1>

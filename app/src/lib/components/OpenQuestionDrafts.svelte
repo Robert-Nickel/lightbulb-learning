@@ -90,7 +90,7 @@
 
 		fetch(`${baseUrl}/commitOpenQuestion`, requestOptions)
 			.then((response) => response.text())
-			.then((result) => console.log(result))
+			.then((result) => {})
 			.catch((error) => console.log('error', error));
 	}
 </script>

@@ -22,7 +22,7 @@ describe('Challenge Pools', () => {
 
         // when
         cy.contains(challengePoolName).click()
-        cy.wait(500)
+        cy.wait(2_000)
 
         // then
         cy.get("h1").contains(challengePoolName)

@@ -16,46 +16,21 @@ exports.handler = function (event, context, callback) {
     } else {
         const jwt = JSON.parse(event.body).jwt; // for userPool
         console.log("jwt", jwt);
-        const decoded_token = jwt_decode(jwt);
-        const decoded_token_header = jwt_decode(jwt, { header: true })
-        console.log(`userpool: ${decoded_token['iss']}`)
 
-        axios.get(`${decoded_token['iss']}/.well-known/jwks.json`).then(
-            response => {
-                const valid_jwks = response
-                    .data
-                    .keys
-                    .filter(jwk => jwk['kid'] == decoded_token_header['kid'])
-
-                if (valid_jwks.length !== 1) {
-                    console.error("no valid jwk or multiple jwks found")
-                    callback("Error: no valid JWK for JWT found")
-                } else {
-                    jwk = valid_jwks[0];
-                    let decoded = jsonwebtoken.verify(jwt, jwkToPem(jwk))
-                    console.log("decoded", decoded)
-
-                    var provider = new CognitoIdentityServiceProvider();
-                    provider.getUser({
-                        AccessToken: jwt
-                    }, function (err, data) {
-                        if (err) {
-                            console.log(err, err.stack); // an error occurred
-                            callback(err);
-                        }
-                        else {
-                            console.log("data", data);
-                            const decoded_group = decoded['cognito:groups']
-                            const groupName = decoded_group ? decoded_group[0] : null
-                            if (groupName) {
-                                callback(null, groupName)
-                            } else {
-                                callback(null, "")
-                            }
-                        }
-                    });
-                }
+        new CognitoIdentityServiceProvider().getUser({
+            AccessToken: jwt
+        }, function (err, data) {
+            if (err) {
+                console.log(err, err.stack); // an error occurred
+                callback(err);
             }
+            else {
+                console.log("data", data)
+                const admin_of_group = data.UserAttributes.find(e => e.Name === 'custom:admin_of_group')
+                const toReturn = admin_of_group ? admin_of_group.Value : ""
+                callback(null, toReturn)
+            }
+        }
         )
     }
 };

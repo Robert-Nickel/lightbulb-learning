@@ -23,24 +23,19 @@
 			showYouHaveToPay = true;
 			return;
 		}
-
 		const jwtToken = await (await Auth.currentSession()).getAccessToken().getJwtToken()
-
 		var myHeaders = new Headers();
 		myHeaders.append('Content-Type', 'application/json');
-
 		const body = {
 			groupName,
 			roleType,
 			jwtToken
 		};
-
 		var requestOptions = {
 			method: 'POST',
 			headers: myHeaders,
 			body: JSON.stringify(body)
 		};
-
 		fetch(`${baseUrl}/createGroup`, requestOptions)
 			.then((response) => response.text())
 			.then((result) => {
@@ -48,6 +43,8 @@
 				console.log(result);
 			})
 			.catch((error) => console.log('error', error));
+
+			goto("/groupstatus")
 	}
 </script>
 

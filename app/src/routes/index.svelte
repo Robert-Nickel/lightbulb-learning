@@ -9,15 +9,15 @@
 
 	let groupId;
 
-	onMount( () => {
+	onMount(() => {
 		Auth.currentAuthenticatedUser().then((cognitoUser) => {
-			console.log(cognitoUser)
-			groupId = cognitoUser.signInUserSession.getIdToken().payload["cognito:groups"]
-			console.log("groupId: " + groupId );
-			console.log("$user")
-			console.log($user)
+			console.log(cognitoUser);
+			groupId = cognitoUser.signInUserSession.getIdToken().payload['cognito:groups'];
+			console.log('groupId: ' + groupId);
+			console.log('$user');
+			console.log($user);
 		});
-	})
+	});
 </script>
 
 {#if $store != null}
@@ -33,13 +33,14 @@
 			<button
 				on:click={() => {
 					goto('/joingroup');
-				}}>Join Group</button
+				}}
+				class="w-48">Join Group</button
 			>
 			<button
 				on:click={() => {
 					goto('/creategroup');
 				}}
-				class="outline">Create Group</button
+				class="outline w-48">Create Group</button
 			>
 		{/if}
 	</main>

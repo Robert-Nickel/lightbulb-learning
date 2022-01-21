@@ -60,12 +60,13 @@
 			><td><div class="lds-heart"><div /></div></td><td>Your group {groupName} was created successfully.</td
 			></tr
 		>
-		<button
+		Please logout and login again.
+		<!-- <button
 			on:click={() => {
 				goto('/');
 			}}
 			class=" mt-4 w-48">Start</button
-		>
+		> -->
 	{:else}
 		<tr
 			><td

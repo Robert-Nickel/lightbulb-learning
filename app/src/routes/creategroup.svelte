@@ -111,6 +111,6 @@
 			<b>Please logout and login to join the group yourself.</b>
 		{/if}
 	{:else}
-		<div>Please login to create a group.</div>
+		<div>Please logout and login to create a group.</div>
 	{/if}
 </main>

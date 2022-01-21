@@ -7,7 +7,7 @@ import { onMount } from 'svelte';
 	import { baseUrl } from '../awsCommon';
 	export let sidebar = false;
 	// TODO: auslesen der Description aus Gruppe
-	let level = 'Free';
+	let level = '';
 
 	onMount( async () => {
 		let myHeaders = new Headers();

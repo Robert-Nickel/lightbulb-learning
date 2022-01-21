@@ -27,6 +27,7 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           working-directory: app
+          record: true
           browser: chrome
           start: npm run preview
         env:

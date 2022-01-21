@@ -53,6 +53,11 @@ class Handler {
     if (apiGatewayEvent != null && apiGatewayEvent.getBody() != null) {
       val eventInfoBody = apiGatewayEvent.getBody()
       val eventInfo = Json.parse(eventInfoBody).as[EventInfo]
+      println("eventInfo")
+      println(eventInfo)
+
+      println("eventInfoBody")
+      println(eventInfoBody)
 
       val lambdaClient = LambdaClient
         .builder()
@@ -60,13 +65,16 @@ class Handler {
         .httpClient(ApacheHttpClient.builder().build())
         .build()
 
+      val jsonString = "{\"jwtToken\": " + eventInfo.jwtToken + "}";
+      println(jsonString)
+
       val jwtLambdaName =
         findFunctionName(lambdaClient, "InfrastructureStack-jwtHandler")
       val jwtLambdaRequest = (
         InvokeRequest
           .builder()
           .functionName(jwtLambdaName)
-          .payload(SdkBytes.fromUtf8String(Json.toJson(eventInfoBody)))
+          .payload(SdkBytes.fromUtf8String(jsonString))
           .build()
       )
 

@@ -38,12 +38,15 @@ exports.handler = function (event, context, callback) {
                         console.log("data", data);
                         // console.log("amount_of_groups", decoded['cognito:groups'].length);
                         usermail = data.UserAttributes.find( e => e.Name === 'email')
+
+                        admin_of_group = data.UserAttributes.find( e => e.Name === 'custom:admin_of_group')
+
                         userpool = decoded_token['iss'].slice(decoded_token['iss'].lastIndexOf('/') + 1)
                         returnObj = {
                             'usermail': usermail.Value, 
                             'userpool': userpool,
                             'amount_of_groups': decoded['cognito:groups'] ? decoded['cognito:groups'].length : 0,
-                            'admin_of_group' : decoded['custom:admin_of_group']
+                            'admin_of_group': admin_of_group.Value
                         }
 
                         console.log("returnObj: ", returnObj);

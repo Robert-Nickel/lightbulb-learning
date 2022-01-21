@@ -29,3 +29,7 @@ jobs:
           working-directory: app
           browser: chrome
           start: npm run preview
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY_DEV }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID_DEV }}

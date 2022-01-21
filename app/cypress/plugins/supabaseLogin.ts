@@ -5,6 +5,13 @@ import { definitions } from '../../src/lib/models/supabase';
  * We store the refresh_tokens of test users in the test_tokens table.
  * This way we can synchronize the refresh_tokens between different test runs and make sure
  * that it is always updated in sequence. Because refresh_tokens can only be used once.
+ *
+ * Troubleshooting:
+ *  getSession() call fails with 4XX server error
+ *  	Solution:
+ *       - login via browser manually using that user.
+ * 		 - copy the refresh_token from the localstorage
+ *       - set refresh_token for the user in the test_tokens table
  */
 
 export const studentEmail1 = 'll-student1@discardmail.com';

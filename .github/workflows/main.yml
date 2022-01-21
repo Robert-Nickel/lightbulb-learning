@@ -37,7 +37,8 @@ jobs:
         run: sbt -v +test
 
       - name: build scala lambdas
-        run: cd ../lambdas/ && for d in */ ; do cd "$d" && sbt assembly && cd ..; done
+        run: for d in */ ; do cd "$d" && sbt assembly && cd ..; done
+        working-directory: lambdas
 
       - name: Install AWS CDK
         run: "sudo npm install -g aws-cdk"
@@ -53,4 +54,5 @@ jobs:
       - name: CDK Deploy
         run: cdk deploy
         working-directory: infrastructure
+
 # inspired by https://github.com/AdminTurnedDevOps/YouTube/blob/main/.github/workflows/main.yml

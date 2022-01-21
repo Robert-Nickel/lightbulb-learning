@@ -26,6 +26,6 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
-          record: true
           working-directory: app
+          browser: chrome
           start: npm run preview

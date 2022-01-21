@@ -33,12 +33,13 @@ jobs:
           distribution: temurin
           java-version: 8
 
-      - name: Build and Test
-        run: sbt -v +test
-
       - name: build scala lambdas
         run: for d in */ ; do cd "$d" && sbt assembly && cd ..; done
         working-directory: lambdas
+
+      - name: build npm lambdas
+        run: for d in */ ; do cd "$d" && npm i && cd ..; done
+        working-directory: js_lambdas
 
       - name: Install AWS CDK
         run: "sudo npm install -g aws-cdk"

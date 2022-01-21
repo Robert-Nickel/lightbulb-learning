@@ -3,7 +3,7 @@ name: Deploy AWS CDK
 # Controls when the action will run.
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   #pull_request:
   #branches: [ main ]
 
@@ -36,23 +36,8 @@ jobs:
       - name: Build and Test
         run: sbt -v +test
 
-      # - name: download scala
-      #   run: "wget www.scala-lang.org/files/archive/scala-2.13.0.deb"
-
-      # - name: install scala
-      #   run: "sudo dpkg -i scala*.deb"
-
-      # - name: add sbt repo
-      #   run: echo deb "https://dl.bintray.com/sbt/debian /" | sudo tee -a /etc/apt/sources.list.d/sbt.list
-
-      # - name: add public key
-      #   run: "sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2EE0EA64E40A89B84B2DF73499E82A75642AC823"
-
-      # - name: install SBT
-      #   run: "sudo apt-get install sbt -y"
-
-      # - name: test sbt
-      #   run: "sbt test"
+      - name: build scala lambdas
+        run: cd ../lambdas/ && for d in */ ; do cd "$d" && sbt assembly && cd ..; done
 
       - name: Install AWS CDK
         run: "sudo npm install -g aws-cdk"

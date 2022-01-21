@@ -1,4 +1,5 @@
 {
-    "pluginsFile": "./cypress/plugins/index.cjs",
-    "chromeWebSecurity": false
+	"pluginsFile": "./cypress/plugins/index.cjs",
+	"chromeWebSecurity": false,
+	"projectId": "esqcjm"
 }

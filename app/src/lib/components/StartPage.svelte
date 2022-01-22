@@ -8,7 +8,7 @@
 	style="background-image: url('/images/lightbulb.jpeg');"
 >
 	<p class="text-7xl max-w-screen-sm mx-auto px-8 leading-snug pt-32 pb-8 text-white font-bold">
-		Learning for the long run.
+		Learning for the long run at kevinstest100.
 	</p>
 </div>
 

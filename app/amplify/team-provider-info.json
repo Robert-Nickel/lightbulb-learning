@@ -1,20 +1,20 @@
 {
   "prod": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-lightbulblearningapp-prod-111815-authRole",
-      "UnauthRoleArn": "arn:aws:iam::532688539985:role/amplify-lightbulblearningapp-prod-111815-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::532688539985:role/amplify-lightbulblearningapp-prod-111815-authRole",
+      "AuthRoleName": "amplify-lightbulblearningapp-prod-180416-authRole",
+      "UnauthRoleArn": "arn:aws:iam::532688539985:role/amplify-lightbulblearningapp-prod-180416-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::532688539985:role/amplify-lightbulblearningapp-prod-180416-authRole",
       "Region": "eu-central-1",
-      "DeploymentBucketName": "amplify-lightbulblearningapp-prod-111815-deployment",
-      "UnauthRoleName": "amplify-lightbulblearningapp-prod-111815-unauthRole",
-      "StackName": "amplify-lightbulblearningapp-prod-111815",
-      "StackId": "arn:aws:cloudformation:eu-central-1:532688539985:stack/amplify-lightbulblearningapp-prod-111815/74f935f0-7aa3-11ec-b492-029e16bbb8bc",
-      "AmplifyAppId": "d2tyj0dqknp5uk"
+      "DeploymentBucketName": "amplify-lightbulblearningapp-prod-180416-deployment",
+      "UnauthRoleName": "amplify-lightbulblearningapp-prod-180416-unauthRole",
+      "StackName": "amplify-lightbulblearningapp-prod-180416",
+      "StackId": "arn:aws:cloudformation:eu-central-1:532688539985:stack/amplify-lightbulblearningapp-prod-180416/572f4a20-7ba5-11ec-b27b-02d83fdccad0",
+      "AmplifyAppId": "d2p2no9dm7tisx"
     },
     "categories": {
       "hosting": {
         "amplifyhosting": {
-          "appId": "d2tyj0dqknp5uk",
+          "appId": "d2p2no9dm7tisx",
           "type": "manual"
         }
       },

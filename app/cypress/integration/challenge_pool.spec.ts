@@ -1,5 +1,5 @@
 import promisify from 'cypress-promise';
-import { studentEmail1, supabaseLogin } from '../plugins/supabaseLogin';
+import { studentEmail1, studentEmail2, supabaseLogin } from '../plugins/supabaseLogin';
 
 describe('Challenge Pools', () => {
     beforeEach(async () => {
@@ -21,11 +21,34 @@ describe('Challenge Pools', () => {
         const challengePoolName = createChallengePool()
 
         // when
-        cy.contains(challengePoolName).click()
-        cy.wait(2000)
+        openChallengePool(challengePoolName)
 
         // then
-        cy.get("h1").contains(challengePoolName)
+        cy.get('h1').should('have.text', challengePoolName);
+    })
+
+    it("doesn't show delete button to not admin", async () => {
+        // given
+        const challengePoolName = createChallengePool()
+        await supabaseLogin(studentEmail2);
+
+        // when
+        openChallengePool(challengePoolName)
+
+        // then
+        cy.check('.secondary').should('not.exist')
+    })
+
+    it('deletes a challenge pool', () => {
+        // given
+        const challengePoolName = createChallengePool()
+        openChallengePool(challengePoolName)
+
+        // when
+        cy.get('.secondary').click()
+
+        // then
+        cy.url().should('not.contain', '/challengePool')
     })
 });
 
@@ -34,4 +57,8 @@ function createChallengePool(): string {
     cy.get('div.w-full > .w-full').type(challengePoolName)
     cy.get('.w-32').click()
     return challengePoolName
+}
+
+function openChallengePool(challengePoolName: string) {
+    cy.contains(challengePoolName).click()
 }

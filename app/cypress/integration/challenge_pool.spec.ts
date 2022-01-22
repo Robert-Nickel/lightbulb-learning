@@ -1,4 +1,5 @@
 import promisify from 'cypress-promise';
+import { createChallengePool, openChallengePool } from '../functions';
 import { studentEmail1, studentEmail2, supabaseLogin } from '../plugins/supabaseLogin';
 
 describe('Challenge Pools', () => {
@@ -10,7 +11,7 @@ describe('Challenge Pools', () => {
     it('creates a challenge pool', () => {
         // when
         const challengePoolName = createChallengePool()
-        cy.wait(2000)
+        cy.wait(2_000)
 
         // then
         cy.get('.hoverable').last().should("have.text", challengePoolName);
@@ -51,14 +52,3 @@ describe('Challenge Pools', () => {
         cy.url().should('not.contain', '/challengePool')
     })
 });
-
-function createChallengePool(): string {
-    const challengePoolName = "challenge_pool_" + Cypress._.random(0, 1e6)
-    cy.get('div.w-full > .w-full').type(challengePoolName)
-    cy.get('.w-32').click()
-    return challengePoolName
-}
-
-function openChallengePool(challengePoolName: string) {
-    cy.contains(challengePoolName).click()
-}

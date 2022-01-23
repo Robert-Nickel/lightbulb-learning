@@ -23,6 +23,7 @@
 	{:else}
 		<nav on:click={() => (open = false)}><a href="/login">Login</a></nav>
 	{/if}
+	<nav><a href="/help">Help</a></nav>
 </aside>
 
 <style>

@@ -31,12 +31,7 @@ describe('Open Questions', () => {
     })
 
     it("opens an open question detail page", () => {
-        // given
-        createOpenQuestionDraft(openQuestionText, openAnswerText)
-        publishOpenQuestionDraft()
-
-        // when
-
+        // TODO
     })
 })
 

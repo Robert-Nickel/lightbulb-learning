@@ -34,7 +34,7 @@
 
 	<label for="firstName">
 		First Name
-		<input id="firstName" bind:value={firstName} placeholder="Steven" />
+		<input id="firstName" bind:value={firstName} placeholder="Stephen" />
 	</label>
 
 	<label for="lastName">
@@ -43,7 +43,7 @@
 	</label>
 
 	<button
-		class="outline"
+		class="w-48"
 		on:click={async () => {
 			step = 'university';
 		}}>Continue</button
@@ -86,6 +86,6 @@
 				await saveProfile(firstName, lastName, university);
 			}
 			goto('/');
-		}}>Done</button
+		}} class="w-48">Done</button
 	>
 {/if}

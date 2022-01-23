@@ -11,6 +11,12 @@
 </script>
 
 <h1 id="challenge-pools-title">Challenge Pools</h1>
+<div>
+	<i
+		>Hint: A Challenge Pool is a collection of open questions. You can create your own one at the bottom or
+		use an existing one.</i
+	>
+</div>
 
 {#each challengePools as challengePool}
 	<a href={`/challengepool/${challengePool.id}`} class="light-link">

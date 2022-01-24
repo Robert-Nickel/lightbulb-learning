@@ -12,6 +12,102 @@ export interface paths {
       };
     };
   };
+  "/challenge_pool_user": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.challenge_pool_user.id"];
+          created_at?: parameters["rowFilter.challenge_pool_user.created_at"];
+          challenge_pool?: parameters["rowFilter.challenge_pool_user.challenge_pool"];
+          user_id?: parameters["rowFilter.challenge_pool_user.user_id"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["challenge_pool_user"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** challenge_pool_user */
+          challenge_pool_user?: definitions["challenge_pool_user"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.challenge_pool_user.id"];
+          created_at?: parameters["rowFilter.challenge_pool_user.created_at"];
+          challenge_pool?: parameters["rowFilter.challenge_pool_user.challenge_pool"];
+          user_id?: parameters["rowFilter.challenge_pool_user.user_id"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.challenge_pool_user.id"];
+          created_at?: parameters["rowFilter.challenge_pool_user.created_at"];
+          challenge_pool?: parameters["rowFilter.challenge_pool_user.challenge_pool"];
+          user_id?: parameters["rowFilter.challenge_pool_user.user_id"];
+        };
+        body: {
+          /** challenge_pool_user */
+          challenge_pool_user?: definitions["challenge_pool_user"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
   "/challenge_pools": {
     get: {
       parameters: {
@@ -1101,6 +1197,27 @@ export interface paths {
 }
 
 export interface definitions {
+  challenge_pool_user: {
+    /**
+     * Format: text
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    id: string;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at?: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `challenge_pools.id`.<fk table='challenge_pools' column='id'/>
+     */
+    challenge_pool: string;
+    /** Format: uuid */
+    user_id: string;
+  };
   challenge_pools: {
     /**
      * Format: uuid
@@ -1361,20 +1478,11 @@ export interface definitions {
 }
 
 export interface parameters {
-  /**
-   * @description Preference
-   * @enum {string}
-   */
+  /** @description Preference */
   preferParams: "params=single-object";
-  /**
-   * @description Preference
-   * @enum {string}
-   */
+  /** @description Preference */
   preferReturn: "return=representation" | "return=minimal" | "return=none";
-  /**
-   * @description Preference
-   * @enum {string}
-   */
+  /** @description Preference */
   preferCount: "count=none";
   /** @description Filtering Columns */
   select: string;
@@ -1393,6 +1501,16 @@ export interface parameters {
   offset: string;
   /** @description Limiting and Pagination */
   limit: string;
+  /** @description challenge_pool_user */
+  "body.challenge_pool_user": definitions["challenge_pool_user"];
+  /** Format: text */
+  "rowFilter.challenge_pool_user.id": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.challenge_pool_user.created_at": string;
+  /** Format: uuid */
+  "rowFilter.challenge_pool_user.challenge_pool": string;
+  /** Format: uuid */
+  "rowFilter.challenge_pool_user.user_id": string;
   /** @description challenge_pools */
   "body.challenge_pools": definitions["challenge_pools"];
   /** Format: uuid */

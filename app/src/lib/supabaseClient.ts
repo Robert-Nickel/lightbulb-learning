@@ -323,6 +323,16 @@ export async function saveOpenFeedback(feedbackText: string, openAnswerId: strin
     return keysToCamelCase(data)
 }
 
+export async function joinChallengePool(inviteCode: string): Promise<boolean> {
+    const { data, error } = await supabase
+        .rpc('join_challenge_pool', {
+            invite_code_input: inviteCode,
+            user_id_input: supabase.auth.user().id
+        })
+    printIf(error)
+    return !!data
+}
+
 function printIf(error) {
     if (error) console.error(error)
 }
@@ -337,6 +347,7 @@ export const openFeedbackDraftsTable = 'open_feedback_drafts';
 export const openFeedbackTable = 'open_feedback';
 export const profilesTable = 'profiles';
 export const universitiesTable = 'universities';
+export const challengePoolUserTable = 'challenge_pool_user';
 
 export type ChallengePoolType = CamelCasedPropertiesDeep<definitions['challenge_pools']>;
 export type OpenQuestionDraftType = CamelCasedPropertiesDeep<definitions['open_question_drafts']>;
@@ -348,6 +359,7 @@ export type OpenFeedbackDraftType = CamelCasedPropertiesDeep<definitions['open_f
 export type OpenFeedbackType = CamelCasedPropertiesDeep<definitions['open_feedback']>;
 export type ProfileType = CamelCasedPropertiesDeep<definitions['profiles']>;
 export type UniversityType = CamelCasedPropertiesDeep<definitions['universities']>;
+export type ChallengePoolUserType = CamelCasedPropertiesDeep<definitions['challenge_pool_user']>;
 
 export type ChallengePoolTypeDB = definitions['challenge_pools'];
 export type OpenQuestionDraftTypeDB = definitions['open_question_drafts'];
@@ -359,3 +371,4 @@ export type OpenFeedbackDraftTypeDB = definitions['open_feedback_drafts'];
 export type OpenFeedbackTypeDB = definitions['open_feedback'];
 export type ProfileTypeDB = definitions['profiles'];
 export type UniversityTypeDB = definitions['universities'];
+export type ChallengePoolUserTypeDB = definitions['challenge_pool_user'];

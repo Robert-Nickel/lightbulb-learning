@@ -31,7 +31,7 @@ describe('Challenge Pools', () => {
     it("doesn't show delete button to not admin", async () => {
         // given
         const challengePoolName = createChallengePool()
-        await supabaseLogin(studentEmail2);
+        supabaseLogin(studentEmail2)
 
         // when
         openChallengePool(challengePoolName)

@@ -29,10 +29,6 @@ describe('Open Questions', () => {
         // then
         cy.get('.yours').should("have.text", "You asked: " + openQuestionText)
     })
-
-    it("opens an open question detail page", () => {
-        // TODO
-    })
 })
 
 const openQuestionText = randomText("open_question")

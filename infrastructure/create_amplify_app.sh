@@ -1,6 +1,6 @@
 echo "What is the name of the university"
 read university
-mv ../app/amplify/team-provider-info.json ../app/amplify/team-provider-info-old.json 
+rm -f ../app/amplify/team-provider-info.json
 cd ../app
 mv src/aws-exports.js src/aws-exports.cjs
 sleep 2

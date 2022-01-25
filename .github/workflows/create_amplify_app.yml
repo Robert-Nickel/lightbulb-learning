@@ -41,11 +41,11 @@ jobs:
         run: "sleep 2"
       
       - name: amplify init
-        run: "echo 'prod' | amplify init"
+        run: "amplify init --yes"
         working-directory: app
 
-      - name: press ENTER
-        run: "echo '\n'"
+      # - name: press ENTER
+      #   run: "echo '\n'"
 
       - name: sleep a bit
         run: "sleep 5s"

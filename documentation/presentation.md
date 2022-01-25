@@ -21,7 +21,7 @@ Creation of the different tenant types
 create_amplify_app.sh ausführen
 
 Demonstration of the CI/CD Pipeline
-Änderung machen und pushen
+Änderung machen (Limit von 50 für standard auf 2 setzen, um Limitation zeigen zu können) und pushen
 GitHub Actions beobachten
 
 Telemetry data

@@ -11,11 +11,13 @@ Demonstration of the cloud resources in the cloud provider UI
 1. Amplify Apps
 2. von da aus zu Cognito und AppSync gehen
 3. DynamoDB Daten zeigen
+TODO insert links here
 
 Review of the cloud setup script
 instrastructure-stack.ts zeigen
 deploy.sh zeigen
 create_amplify_app.sh zeigen
+[Build-Konfiguration in Vercel](https://vercel.com/lightbulb-learning/lightbulb-learning-cad/settings/general)
 
 Creation of the different tenant types
 create_amplify_app.sh ausführen

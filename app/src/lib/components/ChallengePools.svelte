@@ -42,6 +42,9 @@
 					createChallengePoolDescription = '';
 					challengePools = await fetchChallengePools();
 					// TODO: Success Toast
+
+					const inviteCode = Math.random().toString(16).substring(2, 12);
+					await saveInviteCode()
 				}}
 				class="w-32">Create</button
 			>

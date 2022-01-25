@@ -303,6 +303,105 @@ export interface paths {
       };
     };
   };
+  "/invite_codes": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.invite_codes.id"];
+          code?: parameters["rowFilter.invite_codes.code"];
+          created_at?: parameters["rowFilter.invite_codes.created_at"];
+          valid_until?: parameters["rowFilter.invite_codes.valid_until"];
+          challenge_pool?: parameters["rowFilter.invite_codes.challenge_pool"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["invite_codes"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** invite_codes */
+          invite_codes?: definitions["invite_codes"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.invite_codes.id"];
+          code?: parameters["rowFilter.invite_codes.code"];
+          created_at?: parameters["rowFilter.invite_codes.created_at"];
+          valid_until?: parameters["rowFilter.invite_codes.valid_until"];
+          challenge_pool?: parameters["rowFilter.invite_codes.challenge_pool"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.invite_codes.id"];
+          code?: parameters["rowFilter.invite_codes.code"];
+          created_at?: parameters["rowFilter.invite_codes.created_at"];
+          valid_until?: parameters["rowFilter.invite_codes.valid_until"];
+          challenge_pool?: parameters["rowFilter.invite_codes.challenge_pool"];
+        };
+        body: {
+          /** invite_codes */
+          invite_codes?: definitions["invite_codes"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
   "/open_answer_drafts": {
     get: {
       parameters: {
@@ -1194,14 +1293,37 @@ export interface paths {
       };
     };
   };
+  "/rpc/join_challenge_pool": {
+    post: {
+      parameters: {
+        body: {
+          args: {
+            /** Format: text */
+            invite_code_input: string;
+            /** Format: uuid */
+            user_id_input: string;
+          };
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferParams"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: unknown;
+      };
+    };
+  };
 }
 
 export interface definitions {
   challenge_pool_user: {
     /**
-     * Format: text
+     * Format: uuid
      * @description Note:
      * This is a Primary Key.<pk/>
+     * @default extensions.uuid_generate_v4()
      */
     id: string;
     /**
@@ -1259,6 +1381,33 @@ export interface definitions {
     created_at: string;
     /** Format: uuid */
     owner: string;
+  };
+  invite_codes: {
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     * @default extensions.uuid_generate_v4()
+     */
+    id: string;
+    /** Format: text */
+    code?: string;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at?: string;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    valid_until?: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `challenge_pools.id`.<fk table='challenge_pools' column='id'/>
+     */
+    challenge_pool: string;
   };
   open_answer_drafts: {
     /**
@@ -1503,7 +1652,7 @@ export interface parameters {
   limit: string;
   /** @description challenge_pool_user */
   "body.challenge_pool_user": definitions["challenge_pool_user"];
-  /** Format: text */
+  /** Format: uuid */
   "rowFilter.challenge_pool_user.id": string;
   /** Format: timestamp with time zone */
   "rowFilter.challenge_pool_user.created_at": string;
@@ -1533,6 +1682,18 @@ export interface parameters {
   "rowFilter.correct_open_answers.created_at": string;
   /** Format: uuid */
   "rowFilter.correct_open_answers.owner": string;
+  /** @description invite_codes */
+  "body.invite_codes": definitions["invite_codes"];
+  /** Format: uuid */
+  "rowFilter.invite_codes.id": string;
+  /** Format: text */
+  "rowFilter.invite_codes.code": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.invite_codes.created_at": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.invite_codes.valid_until": string;
+  /** Format: uuid */
+  "rowFilter.invite_codes.challenge_pool": string;
   /** @description open_answer_drafts */
   "body.open_answer_drafts": definitions["open_answer_drafts"];
   /** Format: uuid */

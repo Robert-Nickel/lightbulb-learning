@@ -333,6 +333,10 @@ export async function joinChallengePool(inviteCode: string): Promise<boolean> {
     return !!data
 }
 
+export async function saveInviteCode(inviteCode: string) {
+    // TODO
+}
+
 function printIf(error) {
     if (error) console.error(error)
 }
@@ -348,6 +352,7 @@ export const openFeedbackTable = 'open_feedback';
 export const profilesTable = 'profiles';
 export const universitiesTable = 'universities';
 export const challengePoolUserTable = 'challenge_pool_user';
+export const inviteCodesTable = 'invite_codes';
 
 export type ChallengePoolType = CamelCasedPropertiesDeep<definitions['challenge_pools']>;
 export type OpenQuestionDraftType = CamelCasedPropertiesDeep<definitions['open_question_drafts']>;
@@ -360,6 +365,7 @@ export type OpenFeedbackType = CamelCasedPropertiesDeep<definitions['open_feedba
 export type ProfileType = CamelCasedPropertiesDeep<definitions['profiles']>;
 export type UniversityType = CamelCasedPropertiesDeep<definitions['universities']>;
 export type ChallengePoolUserType = CamelCasedPropertiesDeep<definitions['challenge_pool_user']>;
+export type InviteCodeType = CamelCasedPropertiesDeep<definitions['invite_codes']>;
 
 export type ChallengePoolTypeDB = definitions['challenge_pools'];
 export type OpenQuestionDraftTypeDB = definitions['open_question_drafts'];
@@ -372,3 +378,4 @@ export type OpenFeedbackTypeDB = definitions['open_feedback'];
 export type ProfileTypeDB = definitions['profiles'];
 export type UniversityTypeDB = definitions['universities'];
 export type ChallengePoolUserTypeDB = definitions['challenge_pool_user'];
+export type InviteCodeTypeDB = definitions['invite_codes'];

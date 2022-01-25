@@ -1,5 +1,7 @@
 Demonstration of application functionality
 1. login with existing account with existing challenge pool, open questions and open answers
+   - lldemo@tempr.email
+   - 123456789
 2. create group to show async workload
 
 Presentation of the system architecture

@@ -27,4 +27,4 @@ jobs:
         run: "npm install -g @aws-amplify/cli"
 
       - name: read university variable
-        run: "{{echo github.event.inputs.university}}"
+        run: "echo ${{github.event.inputs.university}}"

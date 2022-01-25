@@ -21,11 +21,11 @@ create_amplify_app.sh zeigen
 [Build-Konfiguration in Vercel](https://vercel.com/lightbulb-learning/lightbulb-learning-cad/settings/general)
 
 # Creation of the different tenant types
-create_amplify_app.sh ausführen
+create_amplify_app.sh ausführen (10-15 Minuten)
 
 # Demonstration of the CI/CD Pipeline
 Änderung machen (Limit von 50 für standard auf 2 setzen, um Limitation zeigen zu können) und pushen
-GitHub Actions beobachten
+GitHub Actions beobachten (7-8 Minuten)
 
 # Telemetry data
 CloudWatch öffnen, Beispiel zeigen, zeigen dass das noch sehr viel mehr kann

@@ -41,7 +41,7 @@ jobs:
         run: "sleep 2"
       
       - name: amplify init
-        run: "printf 'prod\ny\ny\n' | amplify init"
+        run: "yes | amplify init"
         working-directory: app
 
       - name: sleep a bit

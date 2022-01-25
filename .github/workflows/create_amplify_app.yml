@@ -50,3 +50,24 @@ jobs:
       - name: remove aws-exports.js
         run: "rm -rf aws-exports.js"
         working-directory: app/src
+
+      - name: amplify push
+        run: "amplify push"
+        working-directory: app
+
+      - name: time to relax
+        run: "sleep 2"
+
+      - name: rename aws-exports.js to aws-exports.cjs
+        run: "mv aws-exports.js aws-exports.cjs"
+        working-directory: app/src
+
+      # TODO: add git username
+
+      - name: creating branch for ${{github.event.inputs.university}}
+        run: "git branch ${{github.event.inputs.university}}"
+        working-directory: app
+        
+      - name: checkout branch for ${{github.event.inputs.university}}
+        run: "git checkout ${{github.event.inputs.university}}"
+        working-directory: app

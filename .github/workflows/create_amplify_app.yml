@@ -41,7 +41,12 @@ jobs:
         run: "sleep 2"
       
       - name: set amplify variables
-        run:  AMPLIFY="{\"projectName\":\"lightbulblearningapp\",\"envName\":\"prod\",\"defaultEditor\":\"code\"}"
+        # run:  AMPLIFY="{\"projectName\":\"lightbulblearningapp\",\"envName\":\"prod\",\"defaultEditor\":\"code\"}"
+        run: AMPLIFY="{\
+          \"projectName\":\"lightbulblearningapp\",\
+          \"envName\":\"prod\",\
+          \"defaultEditor\":\"code\"\
+        }"
 
       # - name: set cloudformation stuff
       #   run: AWSCLOUDFORMATIONCONFIG="{\"configLevel\":\"project\",\"useProfile\":false,\"profileName\":\"default\",\"accessKeyId\":\"${{ secrets.AWS_ACCESS_KEY_ID }}\",\"secretAccessKey\":\"${{ secrets.AWS_SECRET_ACCESS_KEY }}\",\"region\":\"eu-central-1\"}"

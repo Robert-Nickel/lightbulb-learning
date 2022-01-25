@@ -23,12 +23,8 @@ jobs:
       - name: install nodejs and npm
         run: "sudo apt update -y && sudo apt install nodejs npm -y"
 
-      - name: configure amplify
-        uses: ambientlight/amplify-cli-action@0.3.0
-        with:
-          amplify_command: configure
-          amplify_env: prod
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: eu-central-1
+      - name: install amplify
+        run: "npm install -g @aws-amplify/cli"
+
+      - name: test amplify
+        run: "amplify help"

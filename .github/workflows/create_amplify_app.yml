@@ -40,8 +40,15 @@ jobs:
       - name: sleep a bit
         run: "sleep 2"
       
+      - name: set amplify variables
+        run: "
+        AMPLIFY=\"{\
+          \"envName\":\"prod\",\
+          \"defaultEditor\":\"code\"\}\"
+        "
+
       - name: amplify init
-        run: "amplify init --yes"
+        run: "amplify init --amplify $AMPLIFY "
         working-directory: app
 
       # - name: press ENTER

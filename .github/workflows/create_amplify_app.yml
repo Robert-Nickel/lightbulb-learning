@@ -28,3 +28,25 @@ jobs:
 
       - name: read university variable
         run: "echo ${{github.event.inputs.university}}"
+
+      - name: delete team provider info json
+        run: "rm -f team-provider-info.json"
+        working-directory: app/amplify
+
+      - name: rename aws-exports.js to aws-exports.cjs
+        run: "mv aws-exports.js aws-exports.cjs"
+        working-directory: app/src
+      
+      - name: sleep a bit
+        run: "sleep 2"
+      
+      - name: amplify init
+        run: "amplify init"
+        working-directory: app
+
+      - name: sleep a bit
+        run: "sleep 2"
+
+      - name: remove aws-exports.js
+        run: "rm -rf aws-exports.js"
+        working-directory: app/src

@@ -13,7 +13,6 @@ import { onMount } from 'svelte';
 		let myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 		const jwtToken = await getJWTToken();
-		console.log("jwtToken", jwtToken)
 		const raw = JSON.stringify({'jwtToken': jwtToken});
 		const requestOptions = {
             method: "POST",
@@ -23,7 +22,6 @@ import { onMount } from 'svelte';
 		fetch(`${baseUrl}/getGroup`, requestOptions)
             .then((response) => response.json())
             .then((result) => { 
-				console.log(result);
 				level = result.groupType;
 			})
             .catch((error) => console.log("error", error));

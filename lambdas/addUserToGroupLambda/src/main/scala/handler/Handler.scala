@@ -34,8 +34,8 @@ class Handler {
       groupInfoMap: HashMap[String, String],
       context: Context
   ): CustomHttpResponse  = {
-    val maxAmountFreeUsers = 2;
-    val maxAmountStandardUsers = 4;
+    val maxAmountFreeUsers = 50;
+    val maxAmountStandardUsers = 500;
 
     val groupName = groupInfoMap.get("groupName")
     val userName = groupInfoMap.get("userName")

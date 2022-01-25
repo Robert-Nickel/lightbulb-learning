@@ -30,23 +30,23 @@ exports.handler = function (event, context, callback) {
                 provider.getUser({
                     AccessToken: jwt_token
                 }, function (err, data) {
-                    if (err) { 
+                    if (err) {
                         console.log(err, err.stack); // an error occurred
                         callback(err);
                     }
                     else {
                         console.log("data", data);
                         // console.log("amount_of_groups", decoded['cognito:groups'].length);
-                        usermail = data.UserAttributes.find( e => e.Name === 'email')
+                        usermail = data.UserAttributes.find(e => e.Name === 'email')
 
-                        admin_of_group = data.UserAttributes.find( e => e.Name === 'custom:admin_of_group')
+                        admin_of_group = data.UserAttributes.find(e => e.Name === 'custom:admin_of_group')
 
                         userpool = decoded_token['iss'].slice(decoded_token['iss'].lastIndexOf('/') + 1)
                         returnObj = {
-                            'usermail': usermail.Value, 
+                            'usermail': usermail.Value,
                             'userpool': userpool,
                             'amount_of_groups': decoded['cognito:groups'] ? decoded['cognito:groups'].length : 0,
-                            'admin_of_group': admin_of_group.Value
+                            'admin_of_group': admin_of_group ? admin_of_group.Value : ""
                         }
 
                         console.log("returnObj: ", returnObj);

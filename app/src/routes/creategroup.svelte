@@ -23,24 +23,19 @@
 			showYouHaveToPay = true;
 			return;
 		}
-
 		const jwtToken = await (await Auth.currentSession()).getAccessToken().getJwtToken()
-
 		var myHeaders = new Headers();
 		myHeaders.append('Content-Type', 'application/json');
-
 		const body = {
 			groupName,
 			roleType,
 			jwtToken
 		};
-
 		var requestOptions = {
 			method: 'POST',
 			headers: myHeaders,
 			body: JSON.stringify(body)
 		};
-
 		fetch(`${baseUrl}/createGroup`, requestOptions)
 			.then((response) => response.text())
 			.then((result) => {
@@ -48,6 +43,8 @@
 				console.log(result);
 			})
 			.catch((error) => console.log('error', error));
+
+			goto("/groupstatus")
 	}
 </script>
 
@@ -100,7 +97,7 @@
 						<small class="text-orange-600">You have to agree to pay for a standard group.</small>
 					{/if}
 				</fieldset>
-				<button on:click={createGroup}>Create Group</button>
+				<button on:click={createGroup} class="w-48">Create Group</button>
 			{/if}
 		{:else}
 			<h1>Group created!</h1>

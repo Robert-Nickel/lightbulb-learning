@@ -1,6 +1,6 @@
 echo "What is the name of the university"
 read university
-mv ../app/amplify/team-provider-info.json ../app/amplify/team-provider-info-old.json 
+rm -f ../app/amplify/team-provider-info.json
 cd ../app
 mv src/aws-exports.js src/aws-exports.cjs
 sleep 2
@@ -16,6 +16,7 @@ echo "creating branch " + $university
 git branch $university
 git checkout $university
 sed -i "s/long run./long run at $university./" ./src/lib/components/StartPage.svelte
+sed -i "s/result.groupType/\"Premium\"/" ./src/lib/components/Navbar.svelte
 git add .
 git commit -m "initial commit for $university"
 git push -u origin $university

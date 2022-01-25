@@ -1,0 +1,86 @@
+on: 
+  workflow_dispatch:
+    inputs:
+      university:
+        description: 'Name of the university'     
+        required: true
+        default: 'htwg'
+
+jobs:
+  create_amplify_app:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-central-1
+
+      - name: install nodejs and npm
+        run: "sudo apt update -y && sudo apt install nodejs npm -y"
+
+      - name: install amplify
+        run: "npm install -g @aws-amplify/cli"
+
+      - name: read university variable
+        run: "echo ${{github.event.inputs.university}}"
+
+      - name: delete team provider info json
+        run: "rm -f team-provider-info.json"
+        working-directory: app/amplify
+
+      - name: rename aws-exports.js to aws-exports.cjs
+        run: "mv aws-exports.js aws-exports.cjs"
+        working-directory: app/src
+      
+      - name: sleep a bit
+        run: "sleep 2"
+      
+      - name: set amplify variables
+        run: AMPLIFY="{\
+          \"projectName\":\"lightbulblearningapp\",\
+          \"envName\":\"prod\",\
+          \"defaultEditor\":\"code\"\
+          }"
+
+      # - name: set cloudformation stuff
+      #   run: AWSCLOUDFORMATIONCONFIG="{\"configLevel\":\"project\",\"useProfile\":false,\"profileName\":\"default\",\"accessKeyId\":\"${{ secrets.AWS_ACCESS_KEY_ID }}\",\"secretAccessKey\":\"${{ secrets.AWS_SECRET_ACCESS_KEY }}\",\"region\":\"eu-central-1\"}"
+
+      # - name: set providers
+      #   run: PROVIDERS="{\"awscloudformation\":\"$AWSCLOUDFORMATIONCONFIG\"}"
+
+      - name: amplify init
+        run: "amplify init --amplify $AMPLIFY"
+        working-directory: app
+
+      - name: sleep a bit
+        run: "sleep 5s"
+
+      - name: remove aws-exports.js
+        run: "rm -rf aws-exports.js"
+        working-directory: app/src
+
+      - name: amplify push
+        run: "amplify push"
+        working-directory: app
+
+      - name: time to relax
+        run: "sleep 2"
+
+      - name: rename aws-exports.js to aws-exports.cjs
+        run: "mv aws-exports.js aws-exports.cjs"
+        working-directory: app/src
+
+      # TODO: add git username
+
+      - name: creating branch for ${{github.event.inputs.university}}
+        run: "git branch ${{github.event.inputs.university}}"
+        working-directory: app
+        
+      - name: checkout branch for ${{github.event.inputs.university}}
+        run: "git checkout ${{github.event.inputs.university}}"
+        working-directory: app

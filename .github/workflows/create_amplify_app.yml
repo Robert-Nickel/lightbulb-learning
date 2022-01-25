@@ -41,11 +41,7 @@ jobs:
         run: "sleep 2"
       
       - name: set amplify variables
-        run: "
-        AMPLIFY=\"{\
-          \"envName\":\"prod\",\
-          \"defaultEditor\":\"code\"\}\"
-        "
+        run:  AMPLIFY="{\"envName\":\"prod\",\"defaultEditor\":\"code\"}"
 
       - name: amplify init
         run: "amplify init --amplify $AMPLIFY "

@@ -1,0 +1,7 @@
+on: 
+  workflow_dispatch:
+    inputs:
+      university:
+        description: 'Name of the university'     
+        required: true
+        default: 'htwg'

@@ -45,7 +45,7 @@ jobs:
         working-directory: app
 
       - name: sleep a bit
-        run: "sleep 2"
+        run: "sleep 5s"
 
       - name: remove aws-exports.js
         run: "rm -rf aws-exports.js"

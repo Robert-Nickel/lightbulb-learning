@@ -41,7 +41,7 @@ jobs:
         run: "sleep 2"
       
       - name: amplify init
-        run: "yes | echo 'prod' | amplify init"
+        run: "echo 'prod\n\n' | amplify init"
         working-directory: app
 
       - name: sleep a bit

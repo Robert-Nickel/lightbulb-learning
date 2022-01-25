@@ -45,7 +45,7 @@ jobs:
         working-directory: app
 
       - name: press ENTER
-        run: "\n"
+        run: "echo '\n'"
 
       - name: sleep a bit
         run: "sleep 5s"

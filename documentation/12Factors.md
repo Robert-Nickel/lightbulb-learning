@@ -58,25 +58,35 @@ Für die Datenhaltung verwenden wir DynamoDB, wo auch der funktionale Zustand, b
 ## VII. Bindung an Ports
 "Dienste durch das Binden von Ports exportieren"
 
-- ueber API Gateway schnittstelle nach außen mit default port (80)
+Da in unserem Backend in Form von AWS Lambdas die Laufzeitumgebung sowie auch das Portmapping vollständig von AWS übernommen wird, mussten wir uns nicht manuell um die Injektion eines Webservers kümmern. Die Routing Schicht bilden wir mit dem Dienst AWS API Gateway ab.
 
 ## VIII. Nebenläufigkeit
 "Mit dem Prozess-Modell skalieren"
 
+Die Prozess-Formation unserer Anwendung wird, wie so vieles, durch AWS und nicht manuell von uns verwaltet. Das bedeutet, dass unser API Gateway vermutlich Web-Prozesse nutzt, während beispielsweise die Lambdas Worker-Prozesse nutzen. Die aus diesem Faktor hervorgehenden Vorteile bleiben dennoch erhalten: Die Prozesse sind hervorragend horizontal teilbar (z.B. da sie stateless sind), und können somit planetweit skaliert werden. 
+
 ## IX. Einweggebrauch
 "Robuster mit schnellem Start und problemlosen Stopp"
+
+Die Verwaltung der Prozesse innerhalb der AWS Cloud wird von Profis übernommen, weltweit angewendet und reflektiert die interenen Kosten für den Betrieb der Cloud: Je schneller die Prozesse beim `SIGTERM` Signal stoppen können, desto eher kann die dafür verwendete Hardware-Ressource anderweitig vermietet und somit monetarisiert werden. Daher ist davon auszugehen, dass diese auf den schneller Start, Stop und Wechsel zwischen Prozessen optimiert haben. Beispielsweise die Worker Prozesse der Lambdas erfüllen die Metapher der "Schafe statt Kühe" besonders gut.
 
 ## X. Dev-Prod-Vergleichbarkeit
 "Entwicklung, Staging und Produktion so ähnlich wie möglich halten"
 
-CI Pipeline wird bei jedem Commit ausgeführt mittels Github Actions
+Unsere Continious Deployment Pipeline wird bei jedem Commit mittels Github Actions automatisch ausgeführt. Bei Fehlern während des Builds werden alle per E-Mail informiert. Da die Cloud-Dienste nur teilweise auch lokal betrieben werden können, wird schon für die Entwicklung permanent deployed. Dadurch verlängert sich die Länge der Feedbackschleife (was frustrierend sein kann). Der Vorteil ist, dass die Dienste wirklich immer gleich sind.
+
+|                                        | Traditionelle App | Zwölf-Faktor-App       | Lightbulb Learning                                                     |
+| -------------------------------------- | ----------------- | ---------------------- | ---------------------------------------------------------------------- |
+| Zeit zwischen Deployments              | Wochen            | Stunden                | pro Commit -> Stunden                                                  |
+| Code-Autoren und Code-Deployer         | Andere Menschen   | Dieselben Menschen     | Diesselben Menschen                                                    |
+| Entwicklungs- und Produktions-Umgebung | Unterschiedlich   | So ähnlich wie möglich | Frontend: fast gleich, Lambdas, DynamoDB & IaC direkt in AWS -> gleich |
 
 ## XI. Logs
 "Logs als Strom von Ereignissen behandeln"
 
-logs werden in streams mit dem jeweiligen context geloggt
+Für das Logging verwenden wir an jeder Stelle den `stdout`, AWS kümmert sich darum, die Logs im Dienst CloudWatch zu aggregieren und les- und filterbar zu machen.
 
 ## XII. Admin-Prozesse
 "Admin/Management-Aufgaben als einmalige Vorgänge behandeln"
 
-- admin process `create_amplify_app.sh` in same environment? could be a todo!
+Alle von uns verwendeten Programmiersprachen verfügen über einen REPL (read-eval-print loop) Mechanismus, sodass administrative Eingriffe darüber getriggert werden können. Unser einziger administrativer Schritt ist das Anlegen eines neuen Premium-Tenants, dafür befindet sich der Code in der Versionsverwaltung. Die Ausführung wird, wegen sonst überflüssiger Abhängigkeiten, von lokal getriggert. Ein besserer Ansatz wäre, diese Ausführung beispielsweise mit GitHub Actions durchzuführen.

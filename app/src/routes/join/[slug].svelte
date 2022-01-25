@@ -21,7 +21,7 @@
 	async function join() {
 		if (inviteCode) {
 			itWorked = await joinChallengePool(inviteCode);
-			description = itWorked ? 'That worked. You joined the Challenge Pool.' : 'Failed to join.';
+			description = itWorked ? 'That worked. You joined the Challenge Pool.' : 'The invite code is not valid (anymore).';
 		}
 	}
 </script>

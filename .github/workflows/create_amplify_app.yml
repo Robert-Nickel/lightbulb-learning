@@ -43,8 +43,14 @@ jobs:
       - name: set amplify variables
         run:  AMPLIFY="{\"envName\":\"prod\",\"defaultEditor\":\"code\"}"
 
+      - name: set cloudformation stuff
+        run: AWSCLOUDFORMATIONCONFIG="{\"configLevel\":\"project\",\"useProfile\":false,\"profileName\":\"default\",\"accessKeyId\":\"${{ secrets.AWS_ACCESS_KEY_ID }}\",\"secretAccessKey\":\"${{ secrets.AWS_SECRET_ACCESS_KEY }}\",\"region\":\"eu-central-1"\}"
+
+      - name: set providers
+        run: PROVIDERS="{\"awscloudformation\":$AWSCLOUDFORMATIONCONFIG\}"
+
       - name: amplify init
-        run: "amplify init --amplify $AMPLIFY "
+        run: "amplify init --amplify $AMPLIFY --providers $PROVIDERS"
         working-directory: app
 
       # - name: press ENTER

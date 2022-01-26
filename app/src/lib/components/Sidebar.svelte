@@ -1,6 +1,5 @@
 <script>
 	import { goto } from '$app/navigation';
-
 	import { user } from '$lib/stores/user';
 
 	export let open = false;
@@ -11,6 +10,10 @@
 		user.signOut();
 		goto('/login');
 	}
+
+	function close() {
+		open = false
+	}
 </script>
 
 <aside
@@ -18,12 +21,15 @@
 	class:open
 >
 	<!-- Ignore this -->
+
 	{#if $user}
+		<nav on:click={close}><a href="/create">Create Challenge Pool</a></nav>
+		<nav on:click={close}><a href="/join">Join Challenge Pool</a></nav>
 		<nav on:click={logout}><a href="/">Logout</a></nav>
 	{:else}
-		<nav on:click={() => (open = false)}><a href="/login">Login</a></nav>
+		<nav on:click={close}><a href="/login">Login</a></nav>
 	{/if}
-	<nav><a href="/help">Help</a></nav>
+	<nav on:click={close}><a href="/help">Help</a></nav>
 </aside>
 
 <style>

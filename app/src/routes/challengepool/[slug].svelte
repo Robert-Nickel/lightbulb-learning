@@ -16,7 +16,7 @@
 
 	let challengePool: ChallengePoolType;
 	let openQuestions: Array<OpenQuestionType> = [];
-	let inviteLink: string;
+	let inviteCode: string;
 
 	onMount(() => {
 		refresh();
@@ -66,21 +66,20 @@
 				<button
 					on:click={async () => {
 						const randomTenCharString = Math.random().toString(16).substring(2, 12);
-						const inviteCode = await saveInviteCode(challengePool.id, randomTenCharString);
-						inviteLink = 'https://lightbulb-learning.io/join/' + inviteCode.code;
-						navigator.clipboard.writeText('https://lightbulb-learning.io/join/' + inviteCode.code);
+						inviteCode = (await saveInviteCode(challengePool.id, randomTenCharString)).code;
+						navigator.clipboard.writeText(inviteCode);
 					}}
 					class="secondary outline w-auto mb-0"
-					>Invite Link
+					>Generate Invite Code
 				</button>
 			</div>
-			{#if inviteLink}
+			{#if inviteCode}
 				<div class="mt-3"
-					>Invite Link: <a
+					>Invite Code: <a
 						on:click={() => {
-							navigator.clipboard.writeText(inviteLink);
+							navigator.clipboard.writeText(inviteCode);
 						}}
-						data-tooltip="Copy to Clipboard">{inviteLink}</a
+						data-tooltip="Copy to Clipboard">{inviteCode}</a
 					> (valid: 7 days)</div
 				>
 			{/if}

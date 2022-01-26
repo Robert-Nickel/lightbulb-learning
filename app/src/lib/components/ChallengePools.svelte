@@ -1,9 +1,9 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { fetchChallengePools, ChallengePoolType, saveChallengePool } from '$lib/supabaseClient';
 	import { onMount } from 'svelte';
 
 	let challengePools: ChallengePoolType[] = [];
-	let createChallengePoolDescription = '';
 
 	onMount(async () => {
 		challengePools = await fetchChallengePools();
@@ -11,44 +11,32 @@
 </script>
 
 <h1 id="challenge-pools-title">Challenge Pools</h1>
-<div>
-	<i
-		>Hint: A Challenge Pool is a collection of open questions. You can create your own one at the bottom or
-		use an existing one.</i
-	>
-</div>
+{#if challengePools.length == 0}<div class="space-y-4">
+		<p>You don't have a challenge pool yet! Join one with an invite code, or create one yourself.</p>
 
-{#each challengePools as challengePool}
-	<a href={`/challengepool/${challengePool.id}`} class="light-link">
-		<article class="hoverable">
-			{challengePool.description}
-		</article>
-	</a>
-{/each}
-
-<div class="space-y-4">
-	<div class="flex justify-between space-x-2">
-		<div class="w-full">
-			<input
-				bind:value={createChallengePoolDescription}
-				class="w-full"
-				placeholder="Create new Challenge Pool"
-			/>
-		</div>
-		<div>
+		<div class="flex justify-between space-x-4">
 			<button
-				on:click={async () => {
-					const challengePool = await saveChallengePool(createChallengePoolDescription)
-					challengePools.push(challengePool);
-					createChallengePoolDescription = '';
-					challengePools = await fetchChallengePools();
-					// TODO: Success Toast
-				}}
-				class="w-32">Create</button
+				class="outline"
+				on:click={() => {
+					goto('/join');
+				}}>Join with invite code</button
+			><button
+				class="outline"
+				on:click={() => {
+					goto('/create');
+				}}>Create Challenge Pool</button
 			>
 		</div>
 	</div>
-</div>
+{:else}
+	{#each challengePools as challengePool}
+		<a href={`/challengepool/${challengePool.id}`} class="light-link">
+			<article class="hoverable">
+				{challengePool.description}
+			</article>
+		</a>
+	{/each}
+{/if}
 
 <style>
 	.hoverable:hover {

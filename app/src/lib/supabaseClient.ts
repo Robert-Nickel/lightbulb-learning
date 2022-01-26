@@ -61,7 +61,11 @@ export async function saveUniversity(name: string) {
 }
 
 export async function fetchChallengePools(): Promise<ChallengePoolType[]> {
-    const { data, error } = await supabase.from<ChallengePoolTypeDB>(challengePoolsTable).select()
+    const { data, error } = await supabase
+        .rpc('fetch_my_challenge_pools', {
+            user_id_input: supabase.auth.user().id
+        })
+
     printIf(error)
     return keysToCamelCase(data)
 }
@@ -323,14 +327,17 @@ export async function saveOpenFeedback(feedbackText: string, openAnswerId: strin
     return keysToCamelCase(data)
 }
 
-export async function joinChallengePool(inviteCode: string): Promise<boolean> {
+export async function joinChallengePool(inviteCode: string): Promise<string> {
+    if(!inviteCode || inviteCode.length != 10) {
+        console.error("invalid invite code: " + inviteCode)
+    }
     const { data, error } = await supabase
         .rpc('join_challenge_pool', {
             invite_code_input: inviteCode,
             user_id_input: supabase.auth.user().id
         })
     printIf(error)
-    return !!data
+    return data.toString()
 }
 
 export async function saveInviteCode(challengePoolId: string, code: string): Promise<InviteCodeType> {

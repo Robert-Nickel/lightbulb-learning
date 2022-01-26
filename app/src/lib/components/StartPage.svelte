@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-
 	import NewsletterSignUp from '$lib/components/NewsletterSignUp.svelte';
 	import WhatWeDo from '$lib/components/WhatWeDo.svelte';
 </script>

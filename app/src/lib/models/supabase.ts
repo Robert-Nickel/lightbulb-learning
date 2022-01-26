@@ -17,9 +17,9 @@ export interface paths {
       parameters: {
         query: {
           id?: parameters["rowFilter.challenge_pool_user.id"];
-          created_at?: parameters["rowFilter.challenge_pool_user.created_at"];
           challenge_pool?: parameters["rowFilter.challenge_pool_user.challenge_pool"];
           user_id?: parameters["rowFilter.challenge_pool_user.user_id"];
+          created_at?: parameters["rowFilter.challenge_pool_user.created_at"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -71,9 +71,9 @@ export interface paths {
       parameters: {
         query: {
           id?: parameters["rowFilter.challenge_pool_user.id"];
-          created_at?: parameters["rowFilter.challenge_pool_user.created_at"];
           challenge_pool?: parameters["rowFilter.challenge_pool_user.challenge_pool"];
           user_id?: parameters["rowFilter.challenge_pool_user.user_id"];
+          created_at?: parameters["rowFilter.challenge_pool_user.created_at"];
         };
         header: {
           /** Preference */
@@ -89,9 +89,9 @@ export interface paths {
       parameters: {
         query: {
           id?: parameters["rowFilter.challenge_pool_user.id"];
-          created_at?: parameters["rowFilter.challenge_pool_user.created_at"];
           challenge_pool?: parameters["rowFilter.challenge_pool_user.challenge_pool"];
           user_id?: parameters["rowFilter.challenge_pool_user.user_id"];
+          created_at?: parameters["rowFilter.challenge_pool_user.created_at"];
         };
         body: {
           /** challenge_pool_user */
@@ -309,10 +309,10 @@ export interface paths {
         query: {
           id?: parameters["rowFilter.invite_codes.id"];
           code?: parameters["rowFilter.invite_codes.code"];
-          created_at?: parameters["rowFilter.invite_codes.created_at"];
-          valid_until?: parameters["rowFilter.invite_codes.valid_until"];
           challenge_pool?: parameters["rowFilter.invite_codes.challenge_pool"];
           owner?: parameters["rowFilter.invite_codes.owner"];
+          valid_until?: parameters["rowFilter.invite_codes.valid_until"];
+          created_at?: parameters["rowFilter.invite_codes.created_at"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -365,10 +365,10 @@ export interface paths {
         query: {
           id?: parameters["rowFilter.invite_codes.id"];
           code?: parameters["rowFilter.invite_codes.code"];
-          created_at?: parameters["rowFilter.invite_codes.created_at"];
-          valid_until?: parameters["rowFilter.invite_codes.valid_until"];
           challenge_pool?: parameters["rowFilter.invite_codes.challenge_pool"];
           owner?: parameters["rowFilter.invite_codes.owner"];
+          valid_until?: parameters["rowFilter.invite_codes.valid_until"];
+          created_at?: parameters["rowFilter.invite_codes.created_at"];
         };
         header: {
           /** Preference */
@@ -385,10 +385,10 @@ export interface paths {
         query: {
           id?: parameters["rowFilter.invite_codes.id"];
           code?: parameters["rowFilter.invite_codes.code"];
-          created_at?: parameters["rowFilter.invite_codes.created_at"];
-          valid_until?: parameters["rowFilter.invite_codes.valid_until"];
           challenge_pool?: parameters["rowFilter.invite_codes.challenge_pool"];
           owner?: parameters["rowFilter.invite_codes.owner"];
+          valid_until?: parameters["rowFilter.invite_codes.valid_until"];
+          created_at?: parameters["rowFilter.invite_codes.created_at"];
         };
         body: {
           /** invite_codes */
@@ -1296,6 +1296,26 @@ export interface paths {
       };
     };
   };
+  "/rpc/fetch_my_challenge_pools": {
+    post: {
+      parameters: {
+        body: {
+          args: {
+            /** Format: uuid */
+            user_id_input: string;
+          };
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferParams"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: unknown;
+      };
+    };
+  };
   "/rpc/join_challenge_pool": {
     post: {
       parameters: {
@@ -1330,11 +1350,6 @@ export interface definitions {
      */
     id: string;
     /**
-     * Format: timestamp with time zone
-     * @default now()
-     */
-    created_at?: string;
-    /**
      * Format: uuid
      * @description Note:
      * This is a Foreign Key to `challenge_pools.id`.<fk table='challenge_pools' column='id'/>
@@ -1342,6 +1357,11 @@ export interface definitions {
     challenge_pool: string;
     /** Format: uuid */
     user_id: string;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at: string;
   };
   challenge_pools: {
     /**
@@ -1394,14 +1414,7 @@ export interface definitions {
      */
     id: string;
     /** Format: text */
-    code?: string;
-    /**
-     * Format: timestamp with time zone
-     * @default now()
-     */
-    created_at?: string;
-    /** Format: timestamp without time zone */
-    valid_until: string;
+    code: string;
     /**
      * Format: uuid
      * @description Note:
@@ -1410,6 +1423,13 @@ export interface definitions {
     challenge_pool: string;
     /** Format: uuid */
     owner: string;
+    /** Format: timestamp without time zone */
+    valid_until: string;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at: string;
   };
   open_answer_drafts: {
     /**
@@ -1656,12 +1676,12 @@ export interface parameters {
   "body.challenge_pool_user": definitions["challenge_pool_user"];
   /** Format: uuid */
   "rowFilter.challenge_pool_user.id": string;
-  /** Format: timestamp with time zone */
-  "rowFilter.challenge_pool_user.created_at": string;
   /** Format: uuid */
   "rowFilter.challenge_pool_user.challenge_pool": string;
   /** Format: uuid */
   "rowFilter.challenge_pool_user.user_id": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.challenge_pool_user.created_at": string;
   /** @description challenge_pools */
   "body.challenge_pools": definitions["challenge_pools"];
   /** Format: uuid */
@@ -1690,14 +1710,14 @@ export interface parameters {
   "rowFilter.invite_codes.id": string;
   /** Format: text */
   "rowFilter.invite_codes.code": string;
-  /** Format: timestamp with time zone */
-  "rowFilter.invite_codes.created_at": string;
-  /** Format: timestamp without time zone */
-  "rowFilter.invite_codes.valid_until": string;
   /** Format: uuid */
   "rowFilter.invite_codes.challenge_pool": string;
   /** Format: uuid */
   "rowFilter.invite_codes.owner": string;
+  /** Format: timestamp without time zone */
+  "rowFilter.invite_codes.valid_until": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.invite_codes.created_at": string;
   /** @description open_answer_drafts */
   "body.open_answer_drafts": definitions["open_answer_drafts"];
   /** Format: uuid */

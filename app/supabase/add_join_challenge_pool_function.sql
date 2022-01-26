@@ -1,4 +1,4 @@
-create or replace function join_challenge_pool(invite_code_input text, user_id_input uuid) returns boolean as $$
+create or replace function join_challenge_pool(invite_code_input text, user_id_input uuid) returns text as $$
   declare
     challenge_pool_id uuid;
     invite_code_valid_until timestamp;
@@ -9,14 +9,13 @@ create or replace function join_challenge_pool(invite_code_input text, user_id_i
     where code = invite_code_input;
     
     if invite_code_valid_until < now() then
-      return false;
+      return 'false';
     end if;
 
+    -- return challenge_pool_id::text;
     -- TODO: prevent duplicates in challenge_pool_user -> return false
 
-    insert into challenge_pool_user(challenge_pool, user_id)
-    values (challenge_pool_id, user_id_input);
-
-    return true;
+    insert into challenge_pool_user(challenge_pool, user_id) values (challenge_pool_id, user_id_input);
+    return 'true';
   end;
 $$ language plpgsql SECURITY DEFINER;

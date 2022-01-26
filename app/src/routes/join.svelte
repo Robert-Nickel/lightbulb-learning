@@ -17,9 +17,8 @@
 				console.log('invite code: ' + inviteCode);
 				if (inviteCode) {
 					const challengePoolId = await joinChallengePool(inviteCode);
-					if (challengePoolId) {
-						goto("/");
-						// If it worked, forwarding to that challenge pool would be cool.
+					if (challengePoolId != 'false') {
+						goto('/' /* TODO + challengePoolId*/);
 					}
 				}
 			}}

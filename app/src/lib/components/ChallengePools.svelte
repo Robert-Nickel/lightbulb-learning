@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { fetchChallengePools, ChallengePoolType, saveChallengePool } from '$lib/supabaseClient';
+	import { fetchChallengePools, ChallengePoolType } from '$lib/supabaseClient';
 	import { onMount } from 'svelte';
 
 	let challengePools: ChallengePoolType[] = [];

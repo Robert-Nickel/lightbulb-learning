@@ -7,4 +7,4 @@ create table if not exists public.challenge_pool_user (
 ALTER TABLE challenge_pool_user ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "cpu_insert_policy_for_authenticated_user" ON public.challenge_pool_user FOR INSERT WITH CHECK ((auth.role() = 'authenticated') AND (auth.uid() = user_id));
 CREATE POLICY "cpu_delete_policy_for_user" ON public.challenge_pool_user FOR DELETE USING (auth.uid() = user_id);
-CREATE POLICY "cpu_select_policy_for_owner" ON public.challenge_pool_user FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "cpu_select_policy_for_user" ON public.challenge_pool_user FOR SELECT USING (auth.uid() = user_id);

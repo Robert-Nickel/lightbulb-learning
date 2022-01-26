@@ -1397,11 +1397,8 @@ export interface definitions {
      * @default now()
      */
     created_at?: string;
-    /**
-     * Format: timestamp with time zone
-     * @default now()
-     */
-    valid_until?: string;
+    /** Format: timestamp without time zone */
+    valid_until: string;
     /**
      * Format: uuid
      * @description Note:
@@ -1690,7 +1687,7 @@ export interface parameters {
   "rowFilter.invite_codes.code": string;
   /** Format: timestamp with time zone */
   "rowFilter.invite_codes.created_at": string;
-  /** Format: timestamp with time zone */
+  /** Format: timestamp without time zone */
   "rowFilter.invite_codes.valid_until": string;
   /** Format: uuid */
   "rowFilter.invite_codes.challenge_pool": string;

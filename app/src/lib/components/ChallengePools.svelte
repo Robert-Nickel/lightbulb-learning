@@ -38,13 +38,11 @@
 		<div>
 			<button
 				on:click={async () => {
-					challengePools.push(await saveChallengePool(createChallengePoolDescription));
+					const challengePool = await saveChallengePool(createChallengePoolDescription)
+					challengePools.push(challengePool);
 					createChallengePoolDescription = '';
 					challengePools = await fetchChallengePools();
 					// TODO: Success Toast
-
-					const inviteCode = Math.random().toString(16).substring(2, 12);
-					await saveInviteCode()
 				}}
 				class="w-32">Create</button
 			>

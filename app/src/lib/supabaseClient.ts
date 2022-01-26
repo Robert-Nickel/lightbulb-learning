@@ -333,8 +333,17 @@ export async function joinChallengePool(inviteCode: string): Promise<boolean> {
     return !!data
 }
 
-export async function saveInviteCode(inviteCode: string) {
-    // TODO
+export async function saveInviteCode(challengePoolId: string, code: string): Promise<InviteCodeType> {
+    const validUntil = new Date()
+    validUntil.setDate(validUntil.getDate() + 7)
+
+    const { data, error } = await supabase.from<InviteCodeTypeDB>(inviteCodesTable).insert({
+        challenge_pool: challengePoolId,
+        code,
+        valid_until: validUntil.toISOString()
+    }).single()
+    printIf(error)
+    return keysToCamelCase(data)
 }
 
 function printIf(error) {

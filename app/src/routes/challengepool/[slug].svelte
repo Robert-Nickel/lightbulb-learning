@@ -1,7 +1,7 @@
 <script lang="ts">
 	import CreateOpenQuestion from '$lib/components/CreateOpenQuestion.svelte';
 	import { goto } from '$app/navigation';
-	import { onMount } from 'svelte'
+	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import Back from '$lib/components/Back.svelte';
 	import {
@@ -9,12 +9,14 @@
 		OpenQuestionType,
 		fetchChallengePool,
 		fetchOpenQuestions,
-		deleteChallengePool
+		deleteChallengePool,
+		saveInviteCode
 	} from '$lib/supabaseClient';
 	import { user } from '$lib/stores/user';
 
 	let challengePool: ChallengePoolType;
 	let openQuestions: Array<OpenQuestionType> = [];
+	let inviteLink: string;
 
 	onMount(() => {
 		refresh();
@@ -52,13 +54,36 @@
 		{/each}
 
 		{#if $user.id == challengePool.owner}
-			<button
-				on:click={async () => {
-					await deleteChallengePool(challengePool.id);
-					goto('/');
-				}}
-				class="secondary outline w-auto mb-0 hover-red">Delete {challengePool.description}</button
-			>
+			<div class="flex space-x-2">
+				<button
+					on:click={async () => {
+						await deleteChallengePool(challengePool.id);
+						goto('/');
+					}}
+					class="secondary outline w-auto mb-0 hover-red">Delete {challengePool.description}</button
+				>
+
+				<button
+					on:click={async () => {
+						const randomTenCharString = Math.random().toString(16).substring(2, 12);
+						const inviteCode = await saveInviteCode(challengePool.id, randomTenCharString);
+						inviteLink = 'https://lightbulb-learning.io/join/' + inviteCode.code;
+						navigator.clipboard.writeText('https://lightbulb-learning.io/join/' + inviteCode.code);
+					}}
+					class="secondary outline w-auto mb-0"
+					>Invite Link
+				</button>
+			</div>
+			{#if inviteLink}
+				<div class="mt-3"
+					>Invite Link: <a
+						on:click={() => {
+							navigator.clipboard.writeText(inviteLink);
+						}}
+						data-tooltip="Copy to Clipboard">{inviteLink}</a
+					> (valid: 7 days)</div
+				>
+			{/if}
 		{/if}
 	{/if}
 

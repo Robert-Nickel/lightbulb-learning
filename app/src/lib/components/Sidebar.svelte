@@ -25,11 +25,11 @@
 	{#if $user}
 		<nav on:click={close}><a href="/create">Create Challenge Pool</a></nav>
 		<nav on:click={close}><a href="/join">Join Challenge Pool</a></nav>
+		<nav on:click={close}><a href="/help">Help</a></nav>
 		<nav on:click={logout}><a href="/">Logout</a></nav>
 	{:else}
 		<nav on:click={close}><a href="/login">Login</a></nav>
 	{/if}
-	<nav on:click={close}><a href="/help">Help</a></nav>
 </aside>
 
 <style>

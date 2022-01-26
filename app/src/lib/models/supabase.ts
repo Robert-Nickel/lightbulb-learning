@@ -312,6 +312,7 @@ export interface paths {
           created_at?: parameters["rowFilter.invite_codes.created_at"];
           valid_until?: parameters["rowFilter.invite_codes.valid_until"];
           challenge_pool?: parameters["rowFilter.invite_codes.challenge_pool"];
+          owner?: parameters["rowFilter.invite_codes.owner"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -367,6 +368,7 @@ export interface paths {
           created_at?: parameters["rowFilter.invite_codes.created_at"];
           valid_until?: parameters["rowFilter.invite_codes.valid_until"];
           challenge_pool?: parameters["rowFilter.invite_codes.challenge_pool"];
+          owner?: parameters["rowFilter.invite_codes.owner"];
         };
         header: {
           /** Preference */
@@ -386,6 +388,7 @@ export interface paths {
           created_at?: parameters["rowFilter.invite_codes.created_at"];
           valid_until?: parameters["rowFilter.invite_codes.valid_until"];
           challenge_pool?: parameters["rowFilter.invite_codes.challenge_pool"];
+          owner?: parameters["rowFilter.invite_codes.owner"];
         };
         body: {
           /** invite_codes */
@@ -1405,6 +1408,8 @@ export interface definitions {
      * This is a Foreign Key to `challenge_pools.id`.<fk table='challenge_pools' column='id'/>
      */
     challenge_pool: string;
+    /** Format: uuid */
+    owner: string;
   };
   open_answer_drafts: {
     /**
@@ -1691,6 +1696,8 @@ export interface parameters {
   "rowFilter.invite_codes.valid_until": string;
   /** Format: uuid */
   "rowFilter.invite_codes.challenge_pool": string;
+  /** Format: uuid */
+  "rowFilter.invite_codes.owner": string;
   /** @description open_answer_drafts */
   "body.open_answer_drafts": definitions["open_answer_drafts"];
   /** Format: uuid */

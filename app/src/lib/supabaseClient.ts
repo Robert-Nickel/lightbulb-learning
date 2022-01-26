@@ -340,7 +340,8 @@ export async function saveInviteCode(challengePoolId: string, code: string): Pro
     const { data, error } = await supabase.from<InviteCodeTypeDB>(inviteCodesTable).insert({
         challenge_pool: challengePoolId,
         code,
-        valid_until: validUntil.toISOString()
+        valid_until: validUntil.toISOString(),
+        owner: supabase.auth.user().id
     }).single()
     printIf(error)
     return keysToCamelCase(data)

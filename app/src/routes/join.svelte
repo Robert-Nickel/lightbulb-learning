@@ -6,7 +6,7 @@
 	let inviteCode: string;
 </script>
 
-<h1>Join a Challenge Pool</h1>
+<h1>Join Challenge Pool</h1>
 <div class="flex justify-between space-x-2">
 	<div class="w-full">
 		<input bind:value={inviteCode} type="text" placeholder="Invite Code to join existing Challenge Pool" />

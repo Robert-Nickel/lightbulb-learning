@@ -13,9 +13,6 @@
 		saveInviteCode
 	} from '$lib/supabaseClient';
 	import { user } from '$lib/stores/user';
-	import ChallengePools from '$lib/components/ChallengePools.svelte';
-	import Create from '../create.svelte';
-	import Hamburger from '$lib/components/Hamburger.svelte';
 
 	let challengePool: ChallengePoolType;
 	let openQuestions: Array<OpenQuestionType> = [];

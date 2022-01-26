@@ -21,6 +21,7 @@
 	class:open
 >
 	{#if $user}
+		<nav on:click={close}><a href="/">Home</a></nav>
 		<nav on:click={close}><a href="/create">Create</a></nav>
 		<nav on:click={close}><a href="/join">Join</a></nav>
 		<nav on:click={close}><a href="/help">Help</a></nav>

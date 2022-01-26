@@ -5,6 +5,7 @@
 	let createChallengePoolDescription = '';
 </script>
 
+<h1>Create Challenge Pool</h1>
 <div class="space-y-4">
 	<div class="flex justify-between space-x-2">
 		<div class="w-full">

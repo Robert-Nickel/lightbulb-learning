@@ -13,6 +13,9 @@
 		saveInviteCode
 	} from '$lib/supabaseClient';
 	import { user } from '$lib/stores/user';
+	import ChallengePools from '$lib/components/ChallengePools.svelte';
+	import Create from '../create.svelte';
+	import Hamburger from '$lib/components/Hamburger.svelte';
 
 	let challengePool: ChallengePoolType;
 	let openQuestions: Array<OpenQuestionType> = [];
@@ -57,14 +60,6 @@
 			<div class="flex space-x-2">
 				<button
 					on:click={async () => {
-						await deleteChallengePool(challengePool.id);
-						goto('/');
-					}}
-					class="secondary outline w-auto mb-0 hover-red">Delete {challengePool.description}</button
-				>
-
-				<button
-					on:click={async () => {
 						const randomTenCharString = Math.random().toString(16).substring(2, 12);
 						inviteCode = (await saveInviteCode(challengePool.id, randomTenCharString)).code;
 						navigator.clipboard.writeText(inviteCode);
@@ -72,16 +67,30 @@
 					class="secondary outline w-auto mb-0"
 					>Generate Invite Code
 				</button>
+
+				<button
+					on:click={async () => {
+						if (
+							confirm(
+								'Everything within ' + challengePool.description + ' will be gone forever.\nAre you really sure?'
+							)
+						) {
+							await deleteChallengePool(challengePool.id);
+							goto('/');
+						}
+					}}
+					class="secondary outline w-auto mb-0 hover-red">Delete {challengePool.description}</button
+				>
 			</div>
 			{#if inviteCode}
-				<div class="mt-3"
-					>Invite Code: <a
+				<div class="mt-3">
+					Invite Code: <a
 						on:click={() => {
 							navigator.clipboard.writeText(inviteCode);
 						}}
 						data-tooltip="Copy to Clipboard">{inviteCode}</a
-					> (valid: 7 days)</div
-				>
+					> (valid: 7 days)
+				</div>
 			{/if}
 		{/if}
 	{/if}

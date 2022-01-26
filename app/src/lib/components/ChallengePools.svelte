@@ -14,6 +14,15 @@
 {#if challengePools.length == 0}<div class="space-y-4">
 		<p>You don't have a challenge pool yet! Join one with an invite code, or create one yourself.</p>
 
+		<p>
+			Use <a
+				on:click={() => {
+					navigator.clipboard.writeText('RCTVSYSTMS');
+				}}
+				data-tooltip="Copy to Clipboard">RCTVSYSTMS</a
+			> for Reactive Systems.
+		</p>
+
 		<div class="flex justify-between space-x-4">
 			<button
 				class="outline"

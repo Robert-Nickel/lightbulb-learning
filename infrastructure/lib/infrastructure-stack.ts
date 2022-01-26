@@ -17,10 +17,6 @@ export class InfrastructureStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    // TODO: add for each premium user an user-pool. 
-    // Premium user can be identified via URL
-    // const pool = new cognito.UserPool(this, 'lightbulb-learning-demo');
-
     const snsPublishPolicy = new PolicyStatement({
       resources: ["arn:aws:sns:eu-central-1:532688539985:open-question-topic.fifo"],
       actions: ["SNS:Publish"]

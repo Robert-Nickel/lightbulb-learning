@@ -19,6 +19,10 @@ instrastructure-stack.ts zeigen
 deploy.sh zeigen
 create_amplify_app.sh zeigen
 [Build-Konfiguration in Vercel](https://vercel.com/lightbulb-learning/lightbulb-learning-cad/settings/general)
+- builds SvelteKit App
+- Umgebungsvariablen
+- Domainmanagement
+- Preview-Deployments für Branches
 
 # Creation of the different tenant types [K]
 create_amplify_app.sh ausführen (10-15 Minuten)

@@ -3,14 +3,14 @@
 
 const awsmobile = {
     "aws_project_region": "eu-central-1",
-    "aws_appsync_graphqlEndpoint": "https://inetlsmgd5bavnv3akcc6fudzm.appsync-api.eu-central-1.amazonaws.com/graphql",
+    "aws_appsync_graphqlEndpoint": "https://4lxuhkbicrbixo7gqp2vjp6rgm.appsync-api.eu-central-1.amazonaws.com/graphql",
     "aws_appsync_region": "eu-central-1",
     "aws_appsync_authenticationType": "API_KEY",
-    "aws_appsync_apiKey": "da2-un3lw6arw5ar7mwhekenwgf3wi",
-    "aws_cognito_identity_pool_id": "eu-central-1:34901228-5df0-4d31-8a67-cf599ec28e5c",
+    "aws_appsync_apiKey": "da2-l2l4dqjjtjgcfgbmgxqisntpm4",
+    "aws_cognito_identity_pool_id": "eu-central-1:adab2330-359b-46ce-a7cd-90d3848f6062",
     "aws_cognito_region": "eu-central-1",
-    "aws_user_pools_id": "eu-central-1_BOYd4lNxp",
-    "aws_user_pools_web_client_id": "ivc0noghcdqvv3m94q2skk5j1",
+    "aws_user_pools_id": "eu-central-1_wL0UEncYh",
+    "aws_user_pools_web_client_id": "48bmdkevfk3lfb7ie5lgd6f7a3",
     "oauth": {},
     "aws_cognito_username_attributes": [
         "EMAIL"

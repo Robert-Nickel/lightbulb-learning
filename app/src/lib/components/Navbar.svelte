@@ -22,7 +22,7 @@ import { onMount } from 'svelte';
 		fetch(`${baseUrl}/getGroup`, requestOptions)
             .then((response) => response.json())
             .then((result) => { 
-				level = result.groupType;
+				level = "Premium";
 			})
             .catch((error) => console.log("error", error));
 	})

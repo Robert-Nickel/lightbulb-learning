@@ -1,7 +1,7 @@
 <script lang="ts">
-import { getJWTToken } from '$lib/stores/auth';
+	import { getJWTToken } from '$lib/stores/auth';
 
-import { onMount } from 'svelte';
+	import { onMount } from 'svelte';
 
 	import Hamburger from './Hamburger.svelte';
 	import { baseUrl } from '../awsCommon';
@@ -9,23 +9,23 @@ import { onMount } from 'svelte';
 	// TODO: auslesen der Description aus Gruppe
 	let level = '';
 
-	onMount( async () => {
+	onMount(async () => {
 		let myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
+		myHeaders.append('Content-Type', 'application/json');
 		const jwtToken = await getJWTToken();
-		const raw = JSON.stringify({'jwtToken': jwtToken});
+		const raw = JSON.stringify({ jwtToken: jwtToken });
 		const requestOptions = {
-            method: "POST",
-            headers: myHeaders,
-            body: raw,
-        };
+			method: 'POST',
+			headers: myHeaders,
+			body: raw
+		};
 		fetch(`${baseUrl}/getGroup`, requestOptions)
-            .then((response) => response.json())
-            .then((result) => { 
+			.then((response) => response.json())
+			.then((result) => {
 				level = result.groupType;
 			})
-            .catch((error) => console.log("error", error));
-	})
+			.catch((error) => console.log('error', error));
+	});
 </script>
 
 <header class="flex p-2 items-center text-white">
@@ -33,7 +33,7 @@ import { onMount } from 'svelte';
 		<Hamburger bind:open={sidebar} />
 	</nav>
 	<nav><a href="/" class="text-white">Lightbulb Learning</a></nav>
-	<nav class="ml-4"><a href="/upgrade" class="text-white">{level}</a></nav>
+	{#if level}<nav class="ml-4"><a href="/upgrade" class="text-white">{level}</a></nav>{/if}
 </header>
 
 <!--

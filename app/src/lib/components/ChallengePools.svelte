@@ -20,7 +20,14 @@
 					navigator.clipboard.writeText('RCTVSYSTMS');
 				}}
 				data-tooltip="Copy to Clipboard">RCTVSYSTMS</a
-			> for Reactive Systems.
+			>
+			for Reactive Systems or
+			<a
+				on:click={() => {
+					navigator.clipboard.writeText('RCTVSYSTMS');
+				}}
+				data-tooltip="Copy to Clipboard">GNRLWISDOM</a
+			> to see an example of what a challenge pool is.
 		</p>
 
 		<div class="flex justify-between space-x-4">

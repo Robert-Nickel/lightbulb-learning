@@ -328,7 +328,7 @@ export async function saveOpenFeedback(feedbackText: string, openAnswerId: strin
 }
 
 export async function joinChallengePool(inviteCode: string): Promise<string> {
-    if(!inviteCode || inviteCode.length != 10) {
+    if (!inviteCode || inviteCode.length != 10) {
         console.error("invalid invite code: " + inviteCode)
     }
     const { data, error } = await supabase
@@ -350,6 +350,15 @@ export async function saveInviteCode(challengePoolId: string, code: string): Pro
         valid_until: validUntil.toISOString(),
         owner: supabase.auth.user().id
     }).single()
+    printIf(error)
+    return keysToCamelCase(data)
+}
+
+export async function fetchMembers(challengePoolId: string) {
+    const { data, error } = await supabase
+        .from<ChallengePoolUserTypeDB>(challengePoolUserTable)
+        .select()
+        .eq('challenge_pool', challengePoolId);
     printIf(error)
     return keysToCamelCase(data)
 }

@@ -18,7 +18,7 @@
 				if (inviteCode) {
 					const challengePoolId = await joinChallengePool(inviteCode);
 					if (challengePoolId != 'false') {
-						goto('/' /* TODO + challengePoolId*/);
+						goto('/challengepool/' + challengePoolId);
 					}
 				}
 			}}

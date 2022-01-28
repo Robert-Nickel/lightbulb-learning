@@ -7,7 +7,7 @@
 	<nav class="flex">
 		<Hamburger bind:open={sidebar} />
 	</nav>
-	<nav><a href="/" class="text-white">Lightbulb Learning</a></nav>
+	<nav><a href="/" class="text-white mb-0.5">Lightbulb Learning</a></nav>
 </header>
 
 <!--

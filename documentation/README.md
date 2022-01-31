@@ -28,13 +28,22 @@ Da die Zeitpunkte und der Umfang der auftretenden Ereignisse von äußeren Fakto
 Ein Beispiel: Legt ein Nutzer eine offene Frage an, so wirft die App ein "OpenQuestionCommittedEvent". Dieses Event landet auf dem `open-question-topic` topic, inklusive eines Zeitstempels, Typs und einigen Daten zum fachlichen Inhalt, wie den Fragetext und den Antworttext des committeten Objekts. Dieses Topic wird von der `createOpenQuestionQueue` und der  `Microservice-Assessment` Queue abonniert und Events für die Verarbeitung (unter Sicherstellung der korrekten Reihenfolge) persistiert. Die Absichten der beiden abonnierenden Microservices sind dabei völlig unterschiedlich, doch das ist dem Produzenten des Events weder bekannt noch wichtig. Selbst wenn überhaupt keine Komponente ein Event beachten würde: der Produzent des Events ist dafür nicht in der Verantwortung und stellt sich diese Frage nicht einmal.
 
 ## Tech Stack
-    - Frontend
-    - Amplify
-    - Microservices 
-        - Docker
-        - K8s
-        - evtl. Helm?
-    - Communication
+
+![](https://github.com/Lightbulb-Learning/lightbulb-learning/blob/main/documentation/system_architecture_cad.drawio.png)
+
+### Frontend (Robert)
+### API Gateway & Lambdas (Kevin)
+### Amplify (Robert)
+
+### Microservices (Nicolai)
+    - Docker
+    - K8s
+    - evtl. Helm?
+### Event driven architecture (Robert)
+### Cognito (Kevin)
+### DynamoDB (Kevin)
+### CDK & CloudFormation (Robert)
+    
 
 ## 12 Factors
 ### I. Codebase

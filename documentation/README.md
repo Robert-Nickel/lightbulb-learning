@@ -244,4 +244,10 @@ Ein JWT enthält einen Header (Algorithmus und Typ des Tokens), ein Payload (Key
 
 Bei vielen Client Anfragen wird das JWT als Header bzw. im Body als Payload mitangegeben. Für die Verifikation des JWT sowie für das beisteuern weiterer  Werte, rufen die AWS-Lambdas eine weitere AWS-Lambda, den jwtHandler auf. Diese Lambda-Funktion extrahiert abhängig vom `issuer` claim den Cogito-Userpool. Im Cognito-Userpool sind jwks hinterlegt, sie repräsentieren eine Menge von öffentlichen Schlüsseln. 
 Der Vorteil hierbei: Dadurch, dass dynamisch abhängig vom `issuer claim` die URL des Userpools ausgelesen wird, brauchen wir beim Anlegen eines neuen Premiumtenants, welcher einen eigenen Userpool hat,  keine Gedanken um die Authentifizierung zu machen.
-Das jwt vom client wird nach dem `kid` (key identfier) claim gefiltert. Wurde der korrekte JSON-Web-Key  ermittelt, lässt sich das jwt, mit der jsonwebtoken library, verifizieren.  Ist das Token erfolgreich verifiziert, wird ein JSON Objekt mit den benötigten Werten (usermail, userpool, amount_of_groups, congito:groups, admin_of_group) zurückgegeben.
+Das jwt vom client wird nach dem `kid` (key identfier) claim gefiltert. Wurde der korrekte JSON-Web-Key  ermittelt, lässt sich das jwt, mit der jsonwebtoken library, verifizieren.  Ist das Token erfolgreich verifiziert, wird ein JSON Objekt mit den benötigten Werten: 
+- usermail
+- userpool
+- amount_of_groups
+- cognito:groups
+- admin_of_group
+zurückgegeben.

@@ -34,6 +34,7 @@ Ein Beispiel: Legt ein Nutzer eine offene Frage an, so wirft die App ein "OpenQu
 ### Frontend (Robert)
     - TypeScript
 ### Vercel (Robert)
+    - (teilweise) Wechsel von Amplify zu Vercel wegen Qualitätsproblemen [R]
 ### API Gateway & Lambdas (Kevin)
     - Scala 3
     - JavaScript
@@ -49,7 +50,7 @@ Ein Beispiel: Legt ein Nutzer eine offene Frage an, so wirft die App ein "OpenQu
 ### Event driven architecture (Robert)
     - SNS
     - SQS
-### CDK & CloudFormation (Robert)
+### CDK & CloudFormation (Kevin)
     - TypeScript
     - imperativ -> deklarativ -> idempotent
 ### GitHub Actions
@@ -155,9 +156,13 @@ Alle von uns verwendeten Programmiersprachen verfügen über einen REPL (read-ev
 ## Processes (Wie geht ihr vor?)
     - Continuous Delivery &  Version Control (Git) (Nicolai)
     - Infrastructure as Code / CDK (Kevin)
-    - Skript für Premium tenants [create_amplify_app.sh](../infrastructure/create_amplify_app.sh) (Robert)
-    - Branch for premium tenants (Robert)
+    - Skript für Premium tenants [create_amplify_app.sh](../infrastructure/create_amplify_app.sh) (Nicolai)
+        - Branch for premium tenants
     
 ## Commercial SaaS (Nicolai)
-  - Cost analysis
-  - Commercial Model
+    - Cost analysis
+    - Commercial Model
+
+# Special highlights the team want to show
+    - Monorepo [R]
+    - Ablauf mit JWT handling [K]

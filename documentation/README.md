@@ -85,7 +85,9 @@ AWS Amplify ist ein Accelerator für die Entwicklung von WebApps von AWS. Es kap
 ![](https://github.com/Lightbulb-Learning/lightbulb-learning/blob/main/documentation/amplify-studio.png)
 Abb. 2: Darstellung des Datenmodells in Amplify Studio
 
-### AppSync (Robert)
+### AppSync
+[AWS AppSync](https://aws.amazon.com/de/appsync/) nutzen wir indirekt durch Amplify. Die Idee dieses Services ist das automatisierte Mapping einer Datenstruktur aus DynamoDB auf eine [GraphQL API](https://graphql.org/). Dafür lädt man ein GraphQL-Schema hoch, welches die gewünschte Struktur beschreibt, und sowohl die dafür benötigten Tabellen als auch die Bereitstellung des Endpunkts wird von AppSync übernommen. Das GraphQL-Schema beinhaltet außerdem die Zugriffsregeln auf die jeweiligen Daten. Beispielsweise ist es in unserem Fall nur den Erstellern eines OpenQuestionDrafts gestattet, diesen zu lesen, zu verändern oder zu löschen.
+
 ### Cognito (Kevin)
 - Cognito ist ...
 - special attributes pro User
@@ -109,8 +111,7 @@ Abb. 2: Darstellung des Datenmodells in Amplify Studio
 
 - Warum Infrastructure as Code?
 
-- Was ist TypeScript?
-
+- Was ist TypeScript? (Anmerkung von Robert: Das beschreibe ich im TechStack::Frontend auch schon)
     - TypeScript
     - imperativ -> deklarativ -> idempotent
 ### GitHub Actions

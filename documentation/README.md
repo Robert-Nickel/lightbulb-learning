@@ -81,6 +81,9 @@ Für die Node Package Module wurde NodeJS mit der Version 17.2.0 eingesetzt.
 ### Amplify
 AWS Amplify ist ein Accelerator für die Entwicklung von WebApps von AWS. Es kapselt einige weitere Dienste wie AppSync, Cognito und DynamoDB und stellt eine Reihe von Ressourcen zur Verfügung, um die Interaktion mit diesen Diensten im Sinne der schnellen Entwicklung zu vereinfachen. Wir starteten mit Amplify für die Umsetzung unserer Frontend Applikation inklusive offline-first Datenhaltung, Registrierung und Login, Hosting und automatisierte Builds. Die [Amplify CLI](https://docs.amplify.aws/cli/) bietet einen einfachen Weg, benötigte Ressourcen anzulegen und zu verwalten. Außerdem gibt es eine übersichtliche UI innerhalb der AWS Managementkonsole, welche nicht nur den aktuellen Status aller Ressourcen darstellt, sondern mit [Amplify Studio](https://aws.amazon.com/de/amplify/studio/) sogar bis auf die Ebene der Datenstruktur ermöglicht, direkt Änderungen vorzunehmen und zu deployen.
 
+![](https://github.com/Lightbulb-Learning/lightbulb-learning/blob/main/documentation/amplify-studio.png)
+Abb. 1: Darstellung des Datenmodells in Amplify Studio
+
 ### AppSync (Robert)
 ### Cognito (Kevin)
 - Cognito ist ...

@@ -221,14 +221,44 @@ Alle von uns verwendeten Programmiersprachen verfügen über einen REPL (read-ev
     
 
 ## Processes (Wie geht ihr vor?)
+### Infrastructure as Code / CDK
+Die [Infrastructure.ts](../infrastructure/bin/infrastructure.ts) dient als Einstiegspunkt für das AWS-CDK. Hier definieren wir den Namen des Stacks sowie die Umgebungsvariablen und die Region. Wir haben einen separaten technischen Account angelegt welcher die benötigten Rechte besitzt um Cloud Resourcen zu provisionieren.
+
+Im Konstruktor erzeugen wir eine neue Instanz von dem [Infrastructure-Stack.ts](../infrastructure/lib/infrastructure-stack.ts). Dort werden die Resourcen und deren jeweiligen Berechtigungen konfiguriert. Es handelt es sich hierbei um eine *Resource-Based-Policy*, dabei erlauben wir bestimmten Resourcen gewisse Operationen auf oder mit ausgewählten Resourcen.
+
+
+Folgende Resourcen werden provisionert:
+- **Policies**: Für jede Lambdafunktion wurde eine Policy definiert, welche nur die Aktionen erlaubt, die für die Erfüllung der Operation benötigt wird. 
+
+- **Topics**: (openQuestionTopic, openAnswerTopic, openFeedbackTopic)
+
+- **Queues**: createOpenQuestionQueue
+
+- **Lambdas**:
+Für das bauen der Lambdafunktionen bedienen wir uns selbstgeschriebenen Funktionen `buildLambda` und `buildLambdaJS`. Diese Funktionien retournieren ein Instanz vom Typ Lambdafunktion. Die Lambdafunktion enthält bestimmte Parametern wie z.B. der Einstiegspunkt der Klasse, die Laufzeitumgebung, die Größe, den Timeout und wo der Codeabschnitt zu finden ist.
+
+  - commitOpenQuestionLambda (für das Speichern einer Frage)
+  - commitOpenAnswerLambda (für das Speichern einer Antwort)
+  - commitOpenFeedbackLambda (für das Speichern des Feedbacks)
+  - createOpenQuestionLambda (für das Erstellen einer Frage)
+  - createGroupLambda (für das Erstellen einer Gruppe)
+  - addUserToGroupLambda (für das Beitreten einer Gruppe)
+  - addUserToGroupHttpLambda (für das Erstellen einer Gruppe über HTTP, diese Funktion ruft addUserToGroupLambda auf)
+  - listUserGroupsHttpLambda (für das auslesen der Nutzergruppen)
+  - upgradeGroupHttpLambda (für das Upgraden einer `Free` Gruppe auf eine `Standard` Gruppe)
+  - authorizationLambdaJS (custom-authorizer, für das Prüfen der Berechtigung über das API-Gateway)
+  - jwtHandler (für das verifizieren des JWT und Aufbereitung eines Rückgabeobjekts mit dem andere Lambdafunktionen arbeiten)
+  - getGroupInformation (für das Abfragen von Gruppeninformationen)
+  - getGroupStatus (für das Abfragen des Gruppenstatus)
+- **HttpApi** mit corsPreflight Konfiguration und den jeweiligen Routen, welche den Pfad auf die hier verlinkten Lambdafunktionen referenziert.
+
     - Continuous Delivery &  Version Control (Git) (Nicolai)
-    - Infrastructure as Code / CDK (Kevin)
-      - Hier erklaeren was wir provisionieren mit Code
-      - Umgebungsvariablen? Produktion und DEV system?
     - Skript für Premium tenants [create_amplify_app.sh](../infrastructure/create_amplify_app.sh) (Nicolai)
         - Branch for premium tenants
         - Versuch das mit GitHub Actions zu machen gescheitert -> Amplify das falsche Tool für den Job
     
+Ist das AWS-CDK installiert so kann man mit den Befehlen `cdk synth` das Cloudformation Template erstellen und mit `cdk deploy` die Resourcen deployen.
+
 ## Commercial SaaS (Nicolai)
     - Cost analysis
     - Commercial Model
@@ -250,4 +280,5 @@ Das jwt vom client wird nach dem `kid` (key identfier) claim gefiltert. Wurde de
 - amount_of_groups
 - cognito:groups
 - admin_of_group
+
 zurückgegeben.

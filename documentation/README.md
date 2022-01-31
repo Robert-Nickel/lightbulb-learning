@@ -158,6 +158,7 @@ Alle von uns verwendeten Programmiersprachen verfügen über einen REPL (read-ev
     - Infrastructure as Code / CDK (Kevin)
     - Skript für Premium tenants [create_amplify_app.sh](../infrastructure/create_amplify_app.sh) (Nicolai)
         - Branch for premium tenants
+        - Versuch das mit GitHub Actions zu machen gescheitert -> Amplify das falsche Tool für den Job
     
 ## Commercial SaaS (Nicolai)
     - Cost analysis

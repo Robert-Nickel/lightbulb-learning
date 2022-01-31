@@ -354,9 +354,9 @@ export async function saveInviteCode(challengePoolId: string, code: string): Pro
     return keysToCamelCase(data)
 }
 
-export async function fetchMembers(challengePoolId: string) {
+export async function fetchMembers(challengePoolId: string): Promise<MemberType[]> {
     const { data, error } = await supabase
-        .from<ChallengePoolUserTypeDB>(challengePoolUserTable)
+        .from<MemberTypeDB>(membersView)
         .select()
         .eq('challenge_pool', challengePoolId);
     printIf(error)
@@ -379,6 +379,7 @@ export const profilesTable = 'profiles';
 export const universitiesTable = 'universities';
 export const challengePoolUserTable = 'challenge_pool_user';
 export const inviteCodesTable = 'invite_codes';
+export const membersView = 'members';
 
 export type ChallengePoolType = CamelCasedPropertiesDeep<definitions['challenge_pools']>;
 export type OpenQuestionDraftType = CamelCasedPropertiesDeep<definitions['open_question_drafts']>;
@@ -392,6 +393,7 @@ export type ProfileType = CamelCasedPropertiesDeep<definitions['profiles']>;
 export type UniversityType = CamelCasedPropertiesDeep<definitions['universities']>;
 export type ChallengePoolUserType = CamelCasedPropertiesDeep<definitions['challenge_pool_user']>;
 export type InviteCodeType = CamelCasedPropertiesDeep<definitions['invite_codes']>;
+export type MemberType = CamelCasedPropertiesDeep<definitions['members']>;
 
 export type ChallengePoolTypeDB = definitions['challenge_pools'];
 export type OpenQuestionDraftTypeDB = definitions['open_question_drafts'];
@@ -405,3 +407,4 @@ export type ProfileTypeDB = definitions['profiles'];
 export type UniversityTypeDB = definitions['universities'];
 export type ChallengePoolUserTypeDB = definitions['challenge_pool_user'];
 export type InviteCodeTypeDB = definitions['invite_codes'];
+export type MemberTypeDB = definitions['members'];

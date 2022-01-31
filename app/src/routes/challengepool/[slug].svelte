@@ -13,10 +13,12 @@
 		saveInviteCode
 	} from '$lib/supabaseClient';
 	import { user } from '$lib/stores/user';
+	import Members from '$lib/components/Members.svelte';
 
 	const openQuestionsString = 'open_questions';
 	const settingsString = 'settings';
 
+	let challengePoolId: string;
 	let challengePool: ChallengePoolType;
 	let openQuestions: Array<OpenQuestionType> = [];
 	let inviteCode: string;
@@ -27,9 +29,9 @@
 	});
 
 	async function refresh() {
-		const id = $page.params.slug;
-		challengePool = await fetchChallengePool(id);
-		openQuestions = await fetchOpenQuestions(challengePool.id);
+		challengePoolId = $page.params.slug;
+		challengePool = await fetchChallengePool(challengePoolId);
+		openQuestions = await fetchOpenQuestions(challengePoolId);
 	}
 </script>
 
@@ -79,6 +81,7 @@
 				</a>
 			{/each}
 		{:else if currentTab == settingsString}
+			<Members {challengePoolId} />
 			<button
 				on:click={async () => {
 					const randomTenCharString = Math.random().toString(16).substring(2, 12);

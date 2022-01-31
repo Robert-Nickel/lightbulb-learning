@@ -112,16 +112,14 @@ Ein Beispiel: Legt ein Nutzer eine offene Frage an, so wirft die App ein "OpenQu
 
 Bei der Umsetzung dieser Architektur bemerkten wir die damit zusammenhängenden Hürden: in erster Linie in der Hinsicht der zur Verfügungstellung der Daten und Resultate von Operationen aus Nutzersicht. Dieser ist nicht bereit (und sein Browser nicht darauf ausgelegt), nach einer Interaktion länger als ein paar hundert Millisekunden auf ein Ergebnis zu warten. Ein so schnelle Antwort ist bei schreibenden Operationen mit JVM basierten Lambdas (wie unsere Scala3 Lambdas) völlig unrealistisch, da die Anfragen im Falle von cold-starts leicht über 10 Sekunden dauern können. Desweiteren steigt die Komplexität der Applikation durch die breitere Verteilung der Verantwortung, und die dadurch entstehende Vielzahl an internen Schnittstellen noch weiter. Somit entschlossen wir, die Topics mit den Events zwar zu behalten, und somit die Erweiterbarkeit um unabhängige Microservice zu gewährleisten, diese jedoch nicht im Rahmen des Projekts in Cloud Application Development zu implementieren.
 
-### CDK & CloudFormation (Kevin)
-- Was ist Cloud Formation?
+### CDK & CloudFormation (Kevin) 
+Das [AWS Cloud Development KIT](https://aws.amazon.com/cdk/) ist ein Framework zur Definition von Cloud-Anwendungsressourcen mittels Programmiersprachen. 
+Dabei erstellt man sogenannte Konstrukte für die jeweiligen Cloud Resourcen. Die Konstrukte haben Voreinstellungen, will man von diesen Abweichung kann man dies beispielsweise über gewisse Parameter machen. Auch das Schreiben von eigenen Funktionen für die Erstellung bestimmter Konstrukte haben wir erfolgreich eingesetzt. Beispielsweise für das Provisionieren der Lambda-Funktionen. Das AWS-CDK provisioniert dann die Resourcen mittels AWS CloudFormation. Bei Lightbulb Learning haben wir für das CDK anfangs Java eingesetzt. Später haben wir uns für TypeScript entschieden, da hier die Dokumentation einfacher war. 
 
-- Was ist CDK?
+[CloudFormation](https://aws.amazon.com/cloudformation/) ist ein Service welcher es ermöglicht Resourcen in einer einfachen Weise bereitzustellen und zu verwalten. Es fällt in die Infrastructure-as-Code Kategorie. Dadurch ist es möglich anhand von einer einfachen Operation, nachverfolgbar, bestimmte Resourcen weltweit oder in einer bestimmten Region bereitzustellen. Zudem lässt sich dadurch das Resourcenmanagement automatisieren.
 
-- Warum Infrastructure as Code?
-
-- Was ist TypeScript? (Anmerkung von Robert: Das beschreibe ich im TechStack::Frontend auch schon)
-    - TypeScript
-    - imperativ -> deklarativ -> idempotent
+Es existieren zwei Ansätze für Infrastructure as Code. Deklarativ (funktional) und imperativ (prozedural). 
+Der deklarative Ansatz konzentriert sich darauf wie die Zielkonfiguration aussehen soll, wohingegen der imperative Ansatz Schritt-für-Schritt erklärt wie man die Zielkonfiguration erhält. Der imperative Ansatz ist wesentlich fehleranfälliger als der deklarative. Mit Cloudformation nutzen wir den deklarativen Ansatz, da wir hier nur mitteilen welche Resourcen provisioniert werden sollen und nicht wie wir vom aktuellen Zustand zum Zielzustand gelangen.
 
 ### GitHub Actions
 Für den Build unserer Lambdas sowie die Synthetisierung unserer deklarativen Infrastrukturdefinition verwenden wir GitHub Actions. Details dazu beschreiben wir im Abschnitt "Continuous Delivery & Version Control".

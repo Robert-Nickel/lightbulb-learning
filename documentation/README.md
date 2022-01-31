@@ -112,7 +112,7 @@ Ein Beispiel: Legt ein Nutzer eine offene Frage an, so wirft die App ein "OpenQu
 
 Bei der Umsetzung dieser Architektur bemerkten wir die damit zusammenhängenden Hürden: in erster Linie in der Hinsicht der zur Verfügungstellung der Daten und Resultate von Operationen aus Nutzersicht. Dieser ist nicht bereit (und sein Browser nicht darauf ausgelegt), nach einer Interaktion länger als ein paar hundert Millisekunden auf ein Ergebnis zu warten. Ein so schnelle Antwort ist bei schreibenden Operationen mit JVM basierten Lambdas (wie unsere Scala3 Lambdas) völlig unrealistisch, da die Anfragen im Falle von cold-starts leicht über 10 Sekunden dauern können. Desweiteren steigt die Komplexität der Applikation durch die breitere Verteilung der Verantwortung, und die dadurch entstehende Vielzahl an internen Schnittstellen noch weiter. Somit entschlossen wir, die Topics mit den Events zwar zu behalten, und somit die Erweiterbarkeit um unabhängige Microservice zu gewährleisten, diese jedoch nicht im Rahmen des Projekts in Cloud Application Development zu implementieren.
 
-### CDK & CloudFormation (Kevin) 
+### CDK & CloudFormation
 Das [AWS Cloud Development KIT](https://aws.amazon.com/cdk/) ist ein Framework zur Definition von Cloud-Anwendungsressourcen mittels Programmiersprachen. 
 Dabei erstellt man sogenannte Konstrukte für die jeweiligen Cloud Resourcen. Die Konstrukte haben Voreinstellungen, will man von diesen Abweichung kann man dies beispielsweise über gewisse Parameter machen. Auch das Schreiben von eigenen Funktionen für die Erstellung bestimmter Konstrukte haben wir erfolgreich eingesetzt. Beispielsweise für das Provisionieren der Lambda-Funktionen. Das AWS-CDK provisioniert dann die Resourcen mittels AWS CloudFormation. Bei Lightbulb Learning haben wir für das CDK anfangs Java eingesetzt. Später haben wir uns für TypeScript entschieden, da hier die Dokumentation einfacher war. 
 
@@ -147,8 +147,6 @@ Alle verwendeten Programmier-Bibliotheken werden in Form von Abhängigkeitsdekla
 Die Dateien `aws-exports.cjs` und `team-provider.json` sind eine Konfigurationsdatei, werden aber in git verwaltet. Da tenants eigene Branches kriegen, können die entsprechenden Dateien dann dort abgelegt werden. Der Grund für die einzelnen Branches pro Tenant liegt eigentlich in der funktionalen Anpassbarkeit in Abhängigkeit der Bedürfnisse und dem Whitelabelling für die Tenants.
 
 Die Credentials für die Deployments werden über Umgebungsvariablen `AWS_ACCESS_KEY_ID` und `AWS_SECRET_ACCESS_KEY` bezogen und können so sowohl auf den Entwicklerrechnern jeweils unterschiedlich sein, als auch in der CI/CD Pipeline für einen technischen Benutzer definiert sein.
-
-TODO: in awsCommon die baseUrl auslagern
 
 ### IV. Unterstützende Dienste
 "Unterstützende Dienste als angehängte Ressourcen behandeln"
@@ -244,4 +242,6 @@ JWT steht für JSON Web Tokens. Es ist ein standardisiertes Zugriffstoken, welch
 
 Ein JWT enthält einen Header (Algorithmus und Typ des Tokens), ein Payload (Key-Value Paare auch "Claims" genannt z.B. `iss` für issuer) sowie eine Verifikationssignatur. 
 
-Bei vielen Client Anfragen wird das JWT als Header bzw. im Body als Payload mitangegeben. Für die Verifikation des JWT sowie für die beisteuern weiterer benötigter Werte, rufen die AWS-Lambdas eine weitere AWS-Lambda, den jwtHandler auf. Diese Lambda-Funktion extrahiert abhängig vom `issuer` claim den Cogito-Userpool. Im Cognito-Userpool sind jwks hinterlegt, sie repräsentieren eine Menge von öffentlichen Schlüsseln. Das jwt vom client wird nach dem `kid` (key identfier) claim gefiltert. Wurde der korrekte JSON-Web-Key  ermittelt, lässt sich das jwt, mit der jsonwebtoken library, verifizieren.  Ist das Token erfolgreich verifiziert, wird ein JSON Objekt mit den benötigten Werten (usermail, userpool, amount_of_groups, congito:groups, admin_of_group) zurückgegeben.
+Bei vielen Client Anfragen wird das JWT als Header bzw. im Body als Payload mitangegeben. Für die Verifikation des JWT sowie für das beisteuern weiterer  Werte, rufen die AWS-Lambdas eine weitere AWS-Lambda, den jwtHandler auf. Diese Lambda-Funktion extrahiert abhängig vom `issuer` claim den Cogito-Userpool. Im Cognito-Userpool sind jwks hinterlegt, sie repräsentieren eine Menge von öffentlichen Schlüsseln. 
+Der Vorteil hierbei: Dadurch, dass dynamisch abhängig vom `issuer claim` die URL des Userpools ausgelesen wird, brauchen wir beim Anlegen eines neuen Premiumtenants, welcher einen eigenen Userpool hat,  keine Gedanken um die Authentifizierung zu machen.
+Das jwt vom client wird nach dem `kid` (key identfier) claim gefiltert. Wurde der korrekte JSON-Web-Key  ermittelt, lässt sich das jwt, mit der jsonwebtoken library, verifizieren.  Ist das Token erfolgreich verifiziert, wird ein JSON Objekt mit den benötigten Werten (usermail, userpool, amount_of_groups, congito:groups, admin_of_group) zurückgegeben.

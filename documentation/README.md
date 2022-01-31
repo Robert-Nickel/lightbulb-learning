@@ -36,8 +36,9 @@ Für das Frontend von Lightbulb Learning verwenden wir das recht moderne Fronten
 
 Als Programmiersprache verwenden wir für unser Frontend [TypeScript](https://www.typescriptlang.org/), eine typsichere und sehr populäre Variante von JavaScript. Die Vorteile von TypeScript sind enorm: Durch die starke Typisierung wird es IDEs ermöglicht, bessere Codevervollständigung anzubieten, Fehler früher zu erkennen und somit schneller besseren Code zu schreiben.
 
-### Vercel (Robert)
-    - (teilweise) Wechsel von Amplify zu Vercel wegen Qualitätsproblemen [R]
+### Vercel
+Vercel ist ein eigenständiger Service außerhalb von AWS für den Build und das Hosting von Frontend Apps. Zu Beginn des Projekts lösten wir diese Aufgaben (Build & Hosting) mit AWS Amplify, wechselten nach einiger Zeit auf Vercel, da Amplify starke Qualitätsprobleme und Kompatibilitätseinschränkungen mit Frontend-Applikationen wie SvelteKit Apps aufwies, welche die modernere Modul-Struktur anstelle der veralteten CommonJS-Struktur verwenden. Vercel ist moderner als Amplify und bietet eine wirklich angenehme Benutzbarkeit aus Entwicklersicht. Als GitHub App registriert kann es auf Pushes auf beliebige Branches reagieren, das heißt einem Commit folgt immer ein Checkout, einem Checkout folgt der Build und dem Build folgt ein Preview-Deployment, anhand derer unter realen Bedingungen neue Features getestet und evaluiert werden können. Sowohl das Domain-Management in Form eines DNS als auch das nötige Content Delivery Network für die Auslieferung der PWA wird von Vercel übernommen.
+    
 ### API Gateway & Lambdas (Kevin)
     - Scala 3
     - JavaScript

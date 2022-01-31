@@ -94,7 +94,8 @@ Abb. 2: Darstellung des Datenmodells in Amplify Studio
     - K8s
     - evtl. Helm?
     - EKS & ECR
-### Event driven architecture (Robert)
+
+### Event driven architecture
 
 Die Architektur von Lightbulb Learning war zu Beginn asynchron eventbasiert geplant. Damit ist gemeint, dass alle abonnierenden Komponenten in Form eines Events über Änderungen abonnierter Domainenobjekte informiert werden. Dadurch ist ein beliebig erweiterbarer _fan out_ von Informationen über in der Vergangenheit liegende Geschehnisse möglich, auf die alle Microservices und Functions nach eigenem Ermessen reagieren können. Dabei wird, soweit die Theorie, weder der Nutzer mit zusätzlicher Wartezeit, noch der Entwickler mit zusätzlicher Komplexität belangt. Die Events bilden dabei die API der Kompenenten, und werden entsprechend der Prinzipien der API Versionierung kompatibel gehalten.
 
@@ -114,7 +115,9 @@ Bei der Umsetzung dieser Architektur bemerkten wir die damit zusammenhängenden 
 - Was ist TypeScript? (Anmerkung von Robert: Das beschreibe ich im TechStack::Frontend auch schon)
     - TypeScript
     - imperativ -> deklarativ -> idempotent
+
 ### GitHub Actions
+Für den Build unserer Lambdas sowie die Synthetisierung unserer deklarativen Infrastrukturdefinition verwenden wir GitHub Actions. Details dazu beschreiben wir im Abschnitt "Continuous Delivery & Version Control".
 
 ## 12 Factors
 ### I. Codebase

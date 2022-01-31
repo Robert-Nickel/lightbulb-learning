@@ -84,9 +84,17 @@ Abb. 2: Darstellung des Datenmodells in Amplify Studio
 ### Cognito
 [Amazon Cognito](https://aws.amazon.com/cognito/) erlaubt es schnell und einfach Benutzeranmeldungen und Zugriffskontrollen für Web-und Mobil Anwendungen hinzuzufügen. Über Userpools lassen sich beispielsweise pro Premium Tenant mehrere Benutzer abbilden. Zudem ist es möglich innerhalb eines Userpools Benutzer einer oder mehreren Gruppen hinzufügen. In Cognito lassen sich auch die Attribute eines jeden Nutzers definieren. Bei lightbulb-learning setzen wir beispielsweise ein eigenes Attribut: `admin_of_group`. Damit lässt sich dann bestimmen welcher User der Administrator einer Gruppe ist.
 
-### DynamoDB (Kevin)
-- Was ist DynamoDB
-- Warum DynamoDB
+### DynamoDB
+[Amazon DynamoDB](https://aws.amazon.com/dynamodb/) ist eine verwaltete NoSQL Key-Value Datenbank. DynamoDB bietet eine integrierte Sicherheit, kontinuerliche Backups, Replikationen basierend auf Regionen und Datenbankverwaltungswerkzeuge. In diesem Projekt wird die DynamoDB mit AppSync eingesetzt. Für jeden premium Tenant werden separat DynamoDB Instanzen provisioniert. 
+
+Es werden folgende Tabellen in DynamoDB gepflegt:
+- ChallengePoolTable
+- OpenAnswerDraftTable
+- OpenAnswerTable
+- OpenFeedbackDraftTable
+- OpenFeedbackTable
+- OpenQuestionDraftTable
+- OpenQuestionTable
 
 ### Microservices (Nicolai)
     - Docker

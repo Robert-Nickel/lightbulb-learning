@@ -1,19 +1,32 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { fetchMember, MemberType } from '$lib/supabaseClient';
+	import {
+		fetchMember,
+		fetchOpenQuestionPerformances,
+		MemberType,
+		OpenQuestionPerformancesType
+	} from '$lib/supabaseClient';
 	import { onMount } from 'svelte';
 
 	let member: MemberType;
-    let openQuestionsAsked;
+	let openQuestionPerformances: OpenQuestionPerformancesType[] = [];
 
 	onMount(async () => {
 		const id = $page.params.slug;
 		member = await fetchMember(id);
+		openQuestionPerformances = await fetchOpenQuestionPerformances(id);
 	});
 </script>
 
 {#if member}<h1>Performance of {member.firstName} {member.lastName}</h1>{/if}
 
-{#if openQuestionsAsked}
-<h2>Open Questions asked:</h2>
+{#if openQuestionPerformances}
+	<h4>Open Questions asked:</h4>
+	{#each openQuestionPerformances as openQuestionPerformance}
+		<article>
+			<p>{openQuestionPerformance.questionText}</p>
+			<i>Own answer:</i>
+			{openQuestionPerformance.answerText}
+		</article>
+	{/each}
 {/if}

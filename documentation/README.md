@@ -36,12 +36,53 @@ Ein Beispiel: Legt ein Nutzer eine offene Frage an, so wirft die App ein "OpenQu
 ### Vercel (Robert)
     - (teilweise) Wechsel von Amplify zu Vercel wegen Qualitätsproblemen [R]
 ### API Gateway & Lambdas (Kevin)
-    - Scala 3
-    - JavaScript
+Das API Gateway ist ein verwalteter Service von Amazon, welcher es ermöglicht APIs zu verwalten und zu überwachen.
+API steht für Application Programming Interface und ist eine Programmierschnittstelle. Programmierer können mittels APIs Software erstellen die mit externen Systemen interagieren. Das API-Gateway dient als Eingangstor für die Anwendung. Es übernimmt Aufgaben wie die Annahme einer Anfrage, das Traffic Managament, CORS Unterstützung, Autorisierung, Zugriffskontrolle sowie Überwachung. In diesem Projekt wird hauptsächlich die HTTP-API verwendet. Diese ist leichtgewichtiger als die REST-API und ist dauer auch günstiger. Die HTTP-API ordnet einer Route eine Lambda-Funktion zu. In diesem Projekt handelt es sich hauptsächlich um POST-Anfragen, welche einen Payload beinhalten.
+
+Die Zugriffskontrolle ist beispielswiese über sogenannte `Custom-Authorizer`-Lambdas möglich. In dem Authorizer, war es uns möglich über die Definition einer Lambda Funktion zu prüfen, ob die aktuelle Anfrage für die angeforderte Resource berechtigt ist. Wir haben versucht eine POST-Route mit einem `Custom-Authorizer` zu sichern. Mittels der REST-Testanwendung Postman konnte die Route `/upgradeGroup` mit der Lambda Funktion: `authorizationLambdaJS` abgesichert werden, sodass nur User die in AWS Cognito ein bestimmtes Attribut hatten, die Gruppe upgraden konnten. Im Browser war dies durch die Preflight-Anfrage wegen der CORS-Absicherung leider nicht möglich. Dabei haben wir festgestellt, dass die Lambda-Authorisierungsfunktionen nicht ohne weiteres leicht zu debuggen waren, da Log-Statements nicht aufgelistet wurden. Vermutlich einigen sich die Custom-Authorizer für `GET-Anfragen` um einiges besser.
+
+**AWS Lambda** ist ein serverloser Rechenservice, welcher Code basierend auf Ereignissen ausführt und die Rechenresourcen automatisch verwaltet. 
+Beispielsweise kann eine AWS Lambda ausgeführt werden, sobald ein User einen Challengepool anlegt. Dann könnte zum Beispiel Operationen an der Datenbank (z.B. DynamoDB) vorgenommen werden. Man kann somit Code verwenden um benutzerdefinierte Logik für AWS-Services bzw. eigene Backend-Services zu nutzen.
+Dieser Code wird auf hochverfügbarer Recheninfrastruktur ausgeführt. Dadurch muss sich der Kunde keine Gedanken um die  unterliegenden Resourcen wie z.B. die Server machen. Vorteile hierbei sind Skalierbarkeit und Kosteneffizienz. Da der Code nur ausgeführt wird, wenn er benötigt wird, skaliert es mit der Anzahl der Anfragen. Dadurch, dass jede Anfrage zustandslos ist, ist eine horizontale Skalierung bis ins "unendliche" möglich. Man zahlt nur für die Ausführungszeit der Lambda Funktion statt für die Laufzeit des kompletten Servers.  
+Somit gehört AWS Lambda in die Kategorie `Function-As-A-Service`. 
+
+Die Lambdas werden in einer bevorzugten Programmiersprache auf dem Entwicklerrechner bzw. direkt in der Cloud geschrieben und auf den AWS Servern deployed.
+
+Wir haben uns für Scala 3 sowie JavaScript für das entwickeln der Lambda-Funktionen entschieden. 
+Scala komibniert objektorientierte und funktionale Programmierung in einer Sprache. Durch statischen Typen können Fehler in komplexen Anwendungen vermeiden werden. Scala verfügt über viele Module und sogar Java Libraries können direkt in Scala eingesetzt werden. Der Code kann in Java Code kompiliert werden. Dadurch muss keine neue Laufzeitumgebung installiert werden. Scala 3 hat viele breaking changes, sodass es nicht mühelos ist, Code für Scala 2 auszuführen.
+
+Entwickelt wurden die Scala Lambda Funktionen auf einem Entwicklerrechner welche die Scala Version 3.0.1 und die sbt version 1.5.5 eingesetzt hat. 
+Die Scala Dateien wurden dann in eine FAT-JAR Datei kompiliert und als ZIP-Datei implizit über das AWS-CDK hochgeladen.
+
+Wir haben folgende Scala-Lambda-Funktionen definiert
+- addUserToGroupHttpLambda
+- addUserToGroupLambda
+- commitOpenAnswerLambda
+- commitOpenFeedbackLambda
+- commitOpenQuestionLambda
+- createGroupLambda
+- createOpenQuestionLambda
+- listUserGroupsHttpLambda
+- upgradeGroupLambda
+
+Ferner haben wir noch JavaScript Lambda Funktionen definiert:
+- authorizationLambdaJS
+- getGroupInformation
+- getGroupStatus
+- jwtHandler
+
+Dabei handelt es sich um Node Package Module (NPM) welche auch über das AWS-CDK hochgeladen werden.
+
 ### Amplify (Robert)
 ### AppSync (Robert)
 ### Cognito (Kevin)
+- Cognito ist ...
+- special attributes pro User
+
 ### DynamoDB (Kevin)
+- Was ist DynamoDB
+- Warum DynamoDB
+
 ### Microservices (Nicolai)
     - Docker
     - K8s
@@ -51,6 +92,14 @@ Ein Beispiel: Legt ein Nutzer eine offene Frage an, so wirft die App ein "OpenQu
     - SNS
     - SQS
 ### CDK & CloudFormation (Kevin)
+- Was ist Cloud Formation?
+
+- Was ist CDK?
+
+- Warum Infrastructure as Code?
+
+- Was ist TypeScript?
+
     - TypeScript
     - imperativ -> deklarativ -> idempotent
 ### GitHub Actions
@@ -156,6 +205,8 @@ Alle von uns verwendeten Programmiersprachen verfügen über einen REPL (read-ev
 ## Processes (Wie geht ihr vor?)
     - Continuous Delivery &  Version Control (Git) (Nicolai)
     - Infrastructure as Code / CDK (Kevin)
+      - Hier erklaeren was wir provisionieren mit Code
+      - Umgebungsvariablen? Produktion und DEV system?
     - Skript für Premium tenants [create_amplify_app.sh](../infrastructure/create_amplify_app.sh) (Nicolai)
         - Branch for premium tenants
         - Versuch das mit GitHub Actions zu machen gescheitert -> Amplify das falsche Tool für den Job
@@ -167,3 +218,8 @@ Alle von uns verwendeten Programmiersprachen verfügen über einen REPL (read-ev
 # Special highlights the team want to show
     - Monorepo [R]
     - Ablauf mit JWT handling [K]
+      - jwtHandler Lambda Funktion
+      - was ist ein JWT (JWS)
+      - Was ist JWK
+      - Dynamisch abhaengig vom Issuer 
+      - Kein Claims sondern nachdem user sich erfolgreich authentizifiert hat werden die bneoetigen werte ueber Lambda Funktion und Cognito ausgelesen

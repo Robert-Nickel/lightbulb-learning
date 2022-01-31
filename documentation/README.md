@@ -20,13 +20,6 @@ Als Cloud Provider entschieden wir uns für Amazon Web Services, dafür gab es m
 - AWS verfügt über sehr viele unterschiedliche verwaltete Services, so dass man sehr viele Möglichkeiten zur Problemlösung hat
 _TODO: Über mehr Gründe für AWS nachdenken, vielleicht in konkreter Abgrenzung zu den Alternativen?_
 
-## Eventbasierte Architektur
-Die Architektur von Lightbulb Learning ist asynchron eventbasiert. Damit ist gemeint, dass alle abonnierenden Komponenten in Form eines Events über Änderungen abonnierter Domainenobjekte informiert werden. Dadurch ist ein beliebig erweiterbarer _fan out_ von Informationen über in der Vergangenheit liegende Geschehnisse möglich, auf die alle Microservices und Functions nach eigenem Ermessen reagieren können. Dabei wird weder der Nutzer mit zusätzlicher Wartezeit, noch der Entwickler mit zusätzlicher Komplexität belangt. Die Events bilden dabei die API der Kompenenten, und werden entsprechend der Prinzipien der API Versionierung kompatibel gehalten.
-
-Da die Zeitpunkte und der Umfang der auftretenden Ereignisse von äußeren Faktoren wir Nutzereingaben abhängt, muss ein Weg definiert sein, um auch mit starken Schwankungen umgehen zu können. Dabei unterstützt der Simple Queue Service der AWS. Die Queues werden als Abonennten der Simple Notification Service Topics definiert, und halten die Events persistent und in der richtigen Reihenfolge, bis sie von den zuständigen Abonennten abgearbeitet werden können.
-
-Ein Beispiel: Legt ein Nutzer eine offene Frage an, so wirft die App ein "OpenQuestionCommittedEvent". Dieses Event landet auf dem `open-question-topic` topic, inklusive eines Zeitstempels, Typs und einigen Daten zum fachlichen Inhalt, wie den Fragetext und den Antworttext des committeten Objekts. Dieses Topic wird von der `createOpenQuestionQueue` und der  `Microservice-Assessment` Queue abonniert und Events für die Verarbeitung (unter Sicherstellung der korrekten Reihenfolge) persistiert. Die Absichten der beiden abonnierenden Microservices sind dabei völlig unterschiedlich, doch das ist dem Produzenten des Events weder bekannt noch wichtig. Selbst wenn überhaupt keine Komponente ein Event beachten würde: der Produzent des Events ist dafür nicht in der Verantwortung und stellt sich diese Frage nicht einmal.
-
 ## Tech Stack (Was benutzt ihr und warum?)
 
 ![](https://github.com/Lightbulb-Learning/lightbulb-learning/blob/main/documentation/system_architecture_cad.drawio.png)
@@ -102,8 +95,15 @@ Abb. 2: Darstellung des Datenmodells in Amplify Studio
     - evtl. Helm?
     - EKS & ECR
 ### Event driven architecture (Robert)
-    - SNS
-    - SQS
+
+Die Architektur von Lightbulb Learning war zu Beginn asynchron eventbasiert geplant. Damit ist gemeint, dass alle abonnierenden Komponenten in Form eines Events über Änderungen abonnierter Domainenobjekte informiert werden. Dadurch ist ein beliebig erweiterbarer _fan out_ von Informationen über in der Vergangenheit liegende Geschehnisse möglich, auf die alle Microservices und Functions nach eigenem Ermessen reagieren können. Dabei wird, soweit die Theorie, weder der Nutzer mit zusätzlicher Wartezeit, noch der Entwickler mit zusätzlicher Komplexität belangt. Die Events bilden dabei die API der Kompenenten, und werden entsprechend der Prinzipien der API Versionierung kompatibel gehalten.
+
+Da die Zeitpunkte und der Umfang der auftretenden Ereignisse von äußeren Faktoren wir Nutzereingaben abhängt, muss ein Weg definiert sein, um auch mit starken Schwankungen umgehen zu können. Dabei unterstützt der Simple Queue Service (SQS) der AWS. Die Queues werden als Abonennten der [Simple Notification Service](https://aws.amazon.com/de/sns/) (SNS) Topics definiert, und halten die Events persistent und in der richtigen Reihenfolge, bis sie von den zuständigen Abonennten abgearbeitet werden können.
+
+Ein Beispiel: Legt ein Nutzer eine offene Frage an, so wirft die App ein "OpenQuestionCommittedEvent". Dieses Event landet auf dem `open-question-topic` topic, inklusive eines Zeitstempels, Typs und einigen Daten zum fachlichen Inhalt, wie den Fragetext und den Antworttext des committeten Objekts. Dieses Topic wird von der `createOpenQuestionQueue` und der  `Microservice-Assessment` Queue abonniert und Events für die Verarbeitung (unter Sicherstellung der korrekten Reihenfolge) persistiert. Die Absichten der beiden abonnierenden Microservices sind dabei völlig unterschiedlich, doch das ist dem Produzenten des Events weder bekannt noch wichtig. Selbst wenn überhaupt keine Komponente ein Event beachten würde: der Produzent des Events ist dafür nicht in der Verantwortung und stellt sich diese Frage nicht einmal.
+
+Bei der Umsetzung dieser Architektur bemerkten wir die damit zusammenhängenden Hürden: in erster Linie in der Hinsicht der zur Verfügungstellung der Daten und Resultate von Operationen aus Nutzersicht. Dieser ist nicht bereit (und sein Browser nicht darauf ausgelegt), nach einer Interaktion länger als ein paar hundert Millisekunden auf ein Ergebnis zu warten. Ein so schnelle Antwort ist bei schreibenden Operationen mit JVM basierten Lambdas (wie unsere Scala3 Lambdas) völlig unrealistisch, da die Anfragen im Falle von cold-starts leicht über 10 Sekunden dauern können. Desweiteren steigt die Komplexität der Applikation durch die breitere Verteilung der Verantwortung, und die dadurch entstehende Vielzahl an internen Schnittstellen noch weiter. Somit entschlossen wir, die Topics mit den Events zwar zu behalten, und somit die Erweiterbarkeit um unabhängige Microservice zu gewährleisten, diese jedoch nicht im Rahmen des Projekts in Cloud Application Development zu implementieren.
+
 ### CDK & CloudFormation (Kevin)
 - Was ist Cloud Formation?
 

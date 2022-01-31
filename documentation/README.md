@@ -30,6 +30,7 @@ Ein Beispiel: Legt ein Nutzer eine offene Frage an, so wirft die App ein "OpenQu
 ## Tech Stack (Was benutzt ihr und warum?)
 
 ![](https://github.com/Lightbulb-Learning/lightbulb-learning/blob/main/documentation/system_architecture_cad.drawio.png)
+Abb. 1: Übersicht der System Architektur
 
 ### Frontend
 Für das Frontend von Lightbulb Learning verwenden wir das recht moderne Frontend-Framework [SvelteKit](https://kit.svelte.dev/). Dieses ermöglicht WebApps aller Dimensionen, Dateisystembasiertes Routing und bei Bedarf eine Kombination aus Serverside Rendering (SSR) und Portable Web App (PWA). In unserem Fall entschieden wir uns erstmal für die PWA, da sonst Teile des Quellcodes sowohl auf dem Server (für das Prerendering) als auch später nochmal im Browser (für die Hydration) ausgeführt wird, was impliziert, dass die jeweiligen Abhängigkeiten auf beiden Seiten verfügbar sein müssen oder das entsprechend abgefangen werden muss. Ein weiterer Vorteil von Svelte ist die gute Entwicklererfahrung: Komponenten werden in einer einzigen Datei definiert (Mit Struktur, Interaktivität und Styling), können die Mechanismen der Reaktivität beinhalten und daraus wird hochoptimierter JavaScript+HTML+CSS Code generiert, welcher schlussendlich dem Browser ausgeliefert wird.
@@ -82,7 +83,7 @@ Für die Node Package Module wurde NodeJS mit der Version 17.2.0 eingesetzt.
 AWS Amplify ist ein Accelerator für die Entwicklung von WebApps von AWS. Es kapselt einige weitere Dienste wie AppSync, Cognito und DynamoDB und stellt eine Reihe von Ressourcen zur Verfügung, um die Interaktion mit diesen Diensten im Sinne der schnellen Entwicklung zu vereinfachen. Wir starteten mit Amplify für die Umsetzung unserer Frontend Applikation inklusive offline-first Datenhaltung, Registrierung und Login, Hosting und automatisierte Builds. Die [Amplify CLI](https://docs.amplify.aws/cli/) bietet einen einfachen Weg, benötigte Ressourcen anzulegen und zu verwalten. Außerdem gibt es eine übersichtliche UI innerhalb der AWS Managementkonsole, welche nicht nur den aktuellen Status aller Ressourcen darstellt, sondern mit [Amplify Studio](https://aws.amazon.com/de/amplify/studio/) sogar bis auf die Ebene der Datenstruktur ermöglicht, direkt Änderungen vorzunehmen und zu deployen.
 
 ![](https://github.com/Lightbulb-Learning/lightbulb-learning/blob/main/documentation/amplify-studio.png)
-Abb. 1: Darstellung des Datenmodells in Amplify Studio
+Abb. 2: Darstellung des Datenmodells in Amplify Studio
 
 ### AppSync (Robert)
 ### Cognito (Kevin)

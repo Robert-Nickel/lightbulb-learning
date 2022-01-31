@@ -1,8 +1,8 @@
-# Lightbulb Learning
-(mind 5.000 Wörter)
+# Cloud Application Development Projekt: Lightbulb Learning
+[meme-inspector.link](https://meme-inspector.link)
 
 ## Das Team
-Das Team besteht aus Kevin Olomu (@kolomu), Nicolai Stephan (@nistephan) und Robert Nickel (@Robert-Nickel).
+Das Team besteht aus Kevin Olomu ([@kolomu](https://github.com/kolomu)), Nicolai Stephan ([@nistephan](https://github.com/nistephan)) und Robert Nickel ([@Robert-Nickel](https://github.com/Robert-Nickel)).
 
 ## Problem
 Lightbulb Learning hat die Vision, auf das langfristige Lernen zu optimieren. Die Anforderungen an Absolventen den Zukunft sind nicht die gleichen wie an die der Vergangenheit. Sie müssen kommunizieren, kollaborieren, komplexe Problemstellungen analysieren und Lösungen als Team entwickeln können. Aus dem Zugang zum Internet, und dem Wissen um den richtigen Umgang mit der gigantischen Menge an Informationen erwächst die Fähigkeit, die Lösungen für die Probleme der Zukunft entwickeln zu können.
@@ -31,10 +31,14 @@ Ein Beispiel: Legt ein Nutzer eine offene Frage an, so wirft die App ein "OpenQu
 
 ![](https://github.com/Lightbulb-Learning/lightbulb-learning/blob/main/documentation/system_architecture_cad.drawio.png)
 
-### Frontend (Robert)
-    - TypeScript
-### Vercel (Robert)
-    - (teilweise) Wechsel von Amplify zu Vercel wegen Qualitätsproblemen [R]
+### Frontend
+Für das Frontend von Lightbulb Learning verwenden wir das recht moderne Frontend-Framework [SvelteKit](https://kit.svelte.dev/). Dieses ermöglicht WebApps aller Dimensionen, Dateisystembasiertes Routing und bei Bedarf eine Kombination aus Serverside Rendering (SSR) und Portable Web App (PWA). In unserem Fall entschieden wir uns erstmal für die PWA, da sonst Teile des Quellcodes sowohl auf dem Server (für das Prerendering) als auch später nochmal im Browser (für die Hydration) ausgeführt wird, was impliziert, dass die jeweiligen Abhängigkeiten auf beiden Seiten verfügbar sein müssen oder das entsprechend abgefangen werden muss. Ein weiterer Vorteil von Svelte ist die gute Entwicklererfahrung: Komponenten werden in einer einzigen Datei definiert (Mit Struktur, Interaktivität und Styling), können die Mechanismen der Reaktivität beinhalten und daraus wird hochoptimierter JavaScript+HTML+CSS Code generiert, welcher schlussendlich dem Browser ausgeliefert wird.
+
+Als Programmiersprache verwenden wir für unser Frontend [TypeScript](https://www.typescriptlang.org/), eine typsichere und sehr populäre Variante von JavaScript. Die Vorteile von TypeScript sind enorm: Durch die starke Typisierung wird es IDEs ermöglicht, bessere Codevervollständigung anzubieten, Fehler früher zu erkennen und somit schneller besseren Code zu schreiben.
+
+### Vercel
+Vercel ist ein eigenständiger Service außerhalb von AWS für den Build und das Hosting von Frontend Apps. Zu Beginn des Projekts lösten wir diese Aufgaben (Build & Hosting) mit AWS Amplify, wechselten nach einiger Zeit auf Vercel, da Amplify starke Qualitätsprobleme und Kompatibilitätseinschränkungen mit Frontend-Applikationen wie SvelteKit Apps aufwies, welche die modernere Modul-Struktur anstelle der veralteten CommonJS-Struktur verwenden. Vercel ist moderner als Amplify und bietet eine wirklich angenehme Benutzbarkeit aus Entwicklersicht. Als GitHub App registriert kann es auf Pushes auf beliebige Branches reagieren, das heißt einem Commit folgt immer ein Checkout, einem Checkout folgt der Build und dem Build folgt ein Preview-Deployment, anhand derer unter realen Bedingungen neue Features getestet und evaluiert werden können. Sowohl das Domain-Management in Form eines DNS als auch das nötige Content Delivery Network für die Auslieferung der PWA wird von Vercel übernommen.
+    
 ### API Gateway & Lambdas (Kevin)
 Das API Gateway ist ein verwalteter Service von Amazon, welcher es ermöglicht APIs zu verwalten und zu überwachen.
 API steht für Application Programming Interface und ist eine Programmierschnittstelle. Programmierer können mittels APIs Software erstellen die mit externen Systemen interagieren. Das API-Gateway dient als Eingangstor für die Anwendung. Es übernimmt Aufgaben wie die Annahme einer Anfrage, das Traffic Managament, CORS Unterstützung, Autorisierung, Zugriffskontrolle sowie Überwachung. In diesem Projekt wird hauptsächlich die HTTP-API verwendet. Diese ist leichtgewichtiger als die REST-API und ist dauer auch günstiger. Die HTTP-API ordnet einer Route eine Lambda-Funktion zu. In diesem Projekt handelt es sich hauptsächlich um POST-Anfragen, welche einen Payload beinhalten.
@@ -216,10 +220,7 @@ Alle von uns verwendeten Programmiersprachen verfügen über einen REPL (read-ev
     - Commercial Model
 
 # Special highlights the team want to show
-    - Monorepo [R]
-    - Ablauf mit JWT handling [K]
-      - jwtHandler Lambda Funktion
-      - was ist ein JWT (JWS)
-      - Was ist JWK
-      - Dynamisch abhaengig vom Issuer 
-      - Kein Claims sondern nachdem user sich erfolgreich authentizifiert hat werden die bneoetigen werte ueber Lambda Funktion und Cognito ausgelesen
+## Monorepo
+Die Verwendung eines Monorepos brachte mehr Vor- als Nachteile mit sich, weshalb wir uns frühzeitig dafür entschieden. Da wir viele Komponenten (Lambdas, API Gateway, ...) haben, die miteinander kommunizieren und dafür Schnittstellen definieren müssen, müssten diese eigentlich entsprechend explizit versioniert werden. Die Komplexität dieses Unterfangens ist nicht zu unterschätzen, da das Gesamtsystem zu jedem Zeitpunkt vollständig kompatibel gehalten werden muss. So müsste man in einigen Fällen Funktionen zeitgleich deployen, was sehr schwer umzusetzen ist. Hier zeigt die Monorepo Struktur seine Stärke: Alle Änderungen können auf einem einzigen Branch gepusht werden, und beim Merge dieses Branches werden alle Schnittstellen-Änderungen in einem einzigen Deployment auf die Produktionsumgebung gebracht, wodurch eine nahtlose Funktionsfähigkeit der Anwendung garantiert wird.
+
+## Ablauf mit JWT handling [K]

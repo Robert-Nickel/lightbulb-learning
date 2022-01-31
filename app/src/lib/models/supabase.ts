@@ -412,6 +412,7 @@ export interface paths {
     get: {
       parameters: {
         query: {
+          id?: parameters["rowFilter.members.id"];
           challenge_pool?: parameters["rowFilter.members.challenge_pool"];
           user_id?: parameters["rowFilter.members.user_id"];
           first_name?: parameters["rowFilter.members.first_name"];
@@ -1578,6 +1579,12 @@ export interface definitions {
     /**
      * Format: uuid
      * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    id?: string;
+    /**
+     * Format: uuid
+     * @description Note:
      * This is a Foreign Key to `challenge_pools.id`.<fk table='challenge_pools' column='id'/>
      */
     challenge_pool?: string;
@@ -1905,6 +1912,8 @@ export interface parameters {
   "rowFilter.invite_codes.created_at": string;
   /** @description members */
   "body.members": definitions["members"];
+  /** Format: uuid */
+  "rowFilter.members.id": string;
   /** Format: uuid */
   "rowFilter.members.challenge_pool": string;
   /** Format: uuid */

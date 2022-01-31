@@ -11,7 +11,7 @@
 </script>
 
 {#each members as member}
-	<a href={`/challengepool/${challengePoolId}/user/${member.userId}`} class="light-link">
+	<a href={`/performance/${member.id}`} class="light-link">
 		<article class="hoverable">
 			{member.firstName} {member.lastName}
 		</article>

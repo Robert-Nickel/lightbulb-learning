@@ -363,6 +363,16 @@ export async function fetchMembers(challengePoolId: string): Promise<MemberType[
     return keysToCamelCase(data)
 }
 
+export async function fetchMember(id: string): Promise<MemberType> {
+    const { data, error } = await supabase
+        .from<MemberTypeDB>(membersView)
+        .select()
+        .eq('id', id)
+        .single()
+    printIf(error)
+    return keysToCamelCase(data)
+}
+
 function printIf(error) {
     if (error) console.error(error)
 }

@@ -27,23 +27,32 @@ Da die Zeitpunkte und der Umfang der auftretenden Ereignisse von äußeren Fakto
 
 Ein Beispiel: Legt ein Nutzer eine offene Frage an, so wirft die App ein "OpenQuestionCommittedEvent". Dieses Event landet auf dem `open-question-topic` topic, inklusive eines Zeitstempels, Typs und einigen Daten zum fachlichen Inhalt, wie den Fragetext und den Antworttext des committeten Objekts. Dieses Topic wird von der `createOpenQuestionQueue` und der  `Microservice-Assessment` Queue abonniert und Events für die Verarbeitung (unter Sicherstellung der korrekten Reihenfolge) persistiert. Die Absichten der beiden abonnierenden Microservices sind dabei völlig unterschiedlich, doch das ist dem Produzenten des Events weder bekannt noch wichtig. Selbst wenn überhaupt keine Komponente ein Event beachten würde: der Produzent des Events ist dafür nicht in der Verantwortung und stellt sich diese Frage nicht einmal.
 
-## Tech Stack
+## Tech Stack (Was benutzt ihr und warum?)
 
 ![](https://github.com/Lightbulb-Learning/lightbulb-learning/blob/main/documentation/system_architecture_cad.drawio.png)
 
 ### Frontend (Robert)
+    - TypeScript
+### Vercel (Robert)
 ### API Gateway & Lambdas (Kevin)
+    - Scala 3
+    - JavaScript
 ### Amplify (Robert)
-
+### AppSync (Robert)
+### Cognito (Kevin)
+### DynamoDB (Kevin)
 ### Microservices (Nicolai)
     - Docker
     - K8s
     - evtl. Helm?
+    - EKS & ECR
 ### Event driven architecture (Robert)
-### Cognito (Kevin)
-### DynamoDB (Kevin)
+    - SNS
+    - SQS
 ### CDK & CloudFormation (Robert)
-    
+    - TypeScript
+    - imperativ -> deklarativ -> idempotent
+### GitHub Actions
 
 ## 12 Factors
 ### I. Codebase
@@ -137,16 +146,18 @@ Für das Logging verwenden wir an jeder Stelle den `stdout`, AWS kümmert sich d
 
 Alle von uns verwendeten Programmiersprachen verfügen über einen REPL (read-eval-print loop) Mechanismus, sodass administrative Eingriffe darüber getriggert werden können. Unser einziger administrativer Schritt ist das Anlegen eines neuen Premium-Tenants, dafür befindet sich der Code in der Versionsverwaltung. Die Ausführung wird, wegen sonst überflüssiger Abhängigkeiten, von lokal getriggert. Ein besserer Ansatz wäre, diese Ausführung beispielsweise mit GitHub Actions durchzuführen.
 
-## Processes
-    - Continuous Delivery
-    - Infrastructure as Code / CDK
-    - Version Control (Git)
-## Multi-User
-## Multi-Tenancy
-To add a premium tenant run the script [create_amplify_app.sh](../infrastructure/create_amplify_app.sh) and follow the instructions. 
+## Multi-Tenancy und Multi-User (Nicolai)
+    - Welche Arten haben wir und was ist der Unterschied?
+    - Konzept mit Gruppen erstellen und beitreten
+    - Filterung der CP aus Grundlage der Gruppen/Tenants
+    
 
-// TODO: describe free and standard Multi-Tenancy with Groups 
-
-## Commercial SaaS
+## Processes (Wie geht ihr vor?)
+    - Continuous Delivery &  Version Control (Git) (Nicolai)
+    - Infrastructure as Code / CDK (Kevin)
+    - Skript für Premium tenants [create_amplify_app.sh](../infrastructure/create_amplify_app.sh) (Robert)
+    - Branch for premium tenants (Robert)
+    
+## Commercial SaaS (Nicolai)
   - Cost analysis
   - Commercial Model

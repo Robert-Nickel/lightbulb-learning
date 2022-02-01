@@ -260,8 +260,43 @@ Für das bauen der Lambdafunktionen bedienen wir uns selbstgeschriebenen Funktio
 Ist das AWS-CDK installiert so kann man mit den Befehlen `cdk synth` das Cloudformation Template erstellen und mit `cdk deploy` die Resourcen deployen.
 
 ## Commercial SaaS (Nicolai)
-    - Cost analysis
-    - Commercial Model
+### Cost analysis
+Um die Gesamtkosten der Infrastruktur pro Monat berechnen zu können, müssen vier Posten im Detail betrachtet werden: Die Kosten von `Vercel`, `Lambdas`, `API Gateway` und `DynamoDB`.
+- **Vercel**
+Für den Dienst bei Vercel wird ein Fixbetrag von 25$ pro Monat fällig.
+- **Lambdas**
+Für die Kosten der Lambdas müssen einige Variablen beachtet werden, um den Preis pro Monat berechnen zu können. Wichtig hierbei ist der durchschnittliche Speicher pro Lambda und die durchschnittliche Anfragedauer.
+Es wird also in der Einheit Speicher mal Zeit berechnet. Im konkreten Fall GBs. Um den tatsächlichen Preis zu berechnen wird folgende Formel verwendet:
+((Anforderungen Pro Monat * durchschnittliche Anfragedauer * 0,001 * durchschnittlicher Speicher (in MB) * 0,0009765625) - 400000) * 0,0000166667
+Die 400000 stehen für das Freikontingent (in GBs) pro Monat, das abgezogen werden kann. 1 GBs kostet also 0,0000166667$.
+- **API Gateway**
+Eine Anfrage an das API Gateway kostet 0,000001$. Das Freikontingent beträgt hierbei 1000000 Anfragen pro Monat. Daraus ergibt sich also folgende Formel zur Kostenberechnung:
+(Anzahl Anfragen pro Monat - 1000000) * 0,000001
+- **DynamoDB**
+Die Kosten bei der DynamoDB unterscheiden sich zwischen Lese- und Schreibzugriffe. Schreibzugriffe kosten 1,525$ pro 1000000 Zugriffe. Lesezugriffe kosten 0,305$ pro 1000000 Zugriffe. Für diese Anwendung wird davon ausgegangen, dass jeweils die Hälfte Schreibzugriffe und die andere Hälfte Lesezugriffe sind. Daraus ergibt sich folgende Formel zur Berechnung der Kosten:
+((Anzahl Zugriffe pro Monat / 2) * 1,525/1000000)+((Anzahl Zugriffe Pro Monat/ 2) * 0,305/1000000)
+
+Um jetzt sinnvolle Werte für die Kosten pro Monat zu erhalten, müssen einige Variablen geschätzt werden:
+- **Lambdas**
+    - **Speicher**
+    Als durchschnittlichen Wert wird `300MB` pro Lambda angenommen. Die meisten Lambdas haben 256MB und nur zwei benötigen 512MB.
+    - **Anfragedauer**
+    Als durchschnittliche Anfragedauer wird `5000ms` angenommen. Das kann sich durch weniger Coldstarts z.b. stark verringern.
+- **Anzahl der Nutzer**
+    - **Premiumkunden**
+    Für die Anzahl der Premiumkunden wird eine Schätzung abgegeben. Zur Zeit in den ersten beiden Monaten 1 Kunde, danach 2, 3 und 5. 
+Die durchschnittlichen Nutzer pro Premiumkunden werden auf `1000`geschätztz.
+    - **Free- und Standardkunden**
+    Für die Free- und Standardkunden werden Vielfache der Premiumkunden angegeben. In diesem Fall `4` für `Standard` und `150` für `Free`.
+    Die durchschnittlichen Nutzer pro Standardkunde werden auf `300` und pro Freekunde auf `25` geschätzt.
+    - **Anzahl Anfragen pro Nutzer**
+    Wie viele Anfragen ein Nutzer pro Monat stellt wird in diesem Fall auf `150` geschätzt.
+
+Alle oben genannten geschätzten Variablen lassen sich leicht in der Tabellenkalkulation anpassen, um sofort angepasste Werte zu erhalten. 
+### Commercial Model
+Da man monatliche Kosten der Nutzer zu erwarten hat, wurde sich für ein Abomodell entschieden, wobei die Kunden monatlich einen Preis bezahlen. Durch die oben genannten Schätzungen können die monatlichen Kosten kumuliert werden und daraus den zu fordernden Preis ableiten. Mit den oben genannten Schätzungen wurde sich für folgenden Preise entschieden: `Standard 5$` und `Premium 10$`
+Mit diesen Werten kann man in folgendem Diagramm erkennen, dass der break even Punkt im April stattfinden wird.
+![]()
 
 # Special highlights the team want to show
 ## Monorepo

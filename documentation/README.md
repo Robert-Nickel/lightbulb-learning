@@ -296,7 +296,7 @@ Alle oben genannten geschätzten Variablen lassen sich leicht in der Tabellenkal
 ### Commercial Model
 Da man monatliche Kosten der Nutzer zu erwarten hat, wurde sich für ein Abomodell entschieden, wobei die Kunden monatlich einen Preis bezahlen. Durch die oben genannten Schätzungen können die monatlichen Kosten kumuliert werden und daraus den zu fordernden Preis ableiten. Mit den oben genannten Schätzungen wurde sich für folgenden Preise entschieden: `Standard 5$` und `Premium 10$`
 Mit diesen Werten kann man in folgendem Diagramm erkennen, dass der break even Punkt im April stattfinden wird.
-![]()
+![](https://github.com/Lightbulb-Learning/lightbulb-learning/blob/main/documentation/BreakEven.png)
 
 # Special highlights the team want to show
 ## Monorepo

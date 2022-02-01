@@ -5,9 +5,9 @@
 </p>
 
 <p class="principle">
-	🥋&nbsp;&nbsp;Lightbulb Learning lets your students challenge each other by asking good open questions,
-	answering them precisely and providing feedback for each others work - all of that being a part of their
-	educational process and performance.
+	🥋&nbsp;&nbsp;Lightbulb Learning is a dialogue platform: it lets your students challenge each other by
+	asking good open questions, answering them precisely and providing feedback for each others work - all of
+	that being a part of their educational process and performance.
 </p>
 
 <p class="principle">
@@ -16,7 +16,7 @@
 </p>
 
 <p class="principle">
-	🔥&nbsp;&nbsp;Trying Lightbulb Learning with your friends or students. It is all free and open source.
+	🔥&nbsp;&nbsp;It is all free and open source. <a href="/login">Get your hands on Lightbulb Learning to learn more.</a>
 </p>
 
 <style>

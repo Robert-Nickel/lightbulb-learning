@@ -1,10 +1,12 @@
 # Lightbulb Learning
 
-💡  Our vision is to optimize for the learning itself - because the demands to the graduates of the future are different from those of the past. They need to communicate, collaborate, analyze complex problems and develop solutions in teams. Using access to the internet and knowing how to filter the gigantic amount of information means being able to find solutions for the problems of the future.
+💡  Some people just want to see the world learn. We believe: That works best in a friendly, collaborative environment without pressure. That is why Lightbulb Learning is about growth through	understanding instead of grades through memorization.
 
-🥋  Lightbulb Learning lets your students challenge each other by asking good question, answering them precisely and providing feedback for each others work - all of that being a part of their educational performance.
+🥋  Lightbulb Learning is a dialogue platform: it lets your students challenge each other by asking good open questions, answering them precisely and providing feedback for each others work - all of that being a part of their educational process and performance.
 
-🔥  Try Lightbulb Learning for free - so your students can practice today what we all need them to know tomorrow.
+📈  Observe and evaluate your students path through the learning curve over weeks or months, because growth takes more time than a 90 minute exam.
+
+🔥  It is all free and open source. [Get your hands on Lightbulb Learning to learn more.](https://lightbulb-learning.io)
 
 ## Stay in the loop?
 Join the [mailing list](https://tinyletter.com/RobertNickel).

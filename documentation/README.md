@@ -96,11 +96,11 @@ Es werden folgende Tabellen in DynamoDB gepflegt:
 - OpenQuestionDraftTable
 - OpenQuestionTable
 
-### Microservices (Nicolai)
-    - Docker
-    - K8s
-    - evtl. Helm?
-    - EKS & ECR
+### Microservices
+Es wurde ein Microservice mit `Docker` erstellt. Dieser Dockercontainer konnte dann bei der [Amazon Elastic Container Registry (Amazon ECR)](https://aws.amazon.com/de/ecr/) gespeichert werden. Dadurch war man in der Lage ein [Amazon Elastic Kubernetes Service (EKS)](https://aws.amazon.com/de/eks/) einzurichten, das auf den gespeicherten Dockercontainer zugreifen kann. Das EKS wurde so eingerichtet, dass ein Kubernetes Cluster mit zwei EC2 Instanzen ausgeführt wird.
+
+Nachdem die meiste Funktionalität mit AWS Lambdas umgesetzt wurde, hat man entschieden, dass kein Microservice für das Projekt benötigt wird. Der größte Vorteil, der aus dieser Entscheidung entsteht, ist, dass durch die Lambdas um ein vielfaches weniger Kosten entstehen. Die EC2 Instanzen müssten durchgehend aktiv sein, während die Lambdas nur für die eigentliche Ausführungszeit berechnet werden.	
+
 
 ### Event driven architecture
 
@@ -214,7 +214,7 @@ Für das Logging verwenden wir an jeder Stelle den `stdout`, AWS kümmert sich d
 
 Alle von uns verwendeten Programmiersprachen verfügen über einen REPL (read-eval-print loop) Mechanismus, sodass administrative Eingriffe darüber getriggert werden können. Unser einziger administrativer Schritt ist das Anlegen eines neuen Premium-Tenants, dafür befindet sich der Code in der Versionsverwaltung. Die Ausführung wird, wegen sonst überflüssiger Abhängigkeiten, von lokal getriggert. Ein besserer Ansatz wäre, diese Ausführung beispielsweise mit GitHub Actions durchzuführen.
 
-## Multi-Tenancy und Multi-User (Nicolai)
+## Multi-Tenancy und Multi-User
 Legt ein Nutzer eine neue Gruppe an, so wird er Admin dieser Gruppe und hat die Möglichkeit weitere Nutzer in diese Gruppe einzuladen. Beim Erstellen einer solchen Gruppe wird auch die Tenant-ID oder auch Gruppen-ID erstellt. Jeder Nutzer kann nur in einer Gruppe sein.
 Vor dem Erstellen der Gruppe muss man zwischen einer der folgenden drei Möglichkeiten entscheiden:
 - **Free**
@@ -264,14 +264,18 @@ Für das bauen der Lambdafunktionen bedienen wir uns selbstgeschriebenen Funktio
   - getGroupStatus (für das Abfragen des Gruppenstatus)
 - **HttpApi** mit corsPreflight Konfiguration und den jeweiligen Routen, welche den Pfad auf die hier verlinkten Lambdafunktionen referenziert.
 
-    - Continuous Delivery &  Version Control (Git) (Nicolai)
-    - Skript für Premium tenants [create_amplify_app.sh](../infrastructure/create_amplify_app.sh) (Nicolai)
-        - Branch for premium tenants
-        - Versuch das mit GitHub Actions zu machen gescheitert -> Amplify das falsche Tool für den Job
-    
-Ist das AWS-CDK installiert so kann man mit den Befehlen `cdk synth` das Cloudformation Template erstellen und mit `cdk deploy` die Resourcen deployen.
+### Continuous Delivery &  Version Control (Git)
+Damit durch einen Push auf den main branch automatisch ein deploy der AWS CDK passiert, wird Github Actions verwendet. Konkret wird hierfür die [main.yml](../.github/workflows/main.yml) verwendent. Der Job wird auf einem Ubuntu System ausgeführt. Zuerst müssen dann die Credentials (`aws-access-key-id` und `aws-secret-access-key`) sowie die verwendete `aws-region` eingetragen werden. Für die Umgebung muss noch npm, nodejs und ein jdk installiert werden. Jetzt können alle scala3 als auch javascript Lambdas gebaut werden. Um dann am Ende mit den  Befehlen `cdk synth` das Cloudformation Template erstellen und mit `cdk deploy` die Resourcen deployen zu können, muss das AWS CDK installiert werden.
 
-## Commercial SaaS (Nicolai)
+Für jeden Premiumkunden wird eine eigene Amplify App, die unter anderem eine eigene DynamoDB Tabelle enthält, erstellt. Mithilfe des [create_amplify_app.sh](../infrastructure/create_amplify_app.sh) kann eine solche Amplify App erstellt werden. Zuerst wird der Name des zu erstellenden Premiumkundens abgefragt. Danach wird `amplify init` ausgeführt, um lokal eine neue Amplify App zu erstellen, um sie anschließend mit `amplify push` hochzuladen. Für jeden Premiumkunden wird ein neuer branch mit dem jeweiligen Namen angelegt, Anpassungen mit dem Namen im Frontend gemacht und den branch gepusht.
+
+Vercel erkennt sofort Änderungen an den bestehenden branches, aber auch neu erstellte branches. So wird das Frontend direkt gebaut und unter einem Link bereitgestellt. Jeder Premiumkunde erhält somit ein eigenes Frontend, die er beliebig anpassen kann, mit eigener URL, die am Ende des Scripts ausgegeben wird.
+
+Als letzter Befehl im Script wird `amplify console auth` ausgeführt. Derjenige, der das Script ausführt, muss am Ende noch ein Custom Attribut per Hand erstellen: `admin_of_group`. Das Attribut ist wichtig für das Verwalten der Gruppen, wer Admin von welcher Gruppe ist und damit mehr Rechte hat.
+
+Es wurde versucht das Skript zum Erstellen einer neuen Amplify App für einen Premiumkunden mit Github Actions zu lösen, sodass das Skript sehr leicht auszuführen ist, ohne jegliche Installation von Abhängigkeiten. Gescheitert ist das ganze, da sich herausgestellt hat, dass Amplify für eine automatisierte Erstellung nicht so gut geeignet ist, da viele Parameter händisch in der CLI eingegeben werden müssen und man diese nicht als Parameter direkt mitgeben kann.
+
+## Commercial SaaS
 ### Cost analysis
 Um die Gesamtkosten der Infrastruktur pro Monat berechnen zu können, müssen vier Posten im Detail betrachtet werden: Die Kosten von `Vercel`, `Lambdas`, `API Gateway` und `DynamoDB`.
 - **Vercel**

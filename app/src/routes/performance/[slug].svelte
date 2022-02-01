@@ -44,7 +44,9 @@
 				<h4 class="mt-2 mb-2">{performance.questionText}</h4>
 				<h4 class="mt-2 mb-0">- {performance.answerText}</h4>
 			{:else if performance.openAnswerId}
-				<small>- Open Answer </small>
+				<small
+					>- Open Answer {#if performance.version > 1}Improvement{/if}</small
+				>
 				<p class="my-2"><i>Question: {performance.questionText}</i></p>
 				<h4 class="mt-2 mb-0">{performance.answerText}</h4>
 			{:else if performance.openFeedbackId}
@@ -52,7 +54,6 @@
 				<p class="my-2"><i>Question: {performance.questionText}</i></p>
 				<p class="my-2"><i>Answer: {performance.answerText}</i></p>
 				<h4 class="mt-2 mb-0">{performance.feedbackText}</h4>
-
 			{/if}
 		</article>
 	{/each}

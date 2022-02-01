@@ -137,7 +137,7 @@
 						class="w-48 ">Save</button
 					>
 				</div>
-				<i>The feedback is private - only you and the owner of the answer can see it.</i>
+				<i>The feedback is private - only you, the owner of the answer and the owner of the challenge pool can see it.</i>
 			{/if}
 		{/if}
 		<Back text="Back to Open Question" route="/openquestion/{openQuestion.id}" />

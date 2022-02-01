@@ -11,10 +11,9 @@ describe('Challenge Pools', () => {
     it('creates a challenge pool', () => {
         // when
         const challengePoolName = createChallengePool()
-        cy.wait(2_000)
-
+        
         // then
-        cy.get('.hoverable').last().should("have.text", challengePoolName);
+        cy.get('h1').should("have.text", challengePoolName);
     });
 
     it('opens a challenge pool', () => {
@@ -28,26 +27,15 @@ describe('Challenge Pools', () => {
         cy.get('h1').should('have.text', challengePoolName);
     })
 
-    it("doesn't show delete button to not admin", async () => {
-        // given
-        const challengePoolName = createChallengePool()
-        supabaseLogin(studentEmail2)
-
-        // when
-        openChallengePool(challengePoolName)
-
-        // then
-        cy.check('.secondary').should('not.exist')
-    })
-
     it('deletes a challenge pool', () => {
         // given
         const challengePoolName = createChallengePool()
         openChallengePool(challengePoolName)
+        cy.contains('Settings').click()
 
         // when
-        cy.get('.secondary').click()
-
+        cy.contains('Delete').click()
+        
         // then
         cy.url().should('not.contain', '/challengePool')
     })

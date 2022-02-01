@@ -5,6 +5,8 @@
  */
 
 export function createChallengePool(): string {
+    cy.get('.text-gray-100').click()
+    cy.contains('Create').click()
     const challengePoolName = randomText("challenge_pool")
     cy.get('div.w-full > .w-full').type(challengePoolName)
     cy.get('.w-32').click()
@@ -12,6 +14,8 @@ export function createChallengePool(): string {
 }
 
 export function openChallengePool(challengePoolName: string) {
+    cy.visit('http://localhost:3000')
+    cy.wait(2_000)
     cy.contains(challengePoolName).click()
 }
 

@@ -882,6 +882,44 @@ export interface paths {
       };
     };
   };
+  "/open_feedback_performances": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.open_feedback_performances.id"];
+          open_feedback_id?: parameters["rowFilter.open_feedback_performances.open_feedback_id"];
+          feedback_text?: parameters["rowFilter.open_feedback_performances.feedback_text"];
+          created_at?: parameters["rowFilter.open_feedback_performances.created_at"];
+          answer_text?: parameters["rowFilter.open_feedback_performances.answer_text"];
+          question_text?: parameters["rowFilter.open_feedback_performances.question_text"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["open_feedback_performances"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+  };
   "/open_question_drafts": {
     get: {
       parameters: {
@@ -1685,6 +1723,28 @@ export interface definitions {
      */
     created_at: string;
   };
+  open_feedback_performances: {
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    id?: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    open_feedback_id?: string;
+    /** Format: text */
+    feedback_text?: string;
+    /** Format: timestamp with time zone */
+    created_at?: string;
+    /** Format: text */
+    answer_text?: string;
+    /** Format: text */
+    question_text?: string;
+  };
   open_question_drafts: {
     /**
      * Format: uuid
@@ -1963,6 +2023,20 @@ export interface parameters {
   "rowFilter.open_feedback_drafts.owner": string;
   /** Format: timestamp with time zone */
   "rowFilter.open_feedback_drafts.created_at": string;
+  /** @description open_feedback_performances */
+  "body.open_feedback_performances": definitions["open_feedback_performances"];
+  /** Format: uuid */
+  "rowFilter.open_feedback_performances.id": string;
+  /** Format: uuid */
+  "rowFilter.open_feedback_performances.open_feedback_id": string;
+  /** Format: text */
+  "rowFilter.open_feedback_performances.feedback_text": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.open_feedback_performances.created_at": string;
+  /** Format: text */
+  "rowFilter.open_feedback_performances.answer_text": string;
+  /** Format: text */
+  "rowFilter.open_feedback_performances.question_text": string;
   /** @description open_question_drafts */
   "body.open_question_drafts": definitions["open_question_drafts"];
   /** Format: uuid */

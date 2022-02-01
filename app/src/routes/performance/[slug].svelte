@@ -4,6 +4,7 @@
 	import {
 		fetchMember,
 		fetchOpenAnswerPerformances,
+		fetchOpenFeedbackPerformances,
 		fetchOpenQuestionPerformances,
 		MemberType
 	} from '$lib/supabaseClient';
@@ -22,7 +23,8 @@
 		member = await fetchMember(id);
 		allPerformances = allPerformances
 			.concat(await fetchOpenQuestionPerformances(id))
-			.concat(await fetchOpenAnswerPerformances(id));
+			.concat(await fetchOpenAnswerPerformances(id))
+			.concat(await fetchOpenFeedbackPerformances(id));
 
 		allPerformances.sort((a, b) => {
 			return new Date(a.createdAt) > new Date(b.createdAt) ? 1 : -1;
@@ -43,8 +45,14 @@
 				<h4 class="mt-2 mb-0">- {performance.answerText}</h4>
 			{:else if performance.openAnswerId}
 				<small>- Open Answer </small>
-				<p class="my-2"><i>Someone asked: {performance.questionText}</i></p>
+				<p class="my-2"><i>Question: {performance.questionText}</i></p>
 				<h4 class="mt-2 mb-0">{performance.answerText}</h4>
+			{:else if performance.openFeedbackId}
+				<small>- Open Feedback </small>
+				<p class="my-2"><i>Question: {performance.questionText}</i></p>
+				<p class="my-2"><i>Answer: {performance.answerText}</i></p>
+				<h4 class="mt-2 mb-0">{performance.feedbackText}</h4>
+
 			{/if}
 		</article>
 	{/each}

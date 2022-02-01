@@ -6,6 +6,6 @@ create table if not exists public.open_feedback_drafts (
     created_at timestamp with time zone default now() not null
 );
 ALTER TABLE open_feedback_drafts ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "ofd_insert_policy_for_authenticated_user" ON public.open_feedback FOR INSERT WITH CHECK (auth.role() = 'authenticated');
-CREATE POLICY "ofd_select_policy_for_owner" ON public.open_feedback FOR SELECT USING (auth.uid() = owner);
-CREATE POLICY "ofd_delete_policy_for_owner" ON public.open_feedback FOR DELETE USING (auth.uid() = owner);
+CREATE POLICY "ofd_insert_policy_for_authenticated_user" ON public.open_feedback_drafts FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+CREATE POLICY "ofd_select_policy_for_owner" ON public.open_feedback_drafts FOR SELECT USING (auth.uid() = owner);
+CREATE POLICY "ofd_delete_policy_for_owner" ON public.open_feedback_drafts FOR DELETE USING (auth.uid() = owner);

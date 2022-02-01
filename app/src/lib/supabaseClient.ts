@@ -391,6 +391,15 @@ export async function fetchOpenAnswerPerformances(id: string): Promise<OpenAnswe
     return keysToCamelCase(data)
 }
 
+export async function fetchOpenFeedbackPerformances(id: string): Promise<OpenFeedbackPerformancesType[]> {
+    const { data, error } = await supabase
+        .from<OpenFeedbackPerformancesTypeDB>(openFeedbackPerformancesView)
+        .select()
+        .eq('id', id)
+    printIf(error)
+    return keysToCamelCase(data)
+}
+
 function printIf(error) {
     if (error) console.error(error)
 }
@@ -410,6 +419,7 @@ export const inviteCodesTable = 'invite_codes';
 export const membersView = 'members';
 export const openQuestionPerformancesView = 'open_question_performances';
 export const openAnswerPerformancesView = 'open_answer_performances';
+export const openFeedbackPerformancesView = 'open_feedback_performances';
 
 export type ChallengePoolType = CamelCasedPropertiesDeep<definitions['challenge_pools']>;
 export type OpenQuestionDraftType = CamelCasedPropertiesDeep<definitions['open_question_drafts']>;
@@ -426,6 +436,7 @@ export type InviteCodeType = CamelCasedPropertiesDeep<definitions['invite_codes'
 export type MemberType = CamelCasedPropertiesDeep<definitions['members']>;
 export type OpenQuestionPerformancesType = CamelCasedPropertiesDeep<definitions['open_question_performances']>;
 export type OpenAnswerPerformancesType = CamelCasedPropertiesDeep<definitions['open_answer_performances']>;
+export type OpenFeedbackPerformancesType = CamelCasedPropertiesDeep<definitions['open_feedback_performances']>;
 
 export type ChallengePoolTypeDB = definitions['challenge_pools'];
 export type OpenQuestionDraftTypeDB = definitions['open_question_drafts'];
@@ -442,3 +453,4 @@ export type InviteCodeTypeDB = definitions['invite_codes'];
 export type MemberTypeDB = definitions['members'];
 export type OpenQuestionPerformancesTypeDB = definitions['open_question_performances'];
 export type OpenAnswerPerformancesTypeDB = definitions['open_answer_performances'];
+export type OpenFeedbackPerformancesTypeDB = definitions['open_feedback_performances'];

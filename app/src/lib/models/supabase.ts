@@ -451,7 +451,6 @@ export interface paths {
         query: {
           id?: parameters["rowFilter.open_answer_drafts.id"];
           answer_text?: parameters["rowFilter.open_answer_drafts.answer_text"];
-          version?: parameters["rowFilter.open_answer_drafts.version"];
           open_question?: parameters["rowFilter.open_answer_drafts.open_question"];
           owner?: parameters["rowFilter.open_answer_drafts.owner"];
           created_at?: parameters["rowFilter.open_answer_drafts.created_at"];
@@ -507,7 +506,6 @@ export interface paths {
         query: {
           id?: parameters["rowFilter.open_answer_drafts.id"];
           answer_text?: parameters["rowFilter.open_answer_drafts.answer_text"];
-          version?: parameters["rowFilter.open_answer_drafts.version"];
           open_question?: parameters["rowFilter.open_answer_drafts.open_question"];
           owner?: parameters["rowFilter.open_answer_drafts.owner"];
           created_at?: parameters["rowFilter.open_answer_drafts.created_at"];
@@ -527,7 +525,6 @@ export interface paths {
         query: {
           id?: parameters["rowFilter.open_answer_drafts.id"];
           answer_text?: parameters["rowFilter.open_answer_drafts.answer_text"];
-          version?: parameters["rowFilter.open_answer_drafts.version"];
           open_question?: parameters["rowFilter.open_answer_drafts.open_question"];
           owner?: parameters["rowFilter.open_answer_drafts.owner"];
           created_at?: parameters["rowFilter.open_answer_drafts.created_at"];
@@ -544,6 +541,44 @@ export interface paths {
       responses: {
         /** No Content */
         204: never;
+      };
+    };
+  };
+  "/open_answer_performances": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.open_answer_performances.id"];
+          open_answer_id?: parameters["rowFilter.open_answer_performances.open_answer_id"];
+          answer_text?: parameters["rowFilter.open_answer_performances.answer_text"];
+          version?: parameters["rowFilter.open_answer_performances.version"];
+          created_at?: parameters["rowFilter.open_answer_performances.created_at"];
+          question_text?: parameters["rowFilter.open_answer_performances.question_text"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["open_answer_performances"][];
+        };
+        /** Partial Content */
+        206: unknown;
       };
     };
   };
@@ -957,6 +992,7 @@ export interface paths {
           open_question_id?: parameters["rowFilter.open_question_performances.open_question_id"];
           question_text?: parameters["rowFilter.open_question_performances.question_text"];
           answer_text?: parameters["rowFilter.open_question_performances.answer_text"];
+          created_at?: parameters["rowFilter.open_question_performances.created_at"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -1539,8 +1575,6 @@ export interface definitions {
     id: string;
     /** Format: text */
     answer_text: string;
-    /** Format: bigint */
-    version: number;
     /**
      * Format: uuid
      * @description Note:
@@ -1554,6 +1588,28 @@ export interface definitions {
      * @default now()
      */
     created_at: string;
+  };
+  open_answer_performances: {
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    id?: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    open_answer_id?: string;
+    /** Format: text */
+    answer_text?: string;
+    /** Format: bigint */
+    version?: number;
+    /** Format: timestamp with time zone */
+    created_at?: string;
+    /** Format: text */
+    question_text?: string;
   };
   open_answers: {
     /**
@@ -1672,6 +1728,8 @@ export interface definitions {
     question_text?: string;
     /** Format: text */
     answer_text?: string;
+    /** Format: timestamp with time zone */
+    created_at?: string;
   };
   open_questions: {
     /**
@@ -1847,14 +1905,26 @@ export interface parameters {
   "rowFilter.open_answer_drafts.id": string;
   /** Format: text */
   "rowFilter.open_answer_drafts.answer_text": string;
-  /** Format: bigint */
-  "rowFilter.open_answer_drafts.version": string;
   /** Format: uuid */
   "rowFilter.open_answer_drafts.open_question": string;
   /** Format: uuid */
   "rowFilter.open_answer_drafts.owner": string;
   /** Format: timestamp with time zone */
   "rowFilter.open_answer_drafts.created_at": string;
+  /** @description open_answer_performances */
+  "body.open_answer_performances": definitions["open_answer_performances"];
+  /** Format: uuid */
+  "rowFilter.open_answer_performances.id": string;
+  /** Format: uuid */
+  "rowFilter.open_answer_performances.open_answer_id": string;
+  /** Format: text */
+  "rowFilter.open_answer_performances.answer_text": string;
+  /** Format: bigint */
+  "rowFilter.open_answer_performances.version": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.open_answer_performances.created_at": string;
+  /** Format: text */
+  "rowFilter.open_answer_performances.question_text": string;
   /** @description open_answers */
   "body.open_answers": definitions["open_answers"];
   /** Format: uuid */
@@ -1917,6 +1987,8 @@ export interface parameters {
   "rowFilter.open_question_performances.question_text": string;
   /** Format: text */
   "rowFilter.open_question_performances.answer_text": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.open_question_performances.created_at": string;
   /** @description open_questions */
   "body.open_questions": definitions["open_questions"];
   /** Format: uuid */

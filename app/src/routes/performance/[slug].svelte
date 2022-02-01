@@ -1,32 +1,55 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import Back from '$lib/components/Back.svelte';
 	import {
 		fetchMember,
+		fetchOpenAnswerPerformances,
 		fetchOpenQuestionPerformances,
-		MemberType,
-		OpenQuestionPerformancesType
+		MemberType
 	} from '$lib/supabaseClient';
 	import { onMount } from 'svelte';
 
 	let member: MemberType;
-	let openQuestionPerformances: OpenQuestionPerformancesType[] = [];
+	let allPerformances: { createdAt: string }[] = [];
+
+	export function getDateAndTime(createdAt: string) {
+		const date = new Date(createdAt);
+		return date.toLocaleDateString() + ' - ' + date.toLocaleTimeString();
+	}
 
 	onMount(async () => {
 		const id = $page.params.slug;
 		member = await fetchMember(id);
-		openQuestionPerformances = await fetchOpenQuestionPerformances(id);
+		allPerformances = allPerformances
+			.concat(await fetchOpenQuestionPerformances(id))
+			.concat(await fetchOpenAnswerPerformances(id));
+
+		allPerformances.sort((a, b) => {
+			return new Date(a.createdAt) > new Date(b.createdAt) ? 1 : -1;
+		});
 	});
 </script>
 
 {#if member}<h1>Performance of {member.firstName} {member.lastName}</h1>{/if}
 
-{#if openQuestionPerformances}
-	<h4>Open Questions asked:</h4>
-	{#each openQuestionPerformances as openQuestionPerformance}
+{#if allPerformances}
+	{#each allPerformances as performance}
 		<article>
-			<p>{openQuestionPerformance.questionText}</p>
-			<i>Own answer:</i>
-			{openQuestionPerformance.answerText}
+			<small>{getDateAndTime(performance.createdAt)}</small>
+
+			{#if performance.openQuestionId}
+				<small>- Open Question</small>
+				<h4 class="mt-2 mb-2">{performance.questionText}</h4>
+				<h4 class="mt-2 mb-0">- {performance.answerText}</h4>
+			{:else if performance.openAnswerId}
+				<small>- Open Answer </small>
+				<p class="my-2"><i>Someone asked: {performance.questionText}</i></p>
+				<h4 class="mt-2 mb-0">{performance.answerText}</h4>
+			{/if}
 		</article>
 	{/each}
+{/if}
+
+{#if member}
+	<Back text="Back to Challenge Pool" route="/challengepool/{member.challengePool}" />
 {/if}

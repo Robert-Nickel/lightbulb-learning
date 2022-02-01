@@ -10,6 +10,7 @@
 	});
 </script>
 
+<h3 class="mt-8">Members</h3>
 {#each members as member}
 	<a href={`/performance/${member.id}`} class="light-link">
 		<article class="hoverable">

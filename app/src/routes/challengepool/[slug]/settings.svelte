@@ -1,14 +1,11 @@
 <script lang="ts">
-	import CreateOpenQuestion from '$lib/components/CreateOpenQuestion.svelte';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import Back from '$lib/components/Back.svelte';
 	import {
 		ChallengePoolType,
-		OpenQuestionType,
 		fetchChallengePool,
-		fetchOpenQuestions,
 		deleteChallengePool,
 		saveInviteCode
 	} from '$lib/supabaseClient';
@@ -30,7 +27,7 @@
 </script>
 
 <main class="container">
-	{#if challengePool}
+	{#if challengePool && $user.id == challengePool.owner}
 		<h1>{challengePool.description}</h1>
 
 		{#if $user.id == challengePool.owner}

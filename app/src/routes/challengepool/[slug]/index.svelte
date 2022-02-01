@@ -9,20 +9,12 @@
 		OpenQuestionType,
 		fetchChallengePool,
 		fetchOpenQuestions,
-		deleteChallengePool,
-		saveInviteCode
 	} from '$lib/supabaseClient';
 	import { user } from '$lib/stores/user';
-	import Members from '$lib/components/Members.svelte';
-
-	const openQuestionsString = 'open_questions';
-	const settingsString = 'settings';
 
 	let challengePoolId: string;
 	let challengePool: ChallengePoolType;
 	let openQuestions: Array<OpenQuestionType> = [];
-	let inviteCode: string;
-	let currentTab = 'open_questions';
 
 	onMount(() => {
 		refresh();

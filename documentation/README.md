@@ -215,10 +215,22 @@ Für das Logging verwenden wir an jeder Stelle den `stdout`, AWS kümmert sich d
 Alle von uns verwendeten Programmiersprachen verfügen über einen REPL (read-eval-print loop) Mechanismus, sodass administrative Eingriffe darüber getriggert werden können. Unser einziger administrativer Schritt ist das Anlegen eines neuen Premium-Tenants, dafür befindet sich der Code in der Versionsverwaltung. Die Ausführung wird, wegen sonst überflüssiger Abhängigkeiten, von lokal getriggert. Ein besserer Ansatz wäre, diese Ausführung beispielsweise mit GitHub Actions durchzuführen.
 
 ## Multi-Tenancy und Multi-User (Nicolai)
-    - Welche Arten haben wir und was ist der Unterschied?
-    - Konzept mit Gruppen erstellen und beitreten
-    - Filterung der CP aus Grundlage der Gruppen/Tenants
-    
+Legt ein Nutzer eine neue Gruppe an, so wird er Admin dieser Gruppe und hat die Möglichkeit weitere Nutzer in diese Gruppe einzuladen. Beim Erstellen einer solchen Gruppe wird auch die Tenant-ID oder auch Gruppen-ID erstellt. Jeder Nutzer kann nur in einer Gruppe sein.
+Vor dem Erstellen der Gruppe muss man zwischen einer der folgenden drei Möglichkeiten entscheiden:
+- **Free**
+	- Der Service kostet den Kunden hierbei `nichts`.
+	- Es können bis zu `25 Nutzer` in einer Free Gruppe sein.
+- **Standard**
+	- Der Service kostet den Kunden `5$ monatlich`
+	- Es können bis zu `500 Nutzer` in einer Standard Gruppe sein.
+- **Premium**
+	- Der Service kostet den Kunden `10$ monatlich`
+	- Es können `unbegrenzt Nutzer` in einer Premium Gruppe sein.
+	- Es wird eine eigene Amplify App für einen Premiumkunden angelegt.
+	
+### Isolation zwischen den Tenants
+Die Free- und Standardgruppen werden innerhalb der selben Amplify App angelegt. Die Isolation erfolgt lediglich über das Filtern der Tenant-ID (oder auch Gruppen-Id).
+Für die Premiumkunden wird jeweils eine eigene Amplify App erstellt, welche eigene DynamoDB Tabellen enthält. Dadurch wird eine klare Isolation der Daten hergestellt.
 
 ## Processes (Wie geht ihr vor?)
 ### Infrastructure as Code / CDK

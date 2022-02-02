@@ -1,3 +1,5 @@
+[![lightbulb-learning DEV](https://img.shields.io/endpoint?url=https://dashboard.cypress.io/badge/simple/esqcjm/supabase&style=flat&logo=cypress)](https://dashboard.cypress.io/projects/esqcjm/runs)
+
 # Lightbulb Learning
 
 💡  Our vision is to optimize for the learning itself - because the demands to the graduates of the future are different from those of the past. They need to communicate, collaborate, analyze complex problems and develop solutions in teams. Using access to the internet and knowing how to filter the gigantic amount of information means being able to find solutions for the problems of the future.

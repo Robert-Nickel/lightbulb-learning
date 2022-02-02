@@ -1,3 +1,5 @@
+[![lightbulb-learning DEV](https://img.shields.io/endpoint?url=https://dashboard.cypress.io/badge/simple/esqcjm/supabase&style=flat&logo=cypress)](https://dashboard.cypress.io/projects/esqcjm/runs)
+
 # Lightbulb Learning
 
 💡  Some people just want to see the world learn. We believe: That works best in a friendly, collaborative environment without pressure. That is why Lightbulb Learning is about growth through	understanding instead of grades through memorization.

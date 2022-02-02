@@ -7,7 +7,7 @@ describe('Open Questions', () => {
         await promisify(cy.visit('http://localhost:3000'));
         await supabaseLogin(studentEmail1);
 
-        openChallengePool(createChallengePool())
+        createChallengePool()
     });
 
     it('creates an open question draft', () => {

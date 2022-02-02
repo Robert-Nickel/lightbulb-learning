@@ -14,8 +14,9 @@ export function createChallengePool(): string {
 }
 
 export function openChallengePool(challengePoolName: string) {
-    cy.visit('http://localhost:3000')
     cy.wait(2_000)
+    cy.visit('http://localhost:3000')
+    cy.scrollTo('bottom')
     cy.contains(challengePoolName).click()
 }
 

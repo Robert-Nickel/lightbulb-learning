@@ -8,7 +8,7 @@ describe('Challenge Pools', () => {
         await supabaseLogin(studentEmail1);
     });
 
-    it('creates a challenge pool', () => {
+    it('opens the challenge pool right after creation', () => {
         // when
         const challengePoolName = createChallengePool()
         
@@ -29,8 +29,7 @@ describe('Challenge Pools', () => {
 
     it('deletes a challenge pool', () => {
         // given
-        const challengePoolName = createChallengePool()
-        openChallengePool(challengePoolName)
+        openChallengePool(createChallengePool())
         cy.contains('Settings').click()
 
         // when

@@ -8,7 +8,7 @@
 		ChallengePoolType,
 		OpenQuestionType,
 		fetchChallengePool,
-		fetchOpenQuestions,
+		fetchOpenQuestions
 	} from '$lib/supabaseClient';
 	import { user } from '$lib/stores/user';
 
@@ -22,7 +22,10 @@
 
 	async function refresh() {
 		challengePoolId = $page.params.slug;
-		challengePool = await fetchChallengePool(challengePoolId);
+		//challengePool = await fetchChallengePool(challengePoolId);
+		if (!challengePool) {
+			setTimeout(async () => (challengePool = await fetchChallengePool(challengePoolId)), 1_000);
+		}
 		openQuestions = await fetchOpenQuestions(challengePoolId);
 	}
 </script>

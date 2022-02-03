@@ -240,28 +240,28 @@ Folgende Resourcen werden provisionert:
 - **Policies**: Für jede Lambda-Funktion wurde eine Policy definiert, welche nur die Aktionen erlaubt, die für die Erfüllung der Operation benötigt wird. 
 - **Topics**: openQuestionTopic, openAnswerTopic, openFeedbackTopic
 - **Queues**: createOpenQuestionQueue
-- **Lambdas**: Für das bauen der Lambdafunktionen bedienen wir uns selbstgeschriebenen Funktionen `buildLambda` und `buildLambdaJS`. Diese Funktionien retournieren ein Instanz vom Typ Lambdafunktion. Die Lambdafunktion enthält bestimmte Parametern wie z.B. der Einstiegspunkt der Klasse, die Laufzeitumgebung, die Größe, den Timeout und wo der Codeabschnitt zu finden ist.
-  - commitOpenQuestionLambda (für das Speichern einer Frage)
-  - commitOpenAnswerLambda (für das Speichern einer Antwort)
-  - commitOpenFeedbackLambda (für das Speichern des Feedbacks)
-  - createOpenQuestionLambda (für das Erstellen einer Frage)
-  - createGroupLambda (für das Erstellen einer Gruppe)
-  - addUserToGroupLambda (für das Beitreten einer Gruppe)
-  - addUserToGroupHttpLambda (für das Erstellen einer Gruppe über HTTP, diese Funktion ruft addUserToGroupLambda auf)
-  - listUserGroupsHttpLambda (für das auslesen der Nutzergruppen)
-  - upgradeGroupHttpLambda (für das Upgraden einer `Free` Gruppe auf eine `Standard` Gruppe)
-  - authorizationLambdaJS (custom-authorizer, für das Prüfen der Berechtigung über das API-Gateway)
-  - jwtHandler (für das verifizieren des JWT und Aufbereitung eines Rückgabeobjekts mit dem andere Lambdafunktionen arbeiten)
-  - getGroupInformation (für das Abfragen von Gruppeninformationen)
-  - getGroupStatus (für das Abfragen des Gruppenstatus)
-- **HttpApi** mit corsPreflight Konfiguration und den jeweiligen Routen, welche den Pfad auf die hier verlinkten Lambdafunktionen referenziert.
+- **Lambdas**: Für das Bauen der Lambda-Funktionen bedienen wir uns an den selbstgeschriebenen Funktionen `buildLambda` und `buildLambdaJS`. Diese Funktionen retournieren ein Instanz vom Typ Lambda-Funktion. Die Lambda-Funktion enthält bestimmte Parameter wie z.B. den Einstiegspunkt der Klasse, die Laufzeitumgebung, die Größe, das Timeout und wo der Codeabschnitt zu finden ist.
+  - commitOpenQuestionLambda: für das Speichern einer Frage
+  - commitOpenAnswerLambda: für das Speichern einer Antwort
+  - commitOpenFeedbackLambda: für das Speichern des Feedbacks
+  - createOpenQuestionLambda: für das Erstellen einer Frage
+  - createGroupLambda: für das Erstellen einer Gruppe
+  - addUserToGroupLambda: für den Beitritt einer Gruppe
+  - addUserToGroupHttpLambda: für das Erstellen einer Gruppe über HTTP, diese Funktion ruft addUserToGroupLambda auf
+  - listUserGroupsHttpLambda: für das Auslesen der Nutzergruppen
+  - upgradeGroupHttpLambda: für das Upgraden einer `Free` Gruppe auf eine `Standard` Gruppe
+  - authorizationLambdaJS: custom-authorizer, für das Prüfen der Berechtigung über das API-Gateway
+  - jwtHandler: für das Verifizieren des JWT und Aufbereitung eines Rückgabeobjekts mit dem andere Lambda-Funktionen arbeiten
+  - getGroupInformation: für das Abfragen von Gruppeninformationen
+  - getGroupStatus: für das Abfragen des Gruppenstatus
+- **HttpApi** mit CORS Preflight Konfiguration und den jeweiligen Routen, welche den Pfad auf die hier verlinkten Lambda-Funktionen referenzieren.
 
 ### Continuous Delivery &  Version Control (Git)
-Damit durch einen Push auf den main branch automatisch ein deploy der AWS CDK passiert, wird Github Actions verwendet. Konkret wird hierfür die [main.yml](../.github/workflows/main.yml) verwendent. Der Job wird auf einem Ubuntu System ausgeführt. Zuerst müssen dann die Credentials (`aws-access-key-id` und `aws-secret-access-key`) sowie die verwendete `aws-region` eingetragen werden. Für die Umgebung muss noch npm, nodejs und ein jdk installiert werden. Jetzt können alle scala3 als auch javascript Lambdas gebaut werden. Um dann am Ende mit den  Befehlen `cdk synth` das Cloudformation Template erstellen und mit `cdk deploy` die Resourcen deployen zu können, muss das AWS CDK installiert werden.
+Damit durch einen Push auf den main branch automatisch ein Deployment der AWS CDK angestoßen wird, wird Github Actions verwendet. Konkret wird hierfür die [main.yml](../.github/workflows/main.yml) verwendent. Der Job wird auf einem Ubuntu System ausgeführt. Zuerst müssen dann die Credentials (`aws-access-key-id` und `aws-secret-access-key`) sowie die verwendete `aws-region` eingetragen werden. Für die Umgebung muss noch npm, nodejs und ein JDK installiert werden. Jetzt können alle Scala 3 als auch JavaScript-Lambdas gebaut werden. Um dann am Ende mit den Befehlen `cdk synth` das CloudFormation Template erstellen und mit `cdk deploy` die Ressourcen deployen zu können, muss das AWS CDK installiert werden.
 
-Für jeden Premiumkunden wird eine eigene Amplify App, die unter anderem eine eigene DynamoDB Tabelle enthält, erstellt. Mithilfe des [create_amplify_app.sh](../infrastructure/create_amplify_app.sh) kann eine solche Amplify App erstellt werden. Zuerst wird der Name des zu erstellenden Premiumkundens abgefragt. Danach wird `amplify init` ausgeführt, um lokal eine neue Amplify App zu erstellen, um sie anschließend mit `amplify push` hochzuladen. Für jeden Premiumkunden wird ein neuer branch mit dem jeweiligen Namen angelegt, Anpassungen mit dem Namen im Frontend gemacht und den branch gepusht.
+Für jeden Premiumkunden wird eine eigene Amplify App, die unter anderem eine eigene DynamoDB Tabelle enthält, erstellt. Mithilfe des [create_amplify_app.sh](../infrastructure/create_amplify_app.sh) Skripts kann eine solche Amplify App erstellt werden. Zuerst wird der Name des zu erstellenden Premiumkundens abgefragt. Danach wird `amplify init` ausgeführt, um lokal eine neue Amplify App zu erstellen, um sie anschließend mit `amplify push` hochzuladen. Für jeden Premiumkunden wird ein neuer branch mit dem jeweiligen Namen angelegt, Anpassungen mit dem Namen im Frontend gemacht und der branch gepusht.
 
-Vercel erkennt sofort Änderungen an den bestehenden branches, aber auch neu erstellte branches. So wird das Frontend direkt gebaut und unter einem Link bereitgestellt. Jeder Premiumkunde erhält somit ein eigenes Frontend, die er beliebig anpassen kann, mit eigener URL, die am Ende des Scripts ausgegeben wird.
+Vercel erkennt sofort Änderungen an den bestehenden branches, aber auch neu erstellte branches. So wird das Frontend direkt gebaut und unter einer URL bereitgestellt. Jeder Premiumkunde erhält somit ein eigenes Frontend, welches er beliebig anpassen kann.
 
 Als letzter Befehl im Script wird `amplify console auth` ausgeführt. Derjenige, der das Script ausführt, muss am Ende noch ein Custom Attribut per Hand erstellen: `admin_of_group`. Das Attribut ist wichtig für das Verwalten der Gruppen, wer Admin von welcher Gruppe ist und damit mehr Rechte hat.
 

@@ -11,7 +11,7 @@ Lightbulb Learning hat die Vision, auf das langfristige Lernen zu optimieren. Di
 Um dies zu erreichen, stellt Lightbulb Learning eine Lern- und Prüfungsplattform dar, auf der Studenten lernen sich originelle Fragen zu überlegen und diese zu formulieren, die Fragen der anderen Studenten präzise zu beantworten und sich gegenseitig Feedback dazu zu geben. Egal ob Frage, Antwort oder Feedback, jede Form der Partizipation ist auch ein Teil des Leistungsnachweises.
 
 ## Abgrenzung zur Masterarbeit
-Im Sinne des Moduls "Cloud Application Development" wurde teilweise schon bestehende Architektur von Lightbulb Learning dahingehend erweitert, dass sämtliche Aspekte der Inhalte der Vorlesung darin vorkommen. Für diese Formen der Erweiterbarkeit war die Architektur von Anfang an, in Form von eventbasierter Kommunikation, ausgelegt. Dazu gehören der Assessment Service, der Simple Notification Service, der Simple Queue Service, die Lambdas sowie die Aspekte der Teilsysteme, welche die Multi-Tenancy betreffen.
+Im Sinne des Moduls "Cloud Application Development" wurde teilweise schon bestehende Architektur von Lightbulb Learning dahingehend erweitert, dass sämtliche Aspekte der Inhalte der Vorlesung darin vorkommen. Für diese Formen der Erweiterbarkeit war die Architektur von Anfang an, in Form von eventbasierter Kommunikation, ausgelegt. Dazu gehören alle Leistungen rund um den Assessment Service im EKS, dem Message Broker, den Queues, die Lambdas sowie die Aspekte der Teilsysteme, welche die Multi-Tenancy betreffen.
 
 ## Cloud Anbieter: AWS
 Als Cloud Provider entschieden wir uns für Amazon Web Services, dafür gab es mehrere Gründe
@@ -20,7 +20,7 @@ Als Cloud Provider entschieden wir uns für Amazon Web Services, dafür gab es m
 - AWS verfügt über sehr viele unterschiedliche verwaltete Services, so dass man sehr viele Möglichkeiten zur Problemlösung hat
 _TODO: Über mehr Gründe für AWS nachdenken, vielleicht in konkreter Abgrenzung zu den Alternativen?_
 
-## Tech Stack (Was benutzt ihr und warum?)
+## Technologie Stack
 
 ![](https://github.com/Lightbulb-Learning/lightbulb-learning/blob/main/documentation/system_architecture_cad.drawio.png)
 Abb. 1: Übersicht der System Architektur
@@ -101,8 +101,7 @@ Es wurde ein Microservice mit `Docker` erstellt. Dieser Dockercontainer konnte d
 
 Nachdem die meiste Funktionalität mit AWS Lambdas umgesetzt wurde, hat man entschieden, dass kein Microservice für das Projekt benötigt wird. Der größte Vorteil, der aus dieser Entscheidung entsteht, ist, dass durch die Lambdas um ein vielfaches weniger Kosten entstehen. Die EC2 Instanzen müssten durchgehend aktiv sein, während die Lambdas nur für die eigentliche Ausführungszeit berechnet werden.	
 
-
-### Event driven architecture
+### Event driven Architektur
 
 Die Architektur von Lightbulb Learning war zu Beginn asynchron eventbasiert geplant. Damit ist gemeint, dass alle abonnierenden Komponenten in Form eines Events über Änderungen abonnierter Domainenobjekte informiert werden. Dadurch ist ein beliebig erweiterbarer _fan out_ von Informationen über in der Vergangenheit liegende Geschehnisse möglich, auf die alle Microservices und Functions nach eigenem Ermessen reagieren können. Dabei wird, soweit die Theorie, weder der Nutzer mit zusätzlicher Wartezeit, noch der Entwickler mit zusätzlicher Komplexität belangt. Die Events bilden dabei die API der Kompenenten, und werden entsprechend der Prinzipien der API Versionierung kompatibel gehalten.
 
@@ -124,7 +123,7 @@ Der deklarative Ansatz konzentriert sich darauf wie die Zielkonfiguration ausseh
 ### GitHub Actions
 Für den Build unserer Lambdas sowie die Synthetisierung unserer deklarativen Infrastrukturdefinition verwenden wir GitHub Actions. Details dazu beschreiben wir im Abschnitt "Continuous Delivery & Version Control".
 
-## 12 Factors
+## 12 Faktoren
 ### I. Codebase
 "Eine im Versionsmanagementsystem verwaltete Codebase, viele Deployments"
 Wir benutzen eine Monorepo Strukur für das Projekt Lightbulb Learning. Das bedeutet, dass sämtlicher projektbezogener Code in einem einzigen git Repository auf GitHub verwaltet wird.
@@ -232,7 +231,7 @@ Vor dem Erstellen der Gruppe muss man zwischen einer der folgenden drei Möglich
 Die Free- und Standardgruppen werden innerhalb der selben Amplify App angelegt. Die Isolation erfolgt lediglich über das Filtern der Tenant-ID (oder auch Gruppen-Id).
 Für die Premiumkunden wird jeweils eine eigene Amplify App erstellt, welche eigene DynamoDB Tabellen enthält. Dadurch wird eine klare Isolation der Daten hergestellt.
 
-## Processes (Wie geht ihr vor?)
+## Prozesse
 ### Infrastructure as Code / CDK
 Die [Infrastructure.ts](../infrastructure/bin/infrastructure.ts) dient als Einstiegspunkt für das AWS-CDK. Hier definieren wir den Namen des Stacks sowie die Umgebungsvariablen und die Region. Wir haben einen separaten technischen Account angelegt welcher die benötigten Rechte besitzt um Cloud Resourcen zu provisionieren.
 
@@ -275,8 +274,8 @@ Als letzter Befehl im Script wird `amplify console auth` ausgeführt. Derjenige,
 
 Es wurde versucht das Skript zum Erstellen einer neuen Amplify App für einen Premiumkunden mit Github Actions zu lösen, sodass das Skript sehr leicht auszuführen ist, ohne jegliche Installation von Abhängigkeiten. Gescheitert ist das ganze, da sich herausgestellt hat, dass Amplify für eine automatisierte Erstellung nicht so gut geeignet ist, da viele Parameter händisch in der CLI eingegeben werden müssen und man diese nicht als Parameter direkt mitgeben kann.
 
-## Commercial SaaS
-### Cost analysis
+## Kommerzielles SaaS-Modell 
+### Kostenanalyse
 Um die Gesamtkosten der Infrastruktur pro Monat berechnen zu können, müssen vier Posten im Detail betrachtet werden: Die Kosten von `Vercel`, `Lambdas`, `API Gateway` und `DynamoDB`.
 - **Vercel**
 Für den Dienst bei Vercel wird ein Fixbetrag von 25$ pro Monat fällig.
@@ -314,7 +313,7 @@ Da man monatliche Kosten der Nutzer zu erwarten hat, wurde sich für ein Abomode
 Mit diesen Werten kann man in folgendem Diagramm erkennen, dass der break even Punkt im April stattfinden wird.
 ![](https://github.com/Lightbulb-Learning/lightbulb-learning/blob/main/documentation/BreakEven.png)
 
-# Special highlights the team want to show
+# Special Highlights
 ## Monorepo
 Die Verwendung eines Monorepos brachte mehr Vor- als Nachteile mit sich, weshalb wir uns frühzeitig dafür entschieden. Da wir viele Komponenten (Lambdas, API Gateway, ...) haben, die miteinander kommunizieren und dafür Schnittstellen definieren müssen, müssten diese eigentlich entsprechend explizit versioniert werden. Die Komplexität dieses Unterfangens ist nicht zu unterschätzen, da das Gesamtsystem zu jedem Zeitpunkt vollständig kompatibel gehalten werden muss. So müsste man in einigen Fällen Funktionen zeitgleich deployen, was sehr schwer umzusetzen ist. Hier zeigt die Monorepo Struktur seine Stärke: Alle Änderungen können auf einem einzigen Branch gepusht werden, und beim Merge dieses Branches werden alle Schnittstellen-Änderungen in einem einzigen Deployment auf die Produktionsumgebung gebracht, wodurch eine nahtlose Funktionsfähigkeit der Anwendung garantiert wird.
 

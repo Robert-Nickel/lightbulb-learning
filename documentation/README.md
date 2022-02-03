@@ -21,7 +21,7 @@ Als Cloud Provider entschieden wir uns für Amazon Web Services, dafür gab es m
 
 ## Technologie Stack
 
-![](https://github.com/Lightbulb-Learning/lightbulb-learning/blob/main/documentation/system_architecture_cad.drawio.png)
+![](https://github.com/Lightbulb-Learning/lightbulb-learning/blob/main/documentation/system_architecture_cad.drawio.png?raw=true)
 Abb. 1: Übersicht der System Architektur
 
 ### Frontend
@@ -75,7 +75,7 @@ Für die Node Package Module wurde NodeJS mit der Version 17.2.0 eingesetzt.
 ### Amplify
 [AWS Amplify](https://aws.amazon.com/de/amplify/) ist ein Accelerator für die Entwicklung von WebApps von AWS. Es kapselt einige weitere Dienste wie AppSync, Cognito und DynamoDB und stellt eine Reihe von Ressourcen zur Verfügung, um die Interaktion mit diesen Diensten im Sinne der schnellen Entwicklung zu vereinfachen. Wir starteten mit Amplify für die Umsetzung unserer Frontend Applikation inklusive offline-first Datenhaltung, Registrierung und Login, Hosting und automatisierte Builds. Die [Amplify CLI](https://docs.amplify.aws/cli/) bietet einen einfachen Weg, benötigte Ressourcen anzulegen und zu verwalten. Außerdem gibt es eine übersichtliche UI innerhalb der AWS Managementkonsole, welche nicht nur den aktuellen Status aller Ressourcen darstellt, sondern mit [Amplify Studio](https://aws.amazon.com/de/amplify/studio/) sogar bis auf die Ebene der Datenstruktur ermöglicht, direkt Änderungen vorzunehmen und zu deployen.
 
-![](https://github.com/Lightbulb-Learning/lightbulb-learning/blob/main/documentation/amplify-studio.png)
+![](https://github.com/Lightbulb-Learning/lightbulb-learning/blob/main/documentation/amplify-studio.png?raw=true)
 Abb. 2: Darstellung des Datenmodells in Amplify Studio
 
 ### AppSync
@@ -233,9 +233,9 @@ Für die Premiumkunden wird jeweils eine eigene Amplify App erstellt, welche eig
 
 ## Prozesse
 ### Infrastructure-as-Code / CDK
-Die [Infrastructure.ts](../infrastructure/bin/infrastructure.ts) dient als Einstiegspunkt für das AWS-CDK. Hier definieren wir den Namen des Stacks sowie die Umgebungsvariablen und die Region. Wir haben einen separaten technischen Account angelegt welcher die benötigten Rechte besitzt um Cloud Resourcen zu provisionieren.
+Die [Infrastructure.ts](https://github.com/Lightbulb-Learning/lightbulb-learning/blob/main/infrastructure/bin/infrastructure.ts) dient als Einstiegspunkt für das AWS-CDK. Hier definieren wir den Namen des Stacks sowie die Umgebungsvariablen und die Region. Wir haben einen separaten technischen Account angelegt welcher die benötigten Rechte besitzt um Cloud Resourcen zu provisionieren.
 
-Im Konstruktor erzeugen wir eine neue Instanz von dem [Infrastructure-Stack.ts](../infrastructure/lib/infrastructure-stack.ts). Dort werden die Resourcen und deren jeweiligen Berechtigungen konfiguriert. Es handelt es sich hierbei um eine *Resource-Based-Policy*, dabei erlauben wir bestimmten Ressourcen gewisse Operationen auf oder mit ausgewählten Ressourcen.
+Im Konstruktor erzeugen wir eine neue Instanz von dem [Infrastructure-Stack.ts](https://github.com/Lightbulb-Learning/lightbulb-learning/blob/main/infrastructure/lib/infrastructure-stack.ts). Dort werden die Resourcen und deren jeweiligen Berechtigungen konfiguriert. Es handelt es sich hierbei um eine *Resource-Based-Policy*, dabei erlauben wir bestimmten Ressourcen gewisse Operationen auf oder mit ausgewählten Ressourcen.
 
 Folgende Resourcen werden provisionert:
 - **Policies**: Für jede Lambda-Funktion wurde eine Policy definiert, welche nur die Aktionen erlaubt, die für die Erfüllung der Operation benötigt wird. 
@@ -258,9 +258,9 @@ Folgende Resourcen werden provisionert:
 - **HttpApi** mit CORS Preflight Konfiguration und den jeweiligen Routen, welche den Pfad auf die hier verlinkten Lambda-Funktionen referenzieren.
 
 ### Continuous Delivery &  Version Control (Git)
-Damit durch einen Push auf den main branch automatisch ein Deployment der AWS CDK angestoßen wird, wird Github Actions verwendet. Konkret wird hierfür die [main.yml](../.github/workflows/main.yml) verwendent. Der Job wird auf einem Ubuntu System ausgeführt. Zuerst müssen dann die Credentials (`aws-access-key-id` und `aws-secret-access-key`) sowie die verwendete `aws-region` eingetragen werden. Für die Umgebung muss noch npm, nodejs und ein JDK installiert werden. Jetzt können alle Scala 3 als auch JavaScript-Lambdas gebaut werden. Um dann am Ende mit den Befehlen `cdk synth` das CloudFormation Template erstellen und mit `cdk deploy` die Ressourcen deployen zu können, muss das AWS CDK installiert werden.
+Damit durch einen Push auf den main branch automatisch ein Deployment der AWS CDK angestoßen wird, wird Github Actions verwendet. Konkret wird hierfür die [main.yml](https://github.com/Lightbulb-Learning/lightbulb-learning/blob/main/.github/workflows/main.yml) verwendent. Der Job wird auf einem Ubuntu System ausgeführt. Zuerst müssen dann die Credentials (`aws-access-key-id` und `aws-secret-access-key`) sowie die verwendete `aws-region` eingetragen werden. Für die Umgebung muss noch npm, nodejs und ein JDK installiert werden. Jetzt können alle Scala 3 als auch JavaScript-Lambdas gebaut werden. Um dann am Ende mit den Befehlen `cdk synth` das CloudFormation Template erstellen und mit `cdk deploy` die Ressourcen deployen zu können, muss das AWS CDK installiert werden.
 
-Für jeden Premiumkunden wird eine eigene Amplify App, die unter anderem eine eigene DynamoDB Tabelle enthält, erstellt. Mithilfe des [create_amplify_app.sh](../infrastructure/create_amplify_app.sh) Skripts kann eine solche Amplify App erstellt werden. Zuerst wird der Name des zu erstellenden Premiumkundens abgefragt. Danach wird `amplify init` ausgeführt, um lokal eine neue Amplify App zu erstellen, um sie anschließend mit `amplify push` hochzuladen. Für jeden Premiumkunden wird ein neuer branch mit dem jeweiligen Namen angelegt, Anpassungen mit dem Namen im Frontend gemacht und der branch gepusht.
+Für jeden Premiumkunden wird eine eigene Amplify App, die unter anderem eine eigene DynamoDB Tabelle enthält, erstellt. Mithilfe des [create_amplify_app.sh](https://github.com/Lightbulb-Learning/lightbulb-learning/blob/main/infrastructure/create_amplify_app.sh) Skripts kann eine solche Amplify App erstellt werden. Zuerst wird der Name des zu erstellenden Premiumkundens abgefragt. Danach wird `amplify init` ausgeführt, um lokal eine neue Amplify App zu erstellen, um sie anschließend mit `amplify push` hochzuladen. Für jeden Premiumkunden wird ein neuer branch mit dem jeweiligen Namen angelegt, Anpassungen mit dem Namen im Frontend gemacht und der branch gepusht.
 
 Vercel erkennt sofort Änderungen an den bestehenden branches, aber auch neu erstellte branches. So wird das Frontend direkt gebaut und unter einer URL bereitgestellt. Jeder Premiumkunde erhält somit ein eigenes Frontend, welches er beliebig anpassen kann.
 
@@ -309,7 +309,7 @@ Alle oben genannten geschätzten Variablen lassen sich leicht in der [Tabellenka
 ### Preisgestaltung
 Da man monatliche Kosten der Nutzer zu erwarten hat, haben wir uns für ein Abomodell entschieden, wobei die Kunden monatlich einen Preis bezahlen. Durch die oben genannten Schätzungen können die monatlichen Kosten kumuliert werden und daraus den zu fordernden Preis ableiten. Mit den oben genannten Schätzungen haben wir uns für folgende Preise entschieden: `Standard 5$` und `Premium 10$`
 Mit diesen Werten kann man in folgendem Diagramm erkennen, dass der break even Punkt im April stattfinden wird.
-![](https://github.com/Lightbulb-Learning/lightbulb-learning/blob/main/documentation/BreakEven.png)
+![](https://github.com/Lightbulb-Learning/lightbulb-learning/blob/main/documentation/BreakEven.png?raw=true)
 
 # Special Highlights
 ## Monorepo

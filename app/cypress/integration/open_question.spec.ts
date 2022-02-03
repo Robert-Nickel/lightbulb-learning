@@ -35,11 +35,11 @@ const openQuestionText = randomText("open_question")
 const openAnswerText = randomText("open_answer")
 
 function createOpenQuestionDraft(questionText: string, answerText: string) {
-    cy.get('.w-full.mt-4 > .w-full').type(openQuestionText)
+    cy.get('#textarea-question').type(openQuestionText)
     cy.get('.w-32').click()
 
-    cy.get('#openQuestionDraftAnswerText').type(openAnswerText)
-    cy.get(':nth-child(2) > .w-48').click()
+    cy.get('#textarea-draft-answer').type(openAnswerText)
+    cy.get(':nth-child(2) > .w-32').click()
 }
 
 function publishOpenQuestionDraft() {

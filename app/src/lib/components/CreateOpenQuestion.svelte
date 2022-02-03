@@ -5,123 +5,119 @@
 	import {
 		ChallengePoolType,
 		OpenQuestionDraftType,
-		fetchMyOpenQuestionDrafts,
 		saveOpenQuestionDraft,
 		updateOpenQuestionDraftWithAnswer,
 		deleteAnswerFromOpenQuestionDraft,
 		saveOpenQuestion,
 		deleteOpenQuestionDraft,
-		saveCorrectOpenAnswer
+		saveCorrectOpenAnswer,
+		fetchMyOpenQuestionDraft
 	} from '$lib/supabaseClient';
 	import autosize from '../../../node_modules/autosize';
 
 	export let challengePool: ChallengePoolType;
 
-	let openQuestionDrafts: OpenQuestionDraftType[] = [];
-	let newOpenQuestionDraftText;
+	let openQuestionDraft: OpenQuestionDraftType;
+	let openQuestionDraftText = '';
+	let openQuestionDraftAnswerText = '';
 	let toast;
 
 	onMount(async () => {
-		openQuestionDrafts = await fetchMyOpenQuestionDrafts(challengePool.id);
+		openQuestionDraft = await fetchMyOpenQuestionDraft(challengePool.id);
 	});
 </script>
 
-<div class="flex justify-between space-x-2">
-	<div class="w-full mt-4">
-		<textarea
-			id="textarea-question"
-			class="w-full h-12"
-			placeholder="Create an open question"
-			bind:value={newOpenQuestionDraftText}
-			on:load={autosize(document.getElementById('textarea-question'))}
-		/>
-	</div>
-	<div>
-		<button
-			on:click={async () => {
-				await saveOpenQuestionDraft(newOpenQuestionDraftText, challengePool.id);
-				openQuestionDrafts = await fetchMyOpenQuestionDrafts(challengePool.id);
-				newOpenQuestionDraftText = '';
-				// TODO: focus the answer input
-			}}
-			class="w-32 mt-4">Save</button
-		>
-	</div>
+<div class="mt-4">
+	<textarea
+		id="textarea-question"
+		class="w-full h-12"
+		placeholder="Create an open question"
+		bind:value={openQuestionDraftText}
+		on:load={autosize(document.getElementById('textarea-question'))}
+	/>
+	<button
+		hidden={openQuestionDraftText.length == 0}
+		on:click={async () => {
+			openQuestionDraft = await saveOpenQuestionDraft(openQuestionDraftText, challengePool.id);
+			openQuestionDraftText = '';
+			// TODO: focus the answer input
+		}}
+		class="w-32 h-12">Save</button
+	>
 </div>
 
-<div class="">
-	{#if openQuestionDrafts.length > 0}
-		<h3 class="mt-8">Drafts</h3>
-	{/if}
+<div class="mt-4">
+	{#if openQuestionDraft}
+		<h3 class="mt-8">Draft</h3>
+		<article class="mb-8">
+			<div class="flex justify-between space-x-2">
+				<p class="w-full">{openQuestionDraft.questionText}</p>
+				<button
+					on:click={async () => {
+						await deleteOpenQuestionDraft(openQuestionDraft.id);
+						openQuestionDraft = null;
+						openQuestionDraftAnswerText = '';
+					}}
+					class="w-24 outline secondary h-12 hover-red"
+				>
+					Delete
+				</button>
+			</div>
 
-	{#if openQuestionDrafts && openQuestionDrafts.length > 0}
-		{#each openQuestionDrafts as openQuestionDraft}
-			<article class="mb-8">
-				<div class="flex justify-between space-x-2">
-					<p class="w-full">{openQuestionDraft.questionText}</p>
+			{#if openQuestionDraft.answerText == null}
+				<div>
+					<textarea
+						class="w-full h-12"
+						placeholder="What is the correct answer?"
+						id="textarea-draft-answer"
+						on:load={autosize(document.getElementById('textarea-draft-answer'))}
+						bind:value={openQuestionDraftAnswerText}
+					/>
 					<button
 						on:click={async () => {
-							await deleteOpenQuestionDraft(openQuestionDraft.id);
-							openQuestionDrafts = await fetchMyOpenQuestionDrafts(challengePool.id);
-						}}
-						class="w-48 outline secondary h-12 hover-red"
-					>
-						Delete Question
-					</button>
-				</div>
-
-				{#if openQuestionDraft.answerText == null}
-					<div class="flex justify-between space-x-2">
-						<textarea
-							class="w-full h-12"
-							placeholder="What is the correct answer?"
-							id="openQuestionDraftAnswerText"
-							on:load={autosize(document.getElementById('openQuestionDraftAnswerText'))}
-						/>
-						<button
-							on:click={async () => {
-								const answerText = document.getElementById('openQuestionDraftAnswerText').value;
-								await updateOpenQuestionDraftWithAnswer(openQuestionDraft.id, answerText);
-								openQuestionDrafts = await fetchMyOpenQuestionDrafts(challengePool.id);
-							}}
-							class="w-48 h-12"
-						>
-							Save
-						</button>
-					</div>
-				{:else}
-					<div class="flex justify-between space-x-2">
-						<p class="w-full"><i>Your Answer:</i> {openQuestionDraft.answerText}</p>
-						<button
-							on:click={async () => {
-								deleteAnswerFromOpenQuestionDraft(openQuestionDraft.id);
-								openQuestionDrafts = await fetchMyOpenQuestionDrafts(challengePool.id);
-							}}
-							class="w-48 outline secondary h-12  hover-red"
-						>
-							Delete Answer
-						</button>
-					</div>
-					<button
-						disabled={!openQuestionDraft.answerText}
-						on:click={async () => {
-							const openQuestion = await saveOpenQuestion(
-								openQuestionDraft.questionText,
-								openQuestionDraft.challengePool
+							openQuestionDraft = await updateOpenQuestionDraftWithAnswer(
+								openQuestionDraft.id,
+								openQuestionDraftAnswerText
 							);
-							await saveCorrectOpenAnswer(openQuestionDraft.answerText, openQuestion.id);
-							dispatch('openQuestionCommitted');
-							toast.showSuccessToast('Open Question created');
-							await deleteOpenQuestionDraft(openQuestionDraft.id);
-							openQuestionDrafts = await fetchMyOpenQuestionDrafts(openQuestionDraft.challengePool);
 						}}
+						hidden={openQuestionDraftAnswerText.length == 0}
 						class="w-32 h-12"
 					>
-						Publish
+						Save
 					</button>
-				{/if}
-			</article>
-		{/each}
+				</div>
+			{:else}
+				<div class="flex justify-between space-x-2">
+					<p class="w-full"><i>Your Answer:</i> {openQuestionDraft.answerText}</p>
+					<button
+						on:click={async () => {
+							openQuestionDraft = await deleteAnswerFromOpenQuestionDraft(openQuestionDraft.id);
+							openQuestionDraftAnswerText = '';
+						}}
+						class="w-24 outline secondary h-12  hover-red"
+					>
+						Delete
+					</button>
+				</div>
+				<button
+					disabled={!openQuestionDraft.answerText}
+					on:click={async () => {
+						const openQuestion = await saveOpenQuestion(
+							openQuestionDraft.questionText,
+							openQuestionDraft.challengePool
+						);
+						await saveCorrectOpenAnswer(openQuestionDraft.answerText, openQuestion.id);
+						dispatch('openQuestionCommitted');
+						toast.showSuccessToast('Open Question created');
+						await deleteOpenQuestionDraft(openQuestionDraft.id);
+						openQuestionDraft = null;
+					}}
+					class="w-32 h-12"
+				>
+					Publish
+				</button>
+			{/if}
+		</article>
 	{/if}
 </div>
 

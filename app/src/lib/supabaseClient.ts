@@ -90,14 +90,14 @@ export async function deleteChallengePool(id: string) {
     printIf(error)
 }
 
-export async function fetchMyOpenQuestionDrafts(challengePoolId: string): Promise<OpenQuestionDraftType[]> {
+export async function fetchMyOpenQuestionDraft(challengePoolId: string): Promise<OpenQuestionDraftType> {
     const { data, error } = await supabase
         .from<OpenQuestionDraftTypeDB>(openQuestionDraftsTable)
         .select()
         .eq('owner', supabase.auth.user().id)
         .eq('challenge_pool', challengePoolId)
     printIf(error)
-    return keysToCamelCase(data)
+    return keysToCamelCase(data[0])
 }
 
 export async function saveOpenQuestionDraft(questionText: string, challengePoolId: string): Promise<OpenQuestionDraftType> {
@@ -114,21 +114,22 @@ export async function saveOpenQuestionDraft(questionText: string, challengePoolI
     return keysToCamelCase(data)
 }
 
-export async function updateOpenQuestionDraftWithAnswer(id: string, answerText: string) {
+export async function updateOpenQuestionDraftWithAnswer(id: string, answerText: string): Promise<OpenQuestionDraftType> {
     const { data, error } = await supabase
         .from<OpenQuestionDraftTypeDB>(openQuestionDraftsTable)
         .update({ answer_text: answerText })
         .eq('id', id)
     printIf(error)
-    return data
+    return keysToCamelCase(data[0])
 }
 
-export async function deleteAnswerFromOpenQuestionDraft(id: string) {
-    const { error } = await supabase
+export async function deleteAnswerFromOpenQuestionDraft(id: string): Promise<OpenQuestionDraftType> {
+    const { data, error } = await supabase
         .from<OpenQuestionDraftTypeDB>(openQuestionDraftsTable)
         .update({ answer_text: null })
         .eq('id', id);
     printIf(error)
+    return keysToCamelCase(data[0])
 }
 
 export async function deleteOpenQuestionDraft(id: string) {

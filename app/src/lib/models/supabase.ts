@@ -19,7 +19,6 @@ export interface paths {
           id?: parameters["rowFilter.challenge_pool_user.id"];
           challenge_pool?: parameters["rowFilter.challenge_pool_user.challenge_pool"];
           user_id?: parameters["rowFilter.challenge_pool_user.user_id"];
-          challenge_pool_owner?: parameters["rowFilter.challenge_pool_user.challenge_pool_owner"];
           created_at?: parameters["rowFilter.challenge_pool_user.created_at"];
           /** Filtering Columns */
           select?: parameters["select"];
@@ -74,7 +73,6 @@ export interface paths {
           id?: parameters["rowFilter.challenge_pool_user.id"];
           challenge_pool?: parameters["rowFilter.challenge_pool_user.challenge_pool"];
           user_id?: parameters["rowFilter.challenge_pool_user.user_id"];
-          challenge_pool_owner?: parameters["rowFilter.challenge_pool_user.challenge_pool_owner"];
           created_at?: parameters["rowFilter.challenge_pool_user.created_at"];
         };
         header: {
@@ -93,7 +91,6 @@ export interface paths {
           id?: parameters["rowFilter.challenge_pool_user.id"];
           challenge_pool?: parameters["rowFilter.challenge_pool_user.challenge_pool"];
           user_id?: parameters["rowFilter.challenge_pool_user.user_id"];
-          challenge_pool_owner?: parameters["rowFilter.challenge_pool_user.challenge_pool_owner"];
           created_at?: parameters["rowFilter.challenge_pool_user.created_at"];
         };
         body: {
@@ -1507,8 +1504,6 @@ export interface definitions {
     challenge_pool: string;
     /** Format: uuid */
     user_id: string;
-    /** Format: uuid */
-    challenge_pool_owner: string;
     /**
      * Format: timestamp with time zone
      * @default now()
@@ -1907,8 +1902,6 @@ export interface parameters {
   "rowFilter.challenge_pool_user.challenge_pool": string;
   /** Format: uuid */
   "rowFilter.challenge_pool_user.user_id": string;
-  /** Format: uuid */
-  "rowFilter.challenge_pool_user.challenge_pool_owner": string;
   /** Format: timestamp with time zone */
   "rowFilter.challenge_pool_user.created_at": string;
   /** @description challenge_pools */

@@ -49,7 +49,7 @@
 <div class="mt-4">
 	{#if openQuestionDraft}
 		<h3 class="mt-8">Draft</h3>
-		<article class="mb-8">
+		<article>
 			<div class="flex justify-between space-x-2">
 				<p class="w-full">{openQuestionDraft.questionText}</p>
 				<button
@@ -81,7 +81,7 @@
 							);
 						}}
 						hidden={openQuestionDraftAnswerText.length == 0}
-						class="w-32 h-12"
+						class="w-32 h-12 mb-0"
 					>
 						Save
 					</button>
@@ -94,7 +94,7 @@
 							openQuestionDraft = await deleteAnswerFromOpenQuestionDraft(openQuestionDraft.id);
 							openQuestionDraftAnswerText = '';
 						}}
-						class="w-24 outline secondary h-12  hover-red"
+						class="w-24 outline secondary h-12 hover-red"
 					>
 						Delete
 					</button>
@@ -112,7 +112,7 @@
 						await deleteOpenQuestionDraft(openQuestionDraft.id);
 						openQuestionDraft = null;
 					}}
-					class="w-32 h-12"
+					class="w-32 h-12 mb-0"
 				>
 					Publish
 				</button>

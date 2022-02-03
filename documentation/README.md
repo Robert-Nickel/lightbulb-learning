@@ -18,7 +18,6 @@ Als Cloud Provider entschieden wir uns für Amazon Web Services, dafür gab es m
 - AWS ist der etablierteste Cloud Anbieter, somit ist Erfahrung damit auf dem Arbeitsmarkt von großem Wert
 - In vielen Aspekten ist die AWS technologischer Vorreiter, wie etwa in den Serverless Komponenten
 - AWS verfügt über sehr viele unterschiedliche verwaltete Services, so dass man sehr viele Möglichkeiten zur Problemlösung hat
-_TODO: Über mehr Gründe für AWS nachdenken, vielleicht in konkreter Abgrenzung zu den Alternativen?_
 
 ## Technologie Stack
 

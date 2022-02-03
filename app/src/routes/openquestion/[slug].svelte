@@ -19,6 +19,7 @@
 		fetchCorrectOpenAnswer
 	} from '$lib/supabaseClient';
 	import { user } from '$lib/stores/user';
+	import autosize from '../../../node_modules/autosize';
 
 	let openQuestion: OpenQuestionType;
 	let correctOpenAnswer: CorrectOpenAnswerType;
@@ -112,7 +113,13 @@
 			{:else}
 				<div class="flex justify-between space-x-2 mt-2">
 					<div class="w-full">
-						<textarea bind:value={openAnswerDraftText} class="w-full" placeholder="Answer this question" />
+						<textarea
+							id="textarea-answer"
+							bind:value={openAnswerDraftText}
+							class="w-full h-12"
+							placeholder="Answer this question"
+							on:load={autosize(document.getElementById('textarea-answer'))}
+						/>
 					</div>
 					<button
 						on:click={async () => {

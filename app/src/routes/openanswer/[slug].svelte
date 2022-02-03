@@ -21,6 +21,7 @@
 	} from '$lib/supabaseClient';
 	import { goto } from '$app/navigation';
 	import { user } from '$lib/stores/user';
+	import autosize from '../../../node_modules/autosize';
 
 	let openQuestion: OpenQuestionType;
 	let openAnswer: OpenAnswerType;
@@ -124,9 +125,11 @@
 				<div class="flex justify-between space-x-2 mt-2">
 					<div class="w-full">
 						<textarea
+							id="textarea-feedback"
 							bind:value={openFeedbackDraftText}
-							class="w-full"
+							class="w-full h-12"
 							placeholder="Give feedback to this answer"
+							on:load={autosize(document.getElementById('textarea-feedback'))}
 						/>
 					</div>
 					<button
@@ -137,7 +140,10 @@
 						class="w-48 h-12">Save</button
 					>
 				</div>
-				<i>The feedback is private - only you, the owner of the answer and the owner of the challenge pool can see it.</i>
+				<i
+					>The feedback is private - only you, the owner of the answer and the owner of the challenge pool can
+					see it.</i
+				>
 			{/if}
 		{/if}
 		<Back text="Back to Open Question" route="/openquestion/{openQuestion.id}" />

@@ -13,6 +13,7 @@
 		deleteOpenQuestionDraft,
 		saveCorrectOpenAnswer
 	} from '$lib/supabaseClient';
+	import autosize from '../../../node_modules/autosize';
 
 	export let challengePool: ChallengePoolType;
 
@@ -27,7 +28,13 @@
 
 <div class="flex justify-between space-x-2">
 	<div class="w-full mt-4">
-		<textarea class="w-full" placeholder="Create an open question" bind:value={newOpenQuestionDraftText} />
+		<textarea
+			id="textarea-question"
+			class="w-full h-12"
+			placeholder="Create an open question"
+			bind:value={newOpenQuestionDraftText}
+			on:load={autosize(document.getElementById('textarea-question'))}
+		/>
 	</div>
 	<div>
 		<button
@@ -66,9 +73,10 @@
 				{#if openQuestionDraft.answerText == null}
 					<div class="flex justify-between space-x-2">
 						<textarea
-							class="w-full"
+							class="w-full h-12"
 							placeholder="What is the correct answer?"
 							id="openQuestionDraftAnswerText"
+							on:load={autosize(document.getElementById('openQuestionDraftAnswerText'))}
 						/>
 						<button
 							on:click={async () => {

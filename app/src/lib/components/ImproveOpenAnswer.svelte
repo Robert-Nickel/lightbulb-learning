@@ -2,13 +2,13 @@
 	import {
 		deleteOpenAnswerDraft,
 		fetchMyOpenAnswerDraft,
-		fetchMyOpenAnswers,
 		OpenAnswerDraftType,
 		OpenAnswerType,
 		saveOpenAnswer,
 		saveOpenAnswerDraft
 	} from '$lib/supabaseClient';
 	import Toast from './Toast.svelte';
+	import autosize from '../../../node_modules/autosize';
 	import { createEventDispatcher, onMount } from 'svelte';
 	const dispatch = createEventDispatcher();
 
@@ -52,7 +52,13 @@
 {:else}
 	<div class="flex justify-between space-x-2 mt-2">
 		<div class="w-full">
-			<input bind:value={openAnswerDraftText} class="w-full" placeholder="Improve your answer" />
+			<textarea
+				id="textarea-improved-answer"
+				on:load={autosize(document.getElementById('textarea-improved-answer'))}
+				bind:value={openAnswerDraftText}
+				class="w-full h-12"
+				placeholder="Improve your answer"
+			/>
 		</div>
 		<button
 			on:click={async () => {

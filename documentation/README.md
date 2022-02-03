@@ -268,6 +268,9 @@ Als letzter Befehl im Script wird `amplify console auth` ausgeführt. Derjenige,
 
 Es wurde versucht das Skript zum Erstellen einer neuen Amplify App für einen Premiumkunden mit Github Actions zu lösen, sodass das Skript sehr leicht auszuführen ist, ohne jegliche Installation von Abhängigkeiten. Gescheitert ist das Ganze, da sich herausgestellt hat, dass Amplify für eine automatisierte Erstellung nicht so gut geeignet ist, da viele Parameter händisch in der CLI eingegeben werden müssen und man diese nicht als Parameter direkt mitgeben kann.
 
+### Asynchroner Workload
+Als asynchronen Workload haben wir uns für das Anlegen einer Gruppe entschieden. Der Grund hierfür ist, dass wir einen Lambda-Aufruf, und den damit einhergehenden Coldstart in Kauf nehmen. Dieses Lambda ruft seinerseits wiederrum ein Lambda auf, welches ebenfalls unter Umständen einen Coldstart benötigt. Insgesamt summiert sich diese Latenz schnell über die typischen Timeouts der Browser hinaus. Daher haben wir uns hier dafür entschieden, im Response der Anfrage lediglich zu bestätigen, dass die asynchrone Operation jetzt ausgeführt wird. Der Browser stellt dies dem User in Form eines Ladekreises dar. Der Client ist an einem extra dafür vorgesehenen Endpunkt in der Lage, den aktuellen Status der asynchronen Operation abzufragen. Sobald sie ausgeführt wurde, erhält der User das entsprechende Feedback und kann mit dem üblichen Prozess fortfahren.
+
 ## Kommerzielles SaaS-Modell 
 ### Kostenanalyse
 Um die Gesamtkosten der Infrastruktur pro Monat berechnen zu können, müssen vier Posten im Detail betrachtet werden: Die Kosten von `Vercel`, `Lambdas`, `API Gateway` und `DynamoDB`.

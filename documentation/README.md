@@ -32,13 +32,14 @@ Als Programmiersprache verwenden wir für unser Frontend [TypeScript](https://ww
 ### Vercel
 Vercel ist ein eigenständiger Service außerhalb von AWS für den Build und das Hosting von Frontend Apps. Zu Beginn des Projekts lösten wir diese Aufgaben (Build & Hosting) mit AWS Amplify, wechselten nach einiger Zeit auf Vercel, da Amplify starke Qualitätsprobleme und Kompatibilitätseinschränkungen mit Frontend-Applikationen wie SvelteKit Apps aufwies, welche die modernere Modul-Struktur anstelle der veralteten CommonJS-Struktur verwenden. Vercel ist moderner als Amplify und bietet eine wirklich angenehme Benutzbarkeit aus Entwicklersicht. Als GitHub App registriert kann es auf Pushes auf beliebige Branches reagieren, das heißt einem Commit folgt immer ein Checkout, einem Checkout folgt der Build und dem Build folgt ein Preview-Deployment, anhand dessen unter realen Bedingungen neue Features getestet und evaluiert werden können. Sowohl das Domain-Management als auch das nötige Content Delivery Network für die Auslieferung der PWA wird von Vercel übernommen.
     
-### API Gateway & Lambdas
-Das API Gateway ist ein verwalteter Service von Amazon, welcher es ermöglicht APIs zu verwalten und zu überwachen.
+### API Gateway
+Das [API Gateway](https://aws.amazon.com/de/api-gateway/) ist ein verwalteter Service von Amazon, welcher es ermöglicht APIs zu verwalten und zu überwachen.
 API steht für Application Programming Interface und ist eine Programmierschnittstelle. Programmierer können mittels APIs Software erstellen, die mit externen Systemen interagieren. Das API-Gateway dient als Eingangstor für die Anwendung. Es übernimmt Aufgaben wie die Annahme einer Anfrage, das Traffic Management, CORS Unterstützung, Autorisierung, Zugriffskontrolle sowie Überwachung. In diesem Projekt wird hauptsächlich die HTTP-API verwendet. Diese ist leichtgewichtiger als die REST-API und ist daher auch günstiger. Die HTTP-API ordnet einer Route eine Lambda-Funktion zu. In diesem Projekt handelt es sich hauptsächlich um POST-Anfragen, welche einen Payload beinhalten.
 
 Die Zugriffskontrolle ist beispielswiese über sogenannte `Custom-Authorizer`-Lambdas möglich. In dem Authorizer war es uns möglich über die Definition einer Lambda Funktion zu prüfen, ob die aktuelle Anfrage für die angeforderte Ressource berechtigt ist. Wir haben versucht eine POST-Route mit einem `Custom-Authorizer` zu sichern. Mittels der REST-Testanwendung Postman konnte die Route `/upgradeGroup` mit der Lambda Funktion: `authorizationLambdaJS` abgesichert werden, sodass nur User die in AWS Cognito ein bestimmtes Attribut hatten, die Gruppe vom Free-Plan auf den Standard-Plan upgraden konnten. Im Browser war dies durch die Preflight-Anfrage wegen der CORS-Absicherung leider nicht möglich. Dabei haben wir festgestellt, dass die Lambda-Authorisierungsfunktionen nicht ohne Weiteres leicht zu debuggen waren, da Log-Statements nicht aufgelistet wurden. Vermutlich eignen sich die Custom-Authorizer für `GET-Anfragen` um einiges besser.
 
-**AWS Lambda** ist ein Serverless Computing Service, welcher Code basierend auf Ereignissen ausführt und die Rechenressourcen automatisch verwaltet. 
+### Lambda
+[AWS Lambda](https://aws.amazon.com/de/lambda/) ist ein Serverless Computing Service, welcher Code basierend auf Ereignissen ausführt und die Rechenressourcen automatisch verwaltet. 
 Beispielsweise kann eine AWS Lambda ausgeführt werden, sobald ein User einen Challengepool anlegt. Dann könnten zum Beispiel Operationen an der Datenbank (z.B. DynamoDB) vorgenommen werden. Man kann somit Code verwenden um benutzerdefinierte Logik für AWS-Services bzw. eigene Backend-Services zu nutzen.
 Dieser Code wird auf hochverfügbarer Recheninfrastruktur ausgeführt. Dadurch muss sich der Kunde keine Gedanken um die darunter liegenden Ressourcen, wie z.B. die Server oder Betriebssysteme, machen. Vorteile hierbei sind Skalierbarkeit und Kosteneffizienz. Da der Code nur ausgeführt wird, wenn er benötigt wird, skaliert es linear mit der Anzahl der Anfragen. Dadurch, dass jede Anfrage zustandslos ist, ist eine horizontale Skalierung bis ins "Unendliche" möglich. Man zahlt nur für die Ausführungszeit der Lambda Funktion statt für die Laufzeit des kompletten Servers.  
 Somit gehört AWS Lambda in die Kategorie `Function-as-a-Service`. 
@@ -72,7 +73,7 @@ Dabei handelt es sich um Node Package Module (NPM), welche auch über das AWS-CD
 Für die Node Package Module wurde NodeJS mit der Version 17.2.0 eingesetzt.
 
 ### Amplify
-AWS Amplify ist ein Accelerator für die Entwicklung von WebApps von AWS. Es kapselt einige weitere Dienste wie AppSync, Cognito und DynamoDB und stellt eine Reihe von Ressourcen zur Verfügung, um die Interaktion mit diesen Diensten im Sinne der schnellen Entwicklung zu vereinfachen. Wir starteten mit Amplify für die Umsetzung unserer Frontend Applikation inklusive offline-first Datenhaltung, Registrierung und Login, Hosting und automatisierte Builds. Die [Amplify CLI](https://docs.amplify.aws/cli/) bietet einen einfachen Weg, benötigte Ressourcen anzulegen und zu verwalten. Außerdem gibt es eine übersichtliche UI innerhalb der AWS Managementkonsole, welche nicht nur den aktuellen Status aller Ressourcen darstellt, sondern mit [Amplify Studio](https://aws.amazon.com/de/amplify/studio/) sogar bis auf die Ebene der Datenstruktur ermöglicht, direkt Änderungen vorzunehmen und zu deployen.
+[AWS Amplify](https://aws.amazon.com/de/amplify/) ist ein Accelerator für die Entwicklung von WebApps von AWS. Es kapselt einige weitere Dienste wie AppSync, Cognito und DynamoDB und stellt eine Reihe von Ressourcen zur Verfügung, um die Interaktion mit diesen Diensten im Sinne der schnellen Entwicklung zu vereinfachen. Wir starteten mit Amplify für die Umsetzung unserer Frontend Applikation inklusive offline-first Datenhaltung, Registrierung und Login, Hosting und automatisierte Builds. Die [Amplify CLI](https://docs.amplify.aws/cli/) bietet einen einfachen Weg, benötigte Ressourcen anzulegen und zu verwalten. Außerdem gibt es eine übersichtliche UI innerhalb der AWS Managementkonsole, welche nicht nur den aktuellen Status aller Ressourcen darstellt, sondern mit [Amplify Studio](https://aws.amazon.com/de/amplify/studio/) sogar bis auf die Ebene der Datenstruktur ermöglicht, direkt Änderungen vorzunehmen und zu deployen.
 
 ![](https://github.com/Lightbulb-Learning/lightbulb-learning/blob/main/documentation/amplify-studio.png)
 Abb. 2: Darstellung des Datenmodells in Amplify Studio
@@ -265,7 +266,7 @@ Vercel erkennt sofort Änderungen an den bestehenden branches, aber auch neu ers
 
 Als letzter Befehl im Script wird `amplify console auth` ausgeführt. Derjenige, der das Script ausführt, muss am Ende noch ein Custom Attribut per Hand erstellen: `admin_of_group`. Das Attribut ist wichtig für das Verwalten der Gruppen, wer Admin von welcher Gruppe ist und damit mehr Rechte hat.
 
-Es wurde versucht das Skript zum Erstellen einer neuen Amplify App für einen Premiumkunden mit Github Actions zu lösen, sodass das Skript sehr leicht auszuführen ist, ohne jegliche Installation von Abhängigkeiten. Gescheitert ist das ganze, da sich herausgestellt hat, dass Amplify für eine automatisierte Erstellung nicht so gut geeignet ist, da viele Parameter händisch in der CLI eingegeben werden müssen und man diese nicht als Parameter direkt mitgeben kann.
+Es wurde versucht das Skript zum Erstellen einer neuen Amplify App für einen Premiumkunden mit Github Actions zu lösen, sodass das Skript sehr leicht auszuführen ist, ohne jegliche Installation von Abhängigkeiten. Gescheitert ist das Ganze, da sich herausgestellt hat, dass Amplify für eine automatisierte Erstellung nicht so gut geeignet ist, da viele Parameter händisch in der CLI eingegeben werden müssen und man diese nicht als Parameter direkt mitgeben kann.
 
 ## Kommerzielles SaaS-Modell 
 ### Kostenanalyse
@@ -279,9 +280,9 @@ Es wird also in der Einheit Speicher mal Zeit berechnet. Im konkreten Fall GBs. 
 Die 400000 stehen für das Freikontingent (in GBs) pro Monat, das abgezogen werden kann. 1 GBs kostet also 0,0000166667$.
 - **API Gateway**
 Eine Anfrage an das API Gateway kostet 0,000001$. Das Freikontingent beträgt hierbei 1000000 Anfragen pro Monat. Daraus ergibt sich also folgende Formel zur Kostenberechnung:
-(Anzahl Anfragen pro Monat - 1000000) * 0,000001
+max(((Anzahl Anfragen pro Monat - 1000000) * 0,000001), 0)
 - **DynamoDB**
-Die Kosten bei der DynamoDB unterscheiden sich zwischen Lese- und Schreibzugriffe. Schreibzugriffe kosten 1,525$ pro 1000000 Zugriffe. Lesezugriffe kosten 0,305$ pro 1000000 Zugriffe. Für diese Anwendung wird davon ausgegangen, dass jeweils die Hälfte Schreibzugriffe und die andere Hälfte Lesezugriffe sind. Daraus ergibt sich folgende Formel zur Berechnung der Kosten:
+Die Kosten bei der DynamoDB unterscheiden sich zwischen Lese- und Schreibzugriffen. Schreibzugriffe kosten 1,525$ pro 1000000 Zugriffe. Lesezugriffe kosten 0,305$ pro 1000000 Zugriffe. Für diese Anwendung wird davon ausgegangen, dass jeweils die Hälfte Schreibzugriffe und die andere Hälfte Lesezugriffe sind. Daraus ergibt sich folgende Formel zur Berechnung der Kosten:
 ((Anzahl Zugriffe pro Monat / 2) * 1,525/1000000)+((Anzahl Zugriffe Pro Monat/ 2) * 0,305/1000000)
 
 Um jetzt sinnvolle Werte für die Kosten pro Monat zu erhalten, müssen einige Variablen geschätzt werden:
@@ -289,7 +290,7 @@ Um jetzt sinnvolle Werte für die Kosten pro Monat zu erhalten, müssen einige V
     - **Speicher**
     Als durchschnittlichen Wert wird `300MB` pro Lambda angenommen. Die meisten Lambdas haben 256MB und nur zwei benötigen 512MB.
     - **Anfragedauer**
-    Als durchschnittliche Anfragedauer wird `5000ms` angenommen. Das kann sich durch weniger Coldstarts z.b. stark verringern.
+    Als durchschnittliche Anfragedauer wird `5000ms` angenommen. Das kann sich durch weniger Coldstarts stark verringern.
 - **Anzahl der Nutzer**
     - **Premiumkunden**
     Für die Anzahl der Premiumkunden wird eine Schätzung abgegeben. Zur Zeit in den ersten beiden Monaten 1 Kunde, danach 2, 3 und 5. 
@@ -300,9 +301,10 @@ Die durchschnittlichen Nutzer pro Premiumkunden werden auf `1000`geschätztz.
     - **Anzahl Anfragen pro Nutzer**
     Wie viele Anfragen ein Nutzer pro Monat stellt wird in diesem Fall auf `150` geschätzt.
 
-Alle oben genannten geschätzten Variablen lassen sich leicht in der Tabellenkalkulation anpassen, um sofort angepasste Werte zu erhalten. 
-### Commercial Model
-Da man monatliche Kosten der Nutzer zu erwarten hat, wurde sich für ein Abomodell entschieden, wobei die Kunden monatlich einen Preis bezahlen. Durch die oben genannten Schätzungen können die monatlichen Kosten kumuliert werden und daraus den zu fordernden Preis ableiten. Mit den oben genannten Schätzungen wurde sich für folgenden Preise entschieden: `Standard 5$` und `Premium 10$`
+Alle oben genannten geschätzten Variablen lassen sich leicht in der [Tabellenkalkulation](https://docs.google.com/spreadsheets/d/1TFKLW81obnl-8ExXepsOn40TfKWki4uK3HHkYUYxock/edit?usp=sharing) anpassen, um sofort angepasste Werte zu erhalten.
+
+### Preisgestaltung
+Da man monatliche Kosten der Nutzer zu erwarten hat, haben wir uns für ein Abomodell entschieden, wobei die Kunden monatlich einen Preis bezahlen. Durch die oben genannten Schätzungen können die monatlichen Kosten kumuliert werden und daraus den zu fordernden Preis ableiten. Mit den oben genannten Schätzungen haben wir uns für folgende Preise entschieden: `Standard 5$` und `Premium 10$`
 Mit diesen Werten kann man in folgendem Diagramm erkennen, dass der break even Punkt im April stattfinden wird.
 ![](https://github.com/Lightbulb-Learning/lightbulb-learning/blob/main/documentation/BreakEven.png)
 
@@ -311,13 +313,13 @@ Mit diesen Werten kann man in folgendem Diagramm erkennen, dass der break even P
 Die Verwendung eines Monorepos brachte mehr Vor- als Nachteile mit sich, weshalb wir uns frühzeitig dafür entschieden. Da wir viele Komponenten (Lambdas, API Gateway, ...) haben, die miteinander kommunizieren und dafür Schnittstellen definieren müssen, müssten diese eigentlich entsprechend explizit versioniert werden. Die Komplexität dieses Unterfangens ist nicht zu unterschätzen, da das Gesamtsystem zu jedem Zeitpunkt vollständig kompatibel gehalten werden muss. So müsste man in einigen Fällen Funktionen zeitgleich deployen, was sehr schwer umzusetzen ist. Hier zeigt die Monorepo Struktur seine Stärke: Alle Änderungen können auf einem einzigen Branch gepusht werden, und beim Merge dieses Branches werden alle Schnittstellen-Änderungen in einem einzigen Deployment auf die Produktionsumgebung gebracht, wodurch eine nahtlose Funktionsfähigkeit der Anwendung garantiert wird.
 
 ## JWT Handling
-JWT steht für JSON Web Tokens. Es ist ein standardisiertes Zugriffstoken, welches es zwei Parteien ermöglicht, sicher Daten auszutauschen. Alle wichtigen Informationen bezüglich einer Entität sind in diesem Token enthalten, so dass keine weiteren Datenbankanfragen notwendig sind. Es eignet sich perfekt für Authentifizierungsverfahren, da Kurznachrichten sicher verschlüsselt und vermittelt werden können. So kann verifiziert werden, wer der Absender ist und ob er die notwendigen Rechte besitzt.
+JWT steht für JSON Web Tokens. Es ist ein standardisiertes Zugriffstoken, welches es zwei Parteien ermöglicht, sicher Daten auszutauschen. Alle wichtigen Informationen bezüglich einer Entität sind in diesem Token enthalten, so dass keine weiteren Datenbankanfragen notwendig sind. Es eignet sich perfekt für Authentifizierungsverfahren, da Kurznachrichten sicher verschlüsselt, signiert und übermittelt werden können. So kann verifiziert werden, wer der Absender ist und ob er die notwendigen Rechte besitzt.
 
 Ein JWT enthält einen Header (Algorithmus und Typ des Tokens), ein Payload (Key-Value Paare auch "Claims" genannt z.B. `iss` für issuer) sowie eine Verifikationssignatur. 
 
-Bei vielen Client Anfragen wird das JWT als Header bzw. im Body als Payload mitangegeben. Für die Verifikation des JWT sowie für das beisteuern weiterer  Werte, rufen die AWS-Lambdas eine weitere AWS-Lambda, den jwtHandler auf. Diese Lambda-Funktion extrahiert abhängig vom `issuer` claim den Cogito-Userpool. Im Cognito-Userpool sind jwks hinterlegt, sie repräsentieren eine Menge von öffentlichen Schlüsseln. 
-Der Vorteil hierbei: Dadurch, dass dynamisch abhängig vom `issuer claim` die URL des Userpools ausgelesen wird, brauchen wir beim Anlegen eines neuen Premiumtenants, welcher einen eigenen Userpool hat,  keine Gedanken um die Authentifizierung zu machen.
-Das jwt vom client wird nach dem `kid` (key identfier) claim gefiltert. Wurde der korrekte JSON-Web-Key  ermittelt, lässt sich das jwt, mit der jsonwebtoken library, verifizieren.  Ist das Token erfolgreich verifiziert, wird ein JSON Objekt mit den benötigten Werten: 
+Bei vielen Client Anfragen wird das JWT als Header bzw. im Body als Payload mitgegeben. Für die Verifikation des JWT sowie für das Beisteuern weiterer Werte, rufen die AWS-Lambdas eine weitere AWS-Lambda, den jwtHandler auf. Diese Lambda-Funktion extrahiert abhängig vom `issuer` claim den Cognito-Userpool. Im Cognito-Userpool sind JSON Web Key Sets (JWKS) hinterlegt, sie repräsentieren eine Menge von öffentlichen Schlüsseln. 
+Der Vorteil hierbei: Dadurch, dass dynamisch abhängig vom `issuer claim` die URL des Userpools ausgelesen wird, brauchen wir uns beim Anlegen eines neuen Premiumtenants, welcher einen eigenen Userpool hat, keine Gedanken um die Authentifizierung zu machen.
+Das JWT vom client wird nach dem `kid` (key identfier) claim gefiltert. Wurde das korrekte JSON Web Key Set ermittelt, lässt sich das JWT, mit der jsonwebtoken library verifizieren. Ist das Token erfolgreich verifiziert, wird ein JSON Objekt mit diesen Werten: 
 - usermail
 - userpool
 - amount_of_groups
@@ -325,3 +327,6 @@ Das jwt vom client wird nach dem `kid` (key identfier) claim gefiltert. Wurde de
 - admin_of_group
 
 zurückgegeben.
+
+## Resumee
+Rückblickend konnten wir im Modul Cloud Application Development sehr viele Facetten der Cloud Entwicklung kennenlernen und sowohl Schwächen als auch Stärken vieler unterschiedlicher Services evaluieren. Einerseits sind wir mit den Ergebnissen dieser Reise sehr zufrieden, andererseits wissen wir aber auch, dass es noch Potentiale für die Verbesserung einiger Aspekte gibt. Konkret ist dies beispielsweise die frühe Festlegung auf AWS Amplify, was uns später für die Automatisierung der Infrastruktur Steine in den Weg gelegt hat. Dennoch konnten wir auch aus diesen Fehlentscheidung etwas praxistaugliches lernen, und das ist aus unserer Sicht das Wichtigste.

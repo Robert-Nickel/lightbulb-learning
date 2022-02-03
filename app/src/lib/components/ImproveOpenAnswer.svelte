@@ -64,7 +64,7 @@
 			on:click={async () => {
 				myOpenAnswerDraft = await saveOpenAnswerDraft(openAnswerDraftText, openAnswer.openQuestion);
 			}}
-			class="w-48">Save</button
+			class="w-48 h-12">Save</button
 		>
 	</div>
 {/if}

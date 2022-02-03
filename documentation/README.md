@@ -117,10 +117,10 @@ Dabei erstellt man sogenannte Konstrukte für die jeweiligen Cloud Ressourcen. D
 [CloudFormation](https://aws.amazon.com/cloudformation/) ist ein Service, welcher es ermöglicht Ressourcen in einer einfachen Weise bereitzustellen und zu verwalten. Es fällt in die Infrastructure-as-Code Kategorie. Dadurch ist es möglich anhand von einer einfachen Operation, nachverfolgbar, bestimmte Ressourcen weltweit oder in einer bestimmten Region bereitzustellen. Zudem lässt sich dadurch das Ressourcenmanagement automatisieren.
 
 Es existieren zwei Ansätze für Infrastructure-as-Code. Deklarativ (funktional) und imperativ (prozedural). 
-Der deklarative Ansatz konzentriert sich darauf wie die Zielkonfiguration aussehen soll, wohingegen der imperative Ansatz Schritt-für-Schritt erklärt wie man die Zielkonfiguration erhält. Der imperative Ansatz ist wesentlich fehleranfälliger als der deklarative. Mit Cloudformation nutzen wir den deklarativen Ansatz, da wir hier nur mitteilen welche Resourcen provisioniert werden sollen und nicht wie wir vom aktuellen Zustand zum Zielzustand gelangen.
+Der deklarative Ansatz konzentriert sich darauf, wie die Zielkonfiguration aussehen soll, wohingegen der imperative Ansatz Schritt-für-Schritt erklärt wie man die Zielkonfiguration erreicht. Beim imperativen Ansatz ist zu beachten, dass bei Mehrfachausführung entsprechend auch mehrere Ressourcen angelegt werden, während der deklarative Ansatz die Eigenschaft der Idempotenz erfüllt. Mit CloudFormation nutzen wir den deklarativen Ansatz, da wir hier nur mitteilen welche Ressourcen provisioniert werden sollen und nicht wie wir vom aktuellen Zustand zum Zielzustand gelangen.
 
 ### GitHub Actions
-Für den Build unserer Lambdas sowie die Synthetisierung unserer deklarativen Infrastrukturdefinition verwenden wir GitHub Actions. Details dazu beschreiben wir im Abschnitt "Continuous Delivery & Version Control".
+Für den Build unserer Lambdas sowie die Synthese unserer deklarativen Infrastrukturdefinition verwenden wir GitHub Actions. Details dazu beschreiben wir im Abschnitt "Continuous Delivery & Version Control".
 
 ## 12 Faktoren
 ### I. Codebase
@@ -217,36 +217,30 @@ Legt ein Nutzer eine neue Gruppe an, so wird er Admin dieser Gruppe und hat die 
 Vor dem Erstellen der Gruppe muss man zwischen einer der folgenden drei Möglichkeiten entscheiden:
 - **Free**
 	- Der Service kostet den Kunden hierbei `nichts`.
-	- Es können bis zu `25 Nutzer` in einer Free Gruppe sein.
+	- Es können bis zu `50 Nutzer` in einer Free Gruppe sein.
 - **Standard**
-	- Der Service kostet den Kunden `5$ monatlich`
+	- Der Service kostet den Kunden `5$ monatlich`.
 	- Es können bis zu `500 Nutzer` in einer Standard Gruppe sein.
 - **Premium**
-	- Der Service kostet den Kunden `10$ monatlich`
+	- Der Service kostet den Kunden `10$ monatlich`.
 	- Es können `unbegrenzt Nutzer` in einer Premium Gruppe sein.
 	- Es wird eine eigene Amplify App für einen Premiumkunden angelegt.
 	
 ### Isolation zwischen den Tenants
-Die Free- und Standardgruppen werden innerhalb der selben Amplify App angelegt. Die Isolation erfolgt lediglich über das Filtern der Tenant-ID (oder auch Gruppen-Id).
+Die Free- und Standardgruppen werden innerhalb der selben Amplify App angelegt. Die Isolation der Daten erfolgt lediglich über das Filtern der Tenant-ID (oder auch Gruppen-Id).
 Für die Premiumkunden wird jeweils eine eigene Amplify App erstellt, welche eigene DynamoDB Tabellen enthält. Dadurch wird eine klare Isolation der Daten hergestellt.
 
 ## Prozesse
-### Infrastructure as Code / CDK
+### Infrastructure-as-Code / CDK
 Die [Infrastructure.ts](../infrastructure/bin/infrastructure.ts) dient als Einstiegspunkt für das AWS-CDK. Hier definieren wir den Namen des Stacks sowie die Umgebungsvariablen und die Region. Wir haben einen separaten technischen Account angelegt welcher die benötigten Rechte besitzt um Cloud Resourcen zu provisionieren.
 
-Im Konstruktor erzeugen wir eine neue Instanz von dem [Infrastructure-Stack.ts](../infrastructure/lib/infrastructure-stack.ts). Dort werden die Resourcen und deren jeweiligen Berechtigungen konfiguriert. Es handelt es sich hierbei um eine *Resource-Based-Policy*, dabei erlauben wir bestimmten Resourcen gewisse Operationen auf oder mit ausgewählten Resourcen.
-
+Im Konstruktor erzeugen wir eine neue Instanz von dem [Infrastructure-Stack.ts](../infrastructure/lib/infrastructure-stack.ts). Dort werden die Resourcen und deren jeweiligen Berechtigungen konfiguriert. Es handelt es sich hierbei um eine *Resource-Based-Policy*, dabei erlauben wir bestimmten Ressourcen gewisse Operationen auf oder mit ausgewählten Ressourcen.
 
 Folgende Resourcen werden provisionert:
-- **Policies**: Für jede Lambdafunktion wurde eine Policy definiert, welche nur die Aktionen erlaubt, die für die Erfüllung der Operation benötigt wird. 
-
-- **Topics**: (openQuestionTopic, openAnswerTopic, openFeedbackTopic)
-
+- **Policies**: Für jede Lambda-Funktion wurde eine Policy definiert, welche nur die Aktionen erlaubt, die für die Erfüllung der Operation benötigt wird. 
+- **Topics**: openQuestionTopic, openAnswerTopic, openFeedbackTopic
 - **Queues**: createOpenQuestionQueue
-
-- **Lambdas**:
-Für das bauen der Lambdafunktionen bedienen wir uns selbstgeschriebenen Funktionen `buildLambda` und `buildLambdaJS`. Diese Funktionien retournieren ein Instanz vom Typ Lambdafunktion. Die Lambdafunktion enthält bestimmte Parametern wie z.B. der Einstiegspunkt der Klasse, die Laufzeitumgebung, die Größe, den Timeout und wo der Codeabschnitt zu finden ist.
-
+- **Lambdas**: Für das bauen der Lambdafunktionen bedienen wir uns selbstgeschriebenen Funktionen `buildLambda` und `buildLambdaJS`. Diese Funktionien retournieren ein Instanz vom Typ Lambdafunktion. Die Lambdafunktion enthält bestimmte Parametern wie z.B. der Einstiegspunkt der Klasse, die Laufzeitumgebung, die Größe, den Timeout und wo der Codeabschnitt zu finden ist.
   - commitOpenQuestionLambda (für das Speichern einer Frage)
   - commitOpenAnswerLambda (für das Speichern einer Antwort)
   - commitOpenFeedbackLambda (für das Speichern des Feedbacks)

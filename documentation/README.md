@@ -4,7 +4,7 @@
 ## Das Team
 Das Team besteht aus Kevin Olomu ([@kolomu](https://github.com/kolomu)), Nicolai Stephan ([@nistephan](https://github.com/nistephan)) und Robert Nickel ([@Robert-Nickel](https://github.com/Robert-Nickel)).
 
-## Problem
+## Vision
 Lightbulb Learning hat die Vision, auf das langfristige Lernen zu optimieren. Die Anforderungen an Absolventen den Zukunft sind nicht die gleichen wie an die der Vergangenheit. Sie müssen kommunizieren, kollaborieren, komplexe Problemstellungen analysieren und Lösungen als Team entwickeln können. Aus dem Zugang zum Internet, und dem Wissen um den richtigen Umgang mit der gigantischen Menge an Informationen erwächst die Fähigkeit, die Lösungen für die Probleme der Zukunft entwickeln zu können.
 
 ## Lösung

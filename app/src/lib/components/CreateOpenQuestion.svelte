@@ -27,7 +27,7 @@
 
 <div class="flex justify-between space-x-2">
 	<div class="w-full mt-4">
-		<input class="w-full" placeholder="Create an open question" bind:value={newOpenQuestionDraftText} />
+		<textarea class="w-full" placeholder="Create an open question" bind:value={newOpenQuestionDraftText} />
 	</div>
 	<div>
 		<button
@@ -65,7 +65,7 @@
 
 				{#if openQuestionDraft.answerText == null}
 					<div class="flex justify-between space-x-2">
-						<input
+						<textarea
 							class="w-full"
 							placeholder="What is the correct answer?"
 							id="openQuestionDraftAnswerText"
@@ -76,7 +76,7 @@
 								await updateOpenQuestionDraftWithAnswer(openQuestionDraft.id, answerText);
 								openQuestionDrafts = await fetchMyOpenQuestionDrafts(challengePool.id);
 							}}
-							class="w-48"
+							class="w-48 h-12"
 						>
 							Save
 						</button>

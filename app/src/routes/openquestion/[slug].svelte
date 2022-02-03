@@ -112,13 +112,13 @@
 			{:else}
 				<div class="flex justify-between space-x-2 mt-2">
 					<div class="w-full">
-						<input bind:value={openAnswerDraftText} class="w-full" placeholder="Answer this question" />
+						<textarea bind:value={openAnswerDraftText} class="w-full" placeholder="Answer this question" />
 					</div>
 					<button
 						on:click={async () => {
 							myOpenAnswerDraft = await saveOpenAnswerDraft(openAnswerDraftText, openQuestion.id);
 						}}
-						class="w-48 ">Save</button
+						class="w-48 h-12">Save</button
 					>
 				</div>
 			{/if}

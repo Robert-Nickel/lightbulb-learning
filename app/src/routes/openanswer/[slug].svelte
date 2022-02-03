@@ -123,7 +123,7 @@
 			{:else}
 				<div class="flex justify-between space-x-2 mt-2">
 					<div class="w-full">
-						<input
+						<textarea
 							bind:value={openFeedbackDraftText}
 							class="w-full"
 							placeholder="Give feedback to this answer"
@@ -134,7 +134,7 @@
 							// TODO: careful! When creating feedback on a newer version of the open answer than the one in the url!
 							myOpenFeedbackDraft = await saveOpenFeedbackDraft(openFeedbackDraftText, openAnswer.id);
 						}}
-						class="w-48 ">Save</button
+						class="w-48 h-12">Save</button
 					>
 				</div>
 				<i>The feedback is private - only you, the owner of the answer and the owner of the challenge pool can see it.</i>

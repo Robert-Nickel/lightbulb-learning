@@ -15,8 +15,8 @@ describe('Open Questions', () => {
         createOpenQuestionDraft(openQuestionText, openAnswerText)
 
         // then
-        cy.get('.mb-8 > :nth-child(1) > .w-full').should("have.text", openQuestionText)
-        cy.get('.mb-8 > :nth-child(2) > .w-full').should("have.text", "Your Answer: " + openAnswerText)
+        cy.get('#p-draft-question').should("have.text", openQuestionText)
+        cy.get('#p-draft-answer').should("have.text", "Your Answer: " + openAnswerText)
     });
 
     it("creates an open question", () => {
@@ -39,9 +39,10 @@ function createOpenQuestionDraft(questionText: string, answerText: string) {
     cy.get('.w-32').click()
 
     cy.get('#textarea-draft-answer').type(openAnswerText)
-    cy.get(':nth-child(2) > .w-32').click()
+    cy.get('#button-save').click()
 }
 
 function publishOpenQuestionDraft() {
-    cy.get('.mb-8 > .w-32').click()
+    cy.get('#button-publish').click()
 }
+

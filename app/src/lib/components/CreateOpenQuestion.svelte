@@ -51,7 +51,7 @@
 		<h3 class="mt-8">Draft</h3>
 		<article>
 			<div class="flex justify-between space-x-2">
-				<p class="w-full">{openQuestionDraft.questionText}</p>
+				<p class="w-full" id="p-draft-question">{openQuestionDraft.questionText}</p>
 				<button
 					on:click={async () => {
 						await deleteOpenQuestionDraft(openQuestionDraft.id);
@@ -82,13 +82,14 @@
 						}}
 						hidden={openQuestionDraftAnswerText.length == 0}
 						class="w-32 h-12 mb-0"
+						id="button-save"
 					>
 						Save
 					</button>
 				</div>
 			{:else}
 				<div class="flex justify-between space-x-2">
-					<p class="w-full"><i>Your Answer:</i> {openQuestionDraft.answerText}</p>
+					<p class="w-full" id="p-draft-answer"><i>Your Answer:</i> {openQuestionDraft.answerText}</p>
 					<button
 						on:click={async () => {
 							openQuestionDraft = await deleteAnswerFromOpenQuestionDraft(openQuestionDraft.id);
@@ -100,6 +101,7 @@
 					</button>
 				</div>
 				<button
+					id="button-publish"
 					disabled={!openQuestionDraft.answerText}
 					on:click={async () => {
 						const openQuestion = await saveOpenQuestion(

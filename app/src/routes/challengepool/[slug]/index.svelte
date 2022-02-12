@@ -1,8 +1,22 @@
+<script lang="ts" context="module">
+	export const load: Load = async ({ session, params }) => {
+		const { user } = session as Session;
+		if (!user) return { status: 302, redirect: '/login' };
+		const challengePool = await fetchChallengePool(params.slug);
+		const openQuestions = await fetchOpenQuestions(challengePool.id);
+		return {
+			props: {
+				user,
+				challengePool,
+				openQuestions
+			}
+		};
+	};
+</script>
+
 <script lang="ts">
 	import CreateOpenQuestion from '$lib/components/CreateOpenQuestion.svelte';
 	import { goto } from '$app/navigation';
-	import { onMount } from 'svelte';
-	import { page } from '$app/stores';
 	import Back from '$lib/components/Back.svelte';
 	import {
 		ChallengePoolType,
@@ -10,23 +24,15 @@
 		fetchChallengePool,
 		fetchOpenQuestions
 	} from '$lib/supabaseClient';
+	import type { Session } from '@supabase/supabase-js';
+	import type { Load } from '@sveltejs/kit';
 	import { user } from '$lib/stores/user';
 
-	let challengePoolId: string;
-	let challengePool: ChallengePoolType;
-	let openQuestions: Array<OpenQuestionType> = [];
+	export let challengePool: ChallengePoolType;
+	export let openQuestions: Array<OpenQuestionType> = [];
 
-	onMount(() => {
-		refresh();
-	});
-
-	async function refresh() {
-		challengePoolId = $page.params.slug;
-		//challengePool = await fetchChallengePool(challengePoolId);
-		if (!challengePool) {
-			setTimeout(async () => (challengePool = await fetchChallengePool(challengePoolId)), 1_000);
-		}
-		openQuestions = await fetchOpenQuestions(challengePoolId);
+	async function refreshOpenQuestions() {
+		openQuestions = await fetchOpenQuestions(challengePool.id);
 	}
 </script>
 
@@ -39,7 +45,7 @@
 				<nav class="activeNavElement">Open Questions</nav>
 				<nav
 					on:click={() => {
-						goto('/challengepool/' + challengePoolId + '/settings');
+						goto('/challengepool/' + challengePool.id + '/settings');
 					}}
 				>
 					Settings
@@ -47,7 +53,7 @@
 			</header>
 		{/if}
 
-		<CreateOpenQuestion {challengePool} on:openQuestionCommitted={refresh} />
+		<CreateOpenQuestion {challengePool} on:openQuestionCommitted={refreshOpenQuestions} />
 
 		{#if openQuestions.length > 0}
 			<h3 class="mt-10">Open Questions</h3>
@@ -68,7 +74,7 @@
 		{/each}
 	{/if}
 
-	<Back text="Back to all Challenge Pools" />
+	<Back route="/challengepool" text="Back to all Challenge Pools" />
 </main>
 
 <style>

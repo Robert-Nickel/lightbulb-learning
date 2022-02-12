@@ -1,43 +1,21 @@
-<script lang="ts">
-	import { onMount } from 'svelte';
-	import { page } from '$app/stores';
-	import Back from '$lib/components/Back.svelte';
-	import Toast from '$lib/components/Toast.svelte';
-	import {
-		deleteOpenAnswerDraft,
-		fetchMyOpenAnswerDraft,
-		fetchOpenAnswersOfOthers,
-		fetchOpenQuestion,
-		OpenAnswerDraftType,
-		OpenAnswerType,
-		OpenQuestionType,
-		saveOpenAnswer,
-		saveOpenAnswerDraft,
-		supabase,
-		fetchLatestOpenAnswer,
-		CorrectOpenAnswerType,
-		fetchCorrectOpenAnswer
-	} from '$lib/supabaseClient';
-	import { user } from '$lib/stores/user';
-	import autosize from '../../../node_modules/autosize';
+<script lang="ts" context="module">
+	export const load: Load = async ({ session, params }) => {
+		const { user } = session as Session;
+		if (!user) return { status: 302, redirect: '/login' };
 
-	let openQuestion: OpenQuestionType;
-	let correctOpenAnswer: CorrectOpenAnswerType;
-	let myOpenAnswerDraft: OpenAnswerDraftType;
-	let myOpenAnswer: OpenAnswerType;
-	let openAnswersOfOthers: OpenAnswerType[] = [];
-	let openAnswerDraftText = '';
-	let toast;
-
-	onMount(async () => {
-		const openQuestionId = $page.params.slug;
-		openQuestion = await fetchOpenQuestion(openQuestionId);
-		correctOpenAnswer = await fetchCorrectOpenAnswer(openQuestionId);
-		myOpenAnswer = await fetchLatestOpenAnswer(openQuestion.id, supabase.auth.user().id);
-		myOpenAnswerDraft = await fetchMyOpenAnswerDraft(openQuestion.id);
-		const openAnswersOfOthersWithNonLatest = await fetchOpenAnswersOfOthers(openQuestion.id);
-		openAnswersOfOthers = await filterNonLatest(openAnswersOfOthersWithNonLatest);
-	});
+		const questionId = params.slug;
+		const openAnswersOfOthersWithNonLatest = await fetchOpenAnswersOfOthers(questionId, user.id);
+		return {
+			props: {
+				user,
+				openQuestion: await fetchOpenQuestion(questionId),
+				correctOpenAnswer: await fetchCorrectOpenAnswer(questionId, user.id),
+				myOpenAnswerDraft: await fetchMyOpenAnswerDraft(questionId, user.id),
+				myOpenAnswer: await fetchLatestOpenAnswer(questionId, user.id),
+				openAnswersOfOthers: await filterNonLatest(openAnswersOfOthersWithNonLatest)
+			}
+		};
+	};
 
 	async function filterNonLatest(openAnswersOfOthers) {
 		// O(n^2) <- thats though, isn't there a better way?
@@ -62,6 +40,39 @@
 			});
 		return openAnswers;
 	}
+</script>
+
+<script lang="ts">
+	import Back from '$lib/components/Back.svelte';
+	import Toast from '$lib/components/Toast.svelte';
+	import {
+		deleteOpenAnswerDraft,
+		fetchMyOpenAnswerDraft,
+		fetchOpenAnswersOfOthers,
+		fetchOpenQuestion,
+		OpenAnswerDraftType,
+		OpenAnswerType,
+		OpenQuestionType,
+		saveOpenAnswer,
+		saveOpenAnswerDraft,
+		supabase,
+		fetchLatestOpenAnswer,
+		CorrectOpenAnswerType,
+		fetchCorrectOpenAnswer
+	} from '$lib/supabaseClient';
+	import { user } from '$lib/stores/user';
+	import autosize from '../../../node_modules/autosize';
+	import type { Load } from '@sveltejs/kit';
+	import type { Session } from '@supabase/supabase-js';
+
+	export let openQuestion: OpenQuestionType;
+	export let correctOpenAnswer: CorrectOpenAnswerType;
+	export let myOpenAnswerDraft: OpenAnswerDraftType;
+	export let myOpenAnswer: OpenAnswerType;
+	export let openAnswersOfOthers: OpenAnswerType[] = [];
+
+	let openAnswerDraftText = '';
+	let toast;
 </script>
 
 <main class="container">

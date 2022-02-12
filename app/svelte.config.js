@@ -1,6 +1,6 @@
 import adapter from '@sveltejs/adapter-static';
 import preprocess from 'svelte-preprocess';
-import json from '@rollup/plugin-json'
+import json from '@rollup/plugin-json';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config1 = {
@@ -15,8 +15,6 @@ const config1 = {
 	kit: {
 		adapter: adapter(),
 
-		// hydrate the <div id="svelte"> element in src/app.html
-		target: '#svelte',
 		vite: () => {
 			return {
 				resolve: {
@@ -24,12 +22,9 @@ const config1 = {
 						'./runtimeConfig': './runtimeConfig.browser'
 					}
 				},
-				plugins: [
-					json(),
-				]
+				plugins: [json()]
 			};
-		},
-		ssr: false
+		}
 	}
 };
 

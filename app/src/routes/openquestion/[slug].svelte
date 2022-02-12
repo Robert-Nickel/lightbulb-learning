@@ -93,7 +93,7 @@
 			<h1>{openQuestion.questionText}</h1>
 
 			{#if myOpenAnswer}
-				<a href={`/openanswer/${myOpenAnswer.id}`} class="light-link">
+				<a href={`/openanswer/${myOpenAnswer.id}`} class="light-link" sveltekit:prefetch>
 					<article class="yours hoverable">
 						<i>Your answer: </i>{myOpenAnswer.answerText}
 					</article>
@@ -144,7 +144,7 @@
 
 		<!-- This shows the old and the new versions of the answers! -->
 		{#each openAnswersOfOthers as openAnswerOfOther}
-			<a href={`/openanswer/${openAnswerOfOther.id}`} class="light-link">
+			<a href={`/openanswer/${openAnswerOfOther.id}`} class="light-link" sveltekit:prefetch>
 				<article class="hoverable">
 					{openAnswerOfOther.answerText}
 				</article>

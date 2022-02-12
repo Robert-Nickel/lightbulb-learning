@@ -59,7 +59,7 @@
 			<h3 class="mt-10">Open Questions</h3>
 		{/if}
 		{#each openQuestions as openQuestion}
-			<a href={`/openquestion/${openQuestion.id}`} class="light-link">
+			<a href={`/openquestion/${openQuestion.id}`} class="light-link" sveltekit:prefetch>
 				{#if openQuestion.owner == $user.id}
 					<article class="yours hoverable">
 						<i>You asked:</i>

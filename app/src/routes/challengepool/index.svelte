@@ -41,22 +41,13 @@
 			</p>
 
 			<div class="flex justify-between space-x-4">
-				<button
-					class="outline"
-					on:click={() => {
-						goto('/join');
-					}}>Join with invite code</button
-				><button
-					class="outline"
-					on:click={() => {
-						goto('/create');
-					}}>Create Challenge Pool</button
-				>
+				<a href="/join" role="button" class="outline" sveltekit:prefetch>Join with invite code</a>
+				<a href="/create" role="button" class="outline" sveltekit:prefetch>Create Challenge Pool</a>
 			</div>
 		</div>
 	{:else}
 		{#each challengePools as challengePool}
-			<a href={`/challengepool/${challengePool.id}`} class="light-link">
+			<a href={`/challengepool/${challengePool.id}`} class="light-link" sveltekit:prefetch>
 				<article class="hoverable">
 					{challengePool.description}
 				</article>

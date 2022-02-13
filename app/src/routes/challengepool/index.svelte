@@ -11,7 +11,7 @@
 </script>
 
 <script lang="ts">
-	import { goto } from '$app/navigation';
+	import { routes } from '$lib/routes';
 	import { fetchChallengePools, ChallengePoolType } from '$lib/supabaseClient';
 	import type { Session } from '@supabase/supabase-js';
 	import type { Load } from '@sveltejs/kit';
@@ -41,13 +41,13 @@
 			</p>
 
 			<div class="flex justify-between space-x-4">
-				<a href="/join" role="button" class="outline" sveltekit:prefetch>Join with invite code</a>
-				<a href="/create" role="button" class="outline" sveltekit:prefetch>Create Challenge Pool</a>
+				<a href={routes.join} role="button" class="outline" sveltekit:prefetch>Join with invite code</a>
+				<a href={routes.create} role="button" class="outline" sveltekit:prefetch>Create Challenge Pool</a>
 			</div>
 		</div>
 	{:else}
 		{#each challengePools as challengePool}
-			<a href={`/challengepool/${challengePool.id}`} class="light-link" sveltekit:prefetch>
+			<a href={routes.challengePool(challengePool.id)} class="light-link" sveltekit:prefetch>
 				<article class="hoverable">
 					{challengePool.description}
 				</article>

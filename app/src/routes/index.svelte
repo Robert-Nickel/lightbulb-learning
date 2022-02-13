@@ -1,24 +1,40 @@
+<script lang="ts" context="module">
+	import type { Load } from '@sveltejs/kit';
+	import type { Session } from '@supabase/supabase-js';
+
+	export const load: Load = async ({ session, url }) => {
+		const { user } = session as Session;
+		if (url.href.includes(routes.logout)) {
+			return {};
+		}
+		if (user) {
+			return { status: 302, redirect: routes.evaluateAuth };
+		}
+		return {};
+	};
+</script>
+
 <script lang="ts">
 	import StartPage from '$lib/components/StartPage.svelte';
-	import ChallengePools from '$lib/components/ChallengePools.svelte';
-
-	import { user } from '$lib/stores/user';
 	import { onMount } from 'svelte';
-	import { fetchProfile } from '$lib/supabaseClient';
-	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
+	import { routes } from '$lib/routes';
 
-	onMount(async () => {
-		if ($user) {
-			const profile = await fetchProfile($user.id);
-			if (!profile) {
-				goto('/welcome');
-			}
+	let loginInProgress = $page.url.hash.includes('#access_token=');
+	let logOutInProgress = $page.url.href.includes(routes.logout);
+	$: logInOutText = loginInProgress ? 'Logging in...' : logOutInProgress ? 'Logging out...' : undefined;
+
+	onMount(() => {
+		if (loginInProgress || logOutInProgress) {
+			// this was a redirect from the magic link or logout.
+			// By the time this line executes the supabase client did not yet write/delete the token from localstorage therefore we need to defer the auth evaluation call a little bit
+			setTimeout(() => location.replace(`${location.origin}${routes.evaluateAuth}`), 600);
 		}
 	});
 </script>
 
-{#if $user}
-	<main class="container py-4 max-w-screen-sm"><ChallengePools /></main>
+{#if logInOutText}
+	<h3 class="text-center" aria-busy="true">{logInOutText}</h3>
 {:else}
 	<StartPage />
 {/if}

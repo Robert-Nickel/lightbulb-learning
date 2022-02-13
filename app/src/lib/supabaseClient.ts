@@ -1,408 +1,485 @@
-import { createClient } from '@supabase/supabase-js'
+import { createClient } from '@supabase/supabase-js';
 import type { definitions } from '$lib/models/supabase';
 import { CamelCasedPropertiesDeep, keysToCamelCase } from 'object-key-convert';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-export const supabase = createClient(supabaseUrl.toString(), supabaseAnonKey.toString())
+export const supabase = createClient(supabaseUrl.toString(), supabaseAnonKey.toString());
 
 export async function fetchProfile(userId: string): Promise<ProfileType> {
-    const { data, error } = await supabase.from<ProfileTypeDB>(profilesTable)
-        .select()
-        .eq('user_id', userId)
-        .maybeSingle();
-    printIf(error)
-    return keysToCamelCase(data)
+	const { data, error } = await supabase
+		.from<ProfileTypeDB>(profilesTable)
+		.select()
+		.eq('user_id', userId)
+		.maybeSingle();
+	printIf(error);
+	return keysToCamelCase(data);
 }
 
-export async function saveProfile(firstName: string, lastName: string, university: UniversityType): Promise<ProfileType> {
-    const { data, error } = await supabase.from<ProfileTypeDB>(profilesTable)
-        .insert({
-            user_id: supabase.auth.user().id,
-            first_name: firstName,
-            last_name: lastName,
-            university: university.id
-        })
-        .single()
-    printIf(error)
-    return keysToCamelCase(data)
+export async function saveProfile(
+	firstName: string,
+	lastName: string,
+	university: UniversityType
+): Promise<ProfileType> {
+	const { data, error } = await supabase
+		.from<ProfileTypeDB>(profilesTable)
+		.insert({
+			user_id: supabase.auth.user().id,
+			first_name: firstName,
+			last_name: lastName,
+			university: university.id
+		})
+		.single();
+	printIf(error);
+	return keysToCamelCase(data);
 }
 
-export async function updateProfile(id: string, firstName: string, lastName: string, university: UniversityType): Promise<ProfileType> {
-    const { data, error } = await supabase.from<ProfileTypeDB>(profilesTable)
-        .update({
-            id,
-            user_id: supabase.auth.user().id,
-            first_name: firstName,
-            last_name: lastName,
-            university: university.id
-        })
-        .single()
-    printIf(error)
-    return keysToCamelCase(data)
+export async function updateProfile(
+	id: string,
+	firstName: string,
+	lastName: string,
+	university: UniversityType
+): Promise<ProfileType> {
+	const { data, error } = await supabase
+		.from<ProfileTypeDB>(profilesTable)
+		.update({
+			id,
+			user_id: supabase.auth.user().id,
+			first_name: firstName,
+			last_name: lastName,
+			university: university.id
+		})
+		.single();
+	printIf(error);
+	return keysToCamelCase(data);
 }
 
 export async function fetchUniversity(id: string): Promise<UniversityType> {
-    const { data, error } = await supabase.from<UniversityTypeDB>(universitiesTable).select().eq('id', id).maybeSingle()
-    printIf(error)
-    return keysToCamelCase(data)
+	const { data, error } = await supabase
+		.from<UniversityTypeDB>(universitiesTable)
+		.select()
+		.eq('id', id)
+		.maybeSingle();
+	printIf(error);
+	return keysToCamelCase(data);
 }
 export async function fetchUniversityByName(name: string): Promise<UniversityType> {
-    const { data, error } = await supabase.from<UniversityTypeDB>(universitiesTable).select().eq('name', name).maybeSingle()
-    printIf(error)
-    return keysToCamelCase(data)
+	const { data, error } = await supabase
+		.from<UniversityTypeDB>(universitiesTable)
+		.select()
+		.eq('name', name)
+		.maybeSingle();
+	printIf(error);
+	return keysToCamelCase(data);
 }
 
 export async function saveUniversity(name: string) {
-    const { data, error } = await supabase.from<UniversityTypeDB>(universitiesTable).insert({ name }).single()
-    printIf(error)
-    return keysToCamelCase(data)
+	const { data, error } = await supabase.from<UniversityTypeDB>(universitiesTable).insert({ name }).single();
+	printIf(error);
+	return keysToCamelCase(data);
 }
 
-export async function fetchChallengePools(): Promise<ChallengePoolType[]> {
-    const { data, error } = await supabase
-        .rpc('fetch_my_challenge_pools', {
-            user_id_input: supabase.auth.user().id
-        })
+export async function fetchChallengePools(userId: string): Promise<ChallengePoolType[]> {
+	const { data, error } = await supabase.rpc('fetch_my_challenge_pools', {
+		user_id_input: userId
+	});
 
-    printIf(error)
-    return keysToCamelCase(data)
+	printIf(error);
+	return keysToCamelCase(data);
 }
 
 export async function saveChallengePool(description): Promise<ChallengePoolType> {
-    const { data, error } = await supabase
-        .from<ChallengePoolTypeDB>(challengePoolsTable)
-        .insert([{ description, owner: supabase.auth.user().id }])
-        .single()
-    printIf(error)
-    return keysToCamelCase(data)
+	const { data, error } = await supabase
+		.from<ChallengePoolTypeDB>(challengePoolsTable)
+		.insert([{ description, owner: supabase.auth.user().id }])
+		.single();
+	printIf(error);
+	return keysToCamelCase(data);
 }
 
 export async function fetchChallengePool(id: string): Promise<ChallengePoolType> {
-    const { data, error } = await supabase.from<ChallengePoolTypeDB>(challengePoolsTable).select().eq('id', id).maybeSingle()
-    printIf(error)
-    return keysToCamelCase(data)
+	const { data, error } = await supabase
+		.from<ChallengePoolTypeDB>(challengePoolsTable)
+		.select()
+		.eq('id', id)
+		.maybeSingle();
+	printIf(error);
+	return keysToCamelCase(data);
 }
 
 export async function deleteChallengePool(id: string) {
-    const { error } = await supabase.from<ChallengePoolTypeDB>(challengePoolsTable).delete().eq('id', id)
-    printIf(error)
+	const { error } = await supabase.from<ChallengePoolTypeDB>(challengePoolsTable).delete().eq('id', id);
+	printIf(error);
 }
 
 export async function fetchMyOpenQuestionDraft(challengePoolId: string): Promise<OpenQuestionDraftType> {
-    const { data, error } = await supabase
-        .from<OpenQuestionDraftTypeDB>(openQuestionDraftsTable)
-        .select()
-        .eq('owner', supabase.auth.user().id)
-        .eq('challenge_pool', challengePoolId)
-    printIf(error)
-    return keysToCamelCase(data[0])
+	const { data, error } = await supabase
+		.from<OpenQuestionDraftTypeDB>(openQuestionDraftsTable)
+		.select()
+		.eq('owner', supabase.auth.user().id)
+		.eq('challenge_pool', challengePoolId);
+	printIf(error);
+	return keysToCamelCase(data[0]);
 }
 
-export async function saveOpenQuestionDraft(questionText: string, challengePoolId: string): Promise<OpenQuestionDraftType> {
-    console.log("saving open question draft: " + questionText + " challenge pool id: " + challengePoolId)
+export async function saveOpenQuestionDraft(
+	questionText: string,
+	challengePoolId: string
+): Promise<OpenQuestionDraftType> {
+	console.log('saving open question draft: ' + questionText + ' challenge pool id: ' + challengePoolId);
 
-    const { data, error } = await supabase
-        .from<OpenQuestionDraftTypeDB>(openQuestionDraftsTable)
-        .insert({
-            question_text: questionText,
-            challenge_pool: challengePoolId,
-            owner: supabase.auth.user().id
-        }).single()
-    printIf(error)
-    return keysToCamelCase(data)
+	const { data, error } = await supabase
+		.from<OpenQuestionDraftTypeDB>(openQuestionDraftsTable)
+		.insert({
+			question_text: questionText,
+			challenge_pool: challengePoolId,
+			owner: supabase.auth.user().id
+		})
+		.single();
+	printIf(error);
+	return keysToCamelCase(data);
 }
 
-export async function updateOpenQuestionDraftWithAnswer(id: string, answerText: string): Promise<OpenQuestionDraftType> {
-    const { data, error } = await supabase
-        .from<OpenQuestionDraftTypeDB>(openQuestionDraftsTable)
-        .update({ answer_text: answerText })
-        .eq('id', id)
-    printIf(error)
-    return keysToCamelCase(data[0])
+export async function updateOpenQuestionDraftWithAnswer(
+	id: string,
+	answerText: string
+): Promise<OpenQuestionDraftType> {
+	const { data, error } = await supabase
+		.from<OpenQuestionDraftTypeDB>(openQuestionDraftsTable)
+		.update({ answer_text: answerText })
+		.eq('id', id);
+	printIf(error);
+	return keysToCamelCase(data[0]);
 }
 
 export async function deleteAnswerFromOpenQuestionDraft(id: string): Promise<OpenQuestionDraftType> {
-    const { data, error } = await supabase
-        .from<OpenQuestionDraftTypeDB>(openQuestionDraftsTable)
-        .update({ answer_text: null })
-        .eq('id', id);
-    printIf(error)
-    return keysToCamelCase(data[0])
+	const { data, error } = await supabase
+		.from<OpenQuestionDraftTypeDB>(openQuestionDraftsTable)
+		.update({ answer_text: null })
+		.eq('id', id);
+	printIf(error);
+	return keysToCamelCase(data[0]);
 }
 
 export async function deleteOpenQuestionDraft(id: string) {
-    const { error } = await supabase.from<OpenQuestionDraftTypeDB>(openQuestionDraftsTable).delete().eq('id', id);
-    printIf(error)
+	const { error } = await supabase
+		.from<OpenQuestionDraftTypeDB>(openQuestionDraftsTable)
+		.delete()
+		.eq('id', id);
+	printIf(error);
 }
 
 export async function fetchOpenQuestions(challengePoolId): Promise<OpenQuestionType[]> {
-    const { data, error } =
-        await supabase.from<OpenQuestionTypeDB>(openQuestionsTable).select().eq('challenge_pool', challengePoolId)
-    printIf(error)
-    return keysToCamelCase(data)
+	const { data, error } = await supabase
+		.from<OpenQuestionTypeDB>(openQuestionsTable)
+		.select()
+		.eq('challenge_pool', challengePoolId);
+	printIf(error);
+	return keysToCamelCase(data);
 }
 
 export async function fetchOpenQuestion(id: string): Promise<OpenQuestionType> {
-    const { data, error } =
-        await supabase
-            .from<OpenQuestionTypeDB>(openQuestionsTable)
-            .select()
-            .eq('id', id)
-            .maybeSingle()
-    printIf(error)
-    return keysToCamelCase(data)
+	const { data, error } = await supabase
+		.from<OpenQuestionTypeDB>(openQuestionsTable)
+		.select()
+		.eq('id', id)
+		.maybeSingle();
+	printIf(error);
+	return keysToCamelCase(data);
 }
 
-export async function saveOpenQuestion(questionText: string, challengePoolId: string): Promise<OpenQuestionType> {
-    const { data, error } = await supabase.from<OpenQuestionTypeDB>(openQuestionsTable).insert({
-        question_text: questionText,
-        challenge_pool: challengePoolId,
-        owner: supabase.auth.user().id
-    }).single()
-    printIf(error)
-    return keysToCamelCase(data)
+export async function saveOpenQuestion(
+	questionText: string,
+	challengePoolId: string
+): Promise<OpenQuestionType> {
+	const { data, error } = await supabase
+		.from<OpenQuestionTypeDB>(openQuestionsTable)
+		.insert({
+			question_text: questionText,
+			challenge_pool: challengePoolId,
+			owner: supabase.auth.user().id
+		})
+		.single();
+	printIf(error);
+	return keysToCamelCase(data);
 }
 
-export async function fetchCorrectOpenAnswer(openQuestionId: string): Promise<CorrectOpenAnswerType> {
-    const { data, error } = await supabase.from<CorrectOpenAnswerTypeDB>(correctAnswersTable)
-        .select()
-        .eq('open_question', openQuestionId)
-        .eq('owner', supabase.auth.user().id)
-        .maybeSingle()
-    printIf(error)
-    return keysToCamelCase(data)
+export async function fetchCorrectOpenAnswer(
+	openQuestionId: string,
+	userId: string
+): Promise<CorrectOpenAnswerType> {
+	const { data, error } = await supabase
+		.from<CorrectOpenAnswerTypeDB>(correctAnswersTable)
+		.select()
+		.eq('open_question', openQuestionId)
+		.eq('owner', userId)
+		.maybeSingle();
+	printIf(error);
+	return keysToCamelCase(data);
 }
 
-export async function saveCorrectOpenAnswer(answerText: string, openQuestionId: string): Promise<CorrectOpenAnswerType> {
-    const { data, error } = await supabase.from<CorrectOpenAnswerTypeDB>(correctAnswersTable).insert({
-        answer_text: answerText,
-        open_question: openQuestionId,
-        owner: supabase.auth.user().id
-    }).single()
-    printIf(error)
-    return keysToCamelCase(data)
+export async function saveCorrectOpenAnswer(
+	answerText: string,
+	openQuestionId: string
+): Promise<CorrectOpenAnswerType> {
+	const { data, error } = await supabase
+		.from<CorrectOpenAnswerTypeDB>(correctAnswersTable)
+		.insert({
+			answer_text: answerText,
+			open_question: openQuestionId,
+			owner: supabase.auth.user().id
+		})
+		.single();
+	printIf(error);
+	return keysToCamelCase(data);
 }
 
-export async function fetchMyOpenAnswerDraft(openQuestionId: string): Promise<OpenAnswerDraftType> {
-    const { data, error } =
-        await supabase
-            .from<OpenAnswerDraftTypeDB>(openAnswerDraftsTable)
-            .select()
-            .eq('open_question', openQuestionId)
-            .eq('owner', supabase.auth.user().id)
-            .maybeSingle()
-    printIf(error)
-    return keysToCamelCase(data)
+export async function fetchMyOpenAnswerDraft(
+	openQuestionId: string,
+	userId: string
+): Promise<OpenAnswerDraftType> {
+	const { data, error } = await supabase
+		.from<OpenAnswerDraftTypeDB>(openAnswerDraftsTable)
+		.select()
+		.eq('open_question', openQuestionId)
+		.eq('owner', userId)
+		.maybeSingle();
+	printIf(error);
+	return keysToCamelCase(data);
 }
 
-export async function saveOpenAnswerDraft(openAnswerDraftText: string, openQuestionId: string): Promise<OpenAnswerDraftType> {
-    const { data, error } = await supabase.from<OpenAnswerDraftTypeDB>(openAnswerDraftsTable).insert({
-        answer_text: openAnswerDraftText,
-        open_question: openQuestionId,
-        owner: supabase.auth.user().id
-    }).single()
-    printIf(error)
-    return keysToCamelCase(data)
+export async function saveOpenAnswerDraft(
+	openAnswerDraftText: string,
+	openQuestionId: string
+): Promise<OpenAnswerDraftType> {
+	const { data, error } = await supabase
+		.from<OpenAnswerDraftTypeDB>(openAnswerDraftsTable)
+		.insert({
+			answer_text: openAnswerDraftText,
+			open_question: openQuestionId,
+			owner: supabase.auth.user().id
+		})
+		.single();
+	printIf(error);
+	return keysToCamelCase(data);
 }
 
 export async function deleteOpenAnswerDraft(id) {
-    const { error } = await supabase.from<OpenAnswerDraftTypeDB>(openAnswerDraftsTable).delete().eq('id', id)
-    printIf(error)
-    return null
+	const { error } = await supabase.from<OpenAnswerDraftTypeDB>(openAnswerDraftsTable).delete().eq('id', id);
+	printIf(error);
+	return null;
 }
 
 export async function fetchOpenAnswer(id: string): Promise<OpenAnswerType> {
-    const { data, error } = await supabase.from<OpenAnswerTypeDB>(openAnswersTable).select().eq('id', id).maybeSingle()
-    printIf(error)
-    return keysToCamelCase(data)
+	const { data, error } = await supabase
+		.from<OpenAnswerTypeDB>(openAnswersTable)
+		.select()
+		.eq('id', id)
+		.maybeSingle();
+	printIf(error);
+	return keysToCamelCase(data);
 }
 
 export async function fetchMyOpenAnswers(openQuestionId): Promise<OpenAnswerType[]> {
-    const { data, error } =
-        await supabase
-            .from<OpenAnswerTypeDB>(openAnswersTable)
-            .select()
-            .eq('open_question', openQuestionId)
-            .eq('owner', supabase.auth.user().id)
-    printIf(error)
-    return keysToCamelCase(data)
+	const { data, error } = await supabase
+		.from<OpenAnswerTypeDB>(openAnswersTable)
+		.select()
+		.eq('open_question', openQuestionId)
+		.eq('owner', supabase.auth.user().id);
+	printIf(error);
+	return keysToCamelCase(data);
 }
 
 export async function fetchLatestOpenAnswer(openQuestionId, userId): Promise<OpenAnswerType> {
-    const { data, error } =
-        await supabase
-            .from<OpenAnswerTypeDB>(openAnswersTable)
-            .select()
-            .eq('open_question', openQuestionId)
-            .eq('owner', userId)
-            .order('version', { ascending: false })
-            .limit(1)
-    printIf(error)
-    return keysToCamelCase(data[0])
+	const { data, error } = await supabase
+		.from<OpenAnswerTypeDB>(openAnswersTable)
+		.select()
+		.eq('open_question', openQuestionId)
+		.eq('owner', userId)
+		.order('version', { ascending: false })
+		.limit(1);
+	printIf(error);
+	return keysToCamelCase(data[0]);
 }
 
-export async function fetchOpenAnswersOfOthers(openQuestionId): Promise<OpenAnswerType[]> {
-    const { data, error } = await supabase
-        .from<OpenAnswerTypeDB>(openAnswersTable)
-        .select()
-        .eq('open_question', openQuestionId)
-        .neq('owner', supabase.auth.user().id)
-    printIf(error)
-    return keysToCamelCase(data)
+export async function fetchOpenAnswersOfOthers(
+	openQuestionId: string,
+	userId: string
+): Promise<OpenAnswerType[]> {
+	const { data, error } = await supabase
+		.from<OpenAnswerTypeDB>(openAnswersTable)
+		.select()
+		.eq('open_question', openQuestionId)
+		.neq('owner', userId);
+	printIf(error);
+	return keysToCamelCase(data);
 }
 
-export async function saveOpenAnswer(answerText: string, openQuestionId: string, version: number = 1): Promise<OpenAnswerType> {
-    const { data, error } = await supabase.from<OpenAnswerTypeDB>(openAnswersTable).insert({
-        answer_text: answerText,
-        open_question: openQuestionId,
-        owner: supabase.auth.user().id,
-        version
-    }).single()
-    printIf(error)
-    return keysToCamelCase(data)
+export async function saveOpenAnswer(
+	answerText: string,
+	openQuestionId: string,
+	version = 1
+): Promise<OpenAnswerType> {
+	const { data, error } = await supabase
+		.from<OpenAnswerTypeDB>(openAnswersTable)
+		.insert({
+			answer_text: answerText,
+			open_question: openQuestionId,
+			owner: supabase.auth.user().id,
+			version
+		})
+		.single();
+	printIf(error);
+	return keysToCamelCase(data);
 }
 
 export async function fetchMyOpenFeedbackDraft(openAnswerId: string): Promise<OpenFeedbackDraftType> {
-    const { data, error } =
-        await supabase
-            .from<OpenFeedbackDraftTypeDB>(openFeedbackDraftsTable)
-            .select()
-            .eq('owner', supabase.auth.user().id)
-            .eq('open_answer', openAnswerId)
-            .maybeSingle()
-    printIf(error)
-    return keysToCamelCase(data)
+	const { data, error } = await supabase
+		.from<OpenFeedbackDraftTypeDB>(openFeedbackDraftsTable)
+		.select()
+		.eq('owner', supabase.auth.user().id)
+		.eq('open_answer', openAnswerId)
+		.maybeSingle();
+	printIf(error);
+	return keysToCamelCase(data);
 }
 
-export async function saveOpenFeedbackDraft(openFeedbackDraftText: string, openAnswerId: string): Promise<OpenFeedbackDraftType> {
-    const { data, error } = await supabase.from<OpenFeedbackDraftTypeDB>(openFeedbackDraftsTable).insert({
-        feedback_text: openFeedbackDraftText,
-        open_answer: openAnswerId,
-        owner: supabase.auth.user().id
-    }).single()
-    printIf(error)
-    return keysToCamelCase(data)
+export async function saveOpenFeedbackDraft(
+	openFeedbackDraftText: string,
+	openAnswerId: string
+): Promise<OpenFeedbackDraftType> {
+	const { data, error } = await supabase
+		.from<OpenFeedbackDraftTypeDB>(openFeedbackDraftsTable)
+		.insert({
+			feedback_text: openFeedbackDraftText,
+			open_answer: openAnswerId,
+			owner: supabase.auth.user().id
+		})
+		.single();
+	printIf(error);
+	return keysToCamelCase(data);
 }
 
 export async function deleteOpenFeedbackDraft(id: string) {
-    const { error } = await supabase
-        .from<OpenFeedbackDraftTypeDB>(openFeedbackDraftsTable)
-        .delete()
-        .eq('id', id)
-    printIf(error)
-    return null
+	const { error } = await supabase
+		.from<OpenFeedbackDraftTypeDB>(openFeedbackDraftsTable)
+		.delete()
+		.eq('id', id);
+	printIf(error);
+	return null;
 }
 
 export async function fetchMyOpenFeedback(openAnswerId: string): Promise<OpenFeedbackType> {
-    const { data, error } =
-        await supabase
-            .from<OpenFeedbackTypeDB>(openFeedbackTable)
-            .select()
-            .eq('owner', supabase.auth.user().id)
-            .eq('open_answer', openAnswerId)
-            .maybeSingle()
-    printIf(error)
-    return keysToCamelCase(data)
+	const { data, error } = await supabase
+		.from<OpenFeedbackTypeDB>(openFeedbackTable)
+		.select()
+		.eq('owner', supabase.auth.user().id)
+		.eq('open_answer', openAnswerId)
+		.maybeSingle();
+	printIf(error);
+	return keysToCamelCase(data);
 }
 
 export async function fetchOpenFeedbackOfOthers(openAnswerId: string): Promise<OpenFeedbackType[]> {
-    const { data, error } =
-        await supabase
-            .from<OpenFeedbackTypeDB>(openFeedbackTable)
-            .select()
-            .eq('open_answer', openAnswerId)
-            .neq('owner', supabase.auth.user().id)
-    printIf(error)
-    return keysToCamelCase(data)
+	const { data, error } = await supabase
+		.from<OpenFeedbackTypeDB>(openFeedbackTable)
+		.select()
+		.eq('open_answer', openAnswerId)
+		.neq('owner', supabase.auth.user().id);
+	printIf(error);
+	return keysToCamelCase(data);
 }
 
-export async function saveOpenFeedback(feedbackText: string, openAnswerId: string): Promise<OpenFeedbackType> {
-    const { data, error } = await supabase.from<OpenFeedbackTypeDB>(openFeedbackTable).insert({
-        feedback_text: feedbackText,
-        open_answer: openAnswerId,
-        owner: supabase.auth.user().id
-    }).single()
-    printIf(error)
-    return keysToCamelCase(data)
+export async function saveOpenFeedback(
+	feedbackText: string,
+	openAnswerId: string
+): Promise<OpenFeedbackType> {
+	const { data, error } = await supabase
+		.from<OpenFeedbackTypeDB>(openFeedbackTable)
+		.insert({
+			feedback_text: feedbackText,
+			open_answer: openAnswerId,
+			owner: supabase.auth.user().id
+		})
+		.single();
+	printIf(error);
+	return keysToCamelCase(data);
 }
 
 export async function joinChallengePool(inviteCode: string): Promise<string> {
-    if (!inviteCode || inviteCode.length != 10) {
-        console.error("invalid invite code: " + inviteCode)
-    }
-    const { data, error } = await supabase
-        .rpc('join_challenge_pool', {
-            invite_code_input: inviteCode,
-            user_id_input: supabase.auth.user().id
-        })
-    printIf(error)
-    return data.toString()
+	if (!inviteCode || inviteCode.length != 10) {
+		console.error('invalid invite code: ' + inviteCode);
+	}
+	const { data, error } = await supabase.rpc('join_challenge_pool', {
+		invite_code_input: inviteCode,
+		user_id_input: supabase.auth.user().id
+	});
+	printIf(error);
+	return data.toString();
 }
 
 export async function saveInviteCode(challengePoolId: string, code: string): Promise<InviteCodeType> {
-    const validUntil = new Date()
-    validUntil.setDate(validUntil.getDate() + 7)
+	const validUntil = new Date();
+	validUntil.setDate(validUntil.getDate() + 7);
 
-    const { data, error } = await supabase.from<InviteCodeTypeDB>(inviteCodesTable).insert({
-        challenge_pool: challengePoolId,
-        code,
-        valid_until: validUntil.toISOString(),
-        owner: supabase.auth.user().id
-    }).single()
-    printIf(error)
-    return keysToCamelCase(data)
+	const { data, error } = await supabase
+		.from<InviteCodeTypeDB>(inviteCodesTable)
+		.insert({
+			challenge_pool: challengePoolId,
+			code,
+			valid_until: validUntil.toISOString(),
+			owner: supabase.auth.user().id
+		})
+		.single();
+	printIf(error);
+	return keysToCamelCase(data);
 }
 
 export async function fetchMembers(challengePoolId: string): Promise<MemberType[]> {
-    const { data, error } = await supabase
-        .from<MemberTypeDB>(membersView)
-        .select()
-        .eq('challenge_pool', challengePoolId);
-    printIf(error)
-    return keysToCamelCase(data)
+	const { data, error } = await supabase
+		.from<MemberTypeDB>(membersView)
+		.select()
+		.eq('challenge_pool', challengePoolId);
+	printIf(error);
+	return keysToCamelCase(data);
 }
 
 export async function fetchMember(id: string): Promise<MemberType> {
-    const { data, error } = await supabase
-        .from<MemberTypeDB>(membersView)
-        .select()
-        .eq('id', id)
-        .single()
-    printIf(error)
-    return keysToCamelCase(data)
+	const { data, error } = await supabase.from<MemberTypeDB>(membersView).select().eq('id', id).single();
+	printIf(error);
+	return keysToCamelCase(data);
 }
 
 export async function fetchOpenQuestionPerformances(id: string): Promise<OpenQuestionPerformancesType[]> {
-    const { data, error } = await supabase
-        .from<OpenQuestionPerformancesTypeDB>(openQuestionPerformancesView)
-        .select()
-        .eq('id', id)
-    printIf(error)
-    return keysToCamelCase(data)
+	const { data, error } = await supabase
+		.from<OpenQuestionPerformancesTypeDB>(openQuestionPerformancesView)
+		.select()
+		.eq('id', id);
+	printIf(error);
+	return keysToCamelCase(data);
 }
 
 export async function fetchOpenAnswerPerformances(id: string): Promise<OpenAnswerPerformancesType[]> {
-    const { data, error } = await supabase
-        .from<OpenAnswerPerformancesTypeDB>(openAnswerPerformancesView)
-        .select()
-        .eq('id', id)
-    printIf(error)
-    return keysToCamelCase(data)
+	const { data, error } = await supabase
+		.from<OpenAnswerPerformancesTypeDB>(openAnswerPerformancesView)
+		.select()
+		.eq('id', id);
+	printIf(error);
+	return keysToCamelCase(data);
 }
 
 export async function fetchOpenFeedbackPerformances(id: string): Promise<OpenFeedbackPerformancesType[]> {
-    const { data, error } = await supabase
-        .from<OpenFeedbackPerformancesTypeDB>(openFeedbackPerformancesView)
-        .select()
-        .eq('id', id)
-    printIf(error)
-    return keysToCamelCase(data)
+	const { data, error } = await supabase
+		.from<OpenFeedbackPerformancesTypeDB>(openFeedbackPerformancesView)
+		.select()
+		.eq('id', id);
+	printIf(error);
+	return keysToCamelCase(data);
 }
 
 function printIf(error) {
-    if (error) console.error(error)
+	if (error) console.error(error);
 }
 
 export const challengePoolsTable = 'challenge_pools';
@@ -435,9 +512,13 @@ export type UniversityType = CamelCasedPropertiesDeep<definitions['universities'
 export type ChallengePoolUserType = CamelCasedPropertiesDeep<definitions['challenge_pool_user']>;
 export type InviteCodeType = CamelCasedPropertiesDeep<definitions['invite_codes']>;
 export type MemberType = CamelCasedPropertiesDeep<definitions['members']>;
-export type OpenQuestionPerformancesType = CamelCasedPropertiesDeep<definitions['open_question_performances']>;
+export type OpenQuestionPerformancesType = CamelCasedPropertiesDeep<
+	definitions['open_question_performances']
+>;
 export type OpenAnswerPerformancesType = CamelCasedPropertiesDeep<definitions['open_answer_performances']>;
-export type OpenFeedbackPerformancesType = CamelCasedPropertiesDeep<definitions['open_feedback_performances']>;
+export type OpenFeedbackPerformancesType = CamelCasedPropertiesDeep<
+	definitions['open_feedback_performances']
+>;
 
 export type ChallengePoolTypeDB = definitions['challenge_pools'];
 export type OpenQuestionDraftTypeDB = definitions['open_question_drafts'];

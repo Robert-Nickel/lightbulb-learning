@@ -21,14 +21,14 @@
 	import { routes } from '$lib/routes';
 
 	let loginInProgress = $page.url.hash.includes('#access_token=');
-	let logOutInProgress = $page.url.href.includes(routes.logout);
-	$: logInOutText = loginInProgress ? 'Logging in...' : logOutInProgress ? 'Logging out...' : undefined;
+	let logoutInProgress = $page.url.href.includes(routes.logout);
+	$: logInOutText = loginInProgress ? 'Logging in...' : logoutInProgress ? 'Logging out...' : undefined;
 
 	onMount(() => {
-		if (loginInProgress || logOutInProgress) {
+		if (loginInProgress || logoutInProgress) {
 			// this was a redirect from the magic link or logout.
 			// By the time this line executes the supabase client did not yet write/delete the token from localstorage therefore we need to defer the auth evaluation call a little bit
-			setTimeout(() => location.replace(`${location.origin}${routes.evaluateAuth}`), 600);
+			setTimeout(() => location.replace(`${location.origin}${routes.evaluateAuth}`), 1000);
 		}
 	});
 </script>

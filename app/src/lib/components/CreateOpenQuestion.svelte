@@ -113,6 +113,7 @@
 						toast.showSuccessToast('Open Question created');
 						await deleteOpenQuestionDraft(openQuestionDraft.id);
 						openQuestionDraft = null;
+						openQuestionDraftAnswerText = "";
 					}}
 					class="w-32 h-12 mb-0"
 				>

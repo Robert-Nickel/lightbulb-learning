@@ -22,6 +22,7 @@
 	import { goto } from '$app/navigation';
 	import { user } from '$lib/stores/user';
 	import autosize from '../../../node_modules/autosize';
+	import { routes } from '$lib/routes';
 
 	let openQuestion: OpenQuestionType;
 	let openAnswer: OpenAnswerType;
@@ -94,7 +95,7 @@
 					<button
 						class="w-48"
 						on:click={() => {
-							goto('/openanswer/' + latestOpenAnswer.id);
+							goto(routes.openAnswer(latestOpenAnswer.id));
 							refresh(latestOpenAnswer.id);
 						}}>Go to Latest Version</button
 					>

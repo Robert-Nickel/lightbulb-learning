@@ -11,6 +11,7 @@
 	} from '$lib/supabaseClient';
 	import { user } from '$lib/stores/user';
 	import Members from '$lib/components/Members.svelte';
+	import { routes } from '$lib/routes';
 
 	let challengePoolId: string;
 	let challengePool: ChallengePoolType;
@@ -73,7 +74,7 @@
 					)
 				) {
 					await deleteChallengePool(challengePool.id);
-					goto('/');
+					goto(routes.root);
 				}
 			}}
 			class="secondary outline w-auto mb-0 hover-red">Delete {challengePool.description}</button

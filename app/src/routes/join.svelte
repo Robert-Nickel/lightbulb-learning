@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { routes } from '$lib/routes';
 
 	import { joinChallengePool } from '$lib/supabaseClient';
 
@@ -18,7 +19,7 @@
 				if (inviteCode) {
 					const challengePoolId = await joinChallengePool(inviteCode);
 					if (challengePoolId != 'false') {
-						goto('/challengepool/' + challengePoolId);
+						goto(routes.challengePool(challengePoolId));
 					}
 				}
 			}}

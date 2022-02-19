@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { routes } from '$lib/routes';
 	import Hamburger from './Hamburger.svelte';
 	export let sidebar = false;
 </script>
@@ -7,7 +8,7 @@
 	<nav class="flex">
 		<Hamburger bind:open={sidebar} />
 	</nav>
-	<nav><a href="/" class="text-white mb-0.5">Lightbulb Learning</a></nav>
+	<nav><a href={routes.root} class="text-white mb-0.5" sveltekit:prefetch>Lightbulb Learning</a></nav>
 </header>
 
 <!--

@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { fetchMembers, MemberType, MemberTypeDB } from '$lib/supabaseClient';
+	import { routes } from '$lib/routes';
+	import { fetchMembers, MemberType } from '$lib/supabaseClient';
 	import { onMount } from 'svelte';
 
 	export let challengePoolId: string;
@@ -12,9 +13,10 @@
 
 <h3 class="mt-8">Members</h3>
 {#each members as member}
-	<a href={`/performance/${member.id}`} class="light-link">
+	<a href={routes.performance(member.id)} class="light-link">
 		<article class="hoverable">
-			{member.firstName} {member.lastName}
+			{member.firstName}
+			{member.lastName}
 		</article>
 	</a>
 {/each}

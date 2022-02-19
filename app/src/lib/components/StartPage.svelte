@@ -1,6 +1,7 @@
 <script lang="ts">
 	import NewsletterSignUp from '$lib/components/NewsletterSignUp.svelte';
 	import WhatWeDo from '$lib/components/WhatWeDo.svelte';
+	import { routes } from '$lib/routes';
 </script>
 
 <div class="bg-center bg-contain bg-no-repeat" style="background-image: url('/images/lightbulb.jpeg');">
@@ -10,7 +11,7 @@
 </div>
 
 <main class="container mx-auto py-4 px-2 max-w-screen-sm">
-	<a href="/login" sveltekit:prefetch>
+	<a href={routes.login} sveltekit:prefetch>
 		<button class="w-48 m-auto mb-16">Start</button>
 	</a>
 

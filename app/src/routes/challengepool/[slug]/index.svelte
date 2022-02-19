@@ -27,6 +27,7 @@
 	import type { Session } from '@supabase/supabase-js';
 	import type { Load } from '@sveltejs/kit';
 	import { user } from '$lib/stores/user';
+	import { routes } from '$lib/routes';
 
 	export let challengePool: ChallengePoolType;
 	export let openQuestions: Array<OpenQuestionType> = [];
@@ -43,13 +44,7 @@
 		{#if $user.id == challengePool.owner}
 			<header class="flex p-2 space-x-4 border-b-2 ">
 				<nav class="activeNavElement">Open Questions</nav>
-				<nav
-					on:click={() => {
-						goto('/challengepool/' + challengePool.id + '/settings');
-					}}
-				>
-					Settings
-				</nav>
+				<nav on:click={() => goto(routes.challengePoolSettings(challengePool.id))}>Settings</nav>
 			</header>
 		{/if}
 
@@ -59,7 +54,7 @@
 			<h3 class="mt-10">Open Questions</h3>
 		{/if}
 		{#each openQuestions as openQuestion}
-			<a href={`/openquestion/${openQuestion.id}`} class="light-link" sveltekit:prefetch>
+			<a href={routes.openQuestion(openQuestion.id)} class="light-link" sveltekit:prefetch>
 				{#if openQuestion.owner == $user.id}
 					<article class="yours hoverable">
 						<i>You asked:</i>

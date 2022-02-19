@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { routes } from '$lib/routes';
 	import { user } from '$lib/stores/user';
 	import {
 		fetchProfile,
@@ -85,7 +86,8 @@
 			} else {
 				await saveProfile(firstName, lastName, university);
 			}
-			goto('/');
-		}} class="w-48">Done</button
+			goto(routes.root);
+		}}
+		class="w-48">Done</button
 	>
 {/if}

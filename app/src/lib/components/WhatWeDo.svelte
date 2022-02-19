@@ -1,3 +1,7 @@
+<script>
+	import { routes } from '$lib/routes';
+</script>
+
 <p class="principle">
 	💡&nbsp;&nbsp;Some people just want to see the world learn. We believe: That works best in a friendly,
 	collaborative environment without pressure. That is why Lightbulb Learning is about growth through
@@ -16,7 +20,8 @@
 </p>
 
 <p class="principle">
-	🔥&nbsp;&nbsp;It is all free and open source. <a href="/login">Get your hands on Lightbulb Learning to learn more.</a>
+	🔥&nbsp;&nbsp;It is all free and open source.
+	<a href={routes.login} sveltekit:prefetch>Get your hands on Lightbulb Learning to learn more.</a>
 </p>
 
 <style>

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { routes } from '$lib/routes';
 	import { saveChallengePool } from '$lib/supabaseClient';
 
 	let createChallengePoolDescription = '';
@@ -20,7 +21,7 @@
 				on:click={async () => {
 					const challengePool = await saveChallengePool(createChallengePoolDescription);
 					createChallengePoolDescription = '';
-					goto('/challengepool/' + challengePool.id);
+					goto(routes.challengePool(challengePool.id));
 				}}
 				class="w-32">Create</button
 			>

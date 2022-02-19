@@ -421,7 +421,7 @@ export async function joinChallengePool(inviteCode: string): Promise<string> {
 
 export async function saveInviteCode(challengePoolId: string, code: string): Promise<InviteCodeType> {
 	const validUntil = new Date();
-	validUntil.setDate(validUntil.getDate() + 7);
+	validUntil.setFullYear(2100); // do not expire links for now
 
 	const { data, error } = await supabase
 		.from<InviteCodeTypeDB>(inviteCodesTable)

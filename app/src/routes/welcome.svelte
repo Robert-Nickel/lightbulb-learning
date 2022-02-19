@@ -12,11 +12,15 @@
 	} from '$lib/supabaseClient';
 	import { onMount } from 'svelte';
 
+	const other = 'other';
+	const name = 'name';
+	const university = 'university';
+
 	let firstName;
 	let lastName;
 	let universityName;
 	let otherUniversityName;
-	let step = 'name';
+	let step = name;
 	let profileId: string;
 
 	onMount(async () => {
@@ -30,7 +34,7 @@
 	});
 </script>
 
-{#if step == 'name'}
+{#if step == name}
 	<h1>What is your name?</h1>
 
 	<label for="firstName">
@@ -45,11 +49,12 @@
 
 	<button
 		class="w-48"
+		disabled={!firstName || !lastName}
 		on:click={async () => {
-			step = 'university';
+			step = university;
 		}}>Continue</button
 	>
-{:else if step == 'university'}
+{:else if step == university}
 	<h1>Which one is your University?</h1>
 
 	<fieldset>
@@ -69,7 +74,7 @@
 		</label>
 	</fieldset>
 
-	{#if universityName == 'other'}<input
+	{#if universityName == other}<input
 			bind:value={otherUniversityName}
 			type="text"
 			placeholder="What is the name of your university?"
@@ -88,6 +93,7 @@
 			}
 			goto(routes.root);
 		}}
+		disabled={!universityName || (universityName == other && !otherUniversityName)}
 		class="w-48">Done</button
 	>
 {/if}

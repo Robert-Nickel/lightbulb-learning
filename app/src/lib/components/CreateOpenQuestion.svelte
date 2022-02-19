@@ -28,26 +28,25 @@
 </script>
 
 <div class="mt-4">
-	<textarea
-		id="textarea-question"
-		class="w-full h-12"
-		placeholder="Create an open question"
-		bind:value={openQuestionDraftText}
-		on:load={autosize(document.getElementById('textarea-question'))}
-	/>
-	<button
-		hidden={openQuestionDraftText.length == 0}
-		on:click={async () => {
-			openQuestionDraft = await saveOpenQuestionDraft(openQuestionDraftText, challengePool.id);
-			openQuestionDraftText = '';
-			// TODO: focus the answer input
-		}}
-		class="w-32 h-12">Save</button
-	>
-</div>
-
-<div class="mt-4">
-	{#if openQuestionDraft}
+	{#if !openQuestionDraft}
+		<h3 class="mt-8">New Open Question</h3>
+			<textarea
+				id="textarea-question"
+				class="w-full h-12"
+				placeholder="Create an open question"
+				bind:value={openQuestionDraftText}
+				on:load={autosize(document.getElementById('textarea-question'))}
+			/>
+			<button
+				hidden={openQuestionDraftText.length == 0}
+				on:click={async () => {
+					openQuestionDraft = await saveOpenQuestionDraft(openQuestionDraftText, challengePool.id);
+					openQuestionDraftText = '';
+					// TODO: focus the answer input
+				}}
+				class="w-32 h-12">Save</button
+			>
+	{:else}
 		<h3 class="mt-8">Draft</h3>
 		<article>
 			<div class="flex justify-between space-x-2">
@@ -113,6 +112,7 @@
 						toast.showSuccessToast('Open Question created');
 						await deleteOpenQuestionDraft(openQuestionDraft.id);
 						openQuestionDraft = null;
+						openQuestionDraftAnswerText = '';
 					}}
 					class="w-32 h-12 mb-0"
 				>

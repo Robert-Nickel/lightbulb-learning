@@ -62,7 +62,7 @@
 						navigator.clipboard.writeText(inviteCode);
 					}}
 					data-tooltip="Copy to Clipboard">{inviteCode}</a
-				> (valid: 7 days)
+				>
 			</div>
 		{/if}
 

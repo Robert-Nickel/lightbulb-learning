@@ -8,7 +8,9 @@
 		if (!user) {
 			return { status: 302, redirect: '/login' };
 		}
+		console.log({user})
 		const profile = await fetchProfile(user.id);
+		console.log({profile})
 		if (user && !profile) {
 			return { status: 302, redirect: '/welcome' };
 		}

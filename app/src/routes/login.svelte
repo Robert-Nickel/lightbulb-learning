@@ -27,7 +27,7 @@
 					<p class="description">Login via magic link</p>
 					<div>
 						<input type="email" placeholder="learn@everyday.org" bind:value={email} />
-						<input type="submit" value={'Send magic link'} disabled={loading} />
+						<input type="submit" value={'Send magic link'} disabled={loading || !email} />
 					</div>
 					{#if message}<b>{message}</b>{/if}
 				</div>

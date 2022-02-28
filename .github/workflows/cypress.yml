@@ -36,6 +36,7 @@ jobs:
           sudo dpkg -i supabase.deb
 
       - name: start supabase
+        working-directory: app
         run: |
           supabase start
 

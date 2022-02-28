@@ -28,20 +28,13 @@
 			<p>
 				Use <a
 					on:click={() => {
-						navigator.clipboard.writeText('RCTVSYSTMS');
-					}}
-					data-tooltip="Copy to Clipboard">RCTVSYSTMS</a
-				>
-				for Reactive Systems or
-				<a
-					on:click={() => {
-						navigator.clipboard.writeText('RCTVSYSTMS');
+						navigator.clipboard.writeText('GNRLWISDOM');
 					}}
 					data-tooltip="Copy to Clipboard">GNRLWISDOM</a
 				> to see an example of what a challenge pool is.
 			</p>
 
-			<div class="flex justify-between space-x-4">
+			<div class="flex space-x-4 pt-4">
 				<a href={routes.join} role="button" class="outline" sveltekit:prefetch>Join with invite code</a>
 				<a href={routes.create} role="button" class="outline" sveltekit:prefetch>Create Challenge Pool</a>
 			</div>

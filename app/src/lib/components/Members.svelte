@@ -11,12 +11,14 @@
 	});
 </script>
 
-<h3 class="mt-8">Members</h3>
-{#each members as member}
-	<a href={routes.performance(member.id)} class="light-link">
-		<article class="hoverable">
-			{member.firstName}
-			{member.lastName}
-		</article>
-	</a>
-{/each}
+{#if members && members.length > 0}
+	<h3 class="mt-8">Members</h3>
+	{#each members as member}
+		<a href={routes.performance(member.id)} class="light-link">
+			<article class="hoverable">
+				{member.firstName}
+				{member.lastName}
+			</article>
+		</a>
+	{/each}
+{/if}

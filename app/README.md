@@ -1,60 +1,46 @@
-# TODO
-
-- graphql subscription errors in browser console (nur lokal)
-- first load: core_1.Reachability is not a constructor (nur lokal)
-- signin button ist nicht blau
-
-# create-svelte
-
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte);
-
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npm init svelte@next
-
-# create a new project in my-app
-npm init svelte@next my-app
-```
-
-> Note: the `@next` is temporary
+# Lightbulb Learning
 
 ## Developing
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+### Local supabase instance
+
+You can run your local instance of supabase by following these steps:
+
+1. Install the supabase CLI on your system
+
+```bash
+brew install supabase/tap/supabase
+```
+
+2. Start the supabase instance with
+
+```bash
+supabase start
+```
+
+### Connecting app to database
+
+In order to connect to a database, you need to define the environment variables `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` in a `.env`-file. If you want to use the local database, you get those values after starting supabase. If you want to connect to a remote database instance, those values are in the supabase settings.
+
+### Start SvelteKit App
+
+Install the dependencies with
+```bash
+npm install
+```
+Then start a development server with:
 
 ```bash
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
 
-## Building
-
-Before creating a production version of your app, install an [adapter](https://kit.svelte.dev/docs#adapters) for your target environment. Then:
-
-```bash
-npm run build
-```
-
-> You can preview the built app with `npm run preview`, regardless of whether you installed an adapter. This should _not_ be used to serve your app in production.
+## Connect to hosted supabase
 
 Connect to LightbulbLearningDev
-`psql -h db.ckjsuzpqlhcjbonsnuzp.supabase.co -U postgres`
+```bash
+psql -h db.ckjsuzpqlhcjbonsnuzp.supabase.co -U postgres
+```
 
 Connect to LightbulbLearning (PROD)
-`psql -h db.rkpsxesguhibbzhylmsd.supabase.co -U postgres`
-
-Create a table with delete cascade
-```
-create table if not exists public.correct_open_answers (
-    id uuid not null primary key DEFAULT uuid_generate_v4 (),
-    answer_text text not null,
-    open_question uuid references public.open_questions on delete cascade not null,
-    created_at timestamp with time zone default now() not null
-);
-```
+```bash
+psql -h db.rkpsxesguhibbzhylmsd.supabase.co -U postgres```

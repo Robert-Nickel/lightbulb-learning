@@ -17,6 +17,9 @@ supabase.auth.onAuthStateChange(async (event, session) => {
 
 export const user = {
 	signIn: (email: string) => supabase.auth.signIn({ email }),
+	signInGitHub: () => supabase.auth.signIn({
+		provider: 'github',
+	}),
 	signOut: () => supabase.auth.signOut(),
 	subscribe,
 	set

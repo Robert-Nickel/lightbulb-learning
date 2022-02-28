@@ -19,12 +19,11 @@ jobs:
         run: npm ci
         working-directory: app
 
-      - name: read .env-test
+      - name: read app/.env.test
         id: dotenv
         uses: c-py/action-dotenv-to-setenv@v2
         with:
-          working-directory: app
-          env-file: .env-test
+          env-file: app/.env.test
 
       - name: build
         run: npm run build

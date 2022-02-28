@@ -18,8 +18,6 @@ export const sbCookieOptions: CookieSerializeOptions = {
 export const handle: Handle = async ({ event, resolve }) => {
 	const sbToken = parse(event.request.headers.get('Cookie') || '')?.[sbCookieName];
 
-	console.log({ sbToken });
-
 	if (sbToken) {
 		const { user, error } = await supabase.auth.api.getUser(sbToken);
 		if (!error) {

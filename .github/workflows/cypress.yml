@@ -19,9 +19,26 @@ jobs:
         run: npm ci
         working-directory: app
 
+      - name: read .env-test
+        id: dotenv
+        uses: c-py/action-dotenv-to-setenv@v2
+        with:
+          working-directory: app
+          env-file: .env-test
+
       - name: build
         run: npm run build
         working-directory: app
+
+      - name: install supabase cli
+        run: |
+          wget -O supabase.deb https://github.com/supabase/cli/releases/download/v0.17.3/supabase_0.17.3_linux_amd64.deb
+          chmod 777 supabase.deb
+          sudo dpkg -i supabase.deb
+
+      - name: start supabase
+        run: |
+          supabase start
 
       - name: Cypress run
         uses: cypress-io/github-action@v2
@@ -34,3 +51,6 @@ jobs:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY_DEV }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID_DEV }}
+
+      - name: stop supabase
+        run: supabase stop

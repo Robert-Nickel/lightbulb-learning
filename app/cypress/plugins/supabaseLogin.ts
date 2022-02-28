@@ -1,56 +1,52 @@
-import { createClient } from '@supabase/supabase-js';
-import { definitions } from '../../src/lib/models/supabase';
+import * as jwt from 'jsonwebtoken';
 
-/**
- * We store the refresh_tokens of test users in the test_tokens table.
- * This way we can synchronize the refresh_tokens between different test runs and make sure
- * that it is always updated in sequence. Because refresh_tokens can only be used once.
- *
- * Troubleshooting:
- *  getSession() call fails with 4XX server error
- *  	Solution:
- *       - login via browser manually using that user.
- * 		 - copy the refresh_token from the localstorage
- *       - set refresh_token for the user in the test_tokens table
- */
-
-export const studentEmail1 = 'll-student1@discardmail.com';
-export const studentEmail2 = 'll-student2@discardmail.com';
-
-export const supabaseLogin = async (email: string) => {
-	const refresh_token = await getRefreshToken(email);
-	const session = await getSession(refresh_token);
-	await setRefreshToken(email, session.refresh_token);
-	window.localStorage.setItem('supabase.auth.token', JSON.stringify({ currentSession: session }));
+// only exist on local seeded DB
+const jwtSecret = 'super-secret-jwt-token-with-at-least-32-characters-long';
+export const student1 = {
+	email: 'll-student1@discardmail.com',
+	id: '6e0887e2-97da-40d9-a8ee-dea3cdad54f9'
 };
 
-const supabaseUrl = 'https://ckjsuzpqlhcjbonsnuzp.supabase.co';
-const supabaseAnonKey =
-	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MjA2NjY2MCwiZXhwIjoxOTU3NjQyNjYwfQ.mcsY3yNw8SMmcd_ltjLIRpnvnH2Kr1mq-IC2bXUFuSI';
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
-const getRefreshToken = async (email: string) => {
-	const { error, data } = await supabase
-		.from<definitions['test_tokens']>('test_tokens')
-		.select('refresh_token')
-		.eq('email', email);
-	if (error) console.error('error getting refresh token:\n' + JSON.stringify(error, null, 2));
-	return data[0].refresh_token;
+export const supabaseLogin = () => {
+	cy.visit(getLoginUrl());
+	cy.wait(500);
+	cy.visit('http://localhost:3000/');
 };
 
-const setRefreshToken = async (email: string, refresh_token: string) => {
-	const { error } = await supabase
-		.from<definitions['test_tokens']>('test_tokens')
-		.upsert({ refresh_token, email })
-		.eq('email', email);
-	if (error) console.error('error setting refresh token:\n' + JSON.stringify(error, null, 2));
-};
-
-const getSession = async (refresh_token: string) => {
-	return fetch(`${supabaseUrl}/auth/v1/token?grant_type=refresh_token&apikey=${supabaseAnonKey}`, {
-		method: 'POST',
-		body: JSON.stringify({ refresh_token })
-	})
-		.then((res) => res.json())
-		.catch((err) => console.error(err));
+// login fails sometime because server clock is not in sync with local one, I guess. is timestamp part of the signing info?
+const getLoginUrl = () => {
+	const now = new Date();
+	now.setMinutes(now.getMinutes() - 10); // does not fix the issue: 1 minute buffer to avoid clock sync issues with server (not needed when we run server locally)
+	const exp = now.setHours(now.getHours() + 1);
+	const token = jwt.sign(
+		{
+			aud: 'authenticated',
+			exp,
+			sub: student1.id,
+			email: student1.email,
+			phone: '',
+			app_metadata: {
+				provider: 'email',
+				providers: ['email']
+			},
+			user_metadata: {},
+			role: 'authenticated'
+		},
+		jwtSecret
+	);
+	// localStorage.setItem(
+	// 	'supabase.auth.token',
+	// 	JSON.stringify({
+	// 		currentSession: {
+	// 			provider_token: null,
+	// 			access_token: token,
+	// 			expires_in: 3600,
+	// 			expires_at: exp,
+	// 			refresh_token: 'NoHave',
+	// 			token_type: 'bearer'
+	// 		},
+	// 		expiresAt: exp
+	// 	})
+	// );
+	return `http://localhost:3000/evaluateAuth#access_token=${token}&expires_in=3600&refresh_token=NoHave&token_type=bearer&type=magiclink`;
 };

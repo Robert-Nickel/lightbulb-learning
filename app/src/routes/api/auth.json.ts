@@ -10,7 +10,7 @@ export async function post(event: RequestEvent /*, res: Response (read the notes
 	// `res` is used for obviously setting the cookies
 	return {
 		status: 200,
-		body: null
+		body: null,
 	};
 }
 

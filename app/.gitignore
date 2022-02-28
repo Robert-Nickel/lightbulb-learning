@@ -5,6 +5,7 @@ node_modules
 /package
 .env
 .env.*
+!.env.test
 !.env.example
 
 build/

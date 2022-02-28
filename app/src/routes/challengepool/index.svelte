@@ -1,6 +1,7 @@
 <script lang="ts" context="module">
 	export const load: Load = async ({ session }) => {
 		const { user } = session as Session;
+		if (!user) return { status: 302, redirect: routes.login };
 		return {
 			props: {
 				user,

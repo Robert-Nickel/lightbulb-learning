@@ -2,6 +2,7 @@ export const routes = {
 	root: '/',
 	login: '/login',
 	logout: '/?logout=true',
+	welcome: '/welcome',
 	challengePools: '/challengepool',
 	challengePool: (id: string) => `/challengepool/${id}`,
 	challengePoolSettings: (id: string) => `/challengepool/${id}/settings`,

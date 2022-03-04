@@ -12,5 +12,6 @@
 }
 
 .hover-red:hover {
-	@apply text-orange-700
+	@apply text-orange-700;
+	border-color: var(--text-orange-700);
 }

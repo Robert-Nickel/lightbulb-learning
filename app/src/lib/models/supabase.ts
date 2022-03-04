@@ -1257,13 +1257,14 @@ export interface paths {
       };
     };
   };
-  "/test_tokens": {
+  "/topics": {
     get: {
       parameters: {
         query: {
-          refresh_token?: parameters["rowFilter.test_tokens.refresh_token"];
-          email?: parameters["rowFilter.test_tokens.email"];
-          created_at?: parameters["rowFilter.test_tokens.created_at"];
+          id?: parameters["rowFilter.topics.id"];
+          name?: parameters["rowFilter.topics.name"];
+          challenge_pool?: parameters["rowFilter.topics.challenge_pool"];
+          created_at?: parameters["rowFilter.topics.created_at"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -1285,7 +1286,7 @@ export interface paths {
       responses: {
         /** OK */
         200: {
-          schema: definitions["test_tokens"][];
+          schema: definitions["topics"][];
         };
         /** Partial Content */
         206: unknown;
@@ -1294,8 +1295,8 @@ export interface paths {
     post: {
       parameters: {
         body: {
-          /** test_tokens */
-          test_tokens?: definitions["test_tokens"];
+          /** topics */
+          topics?: definitions["topics"];
         };
         query: {
           /** Filtering Columns */
@@ -1314,9 +1315,10 @@ export interface paths {
     delete: {
       parameters: {
         query: {
-          refresh_token?: parameters["rowFilter.test_tokens.refresh_token"];
-          email?: parameters["rowFilter.test_tokens.email"];
-          created_at?: parameters["rowFilter.test_tokens.created_at"];
+          id?: parameters["rowFilter.topics.id"];
+          name?: parameters["rowFilter.topics.name"];
+          challenge_pool?: parameters["rowFilter.topics.challenge_pool"];
+          created_at?: parameters["rowFilter.topics.created_at"];
         };
         header: {
           /** Preference */
@@ -1331,13 +1333,14 @@ export interface paths {
     patch: {
       parameters: {
         query: {
-          refresh_token?: parameters["rowFilter.test_tokens.refresh_token"];
-          email?: parameters["rowFilter.test_tokens.email"];
-          created_at?: parameters["rowFilter.test_tokens.created_at"];
+          id?: parameters["rowFilter.topics.id"];
+          name?: parameters["rowFilter.topics.name"];
+          challenge_pool?: parameters["rowFilter.topics.challenge_pool"];
+          created_at?: parameters["rowFilter.topics.created_at"];
         };
         body: {
-          /** test_tokens */
-          test_tokens?: definitions["test_tokens"];
+          /** topics */
+          topics?: definitions["topics"];
         };
         header: {
           /** Preference */
@@ -1443,13 +1446,15 @@ export interface paths {
       };
     };
   };
-  "/rpc/fetch_my_challenge_pools": {
+  "/rpc/join_challenge_pool": {
     post: {
       parameters: {
         body: {
           args: {
             /** Format: uuid */
             user_id_input: string;
+            /** Format: text */
+            invite_code_input: string;
           };
         };
         header: {
@@ -1463,13 +1468,11 @@ export interface paths {
       };
     };
   };
-  "/rpc/join_challenge_pool": {
+  "/rpc/fetch_my_challenge_pools": {
     post: {
       parameters: {
         body: {
           args: {
-            /** Format: text */
-            invite_code_input: string;
             /** Format: uuid */
             user_id_input: string;
           };
@@ -1836,21 +1839,27 @@ export interface definitions {
      */
     created_at: string;
   };
-  /** @description Used to sync refresh_tokens across cypress test executions */
-  test_tokens: {
-    /** Format: text */
-    refresh_token?: string;
+  topics: {
     /**
-     * Format: text
+     * Format: uuid
      * @description Note:
      * This is a Primary Key.<pk/>
+     * @default extensions.uuid_generate_v4()
      */
-    email: string;
+    id: string;
+    /** Format: text */
+    name: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `challenge_pools.id`.<fk table='challenge_pools' column='id'/>
+     */
+    challenge_pool: string;
     /**
      * Format: timestamp with time zone
      * @default now()
      */
-    created_at?: string;
+    created_at: string;
   };
   universities: {
     /**
@@ -2082,14 +2091,16 @@ export interface parameters {
   "rowFilter.profiles.user_id": string;
   /** Format: timestamp with time zone */
   "rowFilter.profiles.created_at": string;
-  /** @description test_tokens */
-  "body.test_tokens": definitions["test_tokens"];
+  /** @description topics */
+  "body.topics": definitions["topics"];
+  /** Format: uuid */
+  "rowFilter.topics.id": string;
   /** Format: text */
-  "rowFilter.test_tokens.refresh_token": string;
-  /** Format: text */
-  "rowFilter.test_tokens.email": string;
+  "rowFilter.topics.name": string;
+  /** Format: uuid */
+  "rowFilter.topics.challenge_pool": string;
   /** Format: timestamp with time zone */
-  "rowFilter.test_tokens.created_at": string;
+  "rowFilter.topics.created_at": string;
   /** @description universities */
   "body.universities": definitions["universities"];
   /** Format: uuid */

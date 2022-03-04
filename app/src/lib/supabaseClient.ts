@@ -478,6 +478,27 @@ export async function fetchOpenFeedbackPerformances(id: string): Promise<OpenFee
 	return keysToCamelCase(data);
 }
 
+export async function fetchTopics(challengePoolId: string): Promise<TopicType[]> {
+	const { data, error } = await supabase
+		.from<TopicTypeDB>(topicsTable)
+		.select()
+		.eq('challenge_pool', challengePoolId);
+	printIf(error);
+	return keysToCamelCase(data);
+}
+
+export async function saveTopic(challengePoolId: string, name: string): Promise<TopicType> {
+	const { data, error } = await supabase
+		.from<TopicTypeDB>(topicsTable)
+		.insert({
+			challenge_pool: challengePoolId,
+			name
+		})
+		.single();
+	printIf(error);
+	return keysToCamelCase(data);
+}
+
 function printIf(error) {
 	if (error) console.error(error);
 }
@@ -498,6 +519,7 @@ export const membersView = 'members';
 export const openQuestionPerformancesView = 'open_question_performances';
 export const openAnswerPerformancesView = 'open_answer_performances';
 export const openFeedbackPerformancesView = 'open_feedback_performances';
+export const topicsTable = 'topics';
 
 export type ChallengePoolType = CamelCasedPropertiesDeep<definitions['challenge_pools']>;
 export type OpenQuestionDraftType = CamelCasedPropertiesDeep<definitions['open_question_drafts']>;
@@ -519,6 +541,7 @@ export type OpenAnswerPerformancesType = CamelCasedPropertiesDeep<definitions['o
 export type OpenFeedbackPerformancesType = CamelCasedPropertiesDeep<
 	definitions['open_feedback_performances']
 >;
+export type TopicType = CamelCasedPropertiesDeep<definitions['topics']>;
 
 export type ChallengePoolTypeDB = definitions['challenge_pools'];
 export type OpenQuestionDraftTypeDB = definitions['open_question_drafts'];
@@ -536,3 +559,4 @@ export type MemberTypeDB = definitions['members'];
 export type OpenQuestionPerformancesTypeDB = definitions['open_question_performances'];
 export type OpenAnswerPerformancesTypeDB = definitions['open_answer_performances'];
 export type OpenFeedbackPerformancesTypeDB = definitions['open_feedback_performances'];
+export type TopicTypeDB = definitions['topics'];

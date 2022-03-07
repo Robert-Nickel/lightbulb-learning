@@ -22,15 +22,27 @@
 		ChallengePoolType,
 		OpenQuestionType,
 		fetchChallengePool,
-		fetchOpenQuestions
+		fetchOpenQuestions,
+		deleteChallengePool
 	} from '$lib/supabaseClient';
 	import type { Session } from '@supabase/supabase-js';
 	import type { Load } from '@sveltejs/kit';
 	import { user } from '$lib/stores/user';
 	import { routes } from '$lib/routes';
+	import Performances from '$lib/components/Performances.svelte';
+	import ManageTopics from '$lib/components/ManageTopics.svelte';
+	import GenerateInviteCode from '$lib/components/GenerateInviteCode.svelte';
+	import DeleteChallengePool from '$lib/components/DeleteChallengePool.svelte';
+
+	enum Tab {
+		OpenQuestions,
+		Performances,
+		Settings
+	}
 
 	export let challengePool: ChallengePoolType;
 	export let openQuestions: Array<OpenQuestionType> = [];
+	let activeTab = Tab.OpenQuestions;
 
 	async function refreshOpenQuestions() {
 		openQuestions = await fetchOpenQuestions(challengePool.id);
@@ -43,30 +55,63 @@
 
 		{#if $user.id == challengePool.owner}
 			<header class="flex p-2 space-x-4 border-b-2 ">
-				<nav class="activeNavElement">Open Questions</nav>
-				<nav on:click={() => goto(routes.challengePoolSettings(challengePool.id))}>Settings</nav>
+				<nav
+					class={activeTab == Tab.OpenQuestions ? 'activeNavElement' : ''}
+					on:click={() => {
+						activeTab = Tab.OpenQuestions;
+						console.log(activeTab);
+					}}
+				>
+					Open Questions
+				</nav>
+				<nav
+					class={activeTab == Tab.Performances ? 'activeNavElement' : ''}
+					on:click={() => {
+						activeTab = Tab.Performances;
+						console.log(activeTab);
+					}}
+				>
+					Performances
+				</nav>
+				<nav
+					class={activeTab == Tab.Settings ? 'activeNavElement' : ''}
+					on:click={() => {
+						activeTab = Tab.Settings;
+						console.log(activeTab);
+					}}
+				>
+					Settings
+				</nav>
 			</header>
 		{/if}
 
-		<CreateOpenQuestion {challengePool} on:openQuestionCommitted={refreshOpenQuestions} />
+		{#if activeTab == Tab.OpenQuestions}
+			<CreateOpenQuestion {challengePool} on:openQuestionCommitted={refreshOpenQuestions} />
 
-		{#if openQuestions.length > 0}
-			<h3 class="mt-10">Open Questions</h3>
+			{#if openQuestions.length > 0}
+				<h3 class="mt-10">Open Questions</h3>
+			{/if}
+			{#each openQuestions as openQuestion}
+				<a href={routes.openQuestion(openQuestion.id)} class="light-link" sveltekit:prefetch>
+					{#if openQuestion.owner == $user.id}
+						<article class="yours hoverable">
+							<i>You asked:</i>
+							{openQuestion.questionText}
+						</article>
+					{:else}
+						<article class="hover:">
+							{openQuestion.questionText}
+						</article>
+					{/if}
+				</a>
+			{/each}
+		{:else if activeTab == Tab.Performances}
+			<Performances {challengePool} />
+		{:else if activeTab == Tab.Settings}
+			<ManageTopics challengePoolId={challengePool.id} />
+			<GenerateInviteCode challengePoolId={challengePool.id} />
+			<DeleteChallengePool {challengePool} />
 		{/if}
-		{#each openQuestions as openQuestion}
-			<a href={routes.openQuestion(openQuestion.id)} class="light-link" sveltekit:prefetch>
-				{#if openQuestion.owner == $user.id}
-					<article class="yours hoverable">
-						<i>You asked:</i>
-						{openQuestion.questionText}
-					</article>
-				{:else}
-					<article class="hover:">
-						{openQuestion.questionText}
-					</article>
-				{/if}
-			</a>
-		{/each}
 	{/if}
 
 	<Back route="/challengepool" text="Back to all Challenge Pools" />

@@ -60,5 +60,5 @@
 {/if}
 
 {#if member}
-	<Back text="Back to Challenge Pool Settings" route="/challengepool/{member.challengePool}/settings" />
+	<Back text="Back to Challenge Pool" route="/challengepool/{member.challengePool}" />
 {/if}

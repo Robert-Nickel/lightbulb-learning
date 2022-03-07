@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import Back from '$lib/components/Back.svelte';
+	import { routes } from '$lib/routes';
 	import {
 		fetchMember,
 		fetchOpenAnswerPerformances,
@@ -60,5 +61,5 @@
 {/if}
 
 {#if member}
-	<Back text="Back to Challenge Pool" route="/challengepool/{member.challengePool}" />
+	<Back text="Back to all Performances" route={routes.challengePoolPerformances(member.challengePool)} />
 {/if}

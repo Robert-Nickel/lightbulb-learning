@@ -5,6 +5,8 @@ export const routes = {
 	welcome: '/welcome',
 	challengePools: '/challengepool',
 	challengePool: (id: string) => `/challengepool/${id}`,
+	challengePoolSettings: (id: string) => `/challengepool/${id}/settings`,
+	challengePoolPerformances: (id: string) => `/challengepool/${id}/performances`,
 	openQuestion: (id: string) => `/openquestion/${id}`,
 	openAnswer: (id: string) => `/openanswer/${id}`,
 	performance: (id: string) => `/performance/${id}`,

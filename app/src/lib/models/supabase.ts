@@ -1056,6 +1056,102 @@ export interface paths {
       };
     };
   };
+  "/open_question_topic": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.open_question_topic.id"];
+          open_question?: parameters["rowFilter.open_question_topic.open_question"];
+          topic?: parameters["rowFilter.open_question_topic.topic"];
+          created_at?: parameters["rowFilter.open_question_topic.created_at"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["open_question_topic"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** open_question_topic */
+          open_question_topic?: definitions["open_question_topic"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.open_question_topic.id"];
+          open_question?: parameters["rowFilter.open_question_topic.open_question"];
+          topic?: parameters["rowFilter.open_question_topic.topic"];
+          created_at?: parameters["rowFilter.open_question_topic.created_at"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.open_question_topic.id"];
+          open_question?: parameters["rowFilter.open_question_topic.open_question"];
+          topic?: parameters["rowFilter.open_question_topic.topic"];
+          created_at?: parameters["rowFilter.open_question_topic.created_at"];
+        };
+        body: {
+          /** open_question_topic */
+          open_question_topic?: definitions["open_question_topic"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
   "/open_questions": {
     get: {
       parameters: {
@@ -1789,6 +1885,32 @@ export interface definitions {
     /** Format: timestamp with time zone */
     created_at?: string;
   };
+  open_question_topic: {
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     * @default extensions.uuid_generate_v4()
+     */
+    id: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `open_questions.id`.<fk table='open_questions' column='id'/>
+     */
+    open_question: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `topics.id`.<fk table='topics' column='id'/>
+     */
+    topic: string;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at: string;
+  };
   open_questions: {
     /**
      * Format: uuid
@@ -2065,6 +2187,16 @@ export interface parameters {
   "rowFilter.open_question_performances.answer_text": string;
   /** Format: timestamp with time zone */
   "rowFilter.open_question_performances.created_at": string;
+  /** @description open_question_topic */
+  "body.open_question_topic": definitions["open_question_topic"];
+  /** Format: uuid */
+  "rowFilter.open_question_topic.id": string;
+  /** Format: uuid */
+  "rowFilter.open_question_topic.open_question": string;
+  /** Format: uuid */
+  "rowFilter.open_question_topic.topic": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.open_question_topic.created_at": string;
   /** @description open_questions */
   "body.open_questions": definitions["open_questions"];
   /** Format: uuid */

@@ -499,6 +499,19 @@ export async function saveTopic(challengePoolId: string, name: string): Promise<
 	return keysToCamelCase(data);
 }
 
+export async function saveOpenQuestionTopics(openQuestionId: string, topics: string[]): Promise<OpenQuestionTopicType[]> {
+	let openQuestionTopics = []
+	topics.forEach((topic) => {
+		openQuestionTopics.push({ open_question: openQuestionId, topic })
+	})
+	const { data, error } = await supabase
+		.from<OpenQuestionTopicTypeDB>(openQuestionTopicTable)
+		.insert(openQuestionTopics);
+	printIf(error);
+	return keysToCamelCase(data);
+}
+
+
 function printIf(error) {
 	if (error) console.error(error);
 }
@@ -520,6 +533,7 @@ export const openQuestionPerformancesView = 'open_question_performances';
 export const openAnswerPerformancesView = 'open_answer_performances';
 export const openFeedbackPerformancesView = 'open_feedback_performances';
 export const topicsTable = 'topics';
+export const openQuestionTopicTable = 'open_question_topic';
 
 export type ChallengePoolType = CamelCasedPropertiesDeep<definitions['challenge_pools']>;
 export type OpenQuestionDraftType = CamelCasedPropertiesDeep<definitions['open_question_drafts']>;
@@ -542,6 +556,7 @@ export type OpenFeedbackPerformancesType = CamelCasedPropertiesDeep<
 	definitions['open_feedback_performances']
 >;
 export type TopicType = CamelCasedPropertiesDeep<definitions['topics']>;
+export type OpenQuestionTopicType = CamelCasedPropertiesDeep<definitions['open_question_topic']>;
 
 export type ChallengePoolTypeDB = definitions['challenge_pools'];
 export type OpenQuestionDraftTypeDB = definitions['open_question_drafts'];
@@ -560,3 +575,4 @@ export type OpenQuestionPerformancesTypeDB = definitions['open_question_performa
 export type OpenAnswerPerformancesTypeDB = definitions['open_answer_performances'];
 export type OpenFeedbackPerformancesTypeDB = definitions['open_feedback_performances'];
 export type TopicTypeDB = definitions['topics'];
+export type OpenQuestionTopicTypeDB = definitions['open_question_topic'];

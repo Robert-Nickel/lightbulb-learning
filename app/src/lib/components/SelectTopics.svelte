@@ -1,11 +1,14 @@
 <script lang="ts">
 	import { fetchTopics, TopicType } from '$lib/supabaseClient';
 	import { onMount } from 'svelte';
+	import { createEventDispatcher } from 'svelte';
+	const dispatch = createEventDispatcher();
+
 
 	export let challengePoolId: string;
 
 	type SelectableTopicType = { id: string; name: string; selected: boolean };
-	let selectableTopics: SelectableTopicType[] = [];
+	export let selectableTopics: SelectableTopicType[] = [];
 
 	onMount(async () => {
 		let topics = await fetchTopics(challengePoolId);
@@ -26,16 +29,15 @@
 			}
 		});
 		selectableTopics = selectableTopics;
-	}
 
-	export function getSelectedTopics(): string[] {
-		let selectedTopics = [];
+		let selectedTopics: string[] = []
 		selectableTopics.forEach((selectableTopic) => {
 			if (selectableTopic.selected) {
 				selectedTopics.push(selectableTopic.id);
 			}
 		});
-		return selectedTopics;
+
+		dispatch("selectedTopicsChanged", {selectedTopics})
 	}
 </script>
 

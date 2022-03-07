@@ -11,7 +11,8 @@
 		saveOpenQuestion,
 		deleteOpenQuestionDraft,
 		saveCorrectOpenAnswer,
-		fetchMyOpenQuestionDraft
+		fetchMyOpenQuestionDraft,
+		saveOpenQuestionTopics
 	} from '$lib/supabaseClient';
 	import autosize from '../../../node_modules/autosize';
 	import SelectTopics from './SelectTopics.svelte';
@@ -22,6 +23,7 @@
 	let openQuestionDraftText = '';
 	let openQuestionDraftAnswerText = '';
 	let toast;
+	let selectedTopics;
 
 	onMount(async () => {
 		openQuestionDraft = await fetchMyOpenQuestionDraft(challengePool.id);
@@ -94,27 +96,35 @@
 						on:click={async () => {
 							openQuestionDraft = await deleteAnswerFromOpenQuestionDraft(openQuestionDraft.id);
 							openQuestionDraftAnswerText = '';
+							selectedTopics = [];
 						}}
 						class="w-24 outline secondary h-12 hover-red"
 					>
 						Delete
 					</button>
 				</div>
-				<SelectTopics challengePoolId={challengePool.id}/>
+				<SelectTopics
+					challengePoolId={challengePool.id}
+					on:selectedTopicsChanged={(event) => {
+						selectedTopics = event.detail.selectedTopics;
+					}}
+				/>
 				<button
 					id="button-publish"
 					disabled={!openQuestionDraft.answerText}
 					on:click={async () => {
 						const openQuestion = await saveOpenQuestion(
 							openQuestionDraft.questionText,
-							openQuestionDraft.challengePool
+							openQuestionDraft.challengePool,
 						);
+						await saveOpenQuestionTopics(openQuestion.id, selectedTopics)
 						await saveCorrectOpenAnswer(openQuestionDraft.answerText, openQuestion.id);
 						dispatch('openQuestionCommitted');
 						toast.showSuccessToast('Open Question created');
 						await deleteOpenQuestionDraft(openQuestionDraft.id);
 						openQuestionDraft = null;
 						openQuestionDraftAnswerText = '';
+						selectedTopics = [];
 					}}
 					class="w-32 h-12 mb-0"
 				>

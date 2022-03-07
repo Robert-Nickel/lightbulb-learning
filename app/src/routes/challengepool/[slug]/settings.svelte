@@ -11,7 +11,7 @@
 	} from '$lib/supabaseClient';
 	import { user } from '$lib/stores/user';
 	import Members from '$lib/components/Members.svelte';
-	import Topics from '$lib/components/Topics.svelte';
+	import ManageTopics from '$lib/components/ManageTopics.svelte';
 	import { routes } from '$lib/routes';
 
 	let challengePoolId: string;
@@ -46,7 +46,7 @@
 		{/if}
 
 		<Members {challengePoolId} />
-		<Topics {challengePoolId} />
+		<ManageTopics {challengePoolId} />
 
 		<button
 			on:click={async () => {

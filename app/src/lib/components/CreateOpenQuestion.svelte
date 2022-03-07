@@ -14,6 +14,7 @@
 		fetchMyOpenQuestionDraft
 	} from '$lib/supabaseClient';
 	import autosize from '../../../node_modules/autosize';
+	import SelectTopics from './SelectTopics.svelte';
 
 	export let challengePool: ChallengePoolType;
 
@@ -30,22 +31,22 @@
 <div class="mt-4">
 	{#if !openQuestionDraft}
 		<h3 class="mt-8">New Open Question</h3>
-			<textarea
-				id="textarea-question"
-				class="w-full h-12"
-				placeholder="Create an open question"
-				bind:value={openQuestionDraftText}
-				on:load={autosize(document.getElementById('textarea-question'))}
-			/>
-			<button
-				hidden={openQuestionDraftText.length == 0}
-				on:click={async () => {
-					openQuestionDraft = await saveOpenQuestionDraft(openQuestionDraftText, challengePool.id);
-					openQuestionDraftText = '';
-					// TODO: focus the answer input
-				}}
-				class="w-32 h-12">Save</button
-			>
+		<textarea
+			id="textarea-question"
+			class="w-full h-12"
+			placeholder="Create an open question"
+			bind:value={openQuestionDraftText}
+			on:load={autosize(document.getElementById('textarea-question'))}
+		/>
+		<button
+			hidden={openQuestionDraftText.length == 0}
+			on:click={async () => {
+				openQuestionDraft = await saveOpenQuestionDraft(openQuestionDraftText, challengePool.id);
+				openQuestionDraftText = '';
+				// TODO: focus the answer input
+			}}
+			class="w-32 h-12">Save</button
+		>
 	{:else}
 		<h3 class="mt-8">Draft</h3>
 		<article>
@@ -99,6 +100,7 @@
 						Delete
 					</button>
 				</div>
+				<SelectTopics challengePoolId={challengePool.id}/>
 				<button
 					id="button-publish"
 					disabled={!openQuestionDraft.answerText}

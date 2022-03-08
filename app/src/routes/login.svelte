@@ -19,14 +19,14 @@
 <main class="container flex justify-center">
 	<article>
 		<header>
-			<h3 class="text-3xl mb-0">Login</h3>
+			<h3 class="text-3xl mb-0">Welcome</h3>
 		</header>
 		<form on:submit|preventDefault={handleLogin}>
 			<div>
-				<p class="description">Sign in with email</p>
+				<p>What's your email address?</p>
 				<div>
 					<input type="email" placeholder="learn@everyday.org" bind:value={email} />
-					<input type="submit" value={'Send Magic Link'} disabled={loading || !email} />
+					<input type="submit" value={'Login | Register'} disabled={loading || !email} />
 				</div>
 			</div>
 		</form>

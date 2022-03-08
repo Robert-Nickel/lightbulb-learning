@@ -2,7 +2,6 @@
 	export const load: Load = async ({ session, params, url }) => {
 		const { user } = session as Session;
 		if (!user) return { status: 302, redirect: '/login' };
-		console.log({ url });
 		const pathSegments = url.pathname.split('/');
 		const routeLastSegment = pathSegments[pathSegments.length - 1];
 		const challengePool = await fetchChallengePool(params.slug);

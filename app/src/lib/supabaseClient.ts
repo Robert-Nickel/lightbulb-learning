@@ -511,6 +511,14 @@ export async function saveOpenQuestionTopics(openQuestionId: string, topics: str
 	return keysToCamelCase(data);
 }
 
+export async function fetchOpenQuestionTopics(openQuestionIds: string[]): Promise<OpenQuestionTopicType[]> {
+	const { data, error } = await supabase
+		.from<OpenQuestionTopicTypeDB>(openQuestionTopicTable)
+		.select()
+		.in('open_question', openQuestionIds);
+	printIf(error);
+	return keysToCamelCase(data);
+}
 
 function printIf(error) {
 	if (error) console.error(error);

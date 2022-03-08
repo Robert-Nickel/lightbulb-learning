@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { fetchTopics, TopicType } from '$lib/supabaseClient';
+	import { fetchTopics } from '$lib/supabaseClient';
 	import { onMount } from 'svelte';
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
@@ -23,9 +23,9 @@
 	});
 
 	async function selectTopic(id: string, selected = true) {
-		selectableTopics.forEach((selectedTopic) => {
-			if (selectedTopic.id == id) {
-				selectedTopic.selected = selected;
+		selectableTopics.forEach((selectableTopic) => {
+			if (selectableTopic.id == id) {
+				selectableTopic.selected = selected;
 			}
 		});
 		selectableTopics = selectableTopics;
@@ -66,7 +66,6 @@
 
 <style>
 	.selectable:hover {
-		@apply border-dashed;
 		border-color: var(--primary);
 		color: var(--primary);
 	}

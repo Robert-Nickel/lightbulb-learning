@@ -15,7 +15,6 @@
 	<div>
 		<button
 			on:click={async () => {
-				console.log('invite code: ' + inviteCode);
 				if (inviteCode) {
 					const challengePoolId = await joinChallengePool(inviteCode);
 					if (challengePoolId != 'false') {

@@ -47,12 +47,13 @@
 			learning curve - which is gold for your evaluation of their performance.
 		</p>
 
-		<h2>How does it work?</h2>
 		<div class="flex max-w-sm mb-8 mt-16">
 			<p class="text-xl align-middle mt-3">Learning&nbsp;is&nbsp;</p>
 			<input bind:value={show} class="text-xl" />
 		</div>
 
+		<h2>How does it work?</h2>
+		
 		<p>
 			Learning is more than answering questions. Formulating a question means framing a problem, and is a more
 			effective way of learning than just answering one. Giving constructive feedback means to have not only

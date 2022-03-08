@@ -78,7 +78,6 @@
 				<a href={routes.openQuestion(openQuestion.id)} class="light-link" sveltekit:prefetch>
 					{#if openQuestion.owner == $user.id}
 						<article class="yours hoverable">
-							<i>You asked:</i>
 							{openQuestion.questionText}
 						</article>
 					{:else}
@@ -91,3 +90,13 @@
 		{/each}
 	{/if}
 {/if}
+
+<style>
+	.yours {
+		border-left: 4px solid var(--primary);
+	}
+
+	.hoverable:hover {
+		background: var(--card-sectionning-background-color);
+	}
+</style>

@@ -53,12 +53,13 @@
 		</div>
 
 		<h2>How does it work?</h2>
-		
+
 		<p>
 			Learning is more than answering questions. Formulating a question means framing a problem, and is a more
 			effective way of learning than just answering one. Giving constructive feedback means to have not only
 			expertise, but also empathy - and is one of the most underrated skills in modern (working) life. That's
-			why we believe that contemplating every contribution gives a clearer view on learning performance.
+			why we believe that contemplating every contribution to the discussion gives a clearer view on learning
+			performance.
 		</p>
 
 		<p>

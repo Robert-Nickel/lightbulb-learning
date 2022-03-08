@@ -42,9 +42,10 @@
 <main class="container mx-auto py-4 px-2 leading-normal">
 	<div class="mx-auto max-w-screen-sm">
 		<p>
-			Lightbulb Learning is a learning evaluation system that scales. Students challenge each other by asking
-			and discussing questions, while you get insight into their current level of understanding and their
-			learning curve - which is gold for your evaluation of their performance.
+			Lightbulb Learning is a learning evaluation system that scales for groups with many participants.
+			Students challenge each other by asking and discussing questions, while you get insight into their
+			current level of understanding and their learning curve - which is gold for your evaluation of their
+			performance.
 		</p>
 
 		<div class="flex max-w-sm mb-8 mt-16">

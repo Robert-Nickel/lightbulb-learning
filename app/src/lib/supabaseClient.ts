@@ -449,27 +449,27 @@ export async function fetchMember(id: string): Promise<MemberType> {
 	return keysToCamelCase(data);
 }
 
-export async function fetchOpenQuestionPerformances(id: string): Promise<OpenQuestionPerformancesType[]> {
+export async function fetchOpenQuestionPerformances(id: string): Promise<OpenQuestionPerformanceType[]> {
 	const { data, error } = await supabase
-		.from<OpenQuestionPerformancesTypeDB>(openQuestionPerformancesView)
+		.from<OpenQuestionPerformanceTypeDB>(openQuestionPerformancesView)
 		.select()
 		.eq('id', id);
 	printIf(error);
 	return keysToCamelCase(data);
 }
 
-export async function fetchOpenAnswerPerformances(id: string): Promise<OpenAnswerPerformancesType[]> {
+export async function fetchOpenAnswerPerformances(id: string): Promise<OpenAnswerPerformanceType[]> {
 	const { data, error } = await supabase
-		.from<OpenAnswerPerformancesTypeDB>(openAnswerPerformancesView)
+		.from<OpenAnswerPerformanceTypeDB>(openAnswerPerformancesView)
 		.select()
 		.eq('id', id);
 	printIf(error);
 	return keysToCamelCase(data);
 }
 
-export async function fetchOpenFeedbackPerformances(id: string): Promise<OpenFeedbackPerformancesType[]> {
+export async function fetchOpenFeedbackPerformances(id: string): Promise<OpenFeedbackPerformanceType[]> {
 	const { data, error } = await supabase
-		.from<OpenFeedbackPerformancesTypeDB>(openFeedbackPerformancesView)
+		.from<OpenFeedbackPerformanceTypeDB>(openFeedbackPerformancesView)
 		.select()
 		.eq('id', id);
 	printIf(error);
@@ -518,6 +518,33 @@ export async function fetchOpenQuestionTopics(openQuestionIds: string[]): Promis
 	return keysToCamelCase(data);
 }
 
+export async function saveOpenQuestionLike(openQuestionId: string): Promise<OpenQuestionLikeType> {
+	const { data, error } = await supabase
+		.from<OpenQuestionLikeTypeDB>(openQuestionLikesTable)
+		.insert({ open_question: openQuestionId, owner: supabase.auth.user().id })
+		.single();
+	printIf(error);
+	return keysToCamelCase(data);
+}
+
+export async function fetchOpenQuestionLikes(openQuestionIds: string[], userId: string): Promise<OpenQuestionLikeType[]> {
+	const { data, error } = await supabase
+		.from<OpenQuestionLikeTypeDB>(openQuestionLikesTable)
+		.select()
+		.eq('owner', userId)
+		.in('open_question', openQuestionIds);
+	printIf(error);
+	return keysToCamelCase(data);
+}
+
+export async function deleteOpenQuestionLike(openQuestionId: string) {
+	const { error } = await supabase
+		.from<OpenQuestionLikeTypeDB>(openQuestionLikesTable)
+		.delete()
+		.eq('open_question', openQuestionId);
+	printIf(error);
+}
+
 function printIf(error) {
 	if (error) console.error(error);
 }
@@ -540,6 +567,7 @@ export const openAnswerPerformancesView = 'open_answer_performances';
 export const openFeedbackPerformancesView = 'open_feedback_performances';
 export const topicsTable = 'topics';
 export const openQuestionTopicTable = 'open_question_topic';
+export const openQuestionLikesTable = 'open_question_likes';
 
 export type ChallengePoolType = CamelCasedPropertiesDeep<definitions['challenge_pools']>;
 export type OpenQuestionDraftType = CamelCasedPropertiesDeep<definitions['open_question_drafts']>;
@@ -554,15 +582,16 @@ export type UniversityType = CamelCasedPropertiesDeep<definitions['universities'
 export type ChallengePoolUserType = CamelCasedPropertiesDeep<definitions['challenge_pool_user']>;
 export type InviteCodeType = CamelCasedPropertiesDeep<definitions['invite_codes']>;
 export type MemberType = CamelCasedPropertiesDeep<definitions['members']>;
-export type OpenQuestionPerformancesType = CamelCasedPropertiesDeep<
+export type OpenQuestionPerformanceType = CamelCasedPropertiesDeep<
 	definitions['open_question_performances']
 >;
-export type OpenAnswerPerformancesType = CamelCasedPropertiesDeep<definitions['open_answer_performances']>;
-export type OpenFeedbackPerformancesType = CamelCasedPropertiesDeep<
+export type OpenAnswerPerformanceType = CamelCasedPropertiesDeep<definitions['open_answer_performances']>;
+export type OpenFeedbackPerformanceType = CamelCasedPropertiesDeep<
 	definitions['open_feedback_performances']
 >;
 export type TopicType = CamelCasedPropertiesDeep<definitions['topics']>;
 export type OpenQuestionTopicType = CamelCasedPropertiesDeep<definitions['open_question_topic']>;
+export type OpenQuestionLikeType = CamelCasedPropertiesDeep<definitions['open_question_likes']>;
 
 export type ChallengePoolTypeDB = definitions['challenge_pools'];
 export type OpenQuestionDraftTypeDB = definitions['open_question_drafts'];
@@ -577,8 +606,9 @@ export type UniversityTypeDB = definitions['universities'];
 export type ChallengePoolUserTypeDB = definitions['challenge_pool_user'];
 export type InviteCodeTypeDB = definitions['invite_codes'];
 export type MemberTypeDB = definitions['members'];
-export type OpenQuestionPerformancesTypeDB = definitions['open_question_performances'];
-export type OpenAnswerPerformancesTypeDB = definitions['open_answer_performances'];
-export type OpenFeedbackPerformancesTypeDB = definitions['open_feedback_performances'];
+export type OpenQuestionPerformanceTypeDB = definitions['open_question_performances'];
+export type OpenAnswerPerformanceTypeDB = definitions['open_answer_performances'];
+export type OpenFeedbackPerformanceTypeDB = definitions['open_feedback_performances'];
 export type TopicTypeDB = definitions['topics'];
 export type OpenQuestionTopicTypeDB = definitions['open_question_topic'];
+export type OpenQuestionLikeTypeDB = definitions['open_question_likes'];

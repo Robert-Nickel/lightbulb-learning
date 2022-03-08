@@ -6,17 +6,18 @@
 		const challengePool = await fetchChallengePool(challengePoolId);
 		const openQuestions = await fetchOpenQuestions(challengePoolId);
 		const topics = await fetchTopics(challengePoolId);
-		const openQuestionTopics = await fetchOpenQuestionTopics(
-			openQuestions.map((openQuestion) => {
-				return openQuestion.id;
-			})
-		);
+		const openQuestionIds = openQuestions.map((openQuestion) => {
+			return openQuestion.id;
+		});
+		const openQuestionTopics = await fetchOpenQuestionTopics(openQuestionIds);
+		const openQuestionLikes = await fetchOpenQuestionLikes(openQuestionIds, user.id);
 		return {
 			props: {
 				challengePool,
 				openQuestions,
 				topics,
-				openQuestionTopics
+				openQuestionTopics,
+				openQuestionLikes
 			}
 		};
 	};
@@ -27,11 +28,16 @@
 	import { routes } from '$lib/routes';
 	import { user } from '$lib/stores/user';
 	import {
+		deleteOpenQuestionLike,
 		fetchChallengePool,
+		fetchOpenQuestionLikes,
 		fetchOpenQuestions,
 		fetchOpenQuestionTopics,
 		fetchTopics,
+		OpenQuestionLikeType,
+		OpenQuestionTopicType,
 		OpenQuestionType,
+		saveOpenQuestionLike,
 		TopicType
 	} from '$lib/supabaseClient';
 	import type { Load } from '@sveltejs/kit';
@@ -41,7 +47,8 @@
 	export let challengePool;
 	export let openQuestions;
 	export let topics: TopicType[];
-	export let openQuestionTopics;
+	export let openQuestionTopics: OpenQuestionTopicType[];
+	export let openQuestionLikes: OpenQuestionLikeType[];
 
 	let filteredTopics: string[] = [];
 
@@ -55,6 +62,15 @@
 				if (filteredTopic == openQuestionTopic.topic && openQuestionTopic.openQuestion == openQuestion.id) {
 					return true;
 				}
+			}
+		}
+		return false;
+	}
+
+	function isLiked(openQuestionId: string) {
+		for (let openQuestionLike of openQuestionLikes) {
+			if (openQuestionId == openQuestionLike.openQuestion) {
+				return true;
 			}
 		}
 		return false;
@@ -81,11 +97,31 @@
 							{openQuestion.questionText}
 						</article>
 					{:else}
-						<article class="hoverable">
+						<article class="hoverable flex justify-between">
 							{openQuestion.questionText}
+							{#if isLiked(openQuestion.id)}
+								<button
+									class="outline w-36 h-12 ml-4"
+									on:click|preventDefault={async () => {
+										await deleteOpenQuestionLike(openQuestion.id);
+										openQuestionLikes = openQuestionLikes.filter((openQuestionLike) => {
+											openQuestionLike.id != openQuestion.id;
+										});
+										openQuestions = openQuestions;
+
+									}}>Unlike</button
+								>{:else}<button
+									class="outline w-36 h-12 ml-4"
+									on:click|preventDefault={async () => {
+										openQuestionLikes.push(await saveOpenQuestionLike(openQuestion.id));
+										openQuestionLikes = openQuestionLikes;
+										openQuestions = openQuestions;
+									}}>Like!</button
+								>
+							{/if}
 						</article>
-					{/if}
-				</a>
+					{/if}</a
+				>
 			{/if}
 		{/each}
 	{/if}

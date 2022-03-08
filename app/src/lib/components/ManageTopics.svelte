@@ -5,14 +5,18 @@
 	export let challengePoolId: string;
 	let topics: TopicType[] = [];
 	let newTopicName = '';
-
 	onMount(async () => {
 		topics = await fetchTopics(challengePoolId);
 	});
 
 	async function createTopic() {
-		let savedTopic = await saveTopic(challengePoolId, newTopicName)
-		
+		for (let topic of topics) {
+			if (topic.name == newTopicName) {
+				alert("Topic already exists.");
+				return;
+			}
+		}
+		let savedTopic = await saveTopic(challengePoolId, newTopicName);
 		topics.push(savedTopic);
 		topics = topics;
 		newTopicName = '';

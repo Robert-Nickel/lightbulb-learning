@@ -40,10 +40,8 @@
 	});
 
 	async function refresh(openAnswerId) {
-		console.log('refreshing ...');
 		openAnswer = await fetchOpenAnswer(openAnswerId);
 		latestOpenAnswer = await fetchLatestOpenAnswer(openAnswer.openQuestion, openAnswer.owner);
-		console.log({ latestOpenAnswer });
 		if (latestOpenAnswer) {
 			isLatest = latestOpenAnswer.version == openAnswer.version;
 		}
@@ -56,7 +54,7 @@
 
 	async function publishOpenFeedback() {
 		myOpenFeedback = await saveOpenFeedback(myOpenFeedbackDraft.feedbackText, myOpenFeedbackDraft.openAnswer);
-		await deleteOpenFeedbackDraft(openAnswer.id);
+		await deleteOpenFeedbackDraft(myOpenFeedbackDraft.id);
 		myOpenFeedbackDraft = null;
 		toast.showSuccessToast('Thanks for your Feedback!');
 	}
@@ -107,14 +105,15 @@
 
 			{#if myOpenFeedback}
 				<article class="yours">
-					<i>This is your feedback: </i>{myOpenFeedback.feedbackText}
+					{myOpenFeedback.feedbackText}
 				</article>
 			{:else if myOpenFeedbackDraft}
 				<div class="flex justify-between space-x-2 mt-2">
 					<div class="w-full">{myOpenFeedbackDraft.feedbackText}</div>
 					<button
 						on:click={async () => {
-							myOpenFeedbackDraft = await deleteOpenFeedbackDraft(myOpenFeedbackDraft.id);
+							await deleteOpenFeedbackDraft(myOpenFeedbackDraft.id);
+							myOpenFeedbackDraft = null;
 							openFeedbackDraftText = '';
 						}}
 						class="w-48 h-12 secondary outline">Delete</button

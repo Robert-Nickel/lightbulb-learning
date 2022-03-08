@@ -8,7 +8,8 @@
 		'answering questions.',
 		'constructive feedback.',
 		'fixing mistakes.',
-		'changing your opinion.'
+		'changing your opinion.',
+		'group effort.'
 	];
 
 	let show = '';
@@ -48,9 +49,9 @@
 			performance.
 		</p>
 
-		<div class="flex max-w-sm mb-8 mt-16">
-			<p class="text-xl align-middle mt-3">Learning&nbsp;is&nbsp;</p>
-			<input bind:value={show} class="text-xl" />
+		<div class="flex max-w-sm mb-8 mt-16 ">
+			<p class="text-xl">Learning&nbsp;is&nbsp;</p>
+			<div class="text-xl border rounded px-2" style="min-width: 6em; height: 2rem;">{show}</div>
 		</div>
 
 		<h2>How does it work?</h2>

@@ -139,6 +139,7 @@
 						on:click={async () => {
 							// TODO: careful! When creating feedback on a newer version of the open answer than the one in the url!
 							myOpenFeedbackDraft = await saveOpenFeedbackDraft(openFeedbackDraftText, openAnswer.id);
+							console.log({myOpenFeedbackDraft})
 						}}
 						class="w-48 h-12">Save</button
 					>

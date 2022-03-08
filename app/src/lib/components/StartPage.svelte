@@ -40,26 +40,30 @@
 </div>
 
 <main class="container mx-auto py-4 px-2 leading-normal">
-	<div class="mx-auto max-w-screen-sm px-10">
+	<div class="mx-auto max-w-screen-sm">
 		<p>
-			Lightbulb Learning is a learning evaluation system that scales. Students interact in groups, while each
-			contribution to the discussion pays into their performance portfolio. With no effort you get insight
-			their current level of understanding and learning curve - which you can use for your evaluation.
+			Lightbulb Learning is a learning evaluation system that scales. Students challenge each other by asking
+			and discussing questions, while you get insight into their current level of understanding and their
+			learning curve - which is gold for your evaluation of their performance.
 		</p>
 
 		<h2>How does it work?</h2>
-
-		<p>
-			Learning isn't answering questions. Formulating a question means framing a problem, and is a more
-			effective way of learning than just answering one. Giving constructive feedback means to have not only
-			expertise, but also empathy - and is one of the most underrated skills in modern (working) life. That is
-			why we believe that different forms of contributions show learning performance.
-		</p>
-		<div class="flex max-w-sm">
+		<div class="flex max-w-sm mb-8 mt-16">
 			<p class="text-xl align-middle mt-3">Learning&nbsp;is&nbsp;</p>
 			<input bind:value={show} class="text-xl" />
 		</div>
-		<p>Watch your students teaching each other, while getting realtime insight into their performance.</p>
+
+		<p>
+			Learning is more than answering questions. Formulating a question means framing a problem, and is a more
+			effective way of learning than just answering one. Giving constructive feedback means to have not only
+			expertise, but also empathy - and is one of the most underrated skills in modern (working) life. That's
+			why we believe that contemplating every contribution gives a clearer view on learning performance.
+		</p>
+
+		<p>
+			Watch your students thinking about and discussing interesting questions, while getting realtime insight
+			into all aspects of their performance.
+		</p>
 
 		<h2>Who is it for?</h2>
 		<p>Lightbulb Learning is for you, if...</p>
@@ -69,17 +73,17 @@
 				adventure.
 			</li>
 			<li>
-				...are tired of marking exam papers for days and search for a more scalable approach of defining
-				grades.
+				...are tired of marking exam papers for days and need a more scalable and justifiable approach of
+				defining grades.
 			</li>
 			<li>
-				...are an author of an online course and want to hand out certificates to those that reach a certain
-				level.
+				...are an author of an online course and want to reward those that reach a certain level with a
+				certificate.
 			</li>
 		</ul>
 
 		<a href={routes.login} sveltekit:prefetch>
-			<button class="m-auto my-16 w-64">Start</button>
+			<button class="m-auto my-16 w-64">Start, it's all free.</button>
 		</a>
 	</div>
 </main>

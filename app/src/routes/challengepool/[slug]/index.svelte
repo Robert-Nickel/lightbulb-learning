@@ -81,7 +81,7 @@
 							{openQuestion.questionText}
 						</article>
 					{:else}
-						<article class="hover:">
+						<article class="hoverable">
 							{openQuestion.questionText}
 						</article>
 					{/if}

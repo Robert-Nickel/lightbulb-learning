@@ -28,7 +28,8 @@
 		<div class="w-full">{myOpenAnswerDraft.answerText}</div>
 		<button
 			on:click={async () => {
-				myOpenAnswerDraft = await deleteOpenAnswerDraft(myOpenAnswerDraft.id);
+				await deleteOpenAnswerDraft(myOpenAnswerDraft.id);
+				myOpenAnswerDraft = null;
 				openAnswerDraftText = '';
 			}}
 			class="w-48 h-12 secondary outline">Delete</button
@@ -42,7 +43,9 @@
 					myOpenAnswerDraft.openQuestion,
 					openAnswer.version + 1
 				);
-				myOpenAnswerDraft = await deleteOpenAnswerDraft(myOpenAnswerDraft.id);
+				await deleteOpenAnswerDraft(myOpenAnswerDraft.id);
+				myOpenAnswerDraft = null;
+
 				toast.showSuccessToast('Open Answer improved!');
 				dispatch('openAnswerImproved', improvedOpenAnswer.id);
 			}}

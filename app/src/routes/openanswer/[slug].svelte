@@ -40,7 +40,6 @@
 	});
 
 	async function refresh(openAnswerId) {
-		console.log('refreshing ...');
 		openAnswer = await fetchOpenAnswer(openAnswerId);
 		latestOpenAnswer = await fetchLatestOpenAnswer(openAnswer.openQuestion, openAnswer.owner);
 		console.log({ latestOpenAnswer });
@@ -55,9 +54,11 @@
 	}
 
 	async function publishOpenFeedback() {
-		myOpenFeedback = await saveOpenFeedback(myOpenFeedbackDraft.feedbackText, myOpenFeedbackDraft.openAnswer);
+		console.log('publishing open feedback draft:');
+		console.log({ myOpenFeedbackDraft });
 		await deleteOpenFeedbackDraft(myOpenFeedbackDraft.id);
 		myOpenFeedbackDraft = null;
+		myOpenFeedback = await saveOpenFeedback(myOpenFeedbackDraft.feedbackText, myOpenFeedbackDraft.openAnswer);
 		toast.showSuccessToast('Thanks for your Feedback!');
 	}
 </script>
@@ -139,7 +140,7 @@
 						on:click={async () => {
 							// TODO: careful! When creating feedback on a newer version of the open answer than the one in the url!
 							myOpenFeedbackDraft = await saveOpenFeedbackDraft(openFeedbackDraftText, openAnswer.id);
-							console.log({myOpenFeedbackDraft})
+							console.log({ myOpenFeedbackDraft });
 						}}
 						class="w-48 h-12">Save</button
 					>

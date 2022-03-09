@@ -4,7 +4,8 @@ select
   open_questions.id as open_question_id,
   open_questions.question_text,
   correct_open_answers.answer_text,
-  open_questions.created_at
+  open_questions.created_at,
+  (select count(*) from open_question_likes where open_question = open_questions.id) as likes
 from challenge_pool_user
 inner join open_questions on open_questions.owner = challenge_pool_user.user_id 
-inner join correct_open_answers on correct_open_answers.open_question = open_questions.id;
+inner join correct_open_answers on correct_open_answers.open_question = open_questions.id

@@ -115,9 +115,11 @@
 					on:click={async () => {
 						const openQuestion = await saveOpenQuestion(
 							openQuestionDraft.questionText,
-							openQuestionDraft.challengePool,
+							openQuestionDraft.challengePool
 						);
-						await saveOpenQuestionTopics(openQuestion.id, selectedTopics)
+						if (selectedTopics && selectedTopics.length > 0) {
+							await saveOpenQuestionTopics(openQuestion.id, selectedTopics);
+						}
 						await saveCorrectOpenAnswer(openQuestionDraft.answerText, openQuestion.id);
 						dispatch('openQuestionCommitted');
 						toast.showSuccessToast('Open Question created');

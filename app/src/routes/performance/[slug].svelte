@@ -41,7 +41,10 @@
 			<small>{getDateAndTime(performance.createdAt)}</small>
 
 			{#if performance.openQuestionId}
-				<small>- Open Question</small>
+				<small>- Open Question - {performance.likes}
+					{#if performance.likes == 1}
+						like{:else}likes
+					{/if}</small>
 				<h4 class="mt-2 mb-2">{performance.questionText}</h4>
 				<h4 class="mt-2 mb-0">- {performance.answerText}</h4>
 			{:else if performance.openAnswerId}

@@ -89,10 +89,23 @@ export async function fetchChallengePools(userId: string): Promise<ChallengePool
 	return keysToCamelCase(data);
 }
 
-export async function saveChallengePool(description): Promise<ChallengePoolType> {
+export async function saveChallengePool(description: string): Promise<ChallengePoolType> {
 	const { data, error } = await supabase
 		.from<ChallengePoolTypeDB>(challengePoolsTable)
-		.insert([{ description, owner: supabase.auth.user().id }])
+		.insert({ description, owner: supabase.auth.user().id })
+		.single();
+	printIf(error);
+	const challengePool: ChallengePoolType = keysToCamelCase(data);
+	await saveChallengePoolUser(challengePool.id);
+	return challengePool;
+}
+
+// only for the owner of a challenge pool.
+// Regular member must use the join challenge pool function.
+async function saveChallengePoolUser(challengePoolId: string) {
+	const { data, error } = await supabase
+		.from<ChallengePoolUserTypeDB>(challengePoolUserTable)
+		.insert({ challenge_pool: challengePoolId, user_id: supabase.auth.user().id })
 		.single();
 	printIf(error);
 	return keysToCamelCase(data);

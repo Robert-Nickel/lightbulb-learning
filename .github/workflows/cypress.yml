@@ -4,10 +4,6 @@ on:
   push:
     branches: [supabase]
 
-env:
-  VITE_SUPABASE_URL: https://ckjsuzpqlhcjbonsnuzp.supabase.co
-  VITE_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MjA2NjY2MCwiZXhwIjoxOTU3NjQyNjYwfQ.mcsY3yNw8SMmcd_ltjLIRpnvnH2Kr1mq-IC2bXUFuSI
-
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
@@ -31,7 +27,7 @@ jobs:
 
       - name: install supabase cli
         run: |
-          wget -O supabase.deb https://github.com/supabase/cli/releases/download/v0.17.3/supabase_0.17.3_linux_amd64.deb
+          wget -O supabase.deb https://github.com/supabase/cli/releases/download/v0.18.2/supabase_0.18.2_linux_amd64.deb
           chmod 777 supabase.deb
           sudo dpkg -i supabase.deb
 

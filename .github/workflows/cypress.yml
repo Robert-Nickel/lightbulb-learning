@@ -21,10 +21,6 @@ jobs:
         with:
           env-file: app/.env.test
 
-      - name: build
-        run: npm run build
-        working-directory: app
-
       - name: install supabase cli
         run: |
           wget -O supabase.deb https://github.com/supabase/cli/releases/download/v0.18.2/supabase_0.18.2_linux_amd64.deb
@@ -35,6 +31,10 @@ jobs:
         working-directory: app
         run: |
           supabase start
+
+      - name: build
+        run: npm run build
+        working-directory: app
 
       - name: Cypress run
         uses: cypress-io/github-action@v2

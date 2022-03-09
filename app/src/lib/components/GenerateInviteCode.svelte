@@ -12,14 +12,14 @@
 	}}
 	class="secondary outline w-auto my-4"
 	>Generate Invite Code
-	{#if inviteCode}
-		<div class="mb-4">
-			Invite Code: <a
-				on:click={() => {
-					navigator.clipboard.writeText(inviteCode);
-				}}
-				data-tooltip="Copy to Clipboard">{inviteCode}</a
-			>
-		</div>
-	{/if}
 </button>
+{#if inviteCode}
+	<div class="mb-4">
+		Invite Code: <a
+			on:click={() => {
+				navigator.clipboard.writeText(inviteCode);
+			}}
+			data-tooltip="Copy to Clipboard">{inviteCode}</a
+		>
+	</div>
+{/if}

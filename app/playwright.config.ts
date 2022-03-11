@@ -39,7 +39,10 @@ const config: PlaywrightTestConfig = {
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
   },
-
+  webServer: {
+		command: 'npm run build && npm run preview',
+		port: 3000
+	},
   /* Configure projects for major browsers */
   projects: [
     {

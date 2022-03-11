@@ -15,8 +15,21 @@ jobs:
         node-version: '14.x'
     - name: Install dependencies
       run: npm ci
+      working-directory: app
+    - name: install supabase cli
+      run: |
+        wget -O supabase.deb https://github.com/supabase/cli/releases/download/v0.18.2/supabase_0.18.2_linux_amd64.deb
+        chmod 777 supabase.deb
+        sudo dpkg -i supabase.deb
+    - name: start supabase
+      working-directory: app
+      run: |
+        supabase start
     - name: Install Playwright
       run: npx playwright install --with-deps
+    - name: build
+      run: npm run build
+      working-directory: app
     - name: Run Playwright tests
       run: npx playwright test
     - uses: actions/upload-artifact@v2
@@ -25,3 +38,5 @@ jobs:
         name: playwright-report
         path: playwright-report/
         retention-days: 30
+    - name: stop supabase
+      run: supabase stop

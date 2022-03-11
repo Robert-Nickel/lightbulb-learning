@@ -19,3 +19,5 @@ awsconfiguration.json
 **.sample
 cypress/videos
 cypress/screenshots
+test-results/
+playwright-report/

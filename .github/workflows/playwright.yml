@@ -27,11 +27,13 @@ jobs:
         supabase start
     - name: Install Playwright
       run: npx playwright install --with-deps
+      working-directory: app
     - name: build
       run: npm run build
       working-directory: app
     - name: Run Playwright tests
       run: npx playwright test
+      working-directory: app
     - uses: actions/upload-artifact@v2
       if: always()
       with:

@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "svelte-kit dev",
-    "build": "svelte-kit build",
+    "build": "npm run genTypes && svelte-kit build",
     "package": "svelte-kit package",
     "preview": "svelte-kit preview",
     "check": "svelte-check --tsconfig ./tsconfig.json",

@@ -22,6 +22,10 @@ jobs:
       run: npm ci
       working-directory: app
     
+    - name: fix dependency
+      run: sed -i 's/if (isModule)/if (false)/g' node_modules/@playwright/test/lib/loader.js
+      working-directory: app
+
     - name: read app/.env.test
       id: dotenv
       uses: c-py/action-dotenv-to-setenv@v2

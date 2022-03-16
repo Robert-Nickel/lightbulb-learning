@@ -1,4 +1,4 @@
-[![lightbulb-learning DEV](https://img.shields.io/endpoint?url=https://dashboard.cypress.io/badge/simple/esqcjm/supabase&style=flat&logo=cypress)](https://dashboard.cypress.io/projects/esqcjm/runs)
+[![Playwright Tests](https://github.com/Lightbulb-Learning/lightbulb-learning/actions/workflows/playwright.yml/badge.svg?branch=supabase)](https://github.com/Lightbulb-Learning/lightbulb-learning/actions/workflows/playwright.yml)
 
 # Lightbulb Learning
 

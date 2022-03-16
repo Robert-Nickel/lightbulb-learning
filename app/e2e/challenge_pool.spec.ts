@@ -21,12 +21,10 @@ test.describe('Delete Challenge Pool', () => {
       dialog.accept().catch(() => { });
     });
     await page.goto('http://localhost:3000/challengepool');
-    await page.locator('text=new challenge pool').click();
+    await page.locator('text=challenge pool for deletion').click();
     await page.locator('text=Settings').click()
-    await page.locator('text=Delete new challenge pool').click()
-    await Promise.all([
-      page.waitForNavigation(),
-      expect(page.locator('text=You don\'t have a challenge pool yet! Join one with an invite code, or create one')).toBeVisible()
-    ]);
+    await page.locator('text=Delete challenge pool for deletion').click()
+    await page.waitForNavigation()
+    await expect(page.locator('text=challenge pool for deletion')).not.toBeVisible()
   });
 })

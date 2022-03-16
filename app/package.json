@@ -4,7 +4,8 @@
   "scripts": {
     "dev": "svelte-kit dev",
     "build": "npm run genTypes && svelte-kit build",
-    "test": "npx playwright test",
+    "seed": "psql 'postgresql://postgres:postgres@localhost:54322/postgres' -f supabase/seed.sql",
+    "test": "npm run seed && npx playwright test",
     "package": "svelte-kit package",
     "preview": "svelte-kit preview",
     "check": "svelte-check --tsconfig ./tsconfig.json",

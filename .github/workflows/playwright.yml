@@ -52,7 +52,7 @@ jobs:
       working-directory: app
     
     - name: Run Playwright tests
-      run: npx playwright test
+      run: npm run test
       working-directory: app
     - uses: actions/upload-artifact@v2
       if: always()

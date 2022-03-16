@@ -94,5 +94,10 @@ VALUES
         '2022-01-26 16:09:30.000'
     );
 
+DELETE FROM public.challenge_pools;
+
 INSERT INTO public.challenge_pools (id,description,"owner",created_at) 
 VALUES ('c2d07650-be2d-4e27-98fa-7d2a5d07deba'::uuid,'General Wisdom','6e0887e2-97da-40d9-a8ee-dea3cdad54f9'::uuid,'2022-01-28 21:04:33.009');
+
+INSERT INTO public.challenge_pools (id,description,"owner",created_at) 
+VALUES ('d2d07650-be2d-4e27-98fa-7d2a5d07deba'::uuid,'challenge pool for deletion','6e0887e2-97da-40d9-a8ee-dea3cdad54f9'::uuid,'2022-01-28 21:04:33.009');

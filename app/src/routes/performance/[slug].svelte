@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import Back from '$lib/components/Back.svelte';
+	import Evaluation from '$lib/components/Evaluation.svelte';
+	import { showEvaluationFeature } from '$lib/features';
 	import { routes } from '$lib/routes';
 	import {
 		fetchMember,
@@ -35,16 +37,22 @@
 
 {#if member}<h1>Performance of {member.firstName} {member.lastName}</h1>{/if}
 
+{#if showEvaluationFeature}
+	<Evaluation />
+{/if}
+
 {#if allPerformances}
 	{#each allPerformances as performance}
 		<article>
 			<small>{getDateAndTime(performance.createdAt)}</small>
 
 			{#if performance.openQuestionId}
-				<small>- Open Question - {performance.likes}
+				<small
+					>- Open Question - {performance.likes}
 					{#if performance.likes == 1}
 						like{:else}likes
-					{/if}</small>
+					{/if}</small
+				>
 				<h4 class="mt-2 mb-2">{performance.questionText}</h4>
 				<h4 class="mt-2 mb-0">- {performance.answerText}</h4>
 			{:else if performance.openAnswerId}

@@ -2,3 +2,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.light-link {
+	color: inherit;
+}
+
+.light-link:hover {
+	text-decoration: none;
+}
+
+.hover-red:hover {
+	@apply text-orange-700;
+	border-color: var(--text-orange-700);
+}

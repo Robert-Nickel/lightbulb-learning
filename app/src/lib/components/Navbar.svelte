@@ -1,39 +1,14 @@
 <script lang="ts">
-	import { getJWTToken } from '$lib/stores/auth';
-
-	import { onMount } from 'svelte';
-
+	import { routes } from '$lib/routes';
 	import Hamburger from './Hamburger.svelte';
-	import { baseUrl } from '../awsCommon';
 	export let sidebar = false;
-	// TODO: auslesen der Description aus Gruppe
-	let level = '';
-
-	onMount(async () => {
-		let myHeaders = new Headers();
-		myHeaders.append('Content-Type', 'application/json');
-		const jwtToken = await getJWTToken();
-		const raw = JSON.stringify({ jwtToken: jwtToken });
-		const requestOptions = {
-			method: 'POST',
-			headers: myHeaders,
-			body: raw
-		};
-		fetch(`${baseUrl}/getGroup`, requestOptions)
-			.then((response) => response.json())
-			.then((result) => {
-				level = result.groupType;
-			})
-			.catch((error) => console.log('error', error));
-	});
 </script>
 
 <header class="flex p-2 items-center text-white">
 	<nav class="flex">
 		<Hamburger bind:open={sidebar} />
 	</nav>
-	<nav><a href="/" class="text-white">Lightbulb Learning</a></nav>
-	{#if level}<nav class="ml-4"><a href="/upgrade" class="text-white">{level}</a></nav>{/if}
+	<nav><a href={routes.root} class="text-white mb-0.5" sveltekit:prefetch>Lightbulb Learning</a></nav>
 </header>
 
 <!--

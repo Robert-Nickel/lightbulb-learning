@@ -1,4 +1,4 @@
-[![lightbulb-learning DEV](https://img.shields.io/endpoint?url=https://dashboard.cypress.io/badge/simple/esqcjm/supabase&style=flat&logo=cypress)](https://dashboard.cypress.io/projects/esqcjm/runs)
+[![Playwright Tests](https://github.com/Lightbulb-Learning/lightbulb-learning/actions/workflows/playwright.yml/badge.svg?branch=supabase)](https://github.com/Lightbulb-Learning/lightbulb-learning/actions/workflows/playwright.yml)
 
 # Lightbulb Learning
 
@@ -18,3 +18,4 @@ This is a monthly curated newsletter about the product, stories of success and f
 I won't send you spam and you can unsubscribe at any time.
 
 I know that your time is valuable.
+

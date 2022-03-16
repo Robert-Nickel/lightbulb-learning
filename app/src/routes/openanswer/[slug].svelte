@@ -1,85 +1,61 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
-	import { DataStore } from 'aws-amplify';
-	import { OpenAnswer, OpenFeedbackDraft, OpenFeedback, OpenQuestion, OpenAnswerDraft } from '$lib/models';
-	import { user } from '$lib/stores/user';
 	import Toast from '$lib/components/Toast.svelte';
 	import Back from '$lib/components/Back.svelte';
 	import ImproveOpenAnswer from '$lib/components/ImproveOpenAnswer.svelte';
+	import {
+		fetchMyOpenFeedback,
+		fetchMyOpenFeedbackDraft,
+		fetchOpenAnswer,
+		fetchOpenQuestion,
+		fetchOpenFeedbackOfOthers,
+		OpenAnswerType,
+		OpenFeedbackDraftType,
+		OpenFeedbackType,
+		OpenQuestionType,
+		saveOpenFeedbackDraft,
+		deleteOpenFeedbackDraft,
+		saveOpenFeedback,
+		fetchLatestOpenAnswer
+	} from '$lib/supabaseClient';
+	import { goto } from '$app/navigation';
+	import { user } from '$lib/stores/user';
+	import autosize from '../../../node_modules/autosize';
+	import { routes } from '$lib/routes';
 
-	let openQuestion: OpenQuestion;
-	let openAnswer: OpenAnswer;
-	let openFeedbackDraft: OpenFeedbackDraft;
-	let myOpenFeedback: OpenFeedback;
-	let openFeedbackOfOthers: Array<OpenFeedback> = [];
+	let openQuestion: OpenQuestionType;
+	let openAnswer: OpenAnswerType;
+	let myOpenFeedbackDraft: OpenFeedbackDraftType;
+	let myOpenFeedback: OpenFeedbackType;
+	let openFeedbackOfOthers: Array<OpenFeedbackType> = [];
 	let openFeedbackDraftText = '';
 	let toast;
 	let improvingAnswer = false;
+	let latestOpenAnswer;
+	let isLatest = false;
 
 	onMount(async () => {
-		const openAnswerId = $page.params.slug;
-		try {
-			openAnswer = await DataStore.query(OpenAnswer, openAnswerId);
-			fetchOpenQuestion();
-			fetchOpenFeedbackDraft();
-			fetchMyOpenFeedback();
-			fetchOpenFeedbackOfOthers();
-		} catch (error) {
-			throw error;
-		}
+		refresh($page.params.slug);
 	});
 
-	async function fetchOpenQuestion() {
-		openQuestion = await DataStore.query(OpenQuestion, openAnswer.openquestionID);
-	}
+	async function refresh(openAnswerId) {
+		openAnswer = await fetchOpenAnswer(openAnswerId);
+		latestOpenAnswer = await fetchLatestOpenAnswer(openAnswer.openQuestion, openAnswer.owner);
+		if (latestOpenAnswer) {
+			isLatest = latestOpenAnswer.version == openAnswer.version;
+		}
 
-	async function fetchOpenFeedbackDraft() {
-		let openFeedbackDrafts = await DataStore.query(OpenFeedbackDraft, (f) =>
-			f.openanswerID('eq', openAnswer.id)
-		);
-		openFeedbackDraft = openFeedbackDrafts[0];
-	}
-
-	async function fetchMyOpenFeedback() {
-		let myOpenFeedbacks = await DataStore.query(
-			OpenFeedback,
-			(f) => f.openanswerID('eq', openAnswer.id) && f.owner('eq', $user.id)
-		);
-		myOpenFeedback = myOpenFeedbacks[0];
-	}
-
-	async function fetchOpenFeedbackOfOthers() {
-		openFeedbackOfOthers = await DataStore.query(OpenFeedback, (f) =>
-			f.openanswerID('eq', openAnswer.id).owner('ne', $user.id)
-		);
-	}	
-
-	async function saveOpenFeedbackDraft() {
-		await DataStore.save(
-			new OpenFeedbackDraft({
-				feedbackText: openFeedbackDraftText,
-				openanswerID: openAnswer.id
-			})
-		);
-		fetchOpenFeedbackDraft();
-	}
-
-	async function deleteMyFeedbackDraft() {
-		await DataStore.delete(await DataStore.query(OpenFeedbackDraft, openFeedbackDraft.id));
-		fetchOpenFeedbackDraft();
+		openQuestion = await fetchOpenQuestion(openAnswer.openQuestion);
+		myOpenFeedback = await fetchMyOpenFeedback(openAnswer.id);
+		myOpenFeedbackDraft = await fetchMyOpenFeedbackDraft(openAnswer.id);
+		openFeedbackOfOthers = await fetchOpenFeedbackOfOthers(openAnswer.id);
 	}
 
 	async function publishOpenFeedback() {
-		deleteMyFeedbackDraft();
-
-		let myOpenFeedback: OpenFeedback = new OpenFeedback({
-			feedbackText: openFeedbackDraft.feedbackText,
-			openanswerID: openFeedbackDraft.openanswerID,
-			owner: $user.id
-		});
-		await DataStore.save(myOpenFeedback);
-		fetchMyOpenFeedback();
+		myOpenFeedback = await saveOpenFeedback(myOpenFeedbackDraft.feedbackText, myOpenFeedbackDraft.openAnswer);
+		await deleteOpenFeedbackDraft(myOpenFeedbackDraft.id);
+		myOpenFeedbackDraft = null;
 		toast.showSuccessToast('Thanks for your Feedback!');
 	}
 </script>
@@ -104,11 +80,23 @@
 						{openFeedbackOfOther.feedbackText}
 					</article>
 				{/each}
-				{#if improvingAnswer}
-					<ImproveOpenAnswer {openAnswer} />
+				{#if isLatest}
+					{#if improvingAnswer}
+						<ImproveOpenAnswer {openAnswer} on:openAnswerImproved={(e) => refresh(e.detail)} />
+					{:else}
+						<div class="mb-4">Do you want to improve your answer based on this feedback?</div>
+						<button class="outline w-48" on:click={() => (improvingAnswer = !improvingAnswer)}
+							>Improve Answer</button
+						>
+					{/if}
 				{:else}
-					<div class="mb-4">Do you want to improve your answer based on this feedback?</div>
-					<button class="outline" on:click={() => (improvingAnswer = !improvingAnswer)}>Improve Answer</button
+					<div class="mb-4"><i>Attention: This is an old version.</i></div>
+					<button
+						class="w-48"
+						on:click={() => {
+							goto(routes.openAnswer(latestOpenAnswer.id));
+							refresh(latestOpenAnswer.id);
+						}}>Go to Latest Version</button
 					>
 				{/if}
 			{/if}
@@ -117,27 +105,46 @@
 
 			{#if myOpenFeedback}
 				<article class="yours">
-					<i>This is your feedback: </i>{myOpenFeedback.feedbackText}
+					{myOpenFeedback.feedbackText}
 				</article>
-			{:else if openFeedbackDraft}
+			{:else if myOpenFeedbackDraft}
 				<div class="flex justify-between space-x-2 mt-2">
-					<div class="w-full">{openFeedbackDraft.feedbackText}</div>
-					<button on:click={deleteMyFeedbackDraft} class="w-48 secondary outline">Delete</button>
+					<div class="w-full">{myOpenFeedbackDraft.feedbackText}</div>
+					<button
+						on:click={async () => {
+							await deleteOpenFeedbackDraft(myOpenFeedbackDraft.id);
+							myOpenFeedbackDraft = null;
+							openFeedbackDraftText = '';
+						}}
+						class="w-48 h-12 secondary outline">Delete</button
+					>
 				</div>
 				<div>
-					<button on:click={publishOpenFeedback} class="w-32">Publish</button>
+					<button on:click={publishOpenFeedback} class="w-32 mt-4">Publish</button>
 				</div>
 			{:else}
 				<div class="flex justify-between space-x-2 mt-2">
 					<div class="w-full">
-						<input
+						<textarea
+							id="textarea-feedback"
 							bind:value={openFeedbackDraftText}
-							class="w-full"
+							class="w-full h-12"
 							placeholder="Give feedback to this answer"
+							on:load={autosize(document.getElementById('textarea-feedback'))}
 						/>
 					</div>
-					<button on:click={saveOpenFeedbackDraft} class="w-48 ">Save</button>
+					<button
+						on:click={async () => {
+							// TODO: careful! When creating feedback on a newer version of the open answer than the one in the url!
+							myOpenFeedbackDraft = await saveOpenFeedbackDraft(openFeedbackDraftText, openAnswer.id);
+						}}
+						class="w-48 h-12">Save</button
+					>
 				</div>
+				<i
+					>The feedback is private - only you, the owner of the answer and the owner of the challenge pool can
+					see it.</i
+				>
 			{/if}
 		{/if}
 		<Back text="Back to Open Question" route="/openquestion/{openQuestion.id}" />

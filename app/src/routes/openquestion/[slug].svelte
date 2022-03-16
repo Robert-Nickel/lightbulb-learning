@@ -1,90 +1,88 @@
+<script lang="ts" context="module">
+	export const load: Load = async ({ session, params }) => {
+		const { user } = session as Session;
+		if (!user) return { status: 302, redirect: '/login' };
+
+		const questionId = params.slug;
+		const openAnswersOfOthersWithNonLatest = await fetchOpenAnswersOfOthers(questionId, user.id);
+		return {
+			props: {
+				user,
+				openQuestion: await fetchOpenQuestion(questionId),
+				correctOpenAnswer: await fetchCorrectOpenAnswer(questionId, user.id),
+				myOpenAnswerDraft: await fetchMyOpenAnswerDraft(questionId, user.id),
+				myOpenAnswer: await fetchLatestOpenAnswer(questionId, user.id),
+				openAnswersOfOthers: await filterNonLatest(openAnswersOfOthersWithNonLatest)
+			}
+		};
+	};
+
+	async function filterNonLatest(openAnswersOfOthers) {
+		// O(n^2) <- thats though, isn't there a better way?
+		// It filters out the non-latest open answers
+		let openAnswers = openAnswersOfOthers;
+		let indizesToRemove: number[] = [];
+		for (let i = 0; i < openAnswers.length; i++) {
+			let openAnswer = openAnswers[i];
+			for (let otherOpenAnswer of openAnswers) {
+				if (openAnswer.owner == otherOpenAnswer.owner) {
+					if (openAnswer.version < otherOpenAnswer.version) {
+						indizesToRemove.push(i);
+						break;
+					}
+				}
+			}
+		}
+		indizesToRemove
+			.sort((a, b) => 0 - (a > b ? 1 : -1)) // sort descending
+			.forEach((index) => {
+				openAnswers.splice(index, 1);
+			});
+		return openAnswers;
+	}
+</script>
+
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { OpenAnswerDraft, OpenQuestion, OpenAnswer } from '$lib/models';
-	import { page } from '$app/stores';
-	import { DataStore } from 'aws-amplify';
-	import { user } from '$lib/stores/user';
 	import Back from '$lib/components/Back.svelte';
 	import Toast from '$lib/components/Toast.svelte';
-	import { goto } from '$app/navigation';
+	import {
+		deleteOpenAnswerDraft,
+		fetchMyOpenAnswerDraft,
+		fetchOpenAnswersOfOthers,
+		fetchOpenQuestion,
+		OpenAnswerDraftType,
+		OpenAnswerType,
+		OpenQuestionType,
+		saveOpenAnswer,
+		saveOpenAnswerDraft,
+		supabase,
+		fetchLatestOpenAnswer,
+		CorrectOpenAnswerType,
+		fetchCorrectOpenAnswer
+	} from '$lib/supabaseClient';
+	import { user } from '$lib/stores/user';
+	import autosize from '../../../node_modules/autosize';
+	import type { Load } from '@sveltejs/kit';
+	import type { Session } from '@supabase/supabase-js';
+	import { routes } from '$lib/routes';
 
-	let openQuestion: OpenQuestion;
-	let openAnswerDraft: OpenAnswerDraft;
-	let myOpenAnswer: OpenAnswer;
-	let openAnswersOfOthers: Array<OpenAnswer> = [];
-	let toast;
+	export let openQuestion: OpenQuestionType;
+	export let correctOpenAnswer: CorrectOpenAnswerType;
+	export let myOpenAnswerDraft: OpenAnswerDraftType;
+	export let myOpenAnswer: OpenAnswerType;
+	export let openAnswersOfOthers: OpenAnswerType[] = [];
+
 	let openAnswerDraftText = '';
-
-	onMount(async () => {
-		const openQuestionId = $page.params.slug;
-		try {
-			openQuestion = await DataStore.query(OpenQuestion, openQuestionId);
-		} catch (error) {
-			throw error;
-		}
-		fetchOpenAnswerDraft();
-		fetchMyOpenAnswer();
-		fetchOpenAnswersOfOthers();
-	});
-
-	async function fetchOpenAnswerDraft() {
-		let openAnswerDrafts = await DataStore.query(OpenAnswerDraft, (a) =>
-			a.openquestionID('eq', openQuestion.id)
-		);
-		openAnswerDraft = openAnswerDrafts[0];
-	}
-
-	async function fetchMyOpenAnswer() {
-		let openAnswers = await DataStore.query(
-			OpenAnswer,
-			(a) => a.openquestionID('eq', openQuestion.id) && a.owner('eq', $user.id)
-		);
-		myOpenAnswer = openAnswers[0];
-	}
-
-	async function fetchOpenAnswersOfOthers() {
-		openAnswersOfOthers = await DataStore.query(OpenAnswer, (a) =>
-			a.openquestionID('eq', openQuestion.id).owner('ne', $user.id)
-		);
-	}
-
-	async function saveOpenAnswerDraft() {
-		await DataStore.save(
-			new OpenAnswerDraft({
-				answerText: openAnswerDraftText,
-				openquestionID: openQuestion.id
-			})
-		);
-		fetchOpenAnswerDraft();
-	}
-
-	async function deleteMyOpenAnswerDraft() {
-		await DataStore.delete(await DataStore.query(OpenAnswerDraft, openAnswerDraft.id));
-		fetchOpenAnswerDraft();
-	}
-
-	async function publishOpenAnswer() {
-		deleteMyOpenAnswerDraft();
-
-		let myOpenAnswer: OpenAnswer = new OpenAnswer({
-			answerText: openAnswerDraft.answerText,
-			openquestionID: openAnswerDraft.openquestionID,
-			owner: $user.id
-		});
-		await DataStore.save(myOpenAnswer);
-		fetchMyOpenAnswer();
-
-		// TODO: publishOpenAnswerCommittedEvent(myOpenAnswer);
-
-		toast.showSuccessToast('Open Answer created!');
-	}
+	let toast;
 </script>
 
 <main class="container">
 	{#if openQuestion}
 		{#if openQuestion.owner == $user.id}
 			<h1 class="yours pl-4">{openQuestion.questionText}</h1>
-
+			{#if correctOpenAnswer}
+				<div class="mb-4"><i>Correct answer: </i>{correctOpenAnswer.answerText}</div>
+			{/if}
 			<div class="mb-4">
 				{#if openAnswersOfOthers.length == 0}
 					<i>No one has answered your question yet.</i>
@@ -96,34 +94,68 @@
 			<h1>{openQuestion.questionText}</h1>
 
 			{#if myOpenAnswer}
-				<article class="yours hoverable" on:click={() => goto(`/openanswer/${myOpenAnswer.id}`)}>
-					<i>This is your answer: </i>{myOpenAnswer.answerText}
-				</article>
-			{:else if openAnswerDraft}
+				<a href={routes.openAnswer(myOpenAnswer.id)} class="light-link" sveltekit:prefetch>
+					<article class="yours hoverable">
+						<i>Your answer: </i>{myOpenAnswer.answerText}
+					</article>
+				</a>
+			{:else if myOpenAnswerDraft}
 				<div class="flex justify-between space-x-2 mt-2">
-					<div class="w-full">{openAnswerDraft.answerText}</div>
-					<button on:click={deleteMyOpenAnswerDraft} class="w-48 secondary outline">Delete</button>
+					<div class="w-full">{myOpenAnswerDraft.answerText}</div>
+					<button
+						on:click={async () => {
+							await deleteOpenAnswerDraft(myOpenAnswerDraft.id);
+							myOpenAnswerDraft = null;
+						}}
+						class="w-48 h-12 secondary outline">Delete</button
+					>
 				</div>
 				<div>
-					<button on:click={publishOpenAnswer} class="w-32">Publish</button>
+					<button
+						on:click={async () => {
+							myOpenAnswer = await saveOpenAnswer(
+								myOpenAnswerDraft.answerText,
+								myOpenAnswerDraft.openQuestion
+							);
+
+							await deleteOpenAnswerDraft(myOpenAnswerDraft.id);
+							myOpenAnswerDraft = null;
+							toast.showSuccessToast('Open Answer created!');
+						}}
+						class="w-32 mt-4">Publish</button
+					>
 				</div>
 			{:else}
 				<div class="flex justify-between space-x-2 mt-2">
 					<div class="w-full">
-						<input bind:value={openAnswerDraftText} class="w-full" placeholder="Answer this question" />
+						<textarea
+							id="textarea-answer"
+							bind:value={openAnswerDraftText}
+							class="w-full h-12"
+							placeholder="Answer this question"
+							on:load={autosize(document.getElementById('textarea-answer'))}
+						/>
 					</div>
-					<button on:click={saveOpenAnswerDraft} class="w-48 ">Save</button>
+					<button
+						on:click={async () => {
+							myOpenAnswerDraft = await saveOpenAnswerDraft(openAnswerDraftText, openQuestion.id);
+						}}
+						class="w-48 h-12">Save</button
+					>
 				</div>
 			{/if}
 		{/if}
 
+		<!-- This shows the old and the new versions of the answers! -->
 		{#each openAnswersOfOthers as openAnswerOfOther}
-			<article class="hoverable" on:click={() => goto(`/openanswer/${openAnswerOfOther.id}`)}>
-				{openAnswerOfOther.answerText}
-			</article>
+			<a href={routes.openAnswer(openAnswerOfOther.id)} class="light-link" sveltekit:prefetch>
+				<article class="hoverable">
+					{openAnswerOfOther.answerText}
+				</article>
+			</a>
 		{/each}
 
-		<Back text="Back to Challenge Pool" route="/challengepool/{openQuestion.challengepoolID}" />
+		<Back text="Back to Challenge Pool" route="/challengepool/{openQuestion.challengePool}" />
 	{/if}
 </main>
 

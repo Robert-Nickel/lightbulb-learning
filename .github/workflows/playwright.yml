@@ -1,0 +1,66 @@
+name: Playwright Tests
+on:
+  push:
+    branches: [ main, master, supabase ]
+  pull_request:
+    branches: [ main, master, supabase ]
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '14.x'
+    
+    - name: Update npm
+      run: npm install npm@latest -g
+      working-directory: app
+    
+    - name: Install dependencies
+      run: npm ci
+      working-directory: app
+    
+    - name: fix dependency
+      run: sed -i 's/if (isModule)/if (false)/g' node_modules/@playwright/test/lib/loader.js
+      working-directory: app
+
+    - name: read app/.env.test
+      id: dotenv
+      uses: c-py/action-dotenv-to-setenv@v2
+      with:
+        env-file: app/.env.test
+
+    - name: install supabase cli
+      run: |
+        wget -O supabase.deb https://github.com/supabase/cli/releases/download/v0.18.2/supabase_0.18.2_linux_amd64.deb
+        chmod 777 supabase.deb
+        sudo dpkg -i supabase.deb
+    
+    - name: start supabase
+      working-directory: app
+      run: |
+        supabase start
+    
+    - name: Install Playwright
+      run: npx playwright install --with-deps
+      working-directory: app
+
+    - name: build
+      run: npm run build
+      working-directory: app
+    
+    - name: Run Playwright tests
+      run: npx playwright test
+      working-directory: app
+    - uses: actions/upload-artifact@v2
+      if: always()
+      with:
+        name: playwright-report
+        path: playwright-report/
+        retention-days: 30
+    
+    - name: stop supabase
+      run: supabase stop
+      working-directory: app

@@ -1,25 +1,41 @@
 <script>
-	import { store } from '$lib/stores/auth';
-	import { DataStore } from '@aws-amplify/datastore';
+	import { goto } from '$app/navigation';
+	import { routes } from '$lib/routes';
+	import { user } from '$lib/stores/user';
 
 	export let open = false;
 
-	function logout() {
+	async function logout() {
 		open = false;
-		$store = null;
-		DataStore.clear();
+		try {
+			// TODO: This throws an error. We don't handle it. See https://github.com/supabase/supabase/discussions/3468?sort=top
+			user.signOut();
+		} catch {}
+		goto(routes.logout);
+	}
+
+	function close() {
+		open = false;
 	}
 </script>
 
 <aside
-	class="absolute w-64 h-full bg-gray-800 text-white shadow-lg z-10 p-8 pt-24 space-y-2 text-xl cursor-default"
+	class="absolute flex flex-col justify-between w-48 h-full bg-gray-800 text-white shadow-lg z-10 p-8 pt-24 space-y-2 text-xl cursor-default"
 	class:open
 >
-	{#if $store == null}
-		<nav on:click={() => (open = false)}><a href="/register">Register</a></nav>
-		<nav on:click={() => (open = false)}><a href="/login">Login</a></nav>
-	{:else}
-		<nav on:click={logout}><a href="/">Logout</a></nav>
+	<div>
+		{#if $user}
+			<nav on:click={close}><a href={routes.root} sveltekit:prefetch>Home</a></nav>
+			<nav on:click={close}><a href={routes.create} sveltekit:prefetch>Create</a></nav>
+			<nav on:click={close}><a href={routes.join} sveltekit:prefetch>Join</a></nav>
+			<nav on:click={close}><a href={routes.help} sveltekit:prefetch>Help</a></nav>
+		{:else}
+			<nav on:click={close}><a href={routes.login} sveltekit:prefetch>Login</a></nav>
+		{/if}
+	</div>
+
+	{#if $user}
+		<button on:click={logout} class="outline">Logout</button>
 	{/if}
 </aside>
 

@@ -6,3 +6,9 @@ node_modules
 aws-secrets.yaml
 .idea/
 app/cypress.env.json
+
+
+# Supabase
+**/supabase/.branches
+**/supabase/.temp
+**/supabase/.env

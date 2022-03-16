@@ -1,37 +1,46 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { signIn, loginFormState } from '$lib/stores/auth';
+	import { user } from '$lib/stores/user';
 
-	let promise; // nothing to start with
+	let loading = false;
+	let email;
 
-	function handleSubmit() {
-		promise = signIn().then(() => goto('/'));
-	}
+	const handleLogin = async () => {
+		loading = true;
+		const { error } = await user.signIn(email);
+		if (error) {
+			alert(error.message);
+		} else {
+			alert('Check your email for the login link!');
+		}
+		loading = false;
+	};
 </script>
 
-<div class="flex justify-center">
-	<article class="max-w-sm">
-		<header class="flex justify-between items-center">
-			<h3 class="text-3xl mb-0">Login</h3>
-			<a class="-mt-1" href="/register">Register</a>
+<main class="container flex justify-center">
+	<article>
+		<header>
+			<h3 class="text-3xl mb-0">Welcome</h3>
 		</header>
-
-		<form on:submit|preventDefault={handleSubmit}>
-			<label>
-				Email:
-				<input type="email" bind:value={$loginFormState.email} />
-			</label>
-			<label>
-				Password:
-				<input type="password" bind:value={$loginFormState.password} />
-			</label>
-			<button type="submit" class="outline">Login</button>
+		<form on:submit|preventDefault={handleLogin}>
+			<div>
+				<p>What's your email address?</p>
+				<div>
+					<input type="email" placeholder="learn@everyday.org" bind:value={email} />
+					<input type="submit" value={'Login | Register'} disabled={loading || !email} />
+				</div>
+			</div>
 		</form>
-
-		{#await promise}
-			<span aria-busy="true">Logging in...</span>
-		{:catch error}
-			<mark class="errorMessage">Something went wrong: {error.message}</mark>
-		{/await}
+		<hr class="mb-4 border-t-1" />
+		<button
+			class="outline"
+			on:click={async () => {
+				loading = true;
+				const { error } = await user.signInGitHub();
+				if (error) {
+					alert(error.message);
+				}
+				loading = false;
+			}}>Sign in via GitHub</button
+		>
 	</article>
-</div>
+</main>

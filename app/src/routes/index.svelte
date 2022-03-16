@@ -1,45 +1,40 @@
-<script lang="ts">
-	import { store } from '$lib/stores/auth';
-	import StartPage from '$lib/components/StartPage.svelte';
-	import ChallengePools from '$lib/components/ChallengePools.svelte';
-	import { user } from '$lib/stores/user';
-	import { goto } from '$app/navigation';
-	import { onMount } from 'svelte';
-	import { Auth } from 'aws-amplify';
+<script lang="ts" context="module">
+	import type { Load } from '@sveltejs/kit';
+	import type { Session } from '@supabase/supabase-js';
 
-	let groupId;
+	export const load: Load = async ({ session, url }) => {
+		const { user } = session as Session;
+		if (url.href.includes(routes.logout)) {
+			return {};
+		}
+		if (user) {
+			return { status: 302, redirect: routes.evaluateAuth };
+		}
+		return {};
+	};
+</script>
+
+<script lang="ts">
+	import StartPage from '$lib/components/StartPage.svelte';
+	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
+	import { routes } from '$lib/routes';
+
+	let loginInProgress = $page.url.hash.includes('#access_token=');
+	let logoutInProgress = $page.url.href.includes(routes.logout);
+	$: logInOutText = loginInProgress ? 'Logging in...' : logoutInProgress ? 'Logging out...' : undefined;
 
 	onMount(() => {
-		Auth.currentAuthenticatedUser().then((cognitoUser) => {
-			groupId = cognitoUser.signInUserSession.getIdToken().payload['cognito:groups'];
-		});
+		if (loginInProgress || logoutInProgress) {
+			// this was a redirect from the magic link or logout.
+			// By the time this line executes the supabase client did not yet write/delete the token from localstorage therefore we need to defer the auth evaluation call a little bit
+			setTimeout(() => location.replace(`${location.origin}${routes.evaluateAuth}`), 1000);
+		}
 	});
 </script>
 
-{#if $store != null}
-	<main class="container py-4 max-w-screen-sm">
-		{#if $user && groupId}
-			<ChallengePools />
-		{:else}
-			<h1>Start here!</h1>
-			<div class="mb-8">
-				In most cases, you want to join a already existing group. In case you are a professor, you can create
-				a new group and invite your students.
-			</div>
-			<button
-				on:click={() => {
-					goto('/joingroup');
-				}}
-				class="w-48">Join Group</button
-			>
-			<button
-				on:click={() => {
-					goto('/creategroup');
-				}}
-				class="outline w-48">Create Group</button
-			>
-		{/if}
-	</main>
+{#if logInOutText}
+	<h3 class="text-center" aria-busy="true">{logInOutText}</h3>
 {:else}
 	<StartPage />
 {/if}

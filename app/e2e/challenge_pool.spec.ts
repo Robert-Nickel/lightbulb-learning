@@ -13,7 +13,9 @@ test.describe('New Challenge Pool', () => {
     await page.locator('button:has-text("Create")').click()
     await expect(page.locator('h1')).toHaveText('new challenge pool');
   });
+})
 
+test.describe('Delete Challenge Pool', () => {
   test('should allow me to delete challenge pool', async ({ page }) => {
     page.on('dialog', async dialog => {
       dialog.accept().catch(() => { });

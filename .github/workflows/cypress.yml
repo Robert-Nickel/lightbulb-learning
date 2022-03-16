@@ -46,5 +46,3 @@ jobs:
 
       - name: stop supabase
         run: supabase stop
-        working-directory: app
-

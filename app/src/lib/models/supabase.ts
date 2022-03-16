@@ -1124,6 +1124,7 @@ export interface paths {
           question_text?: parameters["rowFilter.open_question_performances.question_text"];
           answer_text?: parameters["rowFilter.open_question_performances.answer_text"];
           created_at?: parameters["rowFilter.open_question_performances.created_at"];
+          likes?: parameters["rowFilter.open_question_performances.likes"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -2002,6 +2003,8 @@ export interface definitions {
     answer_text?: string;
     /** Format: timestamp with time zone */
     created_at?: string;
+    /** Format: bigint */
+    likes?: number;
   };
   open_question_topic: {
     /**
@@ -2315,6 +2318,8 @@ export interface parameters {
   "rowFilter.open_question_performances.answer_text": string;
   /** Format: timestamp with time zone */
   "rowFilter.open_question_performances.created_at": string;
+  /** Format: bigint */
+  "rowFilter.open_question_performances.likes": string;
   /** @description open_question_topic */
   "body.open_question_topic": definitions["open_question_topic"];
   /** Format: uuid */

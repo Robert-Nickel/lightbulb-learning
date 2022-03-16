@@ -82,14 +82,6 @@
 </main>
 
 <style>
-	.yours {
-		border-left: 4px solid var(--primary);
-	}
-
-	.hoverable:hover {
-		background-color: var(--card-sectionning-background-color);
-	}
-
 	header {
 		border-color: var(--card-sectionning-background-color);
 	}

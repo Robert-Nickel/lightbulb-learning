@@ -36,10 +36,3 @@
 	<input placeholder="New Topic" bind:value={newTopicName} />
 	<button class="w-32" hidden={newTopicName == ''} on:click={createTopic}>Create</button>
 </article>
-
-<style>
-	.create-new:hover {
-		border-color: var(--primary);
-		color: var(--primary);
-	}
-</style>

@@ -37,10 +37,6 @@ jobs:
       run: npx playwright install --with-deps
       working-directory: app
     
-    - name: print supabaseClient.js
-      run: cat .svelte-kit/output/server/chunks/supabaseClient-5acd1ce1.js
-      working-directory: app
-
     - name: print supabaseClient.ts
       run: cat src/lib/supabaseClient.ts
       working-directory: app

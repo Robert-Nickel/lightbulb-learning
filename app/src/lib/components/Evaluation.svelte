@@ -1,7 +1,18 @@
 <script lang="ts">
-	let latestEvaluation: number = 0;
+	import { saveEvaluation } from '$lib/supabaseClient';
+	import { createEventDispatcher } from 'svelte';
+
+	const dispatch = createEventDispatcher();
+	export let challengePoolUserId: string;
+	export let latestEvaluation: number = 0;
 	let evaluationInput: string = '0';
-	let changing = true;
+	let changing = false;
+
+	async function save(challengePoolUserId: string, percentage: number) {
+		const savedEvaluation = await saveEvaluation(challengePoolUserId, percentage);
+		latestEvaluation = savedEvaluation.percentage;
+		dispatch('evaluationAdded', savedEvaluation);
+	}
 </script>
 
 {#if changing}
@@ -20,10 +31,10 @@
 					alert('Please enter a number.');
 				}
 				if (evaluationInputAsNumber >= 0 && evaluationInputAsNumber <= 120) {
-					latestEvaluation = evaluationInputAsNumber;
+					save(challengePoolUserId, evaluationInputAsNumber);
 					changing = false;
 				} else {
-                    alert(evaluationInputAsNumber +' isn\'t between 0 and 120.');
+					alert(evaluationInputAsNumber + " isn't between 0 and 120.");
 				}
 			}}>Save</button
 		>

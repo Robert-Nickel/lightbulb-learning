@@ -1,44 +1,77 @@
+<script lang="ts" context="module">
+	export const load: Load = async ({ session, params }) => {
+		const { user } = session as Session;
+		if (!user) return { status: 302, redirect: '/login' };
+
+		const challengePoolUserId = params.slug;
+		const member = await fetchMember(challengePoolUserId);
+		let allPerformances: { createdAt: string }[] = (
+			await fetchOpenQuestionPerformances(challengePoolUserId)
+		)
+			.concat(await fetchOpenAnswerPerformances(challengePoolUserId))
+			.concat(await fetchOpenFeedbackPerformances(challengePoolUserId))
+			.concat(await fetchEvaluations(challengePoolUserId));
+		allPerformances = sortChronologically(allPerformances);
+		let latestEvaluation;
+		for (let i = 0; i < allPerformances.length; i++) {
+			if (allPerformances[i].percentage != null) {
+				latestEvaluation = allPerformances[i].percentage;
+				break;
+			}
+		}
+		return {
+			props: {
+				member,
+				allPerformances,
+				latestEvaluation
+			}
+		};
+	};
+</script>
+
 <script lang="ts">
-	import { page } from '$app/stores';
+	import type { Load } from '@sveltejs/kit';
+	import type { Session } from '@supabase/supabase-js';
 	import Back from '$lib/components/Back.svelte';
 	import Evaluation from '$lib/components/Evaluation.svelte';
-	import { showEvaluationFeature } from '$lib/features';
 	import { routes } from '$lib/routes';
 	import {
+		fetchEvaluations,
 		fetchMember,
 		fetchOpenAnswerPerformances,
 		fetchOpenFeedbackPerformances,
 		fetchOpenQuestionPerformances,
 		MemberType
 	} from '$lib/supabaseClient';
-	import { onMount } from 'svelte';
 
-	let member: MemberType;
-	let allPerformances: { createdAt: string }[] = [];
+	export let member: MemberType;
+	export let allPerformances: { createdAt: string }[];
+	export let latestEvaluation: number;
 
-	export function getDateAndTime(createdAt: string) {
+	function getDateAndTime(createdAt: string) {
 		const date = new Date(createdAt);
 		return date.toLocaleDateString() + ' - ' + date.toLocaleTimeString();
 	}
 
-	onMount(async () => {
-		const id = $page.params.slug;
-		member = await fetchMember(id);
-		allPerformances = allPerformances
-			.concat(await fetchOpenQuestionPerformances(id))
-			.concat(await fetchOpenAnswerPerformances(id))
-			.concat(await fetchOpenFeedbackPerformances(id));
-
-		allPerformances.sort((a, b) => {
-			return new Date(a.createdAt) > new Date(b.createdAt) ? 1 : -1;
+	export function sortChronologically(performances) {
+		performances.sort((a, b) => {
+			return new Date(a.createdAt) < new Date(b.createdAt) ? 1 : -1;
 		});
-	});
+		return performances;
+	}
 </script>
 
 {#if member}<h1>Performance of {member.firstName} {member.lastName}</h1>{/if}
 
-{#if showEvaluationFeature}
-	<Evaluation />
+{#if member}
+	<Evaluation
+		challengePoolUserId={member.id}
+		{latestEvaluation}
+		on:evaluationAdded={(event) => {
+			allPerformances.push(event.detail);
+			allPerformances = sortChronologically(allPerformances);
+		}}
+	/>
 {/if}
 
 {#if allPerformances}
@@ -66,6 +99,11 @@
 				<p class="my-2"><i>Question: {performance.questionText}</i></p>
 				<p class="my-2"><i>Answer: {performance.answerText}</i></p>
 				<h4 class="mt-2 mb-0">{performance.feedbackText}</h4>
+			{:else if performance.percentage}
+				<small>- Evaluation </small>
+				<h4 class="mt-2 mb-0">
+					{#if performance.percentage > 0}Reached {/if}{performance.percentage}%
+				</h4>
 			{/if}
 		</article>
 	{/each}

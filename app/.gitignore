@@ -17,7 +17,5 @@ node_modules/
 awsconfiguration.json
 .secret-*
 **.sample
-cypress/videos
-cypress/screenshots
 test-results/
 playwright-report/

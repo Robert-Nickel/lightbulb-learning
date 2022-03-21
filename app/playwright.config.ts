@@ -11,7 +11,7 @@ import { devices } from '@playwright/test';
  * See https://playwright.dev/docs/test-configuration.
  */
 const config: PlaywrightTestConfig = {
-  testDir: './e2e',
+  testDir: './test',
   /* Maximum time one test can run for. */
   timeout: 30 * 1000,
   expect: {
@@ -40,7 +40,7 @@ const config: PlaywrightTestConfig = {
     trace: 'on-first-retry',
   },
   webServer: {
-		command: 'npm run build && npm run preview',
+		command: 'npm run seed && npm run build && npm run preview',
 		port: 3000
 	},
   /* Configure projects for major browsers */

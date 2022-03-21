@@ -31,7 +31,7 @@
 				if (!evaluationInputAsNumber) {
 					alert('Please enter a number.');
 				}
-				if (evaluationInputAsNumber >= 0 && evaluationInputAsNumber <= 120) {
+				if (evaluationInputAsNumber >= 0 && evaluationInputAsNumber <= 200) {
 					save(challengePoolUserId, evaluationInputAsNumber);
 					changing = false;
 				} else {

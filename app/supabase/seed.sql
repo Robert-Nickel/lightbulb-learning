@@ -1,9 +1,14 @@
 ---
 --- Test Data
 ---
-DELETE FROM auth.users;
-DELETE FROM public.universities;
-DELETE FROM public.challenge_pools;
+DELETE FROM
+    auth.users;
+
+DELETE FROM
+    public.universities;
+
+DELETE FROM
+    public.challenge_pools;
 
 INSERT INTO
     auth.users (
@@ -37,7 +42,7 @@ INSERT INTO
         email_change_confirm_status,
         banned_until
     )
-VALUES 
+VALUES
     (
         '6a4cb762-5ddd-46a0-9db1-46684fe04daa' :: uuid,
         '6e0887e2-97da-40d9-a8ee-dea3cdad54f9' :: uuid,
@@ -68,7 +73,8 @@ VALUES
         '',
         0,
         NULL
-    ), (
+    ),
+    (
         '55ce341c-1ee3-4984-a2fc-d27a52dc0cd8' :: uuid,
         '8e0887e2-97da-40d9-a8ee-dea3cdad54f9' :: uuid,
         'authenticated',
@@ -122,18 +128,65 @@ VALUES
         'Professor',
         '06f6ab63-eeee-4707-9c90-34f33aa820fd' :: uuid,
         '6a4cb762-5ddd-46a0-9db1-46684fe04daa' :: uuid
-    ),(
+    ),
+    (
         'El',
         'Studento',
         '06f6ab63-eeee-4707-9c90-34f33aa820fd' :: uuid,
         '55ce341c-1ee3-4984-a2fc-d27a52dc0cd8' :: uuid
     );
 
+INSERT INTO
+    public.challenge_pools (id, description, "owner")
+VALUES
+    (
+        '57d1c1f0-f1cb-4e3f-b3eb-5ce53b593958' :: uuid,
+        'General Wisdom',
+        '6a4cb762-5ddd-46a0-9db1-46684fe04daa' :: uuid
+    );
 
-INSERT INTO public.challenge_pools (id,description,"owner") VALUES ('57d1c1f0-f1cb-4e3f-b3eb-5ce53b593958' :: uuid,'General Wisdom','6a4cb762-5ddd-46a0-9db1-46684fe04daa' :: uuid);
-INSERT INTO public.challenge_pool_user (id, challenge_pool,user_id) VALUES ('4e5e689a-a09c-4e20-858c-14d442251457'::uuid, '57d1c1f0-f1cb-4e3f-b3eb-5ce53b593958' :: uuid, '55ce341c-1ee3-4984-a2fc-d27a52dc0cd8' :: uuid);
-INSERT INTO public.open_questions(question_text, "owner", challenge_pool) VALUES ('Whats up?', '55ce341c-1ee3-4984-a2fc-d27a52dc0cd8' :: uuid, '57d1c1f0-f1cb-4e3f-b3eb-5ce53b593958' :: uuid);
+INSERT INTO
+    public.challenge_pool_user (id, challenge_pool, user_id)
+VALUES
+    (
+        '4e5e689a-a09c-4e20-858c-14d442251457' :: uuid,
+        '57d1c1f0-f1cb-4e3f-b3eb-5ce53b593958' :: uuid,
+        '55ce341c-1ee3-4984-a2fc-d27a52dc0cd8' :: uuid
+    );
 
-INSERT INTO public.challenge_pools (description,"owner") VALUES ('challenge pool for deletion','6a4cb762-5ddd-46a0-9db1-46684fe04daa');
+INSERT INTO
+    public.open_questions(id, question_text, "owner", challenge_pool)
+VALUES
+    (
+        'f7143606-7831-4e4a-ae4c-936265bcbc73' :: uuid,
+        'Whats up?',
+        '55ce341c-1ee3-4984-a2fc-d27a52dc0cd8' :: uuid,
+        '57d1c1f0-f1cb-4e3f-b3eb-5ce53b593958' :: uuid
+    );
 
-INSERT INTO public.invite_codes(code, challenge_pool, "owner", valid_until) values ('GNRLWISDOM', '57d1c1f0-f1cb-4e3f-b3eb-5ce53b593958' :: uuid, '6a4cb762-5ddd-46a0-9db1-46684fe04daa' :: uuid,'2032-01-28 21:04:33.009');
+INSERT INTO
+    public.correct_open_answers (answer_text, open_question, "owner")
+VALUES
+    (
+        'Not much, bro.',
+        'f7143606-7831-4e4a-ae4c-936265bcbc73' :: uuid,
+        '55ce341c-1ee3-4984-a2fc-d27a52dc0cd8' :: uuid
+    );
+
+INSERT INTO
+    public.challenge_pools (description, "owner")
+VALUES
+    (
+        'challenge pool for deletion',
+        '6a4cb762-5ddd-46a0-9db1-46684fe04daa'
+    );
+
+INSERT INTO
+    public.invite_codes(code, challenge_pool, "owner", valid_until)
+values
+    (
+        'GNRLWISDOM',
+        '57d1c1f0-f1cb-4e3f-b3eb-5ce53b593958' :: uuid,
+        '6a4cb762-5ddd-46a0-9db1-46684fe04daa' :: uuid,
+        '2032-01-28 21:04:33.009'
+    );

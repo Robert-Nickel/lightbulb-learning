@@ -42,6 +42,14 @@ Then start a development server with:
 npm run dev
 ```
 
+### Testing
+
+- Install the [official Playwright Plugin for VSC](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright) for some nice tooling like debugging.
+- Use the Page Object Pattern (check performancePage.ts for an example).
+- Use `npm run test` to execute the existing tests
+- Use `npx playwright codegen` if that helps creating new tests.
+- Add the data you need for testing in seed.sql.
+
 ## Connect to hosted supabase
 
 Connect to LightbulbLearningDev

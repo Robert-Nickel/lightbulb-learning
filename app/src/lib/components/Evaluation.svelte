@@ -18,6 +18,7 @@
 {#if changing}
 	<div class="flex">
 		<input
+			id="evaluation-input"
 			style="max-width: 3.5em; font-size: 1.2rem; font-weight: bold;"
 			class="mr-1"
 			bind:value={evaluationInput}
@@ -41,7 +42,9 @@
 	</div>
 {:else}
 	<div class="flex">
-		<p class="mr-4" style="font-size: 1.2rem;font-weight: bold; margin-top: 0.6em;">{latestEvaluation}%</p>
+		<p id="latest-evaluation" class="mr-4" style="font-size: 1.2rem;font-weight: bold; margin-top: 0.6em;">
+			{latestEvaluation}%
+		</p>
 		<button
 			class="w-24 h-12 outline"
 			on:click={() => {

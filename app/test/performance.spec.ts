@@ -32,8 +32,9 @@ test.describe('Evaluations', () => {
     await performancePage.changeButton.click()
     await performancePage.evaluationInput.fill("33")
     await performancePage.saveButton.click()
-    // display without page reload
+    // display without page reload as latest evaluation
     await expect(performancePage.latestEvaluation).toHaveText("33%")
+    // display without page reload in list
     await expect(performancePage.evaluation.evaluationText).toHaveText("Reached 33%")
 
     await performancePage.goto(EL_STUDENTO)

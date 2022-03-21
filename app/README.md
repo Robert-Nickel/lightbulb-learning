@@ -43,4 +43,10 @@ psql -h db.ckjsuzpqlhcjbonsnuzp.supabase.co -U postgres
 
 Connect to LightbulbLearning (PROD)
 ```bash
-psql -h db.rkpsxesguhibbzhylmsd.supabase.co -U postgres```
+psql -h db.rkpsxesguhibbzhylmsd.supabase.co -U postgres
+```
+
+## Backup
+Create a PROD backup: `pg_dump 'postgres://postgres:[PASSWORD]@db.rkpsxesguhibbzhylmsd.supabase.co:5432/postgres' > database-dump.sql`
+
+Restore a PROD backup: `psql 'postgres://postgres:[PASSWORD]@db.rkpsxesguhibbzhylmsd.supabase.co:5432/postgres' < database-dump.sql`

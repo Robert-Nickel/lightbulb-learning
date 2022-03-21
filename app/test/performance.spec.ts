@@ -10,7 +10,7 @@ test.describe('Performances', () => {
   test('should display open question performance', async ({ page }) => {
     const performancePage = new PerformancePage(page);
     await performancePage.goto(EL_STUDENTO)
-    await expect(performancePage.openQuestionPerformance.metadata).toContainText("- Open Question - 0 likes") // ignore date and time
+    await expect(performancePage.openQuestionPerformance.metadata).toHaveText("- Open Question - 0 likes") // ignore date and time
     await expect(performancePage.openQuestionPerformance.questionText).toHaveText("Whats up?")
     await expect(performancePage.openQuestionPerformance.answerText).toHaveText("- Not much, bro.")
   });
@@ -25,17 +25,22 @@ test.describe('Evaluations', () => {
     await expect(performancePage.changeButton).toBeVisible();
   });
 
-  test('should show new evaluation after creation', async ({ page }) => {
+  test('should show new evaluation after creating it', async ({ page }) => {
     const performancePage = new PerformancePage(page);
     await performancePage.goto(EL_STUDENTO)
     await page.waitForTimeout(1_000)
     await performancePage.changeButton.click()
     await performancePage.evaluationInput.fill("33")
     await performancePage.saveButton.click()
+    // display without page reload
     await expect(performancePage.latestEvaluation).toHaveText("33%")
-    // should also be displayed after page refresh
+    await expect(performancePage.evaluation.evaluationText).toHaveText("Reached 33%")
+
     await performancePage.goto(EL_STUDENTO)
     await page.waitForTimeout(1_000)
+    // display with page refresh as latest evaluation
     await expect(performancePage.latestEvaluation).toHaveText("33%")
+    // display with page refresh in list
+    await expect(performancePage.evaluation.evaluationText).toHaveText("Reached 33%")
   })
 })

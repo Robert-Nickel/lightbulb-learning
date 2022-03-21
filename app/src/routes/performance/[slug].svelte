@@ -101,7 +101,7 @@
 				<h4 class="mt-2 mb-0">{performance.feedbackText}</h4>
 			{:else if performance.percentage}
 				<small>- Evaluation </small>
-				<h4 class="mt-2 mb-0">
+				<h4 class="mt-2 mb-0" id="evaluation-text">
 					{#if performance.percentage > 0}Reached {/if}{performance.percentage}%
 				</h4>
 			{/if}

@@ -1,9 +1,9 @@
 import { test, expect } from '@playwright/test';
-import { login } from './test_login';
+import { loginStudent } from './testLogin';
 
 test.describe('Login', () => {
   test('should allow me to login and display challenge pools', async ({ page }) => {
-    await login(page)
+    await loginStudent(page)
     await expect(page.locator('h1')).toHaveText('Challenge Pools');
   });
 })

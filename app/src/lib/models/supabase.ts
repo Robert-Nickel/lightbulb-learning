@@ -303,6 +303,102 @@ export interface paths {
       };
     };
   };
+  "/evaluations": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.evaluations.id"];
+          challenge_pool_user?: parameters["rowFilter.evaluations.challenge_pool_user"];
+          percentage?: parameters["rowFilter.evaluations.percentage"];
+          created_at?: parameters["rowFilter.evaluations.created_at"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["evaluations"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** evaluations */
+          evaluations?: definitions["evaluations"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.evaluations.id"];
+          challenge_pool_user?: parameters["rowFilter.evaluations.challenge_pool_user"];
+          percentage?: parameters["rowFilter.evaluations.percentage"];
+          created_at?: parameters["rowFilter.evaluations.created_at"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.evaluations.id"];
+          challenge_pool_user?: parameters["rowFilter.evaluations.challenge_pool_user"];
+          percentage?: parameters["rowFilter.evaluations.percentage"];
+          created_at?: parameters["rowFilter.evaluations.created_at"];
+        };
+        body: {
+          /** evaluations */
+          evaluations?: definitions["evaluations"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
   "/invite_codes": {
     get: {
       parameters: {
@@ -1748,6 +1844,28 @@ export interface definitions {
      */
     created_at: string;
   };
+  evaluations: {
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     * @default extensions.uuid_generate_v4()
+     */
+    id: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `challenge_pool_user.id`.<fk table='challenge_pool_user' column='id'/>
+     */
+    challenge_pool_user: string;
+    /** Format: smallint */
+    percentage: number;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at: string;
+  };
   invite_codes: {
     /**
      * Format: uuid
@@ -2178,6 +2296,16 @@ export interface parameters {
   "rowFilter.correct_open_answers.owner": string;
   /** Format: timestamp with time zone */
   "rowFilter.correct_open_answers.created_at": string;
+  /** @description evaluations */
+  "body.evaluations": definitions["evaluations"];
+  /** Format: uuid */
+  "rowFilter.evaluations.id": string;
+  /** Format: uuid */
+  "rowFilter.evaluations.challenge_pool_user": string;
+  /** Format: smallint */
+  "rowFilter.evaluations.percentage": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.evaluations.created_at": string;
   /** @description invite_codes */
   "body.invite_codes": definitions["invite_codes"];
   /** Format: uuid */

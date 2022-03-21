@@ -558,6 +558,24 @@ export async function deleteOpenQuestionLike(openQuestionId: string) {
 	printIf(error);
 }
 
+export async function fetchEvaluations(challengePoolUserId: string): Promise<EvaluationType[]> {
+	const { data, error } = await supabase
+		.from<EvaluationTypeDB>(evaluationsTable)
+		.select()
+		.eq('challenge_pool_user', challengePoolUserId)
+	printIf(error);
+	return keysToCamelCase(data);
+}
+
+export async function saveEvaluation(challengePoolUserId: string, percentage: number): Promise<EvaluationType> {
+	const { data, error } = await supabase
+		.from<EvaluationTypeDB>(evaluationsTable)
+		.insert({ challenge_pool_user: challengePoolUserId, percentage })
+		.single();
+	printIf(error);
+	return keysToCamelCase(data);
+}
+
 function printIf(error) {
 	if (error) console.error(error);
 }
@@ -581,6 +599,7 @@ export const openFeedbackPerformancesView = 'open_feedback_performances';
 export const topicsTable = 'topics';
 export const openQuestionTopicTable = 'open_question_topic';
 export const openQuestionLikesTable = 'open_question_likes';
+export const evaluationsTable = 'evaluations';
 
 export type ChallengePoolType = CamelCasedPropertiesDeep<definitions['challenge_pools']>;
 export type OpenQuestionDraftType = CamelCasedPropertiesDeep<definitions['open_question_drafts']>;
@@ -605,6 +624,7 @@ export type OpenFeedbackPerformanceType = CamelCasedPropertiesDeep<
 export type TopicType = CamelCasedPropertiesDeep<definitions['topics']>;
 export type OpenQuestionTopicType = CamelCasedPropertiesDeep<definitions['open_question_topic']>;
 export type OpenQuestionLikeType = CamelCasedPropertiesDeep<definitions['open_question_likes']>;
+export type EvaluationType = CamelCasedPropertiesDeep<definitions['evaluations']>;
 
 export type ChallengePoolTypeDB = definitions['challenge_pools'];
 export type OpenQuestionDraftTypeDB = definitions['open_question_drafts'];
@@ -625,3 +645,4 @@ export type OpenFeedbackPerformanceTypeDB = definitions['open_feedback_performan
 export type TopicTypeDB = definitions['topics'];
 export type OpenQuestionTopicTypeDB = definitions['open_question_topic'];
 export type OpenQuestionLikeTypeDB = definitions['open_question_likes'];
+export type EvaluationTypeDB = definitions['evaluations'];

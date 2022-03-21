@@ -1,8 +1,8 @@
-import { test, expect, Page } from '@playwright/test';
-import { login } from './test_login';
+import { test, expect } from '@playwright/test';
+import { loginStudent} from './testLogin';
 
 test.beforeEach(async ({ page }) => {
-  await login(page)
+  await loginStudent(page)
 });
 
 test.describe('New Challenge Pool', () => {

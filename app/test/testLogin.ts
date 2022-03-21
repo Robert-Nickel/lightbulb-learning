@@ -3,15 +3,15 @@ import * as jwt from 'jsonwebtoken';
 const jwtSecret = 'super-secret-jwt-token-with-at-least-32-characters-long';
 export const student1 = {
     email: 'll-student1@discardmail.com',
-    id: '6e0887e2-97da-40d9-a8ee-dea3cdad54f9'
+    id: '6a4cb762-5ddd-46a0-9db1-46684fe04daa'
 };
 
-export const login = async (page) => {
-    await page.goto(getLoginUrl(), { waitUntil: 'networkidle' });
+export const loginStudent = async (page) => {
+    await page.goto(getLoginUrl(student1), { waitUntil: 'networkidle' });
     await page.goto('http://localhost:3000');
 }
 
-const getLoginUrl = () => {
+const getLoginUrl = (person) => {
     const now = new Date();
     now.setMinutes(now.getMinutes() - 10); // does not fix the issue: 1 minute buffer to avoid clock sync issues with server (not needed when we run server locally)
     const exp = now.setHours(now.getHours() + 1);
@@ -19,8 +19,8 @@ const getLoginUrl = () => {
         {
             aud: 'authenticated',
             exp,
-            sub: student1.id,
-            email: student1.email,
+            sub: person.id,
+            email: person.email,
             phone: '',
             app_metadata: {
                 provider: 'email',

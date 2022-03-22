@@ -4,11 +4,11 @@
 	export let sidebar = false;
 </script>
 
-<header class="flex p-2 items-center text-white">
+<header class="flex p-2 items-center text-white fixed w-full" style="background-color: var(--background-color)">
 	<nav class="flex">
 		<Hamburger bind:open={sidebar} />
 	</nav>
-	<nav><a href={routes.root} class="text-white mb-0.5" sveltekit:prefetch>Lightbulb Learning</a></nav>
+	<nav><a href={routes.root} class="text-white" sveltekit:prefetch>Lightbulb Learning</a></nav>
 </header>
 
 <!--

@@ -38,9 +38,9 @@ export class OpenQuestionPerformance {
   readonly answerText: Locator;
 
   constructor(page: Page) {
-    this.metadata = page.locator('text=/.*- Open Question -.*/gm');
-    this.questionText = page.locator('id=oqp-question-text');
-    this.answerText = page.locator('id=oqp-answer-text');
+    this.metadata = page.locator('text=/.*- Open Question -.*/gm').first();
+    this.questionText = page.locator('id=oqp-question-text').first();
+    this.answerText = page.locator('id=oqp-answer-text').first();
   }
 }
 

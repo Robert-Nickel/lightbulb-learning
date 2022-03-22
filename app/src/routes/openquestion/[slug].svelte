@@ -155,7 +155,7 @@
 			</a>
 		{/each}
 
-		<Back text="Back to Challenge Pool" route="/challengepool/{openQuestion.challengePool}" />
+		<Back text="Back to Course" route="/course/{openQuestion.course}" />
 	{/if}
 </main>
 

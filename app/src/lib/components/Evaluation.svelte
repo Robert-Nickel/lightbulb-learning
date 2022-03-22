@@ -3,13 +3,13 @@
 	import { createEventDispatcher } from 'svelte';
 
 	const dispatch = createEventDispatcher();
-	export let challengePoolUserId: string;
+	export let courseUserId: string;
 	export let latestEvaluation: number = 0;
 	let evaluationInput: string = '0';
 	let changing = false;
 
-	async function save(challengePoolUserId: string, percentage: number) {
-		const savedEvaluation = await saveEvaluation(challengePoolUserId, percentage);
+	async function save(courseUserId: string, percentage: number) {
+		const savedEvaluation = await saveEvaluation(courseUserId, percentage);
 		latestEvaluation = savedEvaluation.percentage;
 		dispatch('evaluationAdded', savedEvaluation);
 	}
@@ -32,7 +32,7 @@
 					alert('Please enter a number.');
 				}
 				if (evaluationInputAsNumber >= 0 && evaluationInputAsNumber <= 200) {
-					save(challengePoolUserId, evaluationInputAsNumber);
+					save(courseUserId, evaluationInputAsNumber);
 					changing = false;
 				} else {
 					alert(evaluationInputAsNumber + " isn't between 0 and 120.");

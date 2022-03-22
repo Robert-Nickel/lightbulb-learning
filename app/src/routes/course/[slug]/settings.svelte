@@ -2,28 +2,28 @@
 	export const load: Load = async ({ session, params }) => {
 		const { user } = session as Session;
 		if (!user) return { status: 302, redirect: '/login' };
-		const challengePool = await fetchChallengePool(params.slug);
+		const course = await fetchCourse(params.slug);
 		return {
 			props: {
-				challengePool
+				course
 			}
 		};
 	};
 </script>
 
 <script lang="ts">
-	import DeleteChallengePool from '$lib/components/DeleteChallengePool.svelte';
+	import DeleteCourse from '$lib/components/DeleteCourse.svelte';
 	import ManageTopics from '$lib/components/ManageTopics.svelte';
 	import GenerateInviteCode from '$lib/components/GenerateInviteCode.svelte';
-	import { fetchChallengePool } from '$lib/supabaseClient';
+	import { fetchCourse } from '$lib/supabaseClient';
 	import type { Session } from '@supabase/supabase-js';
 	import type { Load } from '@sveltejs/kit';
 
-	export let challengePool;
+	export let course;
 </script>
 
-{#if challengePool}
-	<ManageTopics challengePoolId={challengePool.id} />
-	<GenerateInviteCode challengePoolId={challengePool.id} />
-	<DeleteChallengePool {challengePool} />
+{#if course}
+	<ManageTopics courseId={course.id} />
+	<GenerateInviteCode courseId={course.id} />
+	<DeleteCourse {course} />
 {/if}

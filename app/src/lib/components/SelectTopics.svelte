@@ -5,13 +5,13 @@
 	const dispatch = createEventDispatcher();
 
 
-	export let challengePoolId: string;
+	export let courseId: string;
 
 	type SelectableTopicType = { id: string; name: string; selected: boolean };
 	export let selectableTopics: SelectableTopicType[] = [];
 
 	onMount(async () => {
-		let topics = await fetchTopics(challengePoolId);
+		let topics = await fetchTopics(courseId);
 		topics.forEach((topic) => {
 			selectableTopics.push({
 				id: topic.id,

@@ -1,27 +1,27 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { routes } from '$lib/routes';
-	import { saveChallengePool } from '$lib/supabaseClient';
+	import { saveCourse } from '$lib/supabaseClient';
 
-	let createChallengePoolDescription = '';
+	let createCourseDescription = '';
 </script>
 
-<h1>Create Challenge Pool</h1>
+<h1>Create Course</h1>
 <div class="space-y-4">
 	<div class="flex justify-between space-x-2">
 		<div class="w-full">
 			<input
-				bind:value={createChallengePoolDescription}
+				bind:value={createCourseDescription}
 				class="w-full"
-				placeholder="Create new Challenge Pool"
+				placeholder="Create new Course"
 			/>
 		</div>
 		<div>
 			<button
 				on:click={async () => {
-					const challengePool = await saveChallengePool(createChallengePoolDescription);
-					createChallengePoolDescription = '';
-					goto(routes.challengePool(challengePool.id));
+					const course = await saveCourse(createCourseDescription);
+					createCourseDescription = '';
+					goto(routes.course(course.id));
 				}}
 				class="w-32">Create</button
 			>

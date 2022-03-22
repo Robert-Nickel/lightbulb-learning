@@ -2,23 +2,23 @@
 	import { goto } from '$app/navigation';
 	import { routes } from '$lib/routes';
 
-	import { joinChallengePool } from '$lib/supabaseClient';
+	import { joinCourse } from '$lib/supabaseClient';
 
 	let inviteCode: string;
 </script>
 
-<h1>Join Challenge Pool</h1>
+<h1>Join Course</h1>
 <div class="flex justify-between space-x-2">
 	<div class="w-full">
-		<input bind:value={inviteCode} type="text" placeholder="Invite Code to join existing Challenge Pool" />
+		<input bind:value={inviteCode} type="text" placeholder="Invite Code to join existing Course" />
 	</div>
 	<div>
 		<button
 			on:click={async () => {
 				if (inviteCode) {
-					const challengePoolId = await joinChallengePool(inviteCode);
-					if (challengePoolId != 'false') {
-						goto(routes.challengePool(challengePoolId));
+					const courseId = await joinCourse(inviteCode);
+					if (courseId != 'false') {
+						goto(routes.course(courseId));
 					}
 				}
 			}}

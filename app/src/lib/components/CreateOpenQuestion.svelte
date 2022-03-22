@@ -3,7 +3,7 @@
 	const dispatch = createEventDispatcher();
 	import Toast from './Toast.svelte';
 	import {
-		ChallengePoolType,
+		CourseType,
 		OpenQuestionDraftType,
 		saveOpenQuestionDraft,
 		updateOpenQuestionDraftWithAnswer,
@@ -17,7 +17,7 @@
 	import autosize from '../../../node_modules/autosize';
 	import SelectTopics from './SelectTopics.svelte';
 
-	export let challengePool: ChallengePoolType;
+	export let course: CourseType;
 
 	let openQuestionDraft: OpenQuestionDraftType;
 	let openQuestionDraftText = '';
@@ -26,7 +26,7 @@
 	let selectedTopics;
 
 	onMount(async () => {
-		openQuestionDraft = await fetchMyOpenQuestionDraft(challengePool.id);
+		openQuestionDraft = await fetchMyOpenQuestionDraft(course.id);
 	});
 </script>
 
@@ -43,7 +43,7 @@
 		<button
 			hidden={openQuestionDraftText.length == 0}
 			on:click={async () => {
-				openQuestionDraft = await saveOpenQuestionDraft(openQuestionDraftText, challengePool.id);
+				openQuestionDraft = await saveOpenQuestionDraft(openQuestionDraftText, course.id);
 				openQuestionDraftText = '';
 				// TODO: focus the answer input
 			}}
@@ -104,7 +104,7 @@
 					</button>
 				</div>
 				<SelectTopics
-					challengePoolId={challengePool.id}
+					courseId={course.id}
 					on:selectedTopicsChanged={(event) => {
 						selectedTopics = event.detail.selectedTopics;
 					}}
@@ -115,7 +115,7 @@
 					on:click={async () => {
 						const openQuestion = await saveOpenQuestion(
 							openQuestionDraft.questionText,
-							openQuestionDraft.challengePool
+							openQuestionDraft.course
 						);
 						if (selectedTopics && selectedTopics.length > 0) {
 							await saveOpenQuestionTopics(openQuestion.id, selectedTopics);

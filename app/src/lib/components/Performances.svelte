@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { ChallengePoolType, fetchMembers, MemberType } from '$lib/supabaseClient';
+	import { CourseType, fetchMembers, MemberType } from '$lib/supabaseClient';
 	import { routes } from '$lib/routes';
 
-	export let challengePool: ChallengePoolType;
+	export let course: CourseType;
 	let members: MemberType[] = [];
 
 	onMount(() => {
@@ -11,7 +11,7 @@
 	});
 
 	async function refresh() {
-		members = await fetchMembers(challengePool.id);
+		members = await fetchMembers(course.id);
 	}
 </script>
 

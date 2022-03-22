@@ -10,6 +10,12 @@ DELETE FROM
 DELETE FROM
     public.challenge_pools;
 
+DELETE FROM
+    public.challenge_pool_user;
+
+DELETE FROM
+    public.evaluations;
+
 INSERT INTO
     auth.users (
         id,
@@ -177,7 +183,7 @@ INSERT INTO
     public.challenge_pools (description, "owner")
 VALUES
     (
-        'challenge pool for deletion',
+        'course for deletion',
         '6a4cb762-5ddd-46a0-9db1-46684fe04daa'
     );
 

@@ -15,7 +15,7 @@
 			return { status: 302, redirect: '/welcome' };
 		}
 		if (user && profile) {
-			return { status: 302, redirect: '/challengepool' };
+			return { status: 302, redirect: '/course' };
 		}
 	};
 </script>

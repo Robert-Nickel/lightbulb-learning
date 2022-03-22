@@ -3,14 +3,14 @@
 		const { user } = session as Session;
 		if (!user) return { status: 302, redirect: '/login' };
 
-		const challengePoolUserId = params.slug;
-		const member = await fetchMember(challengePoolUserId);
+		const courseUserId = params.slug;
+		const member = await fetchMember(courseUserId);
 		let allPerformances: { createdAt: string }[] = (
-			await fetchOpenQuestionPerformances(challengePoolUserId)
+			await fetchOpenQuestionPerformances(courseUserId)
 		)
-			.concat(await fetchOpenAnswerPerformances(challengePoolUserId))
-			.concat(await fetchOpenFeedbackPerformances(challengePoolUserId))
-			.concat(await fetchEvaluations(challengePoolUserId));
+			.concat(await fetchOpenAnswerPerformances(courseUserId))
+			.concat(await fetchOpenFeedbackPerformances(courseUserId))
+			.concat(await fetchEvaluations(courseUserId));
 		allPerformances = sortChronologically(allPerformances);
 		let latestEvaluation;
 		for (let i = 0; i < allPerformances.length; i++) {
@@ -65,7 +65,7 @@
 
 {#if member}
 	<Evaluation
-		challengePoolUserId={member.id}
+		courseUserId={member.id}
 		{latestEvaluation}
 		on:evaluationAdded={(event) => {
 			allPerformances.push(event.detail);
@@ -110,5 +110,5 @@
 {/if}
 
 {#if member}
-	<Back text="Back to all Performances" route={routes.challengePoolPerformances(member.challengePool)} />
+	<Back text="Back to all Performances" route={routes.coursePerformances(member.course)} />
 {/if}

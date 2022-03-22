@@ -2,11 +2,11 @@
 	import { fetchTopics, saveTopic, TopicType } from '$lib/supabaseClient';
 	import { onMount } from 'svelte';
 
-	export let challengePoolId: string;
+	export let courseId: string;
 	let topics: TopicType[] = [];
 	let newTopicName = '';
 	onMount(async () => {
-		topics = await fetchTopics(challengePoolId);
+		topics = await fetchTopics(courseId);
 	});
 
 	async function createTopic() {
@@ -16,7 +16,7 @@
 				return;
 			}
 		}
-		let savedTopic = await saveTopic(challengePoolId, newTopicName);
+		let savedTopic = await saveTopic(courseId, newTopicName);
 		topics.push(savedTopic);
 		topics = topics;
 		newTopicName = '';

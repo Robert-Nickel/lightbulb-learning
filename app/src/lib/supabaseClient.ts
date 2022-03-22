@@ -80,8 +80,8 @@ export async function saveUniversity(name: string) {
 	return keysToCamelCase(data);
 }
 
-export async function fetchChallengePools(userId: string): Promise<ChallengePoolType[]> {
-	const { data, error } = await supabase.rpc('fetch_my_challenge_pools', {
+export async function fetchCourses(userId: string): Promise<CourseType[]> {
+	const { data, error } = await supabase.rpc('fetch_my_courses', {
 		user_id_input: userId
 	});
 
@@ -89,31 +89,31 @@ export async function fetchChallengePools(userId: string): Promise<ChallengePool
 	return keysToCamelCase(data);
 }
 
-export async function saveChallengePool(description: string): Promise<ChallengePoolType> {
+export async function saveCourse(description: string): Promise<CourseType> {
 	const { data, error } = await supabase
-		.from<ChallengePoolTypeDB>(challengePoolsTable)
+		.from<CourseTypeDB>(coursesTable)
 		.insert({ description, owner: supabase.auth.user().id })
 		.single();
 	printIf(error);
-	const challengePool: ChallengePoolType = keysToCamelCase(data);
-	await saveChallengePoolUser(challengePool.id);
-	return challengePool;
+	const course: CourseType = keysToCamelCase(data);
+	await saveCourseUser(course.id);
+	return course;
 }
 
-// only for the owner of a challenge pool.
-// Regular member must use the join challenge pool function.
-async function saveChallengePoolUser(challengePoolId: string) {
+// only for the owner of a course.
+// Regular member must use the join course function.
+async function saveCourseUser(courseId: string) {
 	const { data, error } = await supabase
-		.from<ChallengePoolUserTypeDB>(challengePoolUserTable)
-		.insert({ challenge_pool: challengePoolId, user_id: supabase.auth.user().id })
+		.from<CourseUserTypeDB>(courseUserTable)
+		.insert({ course: courseId, user_id: supabase.auth.user().id })
 		.single();
 	printIf(error);
 	return keysToCamelCase(data);
 }
 
-export async function fetchChallengePool(id: string): Promise<ChallengePoolType> {
+export async function fetchCourse(id: string): Promise<CourseType> {
 	const { data, error } = await supabase
-		.from<ChallengePoolTypeDB>(challengePoolsTable)
+		.from<CourseTypeDB>(coursesTable)
 		.select()
 		.eq('id', id)
 		.maybeSingle();
@@ -121,32 +121,32 @@ export async function fetchChallengePool(id: string): Promise<ChallengePoolType>
 	return keysToCamelCase(data);
 }
 
-export async function deleteChallengePool(id: string) {
-	const { error } = await supabase.from<ChallengePoolTypeDB>(challengePoolsTable).delete().eq('id', id);
+export async function deleteCourse(id: string) {
+	const { error } = await supabase.from<CourseTypeDB>(coursesTable).delete().eq('id', id);
 	printIf(error);
 }
 
-export async function fetchMyOpenQuestionDraft(challengePoolId: string): Promise<OpenQuestionDraftType> {
+export async function fetchMyOpenQuestionDraft(courseId: string): Promise<OpenQuestionDraftType> {
 	const { data, error } = await supabase
 		.from<OpenQuestionDraftTypeDB>(openQuestionDraftsTable)
 		.select()
 		.eq('owner', supabase.auth.user().id)
-		.eq('challenge_pool', challengePoolId);
+		.eq('course', courseId);
 	printIf(error);
 	return keysToCamelCase(data[0]);
 }
 
 export async function saveOpenQuestionDraft(
 	questionText: string,
-	challengePoolId: string
+	courseId: string
 ): Promise<OpenQuestionDraftType> {
-	console.log('saving open question draft: ' + questionText + ' challenge pool id: ' + challengePoolId);
+	console.log('saving open question draft: ' + questionText + ' course id: ' + courseId);
 
 	const { data, error } = await supabase
 		.from<OpenQuestionDraftTypeDB>(openQuestionDraftsTable)
 		.insert({
 			question_text: questionText,
-			challenge_pool: challengePoolId,
+			course: courseId,
 			owner: supabase.auth.user().id
 		})
 		.single();
@@ -183,11 +183,11 @@ export async function deleteOpenQuestionDraft(id: string) {
 	printIf(error);
 }
 
-export async function fetchOpenQuestions(challengePoolId): Promise<OpenQuestionType[]> {
+export async function fetchOpenQuestions(courseId): Promise<OpenQuestionType[]> {
 	const { data, error } = await supabase
 		.from<OpenQuestionTypeDB>(openQuestionsTable)
 		.select()
-		.eq('challenge_pool', challengePoolId);
+		.eq('course', courseId);
 	printIf(error);
 	return keysToCamelCase(data);
 }
@@ -204,13 +204,13 @@ export async function fetchOpenQuestion(id: string): Promise<OpenQuestionType> {
 
 export async function saveOpenQuestion(
 	questionText: string,
-	challengePoolId: string
+	courseId: string
 ): Promise<OpenQuestionType> {
 	const { data, error } = await supabase
 		.from<OpenQuestionTypeDB>(openQuestionsTable)
 		.insert({
 			question_text: questionText,
-			challenge_pool: challengePoolId,
+			course: courseId,
 			owner: supabase.auth.user().id
 		})
 		.single();
@@ -418,11 +418,11 @@ export async function saveOpenFeedback(
 	return keysToCamelCase(data);
 }
 
-export async function joinChallengePool(inviteCode: string): Promise<string> {
+export async function joinCourse(inviteCode: string): Promise<string> {
 	if (!inviteCode || inviteCode.length != 10) {
 		console.error('invalid invite code: ' + inviteCode);
 	}
-	const { data, error } = await supabase.rpc('join_challenge_pool', {
+	const { data, error } = await supabase.rpc('join_course', {
 		invite_code_input: inviteCode,
 		user_id_input: supabase.auth.user().id
 	});
@@ -430,14 +430,14 @@ export async function joinChallengePool(inviteCode: string): Promise<string> {
 	return data.toString();
 }
 
-export async function saveInviteCode(challengePoolId: string, code: string): Promise<InviteCodeType> {
+export async function saveInviteCode(courseId: string, code: string): Promise<InviteCodeType> {
 	const validUntil = new Date();
 	validUntil.setFullYear(2100); // do not expire links for now
 
 	const { data, error } = await supabase
 		.from<InviteCodeTypeDB>(inviteCodesTable)
 		.insert({
-			challenge_pool: challengePoolId,
+			course: courseId,
 			code,
 			valid_until: validUntil.toISOString(),
 			owner: supabase.auth.user().id
@@ -447,11 +447,11 @@ export async function saveInviteCode(challengePoolId: string, code: string): Pro
 	return keysToCamelCase(data);
 }
 
-export async function fetchMembers(challengePoolId: string): Promise<MemberType[]> {
+export async function fetchMembers(courseId: string): Promise<MemberType[]> {
 	const { data, error } = await supabase
 		.from<MemberTypeDB>(membersView)
 		.select()
-		.eq('challenge_pool', challengePoolId);
+		.eq('course', courseId);
 	printIf(error);
 	return keysToCamelCase(data);
 }
@@ -489,20 +489,20 @@ export async function fetchOpenFeedbackPerformances(id: string): Promise<OpenFee
 	return keysToCamelCase(data);
 }
 
-export async function fetchTopics(challengePoolId: string): Promise<TopicType[]> {
+export async function fetchTopics(courseId: string): Promise<TopicType[]> {
 	const { data, error } = await supabase
 		.from<TopicTypeDB>(topicsTable)
 		.select()
-		.eq('challenge_pool', challengePoolId);
+		.eq('course', courseId);
 	printIf(error);
 	return keysToCamelCase(data);
 }
 
-export async function saveTopic(challengePoolId: string, name: string): Promise<TopicType> {
+export async function saveTopic(courseId: string, name: string): Promise<TopicType> {
 	const { data, error } = await supabase
 		.from<TopicTypeDB>(topicsTable)
 		.insert({
-			challenge_pool: challengePoolId,
+			course: courseId,
 			name
 		})
 		.single();
@@ -558,19 +558,19 @@ export async function deleteOpenQuestionLike(openQuestionId: string) {
 	printIf(error);
 }
 
-export async function fetchEvaluations(challengePoolUserId: string): Promise<EvaluationType[]> {
+export async function fetchEvaluations(courseUserId: string): Promise<EvaluationType[]> {
 	const { data, error } = await supabase
 		.from<EvaluationTypeDB>(evaluationsTable)
 		.select()
-		.eq('challenge_pool_user', challengePoolUserId)
+		.eq('course_user', courseUserId)
 	printIf(error);
 	return keysToCamelCase(data);
 }
 
-export async function saveEvaluation(challengePoolUserId: string, percentage: number): Promise<EvaluationType> {
+export async function saveEvaluation(courseUserId: string, percentage: number): Promise<EvaluationType> {
 	const { data, error } = await supabase
 		.from<EvaluationTypeDB>(evaluationsTable)
-		.insert({ challenge_pool_user: challengePoolUserId, percentage })
+		.insert({ course_user: courseUserId, percentage })
 		.single();
 	printIf(error);
 	return keysToCamelCase(data);
@@ -580,7 +580,7 @@ function printIf(error) {
 	if (error) console.error(error);
 }
 
-export const challengePoolsTable = 'challenge_pools';
+export const coursesTable = 'courses';
 export const openQuestionDraftsTable = 'open_question_drafts';
 export const openQuestionsTable = 'open_questions';
 export const correctAnswersTable = 'correct_open_answers';
@@ -590,7 +590,7 @@ export const openFeedbackDraftsTable = 'open_feedback_drafts';
 export const openFeedbackTable = 'open_feedback';
 export const profilesTable = 'profiles';
 export const universitiesTable = 'universities';
-export const challengePoolUserTable = 'challenge_pool_user';
+export const courseUserTable = 'course_user';
 export const inviteCodesTable = 'invite_codes';
 export const membersView = 'members';
 export const openQuestionPerformancesView = 'open_question_performances';
@@ -601,7 +601,7 @@ export const openQuestionTopicTable = 'open_question_topic';
 export const openQuestionLikesTable = 'open_question_likes';
 export const evaluationsTable = 'evaluations';
 
-export type ChallengePoolType = CamelCasedPropertiesDeep<definitions['challenge_pools']>;
+export type CourseType = CamelCasedPropertiesDeep<definitions['courses']>;
 export type OpenQuestionDraftType = CamelCasedPropertiesDeep<definitions['open_question_drafts']>;
 export type OpenQuestionType = CamelCasedPropertiesDeep<definitions['open_questions']>;
 export type CorrectOpenAnswerType = CamelCasedPropertiesDeep<definitions['correct_open_answers']>;
@@ -611,7 +611,7 @@ export type OpenFeedbackDraftType = CamelCasedPropertiesDeep<definitions['open_f
 export type OpenFeedbackType = CamelCasedPropertiesDeep<definitions['open_feedback']>;
 export type ProfileType = CamelCasedPropertiesDeep<definitions['profiles']>;
 export type UniversityType = CamelCasedPropertiesDeep<definitions['universities']>;
-export type ChallengePoolUserType = CamelCasedPropertiesDeep<definitions['challenge_pool_user']>;
+export type CourseUserType = CamelCasedPropertiesDeep<definitions['course_user']>;
 export type InviteCodeType = CamelCasedPropertiesDeep<definitions['invite_codes']>;
 export type MemberType = CamelCasedPropertiesDeep<definitions['members']>;
 export type OpenQuestionPerformanceType = CamelCasedPropertiesDeep<
@@ -626,7 +626,7 @@ export type OpenQuestionTopicType = CamelCasedPropertiesDeep<definitions['open_q
 export type OpenQuestionLikeType = CamelCasedPropertiesDeep<definitions['open_question_likes']>;
 export type EvaluationType = CamelCasedPropertiesDeep<definitions['evaluations']>;
 
-export type ChallengePoolTypeDB = definitions['challenge_pools'];
+export type CourseTypeDB = definitions['courses'];
 export type OpenQuestionDraftTypeDB = definitions['open_question_drafts'];
 export type OpenQuestionTypeDB = definitions['open_questions'];
 export type CorrectOpenAnswerTypeDB = definitions['correct_open_answers'];
@@ -636,7 +636,7 @@ export type OpenFeedbackDraftTypeDB = definitions['open_feedback_drafts'];
 export type OpenFeedbackTypeDB = definitions['open_feedback'];
 export type ProfileTypeDB = definitions['profiles'];
 export type UniversityTypeDB = definitions['universities'];
-export type ChallengePoolUserTypeDB = definitions['challenge_pool_user'];
+export type CourseUserTypeDB = definitions['course_user'];
 export type InviteCodeTypeDB = definitions['invite_codes'];
 export type MemberTypeDB = definitions['members'];
 export type OpenQuestionPerformanceTypeDB = definitions['open_question_performances'];

@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { saveInviteCode } from '$lib/supabaseClient';
-	export let challengePoolId;
+	export let courseId;
 	let inviteCode: string;
 </script>
 
 <button
 	on:click={async () => {
 		const randomTenCharString = Math.random().toString(16).substring(2, 12);
-		inviteCode = (await saveInviteCode(challengePoolId, randomTenCharString)).code;
+		inviteCode = (await saveInviteCode(courseId, randomTenCharString)).code;
 		navigator.clipboard.writeText(inviteCode);
 	}}
 	class="secondary outline w-auto my-4"

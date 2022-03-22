@@ -23,8 +23,8 @@ export class PerformancePage {
     this.evaluation = new Evaluation(this.page);
   }
 
-  async goto(challengePoolUserId: string) {
-    await this.page.goto('/performance/' + challengePoolUserId);
+  async goto(courseUserId: string) {
+    await this.page.goto('/performance/' + courseUserId);
   }
 
   async hasPerformanceEntry(text: string) {

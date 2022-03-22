@@ -2,10 +2,10 @@
 	export const load: Load = async ({ session, params }) => {
 		const { user } = session as Session;
 		if (!user) return { status: 302, redirect: '/login' };
-		const challengePoolId = params.slug;
-		const challengePool = await fetchChallengePool(challengePoolId);
-		const openQuestions = await fetchOpenQuestions(challengePoolId);
-		const topics = await fetchTopics(challengePoolId);
+		const courseId = params.slug;
+		const course = await fetchCourse(courseId);
+		const openQuestions = await fetchOpenQuestions(courseId);
+		const topics = await fetchTopics(courseId);
 		const openQuestionIds = openQuestions.map((openQuestion) => {
 			return openQuestion.id;
 		});
@@ -13,7 +13,7 @@
 		const openQuestionLikes = await fetchOpenQuestionLikes(openQuestionIds, user.id);
 		return {
 			props: {
-				challengePool,
+				course,
 				openQuestions,
 				topics,
 				openQuestionTopics,
@@ -29,7 +29,7 @@
 	import { user } from '$lib/stores/user';
 	import {
 		deleteOpenQuestionLike,
-		fetchChallengePool,
+		fetchCourse,
 		fetchOpenQuestionLikes,
 		fetchOpenQuestions,
 		fetchOpenQuestionTopics,
@@ -44,7 +44,7 @@
 	import type { Session } from '@supabase/supabase-js';
 	import FilterByTopics from '$lib/components/FilterByTopics.svelte';
 
-	export let challengePool;
+	export let course;
 	export let openQuestions;
 	export let topics: TopicType[];
 	export let openQuestionTopics: OpenQuestionTopicType[];
@@ -53,7 +53,7 @@
 	let filteredTopics: string[] = [];
 
 	async function refreshOpenQuestions() {
-		openQuestions = await fetchOpenQuestions(challengePool.id);
+		openQuestions = await fetchOpenQuestions(course.id);
 	}
 
 	function isFiltered(openQuestion: OpenQuestionType): boolean {
@@ -77,8 +77,8 @@
 	}
 </script>
 
-{#if challengePool}
-	<CreateOpenQuestion {challengePool} on:openQuestionCommitted={refreshOpenQuestions} />
+{#if course}
+	<CreateOpenQuestion {course} on:openQuestionCommitted={refreshOpenQuestions} />
 
 	{#if openQuestions.length > 0}
 		<h3 class="mt-10">Open Questions</h3>

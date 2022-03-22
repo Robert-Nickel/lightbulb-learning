@@ -5,7 +5,7 @@
 		return {
 			props: {
 				user,
-				challengePools: await fetchChallengePools(user.id)
+				courses: await fetchCourses(user.id)
 			}
 		};
 	};
@@ -13,17 +13,17 @@
 
 <script lang="ts">
 	import { routes } from '$lib/routes';
-	import { fetchChallengePools, ChallengePoolType } from '$lib/supabaseClient';
+	import { fetchCourses, CourseType } from '$lib/supabaseClient';
 	import type { Session } from '@supabase/supabase-js';
 	import type { Load } from '@sveltejs/kit';
 
-	export let challengePools: ChallengePoolType[] = [];
+	export let courses: CourseType[] = [];
 </script>
 
 <main class="container py-4 max-w-screen-sm">
-	<h1 id="challenge-pools-title">Challenge Pools</h1>
-	{#if challengePools.length == 0}<div class="space-y-4">
-			<p>You don't have a challenge pool yet! Join one with an invite code, or create one yourself.</p>
+	<h1 id="courses-title">Courses</h1>
+	{#if courses.length == 0}<div class="space-y-4">
+			<p>You don't have a course yet! Join one with an invite code, or create one yourself.</p>
 
 			<p>
 				Use <a
@@ -31,19 +31,19 @@
 						navigator.clipboard.writeText('GNRLWISDOM');
 					}}
 					data-tooltip="Copy to Clipboard">GNRLWISDOM</a
-				> to see an example of what a challenge pool is.
+				> to see an example of what a course is.
 			</p>
 
 			<div class="flex space-x-4 pt-4">
 				<a href={routes.join} role="button" class="outline" sveltekit:prefetch>Join with invite code</a>
-				<a href={routes.create} role="button" class="outline" sveltekit:prefetch>Create Challenge Pool</a>
+				<a href={routes.create} role="button" class="outline" sveltekit:prefetch>Create Course</a>
 			</div>
 		</div>
 	{:else}
-		{#each challengePools as challengePool}
-			<a href={routes.challengePool(challengePool.id)} class="light-link" sveltekit:prefetch>
+		{#each courses as course}
+			<a href={routes.course(course.id)} class="light-link" sveltekit:prefetch>
 				<article class="hoverable">
-					{challengePool.description}
+					{course.description}
 				</article>
 			</a>
 		{/each}

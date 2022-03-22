@@ -4,10 +4,10 @@
 		if (!user) return { status: 302, redirect: '/login' };
 		const pathSegments = url.pathname.split('/');
 		const routeLastSegment = pathSegments[pathSegments.length - 1];
-		const challengePool = await fetchChallengePool(params.slug);
+		const course = await fetchCourse(params.slug);
 		return {
 			props: {
-				challengePool,
+				course,
 				routeLastSegment
 			}
 		};
@@ -16,7 +16,7 @@
 
 <script lang="ts">
 	import Back from '$lib/components/Back.svelte';
-	import { ChallengePoolType, fetchChallengePool } from '$lib/supabaseClient';
+	import { CourseType, fetchCourse } from '$lib/supabaseClient';
 	import type { Session } from '@supabase/supabase-js';
 	import type { Load } from '@sveltejs/kit';
 	import { user } from '$lib/stores/user';
@@ -29,7 +29,7 @@
 		Settings
 	}
 
-	export let challengePool: ChallengePoolType;
+	export let course: CourseType;
 	export let routeLastSegment: string;
 	$: activeTab =
 		routeLastSegment == 'settings'
@@ -40,15 +40,15 @@
 </script>
 
 <main class="container">
-	{#if challengePool}
-		<h1>{challengePool.description}</h1>
+	{#if course}
+		<h1>{course.description}</h1>
 
-		{#if $user.id == challengePool.owner}
+		{#if $user.id == course.owner}
 			<header class="flex p-2 space-x-4 border-b-2 ">
 				<nav
 					class={activeTab == Tab.OpenQuestions ? 'activeNavElement' : ''}
 					on:click={() => {
-						goto(routes.challengePool(challengePool.id));
+						goto(routes.course(course.id));
 						activeTab = Tab.OpenQuestions;
 					}}
 				>
@@ -57,7 +57,7 @@
 				<nav
 					class={activeTab == Tab.Performances ? 'activeNavElement' : ''}
 					on:click={() => {
-						goto(routes.challengePoolPerformances(challengePool.id));
+						goto(routes.coursePerformances(course.id));
 						activeTab = Tab.Performances;
 					}}
 				>
@@ -66,7 +66,7 @@
 				<nav
 					class={activeTab == Tab.Settings ? 'activeNavElement' : ''}
 					on:click={() => {
-						goto(routes.challengePoolSettings(challengePool.id));
+						goto(routes.courseSettings(course.id));
 						activeTab = Tab.Settings;
 					}}
 				>
@@ -78,7 +78,7 @@
 		<slot />
 	{/if}
 
-	<Back route="/challengepool" text="Back to all Challenge Pools" />
+	<Back route="/course" text="Back to all Courses" />
 </main>
 
 <style>

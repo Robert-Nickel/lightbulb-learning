@@ -25,6 +25,7 @@
 
 	onMount(async () => {
 		const profile = await fetchProfile($user.id);
+		console.log({profile})
 		if (profile) {
 			profileId = profile.id;
 			firstName = profile.firstName;

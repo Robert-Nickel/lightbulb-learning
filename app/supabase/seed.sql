@@ -8,13 +8,16 @@ DELETE FROM
     public.universities;
 
 DELETE FROM
-    public.challenge_pools;
+    public.courses;
 
 DELETE FROM
-    public.challenge_pool_user;
+    public.course_user;
 
 DELETE FROM
     public.evaluations;
+
+DELETE FROM
+    public.open_questions;
 
 INSERT INTO
     auth.users (
@@ -143,7 +146,7 @@ VALUES
     );
 
 INSERT INTO
-    public.challenge_pools (id, description, "owner")
+    public.courses (id, description, "owner")
 VALUES
     (
         '57d1c1f0-f1cb-4e3f-b3eb-5ce53b593958' :: uuid,
@@ -152,7 +155,7 @@ VALUES
     );
 
 INSERT INTO
-    public.challenge_pool_user (id, challenge_pool, user_id)
+    public.course_user (id, course, user_id)
 VALUES
     (
         '4e5e689a-a09c-4e20-858c-14d442251457' :: uuid,
@@ -161,7 +164,7 @@ VALUES
     );
 
 INSERT INTO
-    public.open_questions(id, question_text, "owner", challenge_pool)
+    public.open_questions(id, question_text, "owner", course)
 VALUES
     (
         'f7143606-7831-4e4a-ae4c-936265bcbc73' :: uuid,
@@ -180,7 +183,7 @@ VALUES
     );
 
 INSERT INTO
-    public.challenge_pools (description, "owner")
+    public.courses (description, "owner")
 VALUES
     (
         'course for deletion',
@@ -188,7 +191,7 @@ VALUES
     );
 
 INSERT INTO
-    public.invite_codes(code, challenge_pool, "owner", valid_until)
+    public.invite_codes(code, course, "owner", valid_until)
 values
     (
         'GNRLWISDOM',

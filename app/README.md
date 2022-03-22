@@ -4,6 +4,8 @@
 
 ### Local supabase instance
 
+[Official Reference](https://supabase.com/docs/guides/local-development)
+
 You can run your local instance of supabase by following these steps:
 
 1. Install the supabase CLI on your system
@@ -20,7 +22,7 @@ supabase start
 
 ### Developing tables
 1. Change everything directly on your local supabase.
-2. Commit the changes with `supabase db commit what-you-did-goes-here`. It shows up in the migrations folder now.
+2. Commit the changes with `supabase db commit what_you_did_goes_here`. It shows up in the migrations folder now.
 3. Run `supabase db reset` to verify that the new migration does not generate errors.
 4. Generate the models in the frontend by executing `npm run genTypes`.
 5. Add the constants and functions you need in `src/lib/supabaseClient.ts`.

@@ -11,7 +11,7 @@
 <Navbar bind:sidebar={sidebarOpen} />
 
 {#if $user}
-	<main class="container pb-4 pt-16 max-w-screen-sm">
+	<main class="container py-4 max-w-screen-sm">
 		<slot />
 	</main>
 {:else}

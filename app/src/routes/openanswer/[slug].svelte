@@ -62,6 +62,8 @@
 
 <main class="container">
 	{#if openAnswer && openQuestion}
+		<Back text="Back to Open Question" route="/openquestion/{openQuestion.id}" />
+
 		{#if openQuestion.owner == $user.id}
 			<div class="mb-4 yours pl-4">Your Question: {openQuestion.questionText}</div>
 		{:else}
@@ -142,12 +144,10 @@
 					>
 				</div>
 				<i
-					>The feedback is private - only you, the owner of the answer and the owner of the course can
-					see it.</i
+					>The feedback is private - only you, the owner of the answer and the owner of the course can see it.</i
 				>
 			{/if}
 		{/if}
-		<Back text="Back to Open Question" route="/openquestion/{openQuestion.id}" />
 	{/if}
 </main>
 

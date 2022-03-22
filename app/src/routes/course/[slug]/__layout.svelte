@@ -39,7 +39,10 @@
 			: Tab.OpenQuestions;
 </script>
 
+
 <main class="container">
+	<Back route="/course" text="Back to all Courses" />
+
 	{#if course}
 		<h1>{course.description}</h1>
 
@@ -78,7 +81,6 @@
 		<slot />
 	{/if}
 
-	<Back route="/course" text="Back to all Courses" />
 </main>
 
 <style>

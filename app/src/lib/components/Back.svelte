@@ -3,7 +3,7 @@
 	export let route = '/';
 </script>
 
-<a class="back mt-8 text-sm block" href={route} sveltekit:prefetch>
+<a class="back my-8 text-sm block" href={route} sveltekit:prefetch>
 	{text}
 </a>
 

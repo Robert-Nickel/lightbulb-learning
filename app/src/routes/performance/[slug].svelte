@@ -5,9 +5,7 @@
 
 		const courseUserId = params.slug;
 		const member = await fetchMember(courseUserId);
-		let allPerformances: { createdAt: string }[] = (
-			await fetchOpenQuestionPerformances(courseUserId)
-		)
+		let allPerformances: { createdAt: string }[] = (await fetchOpenQuestionPerformances(courseUserId))
 			.concat(await fetchOpenAnswerPerformances(courseUserId))
 			.concat(await fetchOpenFeedbackPerformances(courseUserId))
 			.concat(await fetchEvaluations(courseUserId));
@@ -61,6 +59,10 @@
 	}
 </script>
 
+{#if member}
+	<Back text="Back to all Performances" route={routes.coursePerformances(member.course)} />
+{/if}
+
 {#if member}<h1>Performance of {member.firstName} {member.lastName}</h1>{/if}
 
 {#if member}
@@ -107,8 +109,4 @@
 			{/if}
 		</article>
 	{/each}
-{/if}
-
-{#if member}
-	<Back text="Back to all Performances" route={routes.coursePerformances(member.course)} />
 {/if}

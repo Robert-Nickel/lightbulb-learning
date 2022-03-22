@@ -5,14 +5,18 @@
 
 		const questionId = params.slug;
 		const openAnswersOfOthersWithNonLatest = await fetchOpenAnswersOfOthers(questionId, user.id);
+		const openQuestion = await fetchOpenQuestion(questionId);
+		const courseDescription = await (await fetchCourse(openQuestion.course)).description;
+
 		return {
 			props: {
 				user,
-				openQuestion: await fetchOpenQuestion(questionId),
+				openQuestion,
 				correctOpenAnswer: await fetchCorrectOpenAnswer(questionId, user.id),
 				myOpenAnswerDraft: await fetchMyOpenAnswerDraft(questionId, user.id),
 				myOpenAnswer: await fetchLatestOpenAnswer(questionId, user.id),
-				openAnswersOfOthers: await filterNonLatest(openAnswersOfOthersWithNonLatest)
+				openAnswersOfOthers: await filterNonLatest(openAnswersOfOthersWithNonLatest),
+				courseDescription
 			}
 		};
 	};
@@ -58,7 +62,8 @@
 		supabase,
 		fetchLatestOpenAnswer,
 		CorrectOpenAnswerType,
-		fetchCorrectOpenAnswer
+		fetchCorrectOpenAnswer,
+		fetchCourse
 	} from '$lib/supabaseClient';
 	import { user } from '$lib/stores/user';
 	import autosize from '../../../node_modules/autosize';
@@ -71,6 +76,7 @@
 	export let myOpenAnswerDraft: OpenAnswerDraftType;
 	export let myOpenAnswer: OpenAnswerType;
 	export let openAnswersOfOthers: OpenAnswerType[] = [];
+	export let courseDescription: string;
 
 	let openAnswerDraftText = '';
 	let toast;
@@ -78,6 +84,8 @@
 
 <main class="container">
 	{#if openQuestion}
+		<Back text="Back to {courseDescription}" route="/course/{openQuestion.course}" />
+
 		{#if openQuestion.owner == $user.id}
 			<h1 class="yours pl-4">{openQuestion.questionText}</h1>
 			{#if correctOpenAnswer}
@@ -154,8 +162,6 @@
 				</article>
 			</a>
 		{/each}
-
-		<Back text="Back to Course" route="/course/{openQuestion.course}" />
 	{/if}
 </main>
 

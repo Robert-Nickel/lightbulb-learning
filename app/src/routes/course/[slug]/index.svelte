@@ -101,7 +101,7 @@
 							{openQuestion.questionText}
 							{#if isLiked(openQuestion.id)}
 								<button
-									class="outline h-12 ml-4 p-2 w-16"
+									class="outline h-12 ml-4 mb-0 p-2 w-16"
 									on:click|preventDefault={async () => {
 										await deleteOpenQuestionLike(openQuestion.id);
 										openQuestionLikes = openQuestionLikes.filter((openQuestionLike) => {
@@ -110,7 +110,7 @@
 										openQuestions = openQuestions;
 									}}>Unlike</button
 								>{:else}<button
-									class="outline h-12 ml-4 p-2 w-16"
+									class="outline h-12 ml-4 mb-0 p-2 w-16"
 									on:click|preventDefault={async () => {
 										openQuestionLikes.push(await saveOpenQuestionLike(openQuestion.id));
 										openQuestionLikes = openQuestionLikes;

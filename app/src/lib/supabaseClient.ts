@@ -540,7 +540,7 @@ export async function saveOpenQuestionLike(openQuestionId: string): Promise<Open
 	return keysToCamelCase(data);
 }
 
-export async function fetchOpenQuestionLikes(openQuestionIds: string[], userId: string): Promise<OpenQuestionLikeType[]> {
+export async function fetchMyOpenQuestionLikes(openQuestionIds: string[], userId: string): Promise<OpenQuestionLikeType[]> {
 	const { data, error } = await supabase
 		.from<OpenQuestionLikeTypeDB>(openQuestionLikesTable)
 		.select()
@@ -549,6 +549,8 @@ export async function fetchOpenQuestionLikes(openQuestionIds: string[], userId: 
 	printIf(error);
 	return keysToCamelCase(data);
 }
+
+
 
 export async function deleteOpenQuestionLike(openQuestionId: string) {
 	const { error } = await supabase
@@ -572,6 +574,24 @@ export async function saveEvaluation(courseUserId: string, percentage: number): 
 		.from<EvaluationTypeDB>(evaluationsTable)
 		.insert({ course_user: courseUserId, percentage })
 		.single();
+	printIf(error);
+	return keysToCamelCase(data);
+}
+
+export async function fetchOpenAnswers(openQuestionIds: string[]): Promise<OpenAnswerType[]> {
+	const { data, error } = await supabase
+		.from<OpenAnswerTypeDB>(openAnswersTable)
+		.select()
+		.in('open_question', openQuestionIds);
+	printIf(error);
+	return keysToCamelCase(data);
+}
+
+export async function fetchOpenQuestionLikes(openQuestionIds: string[]): Promise<OpenQuestionLikeType[]> {
+	const { data, error } = await supabase
+		.from<OpenQuestionLikeTypeDB>(openQuestionLikesTable)
+		.select()
+		.in('open_question', openQuestionIds);
 	printIf(error);
 	return keysToCamelCase(data);
 }

@@ -26,10 +26,6 @@ export class PerformancePage {
   async goto(courseUserId: string) {
     await this.page.goto('/performance/' + courseUserId);
   }
-
-  async hasPerformanceEntry(text: string) {
-    await this.page.locator('h4', { hasText: text })
-  }
 }
 
 export class OpenQuestionPerformance {

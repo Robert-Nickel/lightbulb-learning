@@ -1,9 +1,9 @@
 import { test, expect } from '@playwright/test';
 import { EL_STUDENTO, PerformancePage } from './performancePage';
-import { loginStudent } from './testLogin';
+import { login, student1 } from './testLogin';
 
 test.beforeEach(async ({ page }) => {
-  await loginStudent(page)
+  await login(page, student1)
 });
 
 test.describe('Performances', () => {

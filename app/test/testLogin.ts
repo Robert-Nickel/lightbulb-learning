@@ -5,9 +5,13 @@ export const student1 = {
     email: 'll-student1@discardmail.com',
     id: '6a4cb762-5ddd-46a0-9db1-46684fe04daa'
 };
+export const professor1 = {
+    email: 'll-professor1@discardmail.com',
+    id: '55ce341c-1ee3-4984-a2fc-d27a52dc0cd8'
+};
 
-export const loginStudent = async (page) => {
-    await page.goto(getLoginUrl(student1), { waitUntil: 'networkidle' });
+export const login = async (page, person) => {
+    await page.goto(getLoginUrl(person), { waitUntil: 'networkidle' });
     await page.goto('http://localhost:3000');
 }
 

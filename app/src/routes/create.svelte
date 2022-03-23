@@ -6,7 +6,7 @@
 	let createCourseDescription = '';
 </script>
 
-<h1>Create Course</h1>
+<h1>New Course</h1>
 <div class="space-y-4">
 	<div class="flex justify-between space-x-2">
 		<div class="w-full">

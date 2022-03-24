@@ -4,15 +4,11 @@
 		if (!user) return { status: 302, redirect: '/login' };
 		const pathSegments = url.pathname.split('/');
 		const routeLastSegment = pathSegments[pathSegments.length - 1];
-		const courseId = params.slug;
-		const course = await fetchCourse(courseId);
-		const courseUser = await fetchCourseUser(courseId, user.id);
-		const myLatestEvaluation = await fetchMyLatestEvaluation(courseUser.id);
+		const course = await fetchCourse(params.slug);
 		return {
 			props: {
 				course,
-				routeLastSegment,
-				myLatestEvaluation: myLatestEvaluation ? myLatestEvaluation.percentage : 0
+				routeLastSegment
 			}
 		};
 	};
@@ -20,7 +16,7 @@
 
 <script lang="ts">
 	import Back from '$lib/components/Back.svelte';
-	import { CourseType, fetchCourse, fetchCourseUser, fetchMyLatestEvaluation } from '$lib/supabaseClient';
+	import { CourseType, fetchCourse } from '$lib/supabaseClient';
 	import type { Session } from '@supabase/supabase-js';
 	import type { Load } from '@sveltejs/kit';
 	import { user } from '$lib/stores/user';
@@ -35,7 +31,6 @@
 
 	export let course: CourseType;
 	export let routeLastSegment: string;
-	export let myLatestEvaluation: number;
 	$: activeTab =
 		routeLastSegment == 'settings'
 			? Tab.Settings
@@ -44,19 +39,12 @@
 			: Tab.OpenQuestions;
 </script>
 
+
 <main class="container">
 	<Back route="/course" text="Back to all Courses" />
 
 	{#if course}
 		<h1>{course.description}</h1>
-		{#if myLatestEvaluation == 0}
-			<p>
-				Your Evaluation:&nbsp;
-				<em data-tooltip="Ask a good open question to increase it!">{myLatestEvaluation}%.</em>
-			</p>
-		{:else}
-			<p>Your Evaluation:&nbsp;{myLatestEvaluation}%.</p>
-		{/if}
 
 		{#if $user.id == course.owner}
 			<header class="flex p-2 space-x-4 border-b-2 ">
@@ -92,6 +80,7 @@
 
 		<slot />
 	{/if}
+
 </main>
 
 <style>

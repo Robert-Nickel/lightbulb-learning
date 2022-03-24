@@ -27,12 +27,15 @@
 		<button
 			class="w-24"
 			on:click={() => {
-				const evaluationInputAsNumber = +evaluationInput;
+				let evaluationInputAsNumber = Number(evaluationInput);
+				if (!evaluationInputAsNumber) {
+					alert('Please enter a number.');
+				}
 				if (evaluationInputAsNumber >= 0 && evaluationInputAsNumber <= 200) {
 					save(courseUserId, evaluationInputAsNumber);
 					changing = false;
 				} else {
-					alert(evaluationInputAsNumber + " isn't a number between 0 and 200.");
+					alert(evaluationInputAsNumber + " isn't between 0 and 120.");
 				}
 			}}>Save</button
 		>

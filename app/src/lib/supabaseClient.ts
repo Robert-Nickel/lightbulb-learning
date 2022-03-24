@@ -596,26 +596,6 @@ export async function fetchOpenQuestionLikes(openQuestionIds: string[]): Promise
 	return keysToCamelCase(data);
 }
 
-export async function fetchCourseUser(courseId: string, userId: string): Promise<EvaluationType> {
-	const { data, error } = await supabase.from(courseUserTable)
-		.select()
-		.eq("course", courseId)
-		.eq("user_id", userId)
-		.single()
-	printIf(error);
-	return keysToCamelCase(data);
-}
-
-export async function fetchMyLatestEvaluation(courseUserId: string): Promise<EvaluationType> {
-	const { data, error } = await supabase
-		.from<EvaluationTypeDB>(evaluationsTable)
-		.select()
-		.eq('course_user', courseUserId)
-		.order("created_at", { ascending: false });
-	printIf(error);
-	return keysToCamelCase(data[0]);
-}
-
 function printIf(error) {
 	if (error) console.error(error);
 }

@@ -101,10 +101,10 @@
 				<p class="my-2"><i>Question: {performance.questionText}</i></p>
 				<p class="my-2"><i>Answer: {performance.answerText}</i></p>
 				<h4 class="mt-2 mb-0">{performance.feedbackText}</h4>
-			{:else if performance.percentage}
+			{:else if performance.percentage || performance.percentage == 0}
 				<small>- Evaluation </small>
 				<h4 class="mt-2 mb-0" id="evaluation-text">
-					{#if performance.percentage > 0}Reached {/if}{performance.percentage}%
+					Reached {performance.percentage}%
 				</h4>
 			{/if}
 		</article>

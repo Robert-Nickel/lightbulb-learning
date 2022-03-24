@@ -7,6 +7,7 @@ export class CoursePage {
   readonly amountsOfAnswers: Locator;
   readonly amountsOfLikes: Locator;
   readonly likeButton: Locator;
+  readonly unlikeButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -15,6 +16,7 @@ export class CoursePage {
     this.amountsOfAnswers = page.locator('id=amount-of-answers-small')
     this.amountsOfLikes = page.locator('id=amount-of-likes-small')
     this.likeButton = page.locator('text=Like!')
+    this.unlikeButton = page.locator('text=Unlike')
   }
 
   async goto(courseId: string) {

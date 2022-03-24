@@ -56,4 +56,17 @@ test.describe('Open Questions', () => {
     // then
     await expect(coursePage.amountsOfLikes.first()).toHaveText("1 Like")
   });
+
+  test('should decrease the amount of likes after clicking the unlike button', async ({ page }) => {
+    // given
+    const coursePage = new CoursePage(page);
+    await coursePage.goto("57d1c1f0-f1cb-4e3f-b3eb-5ce53b593958")
+    await page.waitForTimeout(5_000)
+
+    // when
+    await coursePage.unlikeButton.click()
+
+    // then
+    await expect(coursePage.amountsOfLikes.first()).toHaveText("0 Likes")
+  });
 })

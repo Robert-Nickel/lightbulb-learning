@@ -11,7 +11,7 @@ export const routes = {
 	openAnswer: (id: string) => `/openanswer/${id}`,
 	performance: (id: string) => `/performance/${id}`,
 	evaluateAuth: '/evaluateAuth',
-	newCourse: '/new-course',
+	create: '/create',
 	join: '/join',
 	help: '/help'
 };

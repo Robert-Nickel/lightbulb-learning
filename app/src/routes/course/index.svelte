@@ -36,7 +36,7 @@
 
 			<div class="flex space-x-4 pt-4">
 				<a href={routes.join} role="button" class="outline" sveltekit:prefetch>Join with invite code</a>
-				<a href={routes.newCourse} role="button" class="outline" sveltekit:prefetch>New Course</a>
+				<a href={routes.create} role="button" class="outline" sveltekit:prefetch>New Course</a>
 			</div>
 		</div>
 	{:else}
@@ -47,7 +47,6 @@
 				</article>
 			</a>
 		{/each}
-		<a href={routes.newCourse}>Create new Course</a>
 	{/if}
 </main>
 

@@ -6,7 +6,9 @@
 		const routeLastSegment = pathSegments[pathSegments.length - 1];
 		const courseId = params.slug;
 		const course = await fetchCourse(courseId);
+		console.log({ user });
 		const courseUser = await fetchCourseUser(courseId, user.id);
+		console.log({ courseUser });
 		const myLatestEvaluation = await fetchMyLatestEvaluation(courseUser.id);
 		return {
 			props: {

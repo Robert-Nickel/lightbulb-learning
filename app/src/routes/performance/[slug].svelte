@@ -4,12 +4,18 @@
 		if (!user) return { status: 302, redirect: '/login' };
 
 		const courseUserId = params.slug;
+		console.log('fetching performances for user: ' + { courseUserId });
+
 		const member = await fetchMember(courseUserId);
+
 		let allPerformances: { createdAt: string }[] = (await fetchOpenQuestionPerformances(courseUserId))
 			.concat(await fetchOpenAnswerPerformances(courseUserId))
 			.concat(await fetchOpenFeedbackPerformances(courseUserId))
 			.concat(await fetchEvaluations(courseUserId));
 		allPerformances = sortChronologically(allPerformances);
+
+		console.log({ allPerformances });
+		
 		let latestEvaluation;
 		for (let i = 0; i < allPerformances.length; i++) {
 			if (allPerformances[i].percentage != null) {

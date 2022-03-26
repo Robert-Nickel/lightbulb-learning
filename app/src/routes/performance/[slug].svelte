@@ -5,6 +5,7 @@
 
 		const courseUserId = params.slug;
 		console.log('fetching performances for user: ' + { courseUserId });
+		console.log({ courseUserId });
 
 		const member = await fetchMember(courseUserId);
 
@@ -15,7 +16,7 @@
 		allPerformances = sortChronologically(allPerformances);
 
 		console.log({ allPerformances });
-		
+
 		let latestEvaluation;
 		for (let i = 0; i < allPerformances.length; i++) {
 			if (allPerformances[i].percentage != null) {

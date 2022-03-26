@@ -456,35 +456,35 @@ export async function fetchMembers(courseId: string): Promise<MemberType[]> {
 	return keysToCamelCase(data);
 }
 
-export async function fetchMember(id: string): Promise<MemberType> {
-	const { data, error } = await supabase.from<MemberTypeDB>(membersView).select().eq('id', id).single();
+export async function fetchMember(courseUserId: string): Promise<MemberType> {
+	const { data, error } = await supabase.from<MemberTypeDB>(membersView).select().eq('id', courseUserId).single();
 	printIf(error);
 	return keysToCamelCase(data);
 }
 
-export async function fetchOpenQuestionPerformances(id: string): Promise<OpenQuestionPerformanceType[]> {
+export async function fetchOpenQuestionPerformances(courseUserId: string): Promise<OpenQuestionPerformanceType[]> {
 	const { data, error } = await supabase
 		.from<OpenQuestionPerformanceTypeDB>(openQuestionPerformancesView)
 		.select()
-		.eq('id', id);
+		.eq('id', courseUserId);
 	printIf(error);
 	return keysToCamelCase(data);
 }
 
-export async function fetchOpenAnswerPerformances(id: string): Promise<OpenAnswerPerformanceType[]> {
+export async function fetchOpenAnswerPerformances(courseUserId: string): Promise<OpenAnswerPerformanceType[]> {
 	const { data, error } = await supabase
 		.from<OpenAnswerPerformanceTypeDB>(openAnswerPerformancesView)
 		.select()
-		.eq('id', id);
+		.eq('id', courseUserId);
 	printIf(error);
 	return keysToCamelCase(data);
 }
 
-export async function fetchOpenFeedbackPerformances(id: string): Promise<OpenFeedbackPerformanceType[]> {
+export async function fetchOpenFeedbackPerformances(courseUserId: string): Promise<OpenFeedbackPerformanceType[]> {
 	const { data, error } = await supabase
 		.from<OpenFeedbackPerformanceTypeDB>(openFeedbackPerformancesView)
 		.select()
-		.eq('id', id);
+		.eq('id', courseUserId);
 	printIf(error);
 	return keysToCamelCase(data);
 }

@@ -815,7 +815,7 @@ CREATE OR REPLACE VIEW public.open_answer_performances
     open_questions.question_text
    FROM course_user
      JOIN open_answers ON open_answers.owner = course_user.user_id
-     JOIN open_questions ON open_questions.id = open_answers.open_question;
+     JOIN open_questions ON open_questions.id = open_answers.open_question AND open_questions.course = course_user.course;
 
 ALTER TABLE public.open_answer_performances
     OWNER TO supabase_admin;
@@ -837,7 +837,7 @@ CREATE OR REPLACE VIEW public.open_feedback_performances
    FROM course_user
      JOIN open_feedback ON open_feedback.owner = course_user.user_id
      JOIN open_answers ON open_answers.id = open_feedback.open_answer
-     JOIN open_questions ON open_questions.id = open_answers.open_question;
+     JOIN open_questions ON open_questions.id = open_answers.open_question AND open_questions.course = course_user.course;
 
 ALTER TABLE public.open_feedback_performances
     OWNER TO supabase_admin;
@@ -848,6 +848,8 @@ GRANT ALL ON TABLE public.open_feedback_performances TO supabase_admin;
 GRANT ALL ON TABLE public.open_feedback_performances TO authenticated;
 GRANT ALL ON TABLE public.open_feedback_performances TO service_role;
 
+
+--- This contains a bug: stuff shows up, that belongs to a user, but not to this course
 CREATE OR REPLACE VIEW public.open_question_performances
  AS
  SELECT course_user.id,
@@ -859,7 +861,7 @@ CREATE OR REPLACE VIEW public.open_question_performances
            FROM open_question_likes
           WHERE open_question_likes.open_question = open_questions.id) AS likes
    FROM course_user
-     JOIN open_questions ON open_questions.owner = course_user.user_id
+     JOIN open_questions ON open_questions.owner = course_user.user_id AND open_questions.course = course_user.course
      JOIN correct_open_answers ON correct_open_answers.open_question = open_questions.id;
 
 ALTER TABLE public.open_question_performances

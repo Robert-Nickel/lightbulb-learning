@@ -25,12 +25,14 @@
 
 	onMount(async () => {
 		const profile = await fetchProfile($user.id);
-		console.log({profile})
+		console.log({ profile });
 		if (profile) {
+			console.log("Redirecting to courses, because profile already exists.")
 			profileId = profile.id;
 			firstName = profile.firstName;
 			lastName = profile.lastName;
 			universityName = await (await fetchUniversity(profile.university)).name;
+			goto(routes.courses)
 		}
 	});
 </script>

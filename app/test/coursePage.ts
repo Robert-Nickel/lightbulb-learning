@@ -21,5 +21,6 @@ export class CoursePage {
 
   async goto(courseId: string) {
     await this.page.goto('/course/' + courseId);
+    await this.page.waitForTimeout(3_000)
   }
 }

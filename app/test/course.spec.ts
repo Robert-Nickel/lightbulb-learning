@@ -18,14 +18,19 @@ test.describe('New Course', () => {
 
 test.describe('Delete Course', () => {
   test('should allow me to delete course', async ({ page }) => {
+    // given
     page.on('dialog', async dialog => {
       dialog.accept().catch(() => { });
     });
-    await page.goto('http://localhost:3000/course');
-    await page.locator('text=course for deletion').click();
+    const coursePage = new CoursePage(page);
+    await coursePage.goto("2cd83fb1-2681-402c-8acf-10943eb5dbc6")
     await page.locator('text=Settings').click()
+
+    // when
     await page.locator('text=Delete course for deletion').click()
     await page.waitForNavigation()
+
+    // then
     await expect(page.locator('text=course for deletion')).not.toBeVisible()
   });
 })
@@ -48,7 +53,6 @@ test.describe('Open Questions', () => {
     // given
     const coursePage = new CoursePage(page);
     await coursePage.goto("57d1c1f0-f1cb-4e3f-b3eb-5ce53b593958")
-    await page.waitForTimeout(5_000)
 
     // when
     await coursePage.likeButton.click()
@@ -61,7 +65,6 @@ test.describe('Open Questions', () => {
     // given
     const coursePage = new CoursePage(page);
     await coursePage.goto("57d1c1f0-f1cb-4e3f-b3eb-5ce53b593958")
-    await page.waitForTimeout(5_000)
 
     // when
     await coursePage.unlikeButton.click()

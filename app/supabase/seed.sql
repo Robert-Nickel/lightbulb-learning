@@ -152,7 +152,13 @@ VALUES
         '57d1c1f0-f1cb-4e3f-b3eb-5ce53b593958' :: uuid,
         'General Wisdom',
         '6a4cb762-5ddd-46a0-9db1-46684fe04daa' :: uuid
-    );
+    ),
+    (
+        '2cd83fb1-2681-402c-8acf-10943eb5dbc6' :: uuid,
+        'course for deletion',
+        '6a4cb762-5ddd-46a0-9db1-46684fe04daa' :: uuid
+    )
+    ;
 
 INSERT INTO
     public.course_user (id, course, user_id)
@@ -161,6 +167,11 @@ VALUES
         '4e5e689a-a09c-4e20-858c-14d442251457' :: uuid,
         '57d1c1f0-f1cb-4e3f-b3eb-5ce53b593958' :: uuid,
         '55ce341c-1ee3-4984-a2fc-d27a52dc0cd8' :: uuid
+    ),
+    (
+        '655d862d-8a9d-4591-abeb-df58bbe21e69' :: uuid,
+        '2cd83fb1-2681-402c-8acf-10943eb5dbc6' :: uuid,
+        '6a4cb762-5ddd-46a0-9db1-46684fe04daa' :: uuid
     );
 
 INSERT INTO
@@ -180,14 +191,6 @@ VALUES
         'Not much, bro.',
         'f7143606-7831-4e4a-ae4c-936265bcbc73' :: uuid,
         '55ce341c-1ee3-4984-a2fc-d27a52dc0cd8' :: uuid
-    );
-
-INSERT INTO
-    public.courses (description, "owner")
-VALUES
-    (
-        'course for deletion',
-        '6a4cb762-5ddd-46a0-9db1-46684fe04daa'
     );
 
 INSERT INTO

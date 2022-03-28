@@ -1907,7 +1907,11 @@ export interface definitions {
      * @default extensions.uuid_generate_v4()
      */
     id: string;
-    /** Format: uuid */
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `courses.id`.<fk table='courses' column='id'/>
+     */
     course: string;
     /** Format: uuid */
     user_id: string;
@@ -1982,7 +1986,11 @@ export interface definitions {
      * This is a Primary Key.<pk/>
      */
     id?: string;
-    /** Format: uuid */
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `courses.id`.<fk table='courses' column='id'/>
+     */
     course?: string;
     /** Format: uuid */
     user_id?: string;

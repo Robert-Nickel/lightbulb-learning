@@ -89,6 +89,17 @@
 		<a href={routes.login} sveltekit:prefetch>
 			<button class="m-auto my-16 w-64">Start, it's all free.</button>
 		</a>
+
+		<h3>How to create a course?</h3>
+		<iframe
+			width="560"
+			height="315"
+			src="https://www.youtube-nocookie.com/embed/SQtc9IFmKvM"
+			title="YouTube video player"
+			frameborder="0"
+			allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+			allowfullscreen
+		/>
 	</div>
 </main>
 <NewsletterSignUp />

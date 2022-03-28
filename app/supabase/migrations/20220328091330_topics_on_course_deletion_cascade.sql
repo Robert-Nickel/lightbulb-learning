@@ -3,10 +3,10 @@
 -- and may require manual changes to the script to ensure changes are applied in the correct order.
 -- Please report an issue for any failure with the reproduction steps.
 
-ALTER TABLE IF EXISTS public.course_user DROP CONSTRAINT IF EXISTS course_user_course_fkey;
+ALTER TABLE IF EXISTS public.topics DROP CONSTRAINT IF EXISTS topics_course_fkey;
 
-ALTER TABLE IF EXISTS public.course_user
-    ADD CONSTRAINT course_user_course_fkey FOREIGN KEY (course)
+ALTER TABLE IF EXISTS public.topics
+    ADD CONSTRAINT topics_course_fkey FOREIGN KEY (course)
     REFERENCES public.courses (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE CASCADE;

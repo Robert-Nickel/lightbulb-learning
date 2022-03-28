@@ -3,9 +3,6 @@
 -- and may require manual changes to the script to ensure changes are applied in the correct order.
 -- Please report an issue for any failure with the reproduction steps.
 
-
-ALTER TABLE IF EXISTS public.course_user DROP CONSTRAINT IF EXISTS course_user_course_fkey;
-
 ALTER TABLE IF EXISTS public.courses DROP CONSTRAINT IF EXISTS challenge_pools_owner_fkey;
 
 ALTER TABLE IF EXISTS public.open_questions DROP CONSTRAINT IF EXISTS open_questions_new_owner_fkey;

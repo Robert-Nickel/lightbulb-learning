@@ -172,7 +172,13 @@ VALUES
         '655d862d-8a9d-4591-abeb-df58bbe21e69' :: uuid,
         '2cd83fb1-2681-402c-8acf-10943eb5dbc6' :: uuid,
         '6a4cb762-5ddd-46a0-9db1-46684fe04daa' :: uuid
+    ),
+    (
+        '54d95b6f-e966-4551-9caa-f2f1bed7823f' :: uuid,
+        '57d1c1f0-f1cb-4e3f-b3eb-5ce53b593958' :: uuid,
+        '6a4cb762-5ddd-46a0-9db1-46684fe04daa' :: uuid
     );
+
 
 INSERT INTO
     public.open_questions(id, question_text, "owner", course)

@@ -1,10 +1,13 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import Back from '$lib/components/Back.svelte';
 	import { routes } from '$lib/routes';
 	import { saveCourse } from '$lib/supabaseClient';
 
 	let createCourseDescription = '';
 </script>
+
+<Back text="Back to all Courses" route={routes.courses} />
 
 <h1>New Course</h1>
 

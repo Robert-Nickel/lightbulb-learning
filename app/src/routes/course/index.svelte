@@ -12,6 +12,7 @@
 </script>
 
 <script lang="ts">
+	import Back from '$lib/components/Back.svelte';
 	import { routes } from '$lib/routes';
 	import { fetchCourses, CourseType } from '$lib/supabaseClient';
 	import type { Session } from '@supabase/supabase-js';
@@ -35,7 +36,7 @@
 			</p>
 
 			<div class="flex space-x-4 pt-4">
-				<a href={routes.join} role="button" class="outline" sveltekit:prefetch>Join with invite code</a>
+				<a href={routes.joinCourse} role="button" class="outline" sveltekit:prefetch>Join with invite code</a>
 				<a href={routes.newCourse} role="button" class="outline" sveltekit:prefetch>New Course</a>
 			</div>
 		</div>
@@ -47,12 +48,17 @@
 				</article>
 			</a>
 		{/each}
-		<a href={routes.newCourse}>Create new Course</a>
+		<a class="meta-course" href={routes.newCourse}><article class="hoverable">Join Course</article></a>
+		<a class="meta-course" href={routes.joinCourse}><article class="hoverable">Create new Course</article></a>
 	{/if}
 </main>
 
 <style>
 	.hoverable:hover {
 		background-color: var(--card-sectionning-background-color);
+	}
+
+	.meta-course:hover {
+		text-decoration: none;
 	}
 </style>

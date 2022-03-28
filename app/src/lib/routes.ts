@@ -12,6 +12,6 @@ export const routes = {
 	performance: (id: string) => `/performance/${id}`,
 	evaluateAuth: '/evaluateAuth',
 	newCourse: '/new-course',
-	join: '/join',
+	joinCourse: '/join-course',
 	help: '/help'
 };

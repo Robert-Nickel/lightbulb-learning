@@ -245,7 +245,7 @@ CREATE TABLE IF NOT EXISTS public.course_user
     CONSTRAINT course_user_course_fkey FOREIGN KEY (course)
         REFERENCES public.courses (id) MATCH SIMPLE
         ON UPDATE NO ACTION
-        ON DELETE NO ACTION
+        ON DELETE CASCADE
 )
 
 TABLESPACE pg_default;

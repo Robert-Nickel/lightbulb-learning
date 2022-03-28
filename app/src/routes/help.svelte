@@ -1,3 +1,8 @@
+<script>
+
+import { routes } from "$lib/routes";
+
+</script>
 <h1>Even the bravest and strongest...</h1>
 
 <div>
@@ -6,4 +11,13 @@
 	because it's been a while, please contact me - I am super nice. <br /><br />
 	<p>Discord: <kbd>Robert Nickel#6909</kbd></p>
 	<p>E-Mail: <kbd>lightbulb@robertnickel.online</kbd></p>
+</div>
+
+<div>
+	<h3>FAQ</h3>
+	<h5>What was the invite code to that example course again?</h5>
+	<p>
+		It's <a href={routes.joinCourse("GNRLWISDOM")}>GNRLWISDOM</a
+		>. Feel free to interact and get a feeling for Lightbulb Learning.
+	</p>
 </div>

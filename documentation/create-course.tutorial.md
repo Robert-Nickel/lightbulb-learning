@@ -1,0 +1,7 @@
+- Welcome to Lightbulb Learning
+- Show what it can do for you
+- Create a course
+- Generate invite code
+- Define some topics
+- Create some examples for open questions
+- Contact info inside "Help"

@@ -5,7 +5,7 @@
 
 	import { joinCourse } from '$lib/supabaseClient';
 
-	let inviteCode: string;
+	export let inviteCode: string = '';
 </script>
 
 <Back text="Back to all Courses" route={routes.courses} />

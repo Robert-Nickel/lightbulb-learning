@@ -27,7 +27,7 @@
 		{#if $user}
 			<nav on:click={close}><a href={routes.root} sveltekit:prefetch>My Courses</a></nav>
 			<nav on:click={close}><a href={routes.newCourse} sveltekit:prefetch>New Course</a></nav>
-			<nav on:click={close}><a href={routes.joinCourse} sveltekit:prefetch>Join Course</a></nav>
+			<nav on:click={close}><a href={routes.joinCourse()} sveltekit:prefetch>Join Course</a></nav>
 			<nav on:click={close}><a href={routes.help} sveltekit:prefetch>Help</a></nav>
 		{:else}
 			<nav on:click={close}><a href={routes.login} sveltekit:prefetch>Login</a></nav>

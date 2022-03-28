@@ -12,34 +12,40 @@
 </script>
 
 <script lang="ts">
-	import Back from '$lib/components/Back.svelte';
 	import { routes } from '$lib/routes';
 	import { fetchCourses, CourseType } from '$lib/supabaseClient';
 	import type { Session } from '@supabase/supabase-js';
 	import type { Load } from '@sveltejs/kit';
 
 	export let courses: CourseType[] = [];
+
+	let noInviteCode = false;
 </script>
 
 <main class="container py-4 max-w-screen-sm">
 	<h1 id="courses-title">Courses</h1>
-	{#if courses.length == 0}<div class="space-y-4">
-			<p>You don't have a course yet! Join one with an invite code, or create one yourself.</p>
-
-			<p>
-				Use <a
+	{#if courses.length == 0}
+		{#if !noInviteCode}
+			<p>Do you have an invite code?</p>
+			<div class="flex space-x-2">
+				<a href={routes.joinCourse()} class="outline w-24" role="button">Yes</a>
+				<a
 					on:click={() => {
-						navigator.clipboard.writeText('GNRLWISDOM');
+						noInviteCode = true;
 					}}
-					data-tooltip="Copy to Clipboard">GNRLWISDOM</a
-				> to see an example of what a course is.
-			</p>
-
-			<div class="flex space-x-4 pt-4">
-				<a href={routes.joinCourse} role="button" class="outline" sveltekit:prefetch>Join with invite code</a>
-				<a href={routes.newCourse} role="button" class="outline" sveltekit:prefetch>New Course</a>
+					class="outline w-24"
+					role="button">No</a
+				>
 			</div>
-		</div>
+		{:else}
+			<p>Would you rather create your own course or join an example course to see what it is like?</p>
+			<div class="flex space-x-2">
+				<a href={routes.newCourse} role="button" class="outline" sveltekit:prefetch>Create own Course</a>
+				<a href={routes.joinCourse('GNRLWISDOM')} role="button" class="outline" sveltekit:prefetch
+					>Join example Course</a
+				>
+			</div>
+		{/if}
 	{:else}
 		{#each courses as course}
 			<a href={routes.course(course.id)} class="light-link" sveltekit:prefetch>
@@ -48,8 +54,8 @@
 				</article>
 			</a>
 		{/each}
-		<a class="meta-course" href={routes.newCourse}><article class="hoverable">Join Course</article></a>
-		<a class="meta-course" href={routes.joinCourse}><article class="hoverable">Create new Course</article></a>
+		<a class="meta-course" href={routes.joinCourse()}><article class="hoverable">Join Course</article></a>
+		<a class="meta-course" href={routes.newCourse}><article class="hoverable">Create new Course</article></a>
 	{/if}
 </main>
 

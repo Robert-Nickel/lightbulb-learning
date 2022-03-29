@@ -8,8 +8,7 @@ test.beforeEach(async ({ page }) => {
 
 test.describe('New Course', () => {
   test('should allow me to create course then go there', async ({ page }) => {
-    await page.locator('header button').click()
-    await page.locator('aside >> text=New Course').click();
+    await page.goto('/new-course');
     await page.locator('input').type("new course")
     await page.locator('button:has-text("Create")').click()
     await expect(page.locator('h1')).toHaveText('new course');

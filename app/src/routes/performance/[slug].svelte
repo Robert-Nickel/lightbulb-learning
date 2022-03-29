@@ -91,7 +91,6 @@
 					{/if}</small
 				>
 				<h4 class="mt-2 mb-2" id="oqp-question-text">{performance.questionText}</h4>
-				<h4 class="mt-2 mb-0" id="oqp-answer-text">- {performance.answerText}</h4>
 			{:else if performance.openAnswerId}
 				<small
 					>- Open Answer {#if performance.version > 1}Improvement{/if}</small

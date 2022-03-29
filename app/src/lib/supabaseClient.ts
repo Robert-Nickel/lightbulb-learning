@@ -154,27 +154,6 @@ export async function saveOpenQuestionDraft(
 	return keysToCamelCase(data);
 }
 
-export async function updateOpenQuestionDraftWithAnswer(
-	id: string,
-	answerText: string
-): Promise<OpenQuestionDraftType> {
-	const { data, error } = await supabase
-		.from<OpenQuestionDraftTypeDB>(openQuestionDraftsTable)
-		.update({ answer_text: answerText })
-		.eq('id', id);
-	printIf(error);
-	return keysToCamelCase(data[0]);
-}
-
-export async function deleteAnswerFromOpenQuestionDraft(id: string): Promise<OpenQuestionDraftType> {
-	const { data, error } = await supabase
-		.from<OpenQuestionDraftTypeDB>(openQuestionDraftsTable)
-		.update({ answer_text: null })
-		.eq('id', id);
-	printIf(error);
-	return keysToCamelCase(data[0]);
-}
-
 export async function deleteOpenQuestionDraft(id: string) {
 	const { error } = await supabase
 		.from<OpenQuestionDraftTypeDB>(openQuestionDraftsTable)
@@ -211,36 +190,6 @@ export async function saveOpenQuestion(
 		.insert({
 			question_text: questionText,
 			course: courseId,
-			owner: supabase.auth.user().id
-		})
-		.single();
-	printIf(error);
-	return keysToCamelCase(data);
-}
-
-export async function fetchCorrectOpenAnswer(
-	openQuestionId: string,
-	userId: string
-): Promise<CorrectOpenAnswerType> {
-	const { data, error } = await supabase
-		.from<CorrectOpenAnswerTypeDB>(correctAnswersTable)
-		.select()
-		.eq('open_question', openQuestionId)
-		.eq('owner', userId)
-		.maybeSingle();
-	printIf(error);
-	return keysToCamelCase(data);
-}
-
-export async function saveCorrectOpenAnswer(
-	answerText: string,
-	openQuestionId: string
-): Promise<CorrectOpenAnswerType> {
-	const { data, error } = await supabase
-		.from<CorrectOpenAnswerTypeDB>(correctAnswersTable)
-		.insert({
-			answer_text: answerText,
-			open_question: openQuestionId,
 			owner: supabase.auth.user().id
 		})
 		.single();
@@ -623,7 +572,6 @@ function printIf(error) {
 export const coursesTable = 'courses';
 export const openQuestionDraftsTable = 'open_question_drafts';
 export const openQuestionsTable = 'open_questions';
-export const correctAnswersTable = 'correct_open_answers';
 export const openAnswerDraftsTable = 'open_answer_drafts';
 export const openAnswersTable = 'open_answers';
 export const openFeedbackDraftsTable = 'open_feedback_drafts';
@@ -644,7 +592,6 @@ export const evaluationsTable = 'evaluations';
 export type CourseType = CamelCasedPropertiesDeep<definitions['courses']>;
 export type OpenQuestionDraftType = CamelCasedPropertiesDeep<definitions['open_question_drafts']>;
 export type OpenQuestionType = CamelCasedPropertiesDeep<definitions['open_questions']>;
-export type CorrectOpenAnswerType = CamelCasedPropertiesDeep<definitions['correct_open_answers']>;
 export type OpenAnswerDraftType = CamelCasedPropertiesDeep<definitions['open_answer_drafts']>;
 export type OpenAnswerType = CamelCasedPropertiesDeep<definitions['open_answers']>;
 export type OpenFeedbackDraftType = CamelCasedPropertiesDeep<definitions['open_feedback_drafts']>;
@@ -669,7 +616,6 @@ export type EvaluationType = CamelCasedPropertiesDeep<definitions['evaluations']
 export type CourseTypeDB = definitions['courses'];
 export type OpenQuestionDraftTypeDB = definitions['open_question_drafts'];
 export type OpenQuestionTypeDB = definitions['open_questions'];
-export type CorrectOpenAnswerTypeDB = definitions['correct_open_answers'];
 export type OpenAnswerDraftTypeDB = definitions['open_answer_drafts'];
 export type OpenAnswerTypeDB = definitions['open_answers'];
 export type OpenFeedbackDraftTypeDB = definitions['open_feedback_drafts'];

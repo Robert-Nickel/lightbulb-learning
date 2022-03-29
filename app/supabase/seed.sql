@@ -191,15 +191,6 @@ VALUES
     );
 
 INSERT INTO
-    public.correct_open_answers (answer_text, open_question, "owner")
-VALUES
-    (
-        'Not much, bro.',
-        'f7143606-7831-4e4a-ae4c-936265bcbc73' :: uuid,
-        '55ce341c-1ee3-4984-a2fc-d27a52dc0cd8' :: uuid
-    );
-
-INSERT INTO
     public.invite_codes(code, course, "owner", valid_until)
 values
     (

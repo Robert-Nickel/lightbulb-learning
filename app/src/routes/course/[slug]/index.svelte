@@ -104,7 +104,7 @@
 </script>
 
 {#if course}
-	<CreateOpenQuestion {course} on:openQuestionCommitted={() => invalidate('/course/' + course.id)} />
+	<CreateOpenQuestion {course} />
 
 	{#if openQuestions.length > 0}
 		<h3 class="mt-10">Open Questions</h3>

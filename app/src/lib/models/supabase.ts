@@ -12,105 +12,6 @@ export interface paths {
       };
     };
   };
-  "/correct_open_answers": {
-    get: {
-      parameters: {
-        query: {
-          id?: parameters["rowFilter.correct_open_answers.id"];
-          answer_text?: parameters["rowFilter.correct_open_answers.answer_text"];
-          open_question?: parameters["rowFilter.correct_open_answers.open_question"];
-          created_at?: parameters["rowFilter.correct_open_answers.created_at"];
-          owner?: parameters["rowFilter.correct_open_answers.owner"];
-          /** Filtering Columns */
-          select?: parameters["select"];
-          /** Ordering */
-          order?: parameters["order"];
-          /** Limiting and Pagination */
-          offset?: parameters["offset"];
-          /** Limiting and Pagination */
-          limit?: parameters["limit"];
-        };
-        header: {
-          /** Limiting and Pagination */
-          Range?: parameters["range"];
-          /** Limiting and Pagination */
-          "Range-Unit"?: parameters["rangeUnit"];
-          /** Preference */
-          Prefer?: parameters["preferCount"];
-        };
-      };
-      responses: {
-        /** OK */
-        200: {
-          schema: definitions["correct_open_answers"][];
-        };
-        /** Partial Content */
-        206: unknown;
-      };
-    };
-    post: {
-      parameters: {
-        body: {
-          /** correct_open_answers */
-          correct_open_answers?: definitions["correct_open_answers"];
-        };
-        query: {
-          /** Filtering Columns */
-          select?: parameters["select"];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters["preferReturn"];
-        };
-      };
-      responses: {
-        /** Created */
-        201: unknown;
-      };
-    };
-    delete: {
-      parameters: {
-        query: {
-          id?: parameters["rowFilter.correct_open_answers.id"];
-          answer_text?: parameters["rowFilter.correct_open_answers.answer_text"];
-          open_question?: parameters["rowFilter.correct_open_answers.open_question"];
-          created_at?: parameters["rowFilter.correct_open_answers.created_at"];
-          owner?: parameters["rowFilter.correct_open_answers.owner"];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters["preferReturn"];
-        };
-      };
-      responses: {
-        /** No Content */
-        204: never;
-      };
-    };
-    patch: {
-      parameters: {
-        query: {
-          id?: parameters["rowFilter.correct_open_answers.id"];
-          answer_text?: parameters["rowFilter.correct_open_answers.answer_text"];
-          open_question?: parameters["rowFilter.correct_open_answers.open_question"];
-          created_at?: parameters["rowFilter.correct_open_answers.created_at"];
-          owner?: parameters["rowFilter.correct_open_answers.owner"];
-        };
-        body: {
-          /** correct_open_answers */
-          correct_open_answers?: definitions["correct_open_answers"];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters["preferReturn"];
-        };
-      };
-      responses: {
-        /** No Content */
-        204: never;
-      };
-    };
-  };
   "/course_user": {
     get: {
       parameters: {
@@ -1221,7 +1122,6 @@ export interface paths {
           id?: parameters["rowFilter.open_question_performances.id"];
           open_question_id?: parameters["rowFilter.open_question_performances.open_question_id"];
           question_text?: parameters["rowFilter.open_question_performances.question_text"];
-          answer_text?: parameters["rowFilter.open_question_performances.answer_text"];
           created_at?: parameters["rowFilter.open_question_performances.created_at"];
           likes?: parameters["rowFilter.open_question_performances.likes"];
           /** Filtering Columns */
@@ -1879,26 +1779,6 @@ export interface paths {
 }
 
 export interface definitions {
-  correct_open_answers: {
-    /**
-     * Format: uuid
-     * @description Note:
-     * This is a Primary Key.<pk/>
-     * @default extensions.uuid_generate_v4()
-     */
-    id: string;
-    /** Format: text */
-    answer_text: string;
-    /** Format: uuid */
-    open_question: string;
-    /**
-     * Format: timestamp with time zone
-     * @default now()
-     */
-    created_at: string;
-    /** Format: uuid */
-    owner: string;
-  };
   course_user: {
     /**
      * Format: uuid
@@ -2207,8 +2087,6 @@ export interface definitions {
     open_question_id?: string;
     /** Format: text */
     question_text?: string;
-    /** Format: text */
-    answer_text?: string;
     /** Format: timestamp with time zone */
     created_at?: string;
     /** Format: bigint */
@@ -2372,18 +2250,6 @@ export interface parameters {
   offset: string;
   /** @description Limiting and Pagination */
   limit: string;
-  /** @description correct_open_answers */
-  "body.correct_open_answers": definitions["correct_open_answers"];
-  /** Format: uuid */
-  "rowFilter.correct_open_answers.id": string;
-  /** Format: text */
-  "rowFilter.correct_open_answers.answer_text": string;
-  /** Format: uuid */
-  "rowFilter.correct_open_answers.open_question": string;
-  /** Format: timestamp with time zone */
-  "rowFilter.correct_open_answers.created_at": string;
-  /** Format: uuid */
-  "rowFilter.correct_open_answers.owner": string;
   /** @description course_user */
   "body.course_user": definitions["course_user"];
   /** Format: uuid */
@@ -2553,8 +2419,6 @@ export interface parameters {
   "rowFilter.open_question_performances.open_question_id": string;
   /** Format: text */
   "rowFilter.open_question_performances.question_text": string;
-  /** Format: text */
-  "rowFilter.open_question_performances.answer_text": string;
   /** Format: timestamp with time zone */
   "rowFilter.open_question_performances.created_at": string;
   /** Format: bigint */

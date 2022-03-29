@@ -12,7 +12,6 @@
 			props: {
 				user,
 				openQuestion,
-				correctOpenAnswer: await fetchCorrectOpenAnswer(questionId, user.id),
 				myOpenAnswerDraft: await fetchMyOpenAnswerDraft(questionId, user.id),
 				myOpenAnswer: await fetchLatestOpenAnswer(questionId, user.id),
 				openAnswersOfOthers: await filterNonLatest(openAnswersOfOthersWithNonLatest),
@@ -59,10 +58,7 @@
 		OpenQuestionType,
 		saveOpenAnswer,
 		saveOpenAnswerDraft,
-		supabase,
 		fetchLatestOpenAnswer,
-		CorrectOpenAnswerType,
-		fetchCorrectOpenAnswer,
 		fetchCourse
 	} from '$lib/supabaseClient';
 	import { user } from '$lib/stores/user';
@@ -72,7 +68,6 @@
 	import { routes } from '$lib/routes';
 
 	export let openQuestion: OpenQuestionType;
-	export let correctOpenAnswer: CorrectOpenAnswerType;
 	export let myOpenAnswerDraft: OpenAnswerDraftType;
 	export let myOpenAnswer: OpenAnswerType;
 	export let openAnswersOfOthers: OpenAnswerType[] = [];
@@ -86,72 +81,57 @@
 	{#if openQuestion}
 		<Back text="Back to {courseDescription}" route="/course/{openQuestion.course}" />
 
-		{#if openQuestion.owner == $user.id}
-			<h1 class="yours pl-4">{openQuestion.questionText}</h1>
-			{#if correctOpenAnswer}
-				<div class="mb-4"><i>Correct answer: </i>{correctOpenAnswer.answerText}</div>
-			{/if}
-			<div class="mb-4">
-				{#if openAnswersOfOthers.length == 0}
-					<i>No one has answered your question yet.</i>
-				{:else}
-					<i>People answered:</i>
-				{/if}
+		<h1 class={openQuestion.owner == $user.id ? 'yours pl-4' : ''}>{openQuestion.questionText}</h1>
+
+		
+
+		{#if myOpenAnswer}
+			<a href={routes.openAnswer(myOpenAnswer.id)} class="light-link" sveltekit:prefetch>
+				<article class="yours hoverable">
+					<i>Your answer: </i>{myOpenAnswer.answerText}
+				</article>
+			</a>
+		{:else if myOpenAnswerDraft}
+			<div class="flex justify-between space-x-2 mt-2">
+				<div class="w-full">{myOpenAnswerDraft.answerText}</div>
+				<button
+					on:click={async () => {
+						await deleteOpenAnswerDraft(myOpenAnswerDraft.id);
+						myOpenAnswerDraft = null;
+					}}
+					class="w-48 h-12 secondary outline">Delete</button
+				>
+			</div>
+			<div>
+				<button
+					on:click={async () => {
+						myOpenAnswer = await saveOpenAnswer(myOpenAnswerDraft.answerText, myOpenAnswerDraft.openQuestion);
+
+						await deleteOpenAnswerDraft(myOpenAnswerDraft.id);
+						myOpenAnswerDraft = null;
+						toast.showSuccessToast('Open Answer created!');
+					}}
+					class="w-32 mt-4">Publish</button
+				>
 			</div>
 		{:else}
-			<h1>{openQuestion.questionText}</h1>
-
-			{#if myOpenAnswer}
-				<a href={routes.openAnswer(myOpenAnswer.id)} class="light-link" sveltekit:prefetch>
-					<article class="yours hoverable">
-						<i>Your answer: </i>{myOpenAnswer.answerText}
-					</article>
-				</a>
-			{:else if myOpenAnswerDraft}
-				<div class="flex justify-between space-x-2 mt-2">
-					<div class="w-full">{myOpenAnswerDraft.answerText}</div>
-					<button
-						on:click={async () => {
-							await deleteOpenAnswerDraft(myOpenAnswerDraft.id);
-							myOpenAnswerDraft = null;
-						}}
-						class="w-48 h-12 secondary outline">Delete</button
-					>
+			<div class="flex justify-between space-x-2 mt-2">
+				<div class="w-full">
+					<textarea
+						id="textarea-answer"
+						bind:value={openAnswerDraftText}
+						class="w-full h-12"
+						placeholder="Answer this question"
+						on:load={autosize(document.getElementById('textarea-answer'))}
+					/>
 				</div>
-				<div>
-					<button
-						on:click={async () => {
-							myOpenAnswer = await saveOpenAnswer(
-								myOpenAnswerDraft.answerText,
-								myOpenAnswerDraft.openQuestion
-							);
-
-							await deleteOpenAnswerDraft(myOpenAnswerDraft.id);
-							myOpenAnswerDraft = null;
-							toast.showSuccessToast('Open Answer created!');
-						}}
-						class="w-32 mt-4">Publish</button
-					>
-				</div>
-			{:else}
-				<div class="flex justify-between space-x-2 mt-2">
-					<div class="w-full">
-						<textarea
-							id="textarea-answer"
-							bind:value={openAnswerDraftText}
-							class="w-full h-12"
-							placeholder="Answer this question"
-							on:load={autosize(document.getElementById('textarea-answer'))}
-						/>
-					</div>
-					<button
-						on:click={async () => {
-							myOpenAnswerDraft = await saveOpenAnswerDraft(openAnswerDraftText, openQuestion.id);
-						}}
-						class="w-48 h-12">Save</button
-					>
-				</div>
-			{/if}
+				<button
+					on:click={async () => {
+						myOpenAnswerDraft = await saveOpenAnswerDraft(openAnswerDraftText, openQuestion.id);
+					}}
+					class="w-48 h-12">Save</button
+				>
+			</div>
 		{/if}
 
 		<!-- This shows the old and the new versions of the answers! -->

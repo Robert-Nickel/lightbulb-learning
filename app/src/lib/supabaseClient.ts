@@ -161,41 +161,6 @@ export async function saveOpenQuestion(
 	return keysToCamelCase(data);
 }
 
-export async function fetchMyOpenAnswerDraft(
-	openQuestionId: string,
-	userId: string
-): Promise<OpenAnswerDraftType> {
-	const { data, error } = await supabase
-		.from<OpenAnswerDraftTypeDB>(openAnswerDraftsTable)
-		.select()
-		.eq('open_question', openQuestionId)
-		.eq('owner', userId)
-		.maybeSingle();
-	printIf(error);
-	return keysToCamelCase(data);
-}
-
-export async function saveOpenAnswerDraft(
-	openAnswerDraftText: string,
-	openQuestionId: string
-): Promise<OpenAnswerDraftType> {
-	const { data, error } = await supabase
-		.from<OpenAnswerDraftTypeDB>(openAnswerDraftsTable)
-		.insert({
-			answer_text: openAnswerDraftText,
-			open_question: openQuestionId,
-			owner: supabase.auth.user().id
-		})
-		.single();
-	printIf(error);
-	return keysToCamelCase(data);
-}
-
-export async function deleteOpenAnswerDraft(id) {
-	const { error } = await supabase.from<OpenAnswerDraftTypeDB>(openAnswerDraftsTable).delete().eq('id', id);
-	printIf(error);
-}
-
 export async function fetchOpenAnswer(id: string): Promise<OpenAnswerType> {
 	const { data, error } = await supabase
 		.from<OpenAnswerTypeDB>(openAnswersTable)
@@ -535,7 +500,6 @@ function printIf(error) {
 
 export const coursesTable = 'courses';
 export const openQuestionsTable = 'open_questions';
-export const openAnswerDraftsTable = 'open_answer_drafts';
 export const openAnswersTable = 'open_answers';
 export const openFeedbackDraftsTable = 'open_feedback_drafts';
 export const openFeedbackTable = 'open_feedback';
@@ -575,7 +539,6 @@ export type EvaluationType = CamelCasedPropertiesDeep<definitions['evaluations']
 
 export type CourseTypeDB = definitions['courses'];
 export type OpenQuestionTypeDB = definitions['open_questions'];
-export type OpenAnswerDraftTypeDB = definitions['open_answer_drafts'];
 export type OpenAnswerTypeDB = definitions['open_answers'];
 export type OpenFeedbackDraftTypeDB = definitions['open_feedback_drafts'];
 export type OpenFeedbackTypeDB = definitions['open_feedback'];

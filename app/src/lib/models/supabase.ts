@@ -439,105 +439,6 @@ export interface paths {
       };
     };
   };
-  "/open_answer_drafts": {
-    get: {
-      parameters: {
-        query: {
-          id?: parameters["rowFilter.open_answer_drafts.id"];
-          answer_text?: parameters["rowFilter.open_answer_drafts.answer_text"];
-          open_question?: parameters["rowFilter.open_answer_drafts.open_question"];
-          created_at?: parameters["rowFilter.open_answer_drafts.created_at"];
-          owner?: parameters["rowFilter.open_answer_drafts.owner"];
-          /** Filtering Columns */
-          select?: parameters["select"];
-          /** Ordering */
-          order?: parameters["order"];
-          /** Limiting and Pagination */
-          offset?: parameters["offset"];
-          /** Limiting and Pagination */
-          limit?: parameters["limit"];
-        };
-        header: {
-          /** Limiting and Pagination */
-          Range?: parameters["range"];
-          /** Limiting and Pagination */
-          "Range-Unit"?: parameters["rangeUnit"];
-          /** Preference */
-          Prefer?: parameters["preferCount"];
-        };
-      };
-      responses: {
-        /** OK */
-        200: {
-          schema: definitions["open_answer_drafts"][];
-        };
-        /** Partial Content */
-        206: unknown;
-      };
-    };
-    post: {
-      parameters: {
-        body: {
-          /** open_answer_drafts */
-          open_answer_drafts?: definitions["open_answer_drafts"];
-        };
-        query: {
-          /** Filtering Columns */
-          select?: parameters["select"];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters["preferReturn"];
-        };
-      };
-      responses: {
-        /** Created */
-        201: unknown;
-      };
-    };
-    delete: {
-      parameters: {
-        query: {
-          id?: parameters["rowFilter.open_answer_drafts.id"];
-          answer_text?: parameters["rowFilter.open_answer_drafts.answer_text"];
-          open_question?: parameters["rowFilter.open_answer_drafts.open_question"];
-          created_at?: parameters["rowFilter.open_answer_drafts.created_at"];
-          owner?: parameters["rowFilter.open_answer_drafts.owner"];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters["preferReturn"];
-        };
-      };
-      responses: {
-        /** No Content */
-        204: never;
-      };
-    };
-    patch: {
-      parameters: {
-        query: {
-          id?: parameters["rowFilter.open_answer_drafts.id"];
-          answer_text?: parameters["rowFilter.open_answer_drafts.answer_text"];
-          open_question?: parameters["rowFilter.open_answer_drafts.open_question"];
-          created_at?: parameters["rowFilter.open_answer_drafts.created_at"];
-          owner?: parameters["rowFilter.open_answer_drafts.owner"];
-        };
-        body: {
-          /** open_answer_drafts */
-          open_answer_drafts?: definitions["open_answer_drafts"];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters["preferReturn"];
-        };
-      };
-      responses: {
-        /** No Content */
-        204: never;
-      };
-    };
-  };
   "/open_answer_performances": {
     get: {
       parameters: {
@@ -1777,30 +1678,6 @@ export interface definitions {
     /** Format: text */
     last_name?: string;
   };
-  open_answer_drafts: {
-    /**
-     * Format: uuid
-     * @description Note:
-     * This is a Primary Key.<pk/>
-     * @default extensions.uuid_generate_v4()
-     */
-    id: string;
-    /** Format: text */
-    answer_text: string;
-    /**
-     * Format: uuid
-     * @description Note:
-     * This is a Foreign Key to `open_questions.id`.<fk table='open_questions' column='id'/>
-     */
-    open_question: string;
-    /**
-     * Format: timestamp with time zone
-     * @default now()
-     */
-    created_at: string;
-    /** Format: uuid */
-    owner: string;
-  };
   open_answer_performances: {
     /**
      * Format: uuid
@@ -2178,18 +2055,6 @@ export interface parameters {
   "rowFilter.members.first_name": string;
   /** Format: text */
   "rowFilter.members.last_name": string;
-  /** @description open_answer_drafts */
-  "body.open_answer_drafts": definitions["open_answer_drafts"];
-  /** Format: uuid */
-  "rowFilter.open_answer_drafts.id": string;
-  /** Format: text */
-  "rowFilter.open_answer_drafts.answer_text": string;
-  /** Format: uuid */
-  "rowFilter.open_answer_drafts.open_question": string;
-  /** Format: timestamp with time zone */
-  "rowFilter.open_answer_drafts.created_at": string;
-  /** Format: uuid */
-  "rowFilter.open_answer_drafts.owner": string;
   /** @description open_answer_performances */
   "body.open_answer_performances": definitions["open_answer_performances"];
   /** Format: uuid */

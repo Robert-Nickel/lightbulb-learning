@@ -126,42 +126,6 @@ export async function deleteCourse(id: string) {
 	printIf(error);
 }
 
-export async function fetchMyOpenQuestionDraft(courseId: string): Promise<OpenQuestionDraftType> {
-	const { data, error } = await supabase
-		.from<OpenQuestionDraftTypeDB>(openQuestionDraftsTable)
-		.select()
-		.eq('owner', supabase.auth.user().id)
-		.eq('course', courseId);
-	printIf(error);
-	return keysToCamelCase(data[0]);
-}
-
-export async function saveOpenQuestionDraft(
-	questionText: string,
-	courseId: string
-): Promise<OpenQuestionDraftType> {
-	console.log('saving open question draft: ' + questionText + ' course id: ' + courseId);
-
-	const { data, error } = await supabase
-		.from<OpenQuestionDraftTypeDB>(openQuestionDraftsTable)
-		.insert({
-			question_text: questionText,
-			course: courseId,
-			owner: supabase.auth.user().id
-		})
-		.single();
-	printIf(error);
-	return keysToCamelCase(data);
-}
-
-export async function deleteOpenQuestionDraft(id: string) {
-	const { error } = await supabase
-		.from<OpenQuestionDraftTypeDB>(openQuestionDraftsTable)
-		.delete()
-		.eq('id', id);
-	printIf(error);
-}
-
 export async function fetchOpenQuestions(courseId): Promise<OpenQuestionType[]> {
 	const { data, error } = await supabase
 		.from<OpenQuestionTypeDB>(openQuestionsTable)
@@ -570,7 +534,6 @@ function printIf(error) {
 }
 
 export const coursesTable = 'courses';
-export const openQuestionDraftsTable = 'open_question_drafts';
 export const openQuestionsTable = 'open_questions';
 export const openAnswerDraftsTable = 'open_answer_drafts';
 export const openAnswersTable = 'open_answers';
@@ -590,11 +553,8 @@ export const openQuestionLikesTable = 'open_question_likes';
 export const evaluationsTable = 'evaluations';
 
 export type CourseType = CamelCasedPropertiesDeep<definitions['courses']>;
-export type OpenQuestionDraftType = CamelCasedPropertiesDeep<definitions['open_question_drafts']>;
 export type OpenQuestionType = CamelCasedPropertiesDeep<definitions['open_questions']>;
-export type OpenAnswerDraftType = CamelCasedPropertiesDeep<definitions['open_answer_drafts']>;
 export type OpenAnswerType = CamelCasedPropertiesDeep<definitions['open_answers']>;
-export type OpenFeedbackDraftType = CamelCasedPropertiesDeep<definitions['open_feedback_drafts']>;
 export type OpenFeedbackType = CamelCasedPropertiesDeep<definitions['open_feedback']>;
 export type ProfileType = CamelCasedPropertiesDeep<definitions['profiles']>;
 export type UniversityType = CamelCasedPropertiesDeep<definitions['universities']>;
@@ -614,7 +574,6 @@ export type OpenQuestionLikeType = CamelCasedPropertiesDeep<definitions['open_qu
 export type EvaluationType = CamelCasedPropertiesDeep<definitions['evaluations']>;
 
 export type CourseTypeDB = definitions['courses'];
-export type OpenQuestionDraftTypeDB = definitions['open_question_drafts'];
 export type OpenQuestionTypeDB = definitions['open_questions'];
 export type OpenAnswerDraftTypeDB = definitions['open_answer_drafts'];
 export type OpenAnswerTypeDB = definitions['open_answers'];

@@ -22,12 +22,14 @@
 		bind:value={openQuestionText}
 		on:load={autosize(document.getElementById('textarea-question'))}
 	/>
-	<SelectTopics
-		courseId={course.id}
-		on:selectedTopicsChanged={(event) => {
-			selectedTopics = event.detail.selectedTopics;
-		}}
-	/>
+	{#if openQuestionText}
+		<SelectTopics
+			courseId={course.id}
+			on:selectedTopicsChanged={(event) => {
+				selectedTopics = event.detail.selectedTopics;
+			}}
+		/>
+	{/if}
 	<button
 		id="button-publish"
 		disabled={!openQuestionText}

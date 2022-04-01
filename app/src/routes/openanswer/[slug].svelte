@@ -6,16 +6,12 @@
 	import ImproveOpenAnswer from '$lib/components/ImproveOpenAnswer.svelte';
 	import {
 		fetchMyOpenFeedback,
-		fetchMyOpenFeedbackDraft,
 		fetchOpenAnswer,
 		fetchOpenQuestion,
 		fetchOpenFeedbackOfOthers,
 		OpenAnswerType,
-		OpenFeedbackDraftType,
 		OpenFeedbackType,
 		OpenQuestionType,
-		saveOpenFeedbackDraft,
-		deleteOpenFeedbackDraft,
 		saveOpenFeedback,
 		fetchLatestOpenAnswer
 	} from '$lib/supabaseClient';
@@ -26,10 +22,9 @@
 
 	let openQuestion: OpenQuestionType;
 	let openAnswer: OpenAnswerType;
-	let myOpenFeedbackDraft: OpenFeedbackDraftType;
 	let myOpenFeedback: OpenFeedbackType;
 	let openFeedbackOfOthers: Array<OpenFeedbackType> = [];
-	let openFeedbackDraftText = '';
+	let openFeedbackText;
 	let toast;
 	let improvingAnswer = false;
 	let latestOpenAnswer;
@@ -48,14 +43,12 @@
 
 		openQuestion = await fetchOpenQuestion(openAnswer.openQuestion);
 		myOpenFeedback = await fetchMyOpenFeedback(openAnswer.id);
-		myOpenFeedbackDraft = await fetchMyOpenFeedbackDraft(openAnswer.id);
 		openFeedbackOfOthers = await fetchOpenFeedbackOfOthers(openAnswer.id);
 	}
 
 	async function publishOpenFeedback() {
-		myOpenFeedback = await saveOpenFeedback(myOpenFeedbackDraft.feedbackText, myOpenFeedbackDraft.openAnswer);
-		await deleteOpenFeedbackDraft(myOpenFeedbackDraft.id);
-		myOpenFeedbackDraft = null;
+		myOpenFeedback = await saveOpenFeedback(openFeedbackText, openAnswer.id);
+		openFeedbackText = null;
 		toast.showSuccessToast('Thanks for your Feedback!');
 	}
 </script>
@@ -109,43 +102,19 @@
 				<article class="yours">
 					{myOpenFeedback.feedbackText}
 				</article>
-			{:else if myOpenFeedbackDraft}
-				<div class="flex justify-between space-x-2 mt-2">
-					<div class="w-full">{myOpenFeedbackDraft.feedbackText}</div>
-					<button
-						on:click={async () => {
-							await deleteOpenFeedbackDraft(myOpenFeedbackDraft.id);
-							myOpenFeedbackDraft = null;
-							openFeedbackDraftText = '';
-						}}
-						class="w-48 h-12 secondary outline">Delete</button
-					>
-				</div>
-				<div>
-					<button on:click={publishOpenFeedback} class="w-32 mt-4">Publish</button>
-				</div>
 			{:else}
-				<div class="flex justify-between space-x-2 mt-2">
-					<div class="w-full">
-						<textarea
-							id="textarea-feedback"
-							bind:value={openFeedbackDraftText}
-							class="w-full h-12"
-							placeholder="Give feedback to this answer"
-							on:load={autosize(document.getElementById('textarea-feedback'))}
-						/>
-					</div>
-					<button
-						on:click={async () => {
-							// TODO: careful! When creating feedback on a newer version of the open answer than the one in the url!
-							myOpenFeedbackDraft = await saveOpenFeedbackDraft(openFeedbackDraftText, openAnswer.id);
-						}}
-						class="w-48 h-12">Save</button
-					>
-				</div>
+				<textarea
+					id="textarea-feedback"
+					bind:value={openFeedbackText}
+					class="w-full h-12"
+					placeholder="Give feedback to this answer"
+					on:load={autosize(document.getElementById('textarea-feedback'))}
+				/>
 				<i
 					>The feedback is private - only you, the owner of the answer and the owner of the course can see it.</i
 				>
+
+				<button on:click={publishOpenFeedback} class="w-32 mt-4">Publish</button>
 			{/if}
 		{/if}
 	{/if}

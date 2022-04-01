@@ -224,41 +224,6 @@ export async function saveOpenAnswer(
 	return keysToCamelCase(data);
 }
 
-export async function fetchMyOpenFeedbackDraft(openAnswerId: string): Promise<OpenFeedbackDraftType> {
-	const { data, error } = await supabase
-		.from<OpenFeedbackDraftTypeDB>(openFeedbackDraftsTable)
-		.select()
-		.eq('owner', supabase.auth.user().id)
-		.eq('open_answer', openAnswerId)
-		.maybeSingle();
-	printIf(error);
-	return keysToCamelCase(data);
-}
-
-export async function saveOpenFeedbackDraft(
-	openFeedbackDraftText: string,
-	openAnswerId: string
-): Promise<OpenFeedbackDraftType> {
-	const { data, error } = await supabase
-		.from<OpenFeedbackDraftTypeDB>(openFeedbackDraftsTable)
-		.insert({
-			feedback_text: openFeedbackDraftText,
-			open_answer: openAnswerId,
-			owner: supabase.auth.user().id
-		})
-		.single();
-	printIf(error);
-	return keysToCamelCase(data);
-}
-
-export async function deleteOpenFeedbackDraft(id: string) {
-	const { error } = await supabase
-		.from<OpenFeedbackDraftTypeDB>(openFeedbackDraftsTable)
-		.delete()
-		.eq('id', id);
-	printIf(error);
-}
-
 export async function fetchMyOpenFeedback(openAnswerId: string): Promise<OpenFeedbackType> {
 	const { data, error } = await supabase
 		.from<OpenFeedbackTypeDB>(openFeedbackTable)
@@ -501,7 +466,6 @@ function printIf(error) {
 export const coursesTable = 'courses';
 export const openQuestionsTable = 'open_questions';
 export const openAnswersTable = 'open_answers';
-export const openFeedbackDraftsTable = 'open_feedback_drafts';
 export const openFeedbackTable = 'open_feedback';
 export const profilesTable = 'profiles';
 export const universitiesTable = 'universities';
@@ -540,7 +504,6 @@ export type EvaluationType = CamelCasedPropertiesDeep<definitions['evaluations']
 export type CourseTypeDB = definitions['courses'];
 export type OpenQuestionTypeDB = definitions['open_questions'];
 export type OpenAnswerTypeDB = definitions['open_answers'];
-export type OpenFeedbackDraftTypeDB = definitions['open_feedback_drafts'];
 export type OpenFeedbackTypeDB = definitions['open_feedback'];
 export type ProfileTypeDB = definitions['profiles'];
 export type UniversityTypeDB = definitions['universities'];

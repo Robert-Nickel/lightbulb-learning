@@ -681,105 +681,6 @@ export interface paths {
       };
     };
   };
-  "/open_feedback_drafts": {
-    get: {
-      parameters: {
-        query: {
-          id?: parameters["rowFilter.open_feedback_drafts.id"];
-          feedback_text?: parameters["rowFilter.open_feedback_drafts.feedback_text"];
-          open_answer?: parameters["rowFilter.open_feedback_drafts.open_answer"];
-          created_at?: parameters["rowFilter.open_feedback_drafts.created_at"];
-          owner?: parameters["rowFilter.open_feedback_drafts.owner"];
-          /** Filtering Columns */
-          select?: parameters["select"];
-          /** Ordering */
-          order?: parameters["order"];
-          /** Limiting and Pagination */
-          offset?: parameters["offset"];
-          /** Limiting and Pagination */
-          limit?: parameters["limit"];
-        };
-        header: {
-          /** Limiting and Pagination */
-          Range?: parameters["range"];
-          /** Limiting and Pagination */
-          "Range-Unit"?: parameters["rangeUnit"];
-          /** Preference */
-          Prefer?: parameters["preferCount"];
-        };
-      };
-      responses: {
-        /** OK */
-        200: {
-          schema: definitions["open_feedback_drafts"][];
-        };
-        /** Partial Content */
-        206: unknown;
-      };
-    };
-    post: {
-      parameters: {
-        body: {
-          /** open_feedback_drafts */
-          open_feedback_drafts?: definitions["open_feedback_drafts"];
-        };
-        query: {
-          /** Filtering Columns */
-          select?: parameters["select"];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters["preferReturn"];
-        };
-      };
-      responses: {
-        /** Created */
-        201: unknown;
-      };
-    };
-    delete: {
-      parameters: {
-        query: {
-          id?: parameters["rowFilter.open_feedback_drafts.id"];
-          feedback_text?: parameters["rowFilter.open_feedback_drafts.feedback_text"];
-          open_answer?: parameters["rowFilter.open_feedback_drafts.open_answer"];
-          created_at?: parameters["rowFilter.open_feedback_drafts.created_at"];
-          owner?: parameters["rowFilter.open_feedback_drafts.owner"];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters["preferReturn"];
-        };
-      };
-      responses: {
-        /** No Content */
-        204: never;
-      };
-    };
-    patch: {
-      parameters: {
-        query: {
-          id?: parameters["rowFilter.open_feedback_drafts.id"];
-          feedback_text?: parameters["rowFilter.open_feedback_drafts.feedback_text"];
-          open_answer?: parameters["rowFilter.open_feedback_drafts.open_answer"];
-          created_at?: parameters["rowFilter.open_feedback_drafts.created_at"];
-          owner?: parameters["rowFilter.open_feedback_drafts.owner"];
-        };
-        body: {
-          /** open_feedback_drafts */
-          open_feedback_drafts?: definitions["open_feedback_drafts"];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters["preferReturn"];
-        };
-      };
-      responses: {
-        /** No Content */
-        204: never;
-      };
-    };
-  };
   "/open_feedback_performances": {
     get: {
       parameters: {
@@ -1753,30 +1654,6 @@ export interface definitions {
     /** Format: uuid */
     owner: string;
   };
-  open_feedback_drafts: {
-    /**
-     * Format: uuid
-     * @description Note:
-     * This is a Primary Key.<pk/>
-     * @default extensions.uuid_generate_v4()
-     */
-    id: string;
-    /** Format: text */
-    feedback_text: string;
-    /**
-     * Format: uuid
-     * @description Note:
-     * This is a Foreign Key to `open_answers.id`.<fk table='open_answers' column='id'/>
-     */
-    open_answer: string;
-    /**
-     * Format: timestamp with time zone
-     * @default now()
-     */
-    created_at: string;
-    /** Format: uuid */
-    owner: string;
-  };
   open_feedback_performances: {
     /**
      * Format: uuid
@@ -2098,18 +1975,6 @@ export interface parameters {
   "rowFilter.open_feedback.feedback_text": string;
   /** Format: uuid */
   "rowFilter.open_feedback.owner": string;
-  /** @description open_feedback_drafts */
-  "body.open_feedback_drafts": definitions["open_feedback_drafts"];
-  /** Format: uuid */
-  "rowFilter.open_feedback_drafts.id": string;
-  /** Format: text */
-  "rowFilter.open_feedback_drafts.feedback_text": string;
-  /** Format: uuid */
-  "rowFilter.open_feedback_drafts.open_answer": string;
-  /** Format: timestamp with time zone */
-  "rowFilter.open_feedback_drafts.created_at": string;
-  /** Format: uuid */
-  "rowFilter.open_feedback_drafts.owner": string;
   /** @description open_feedback_performances */
   "body.open_feedback_performances": definitions["open_feedback_performances"];
   /** Format: uuid */

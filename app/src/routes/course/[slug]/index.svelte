@@ -81,7 +81,6 @@
 	import type { Load } from '@sveltejs/kit';
 	import type { Session } from '@supabase/supabase-js';
 	import FilterByTopics from '$lib/components/FilterByTopics.svelte';
-	import { invalidate } from '$app/navigation';
 	import OpenQuestion from '$lib/components/OpenQuestion.svelte';
 
 	export let course: CourseType;

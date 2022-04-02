@@ -439,6 +439,102 @@ export interface paths {
       };
     };
   };
+  "/open_answer_likes": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.open_answer_likes.id"];
+          open_answer?: parameters["rowFilter.open_answer_likes.open_answer"];
+          owner?: parameters["rowFilter.open_answer_likes.owner"];
+          created_at?: parameters["rowFilter.open_answer_likes.created_at"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["open_answer_likes"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** open_answer_likes */
+          open_answer_likes?: definitions["open_answer_likes"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.open_answer_likes.id"];
+          open_answer?: parameters["rowFilter.open_answer_likes.open_answer"];
+          owner?: parameters["rowFilter.open_answer_likes.owner"];
+          created_at?: parameters["rowFilter.open_answer_likes.created_at"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.open_answer_likes.id"];
+          open_answer?: parameters["rowFilter.open_answer_likes.open_answer"];
+          owner?: parameters["rowFilter.open_answer_likes.owner"];
+          created_at?: parameters["rowFilter.open_answer_likes.created_at"];
+        };
+        body: {
+          /** open_answer_likes */
+          open_answer_likes?: definitions["open_answer_likes"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
   "/open_answer_performances": {
     get: {
       parameters: {
@@ -1579,6 +1675,28 @@ export interface definitions {
     /** Format: text */
     last_name?: string;
   };
+  open_answer_likes: {
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     * @default extensions.uuid_generate_v4()
+     */
+    id: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `open_answers.id`.<fk table='open_answers' column='id'/>
+     */
+    open_answer: string;
+    /** Format: uuid */
+    owner: string;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at: string;
+  };
   open_answer_performances: {
     /**
      * Format: uuid
@@ -1932,6 +2050,16 @@ export interface parameters {
   "rowFilter.members.first_name": string;
   /** Format: text */
   "rowFilter.members.last_name": string;
+  /** @description open_answer_likes */
+  "body.open_answer_likes": definitions["open_answer_likes"];
+  /** Format: uuid */
+  "rowFilter.open_answer_likes.id": string;
+  /** Format: uuid */
+  "rowFilter.open_answer_likes.open_answer": string;
+  /** Format: uuid */
+  "rowFilter.open_answer_likes.owner": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.open_answer_likes.created_at": string;
   /** @description open_answer_performances */
   "body.open_answer_performances": definitions["open_answer_performances"];
   /** Format: uuid */

@@ -382,6 +382,14 @@ export async function saveOpenQuestionLike(openQuestionId: string): Promise<Open
 	printIf(error);
 	return keysToCamelCase(data);
 }
+export async function saveOpenAnswerLike(openAnswerId: string): Promise<OpenAnswerLikeType> {
+	const { data, error } = await supabase
+		.from<OpenAnswerLikeTypeDB>(openAnswerLikesTable)
+		.insert({ open_answer: openAnswerId, owner: supabase.auth.user().id })
+		.single();
+	printIf(error);
+	return keysToCamelCase(data);
+}
 
 export async function fetchMyOpenQuestionLikes(openQuestionIds: string[], userId: string): Promise<OpenQuestionLikeType[]> {
 	const { data, error } = await supabase
@@ -393,13 +401,31 @@ export async function fetchMyOpenQuestionLikes(openQuestionIds: string[], userId
 	return keysToCamelCase(data);
 }
 
-
+export async function fetchMyOpenAnswerLikes(openAnswerIds: string[], userId: string): Promise<OpenAnswerLikeType[]> {
+	const { data, error } = await supabase
+		.from<OpenAnswerLikeTypeDB>(openAnswerLikesTable)
+		.select()
+		.eq('owner', userId)
+		.in('open_answer', openAnswerIds);
+	printIf(error);
+	return keysToCamelCase(data);
+}
 
 export async function deleteOpenQuestionLike(openQuestionId: string) {
+	// TODO: doesn't this delete too much?!?! Or is this regulated by RLS?
 	const { error } = await supabase
 		.from<OpenQuestionLikeTypeDB>(openQuestionLikesTable)
 		.delete()
 		.eq('open_question', openQuestionId);
+	printIf(error);
+}
+
+export async function deleteOpenAnswerLike(openAnswerId: string) {
+	// TODO: doesn't this delete too much?!?! Or is this regulated by RLS?
+	const { error } = await supabase
+		.from<OpenAnswerLikeTypeDB>(openAnswerLikesTable)
+		.delete()
+		.eq('open_answer', openAnswerId);
 	printIf(error);
 }
 
@@ -435,6 +461,15 @@ export async function fetchOpenQuestionLikes(openQuestionIds: string[]): Promise
 		.from<OpenQuestionLikeTypeDB>(openQuestionLikesTable)
 		.select()
 		.in('open_question', openQuestionIds);
+	printIf(error);
+	return keysToCamelCase(data);
+}
+
+export async function fetchOpenAnswerLikes(openAnswerIds: string[]): Promise<OpenAnswerLikeType[]> {
+	const { data, error } = await supabase
+		.from<OpenAnswerLikeTypeDB>(openAnswerLikesTable)
+		.select()
+		.in('open_answer', openAnswerIds);
 	printIf(error);
 	return keysToCamelCase(data);
 }
@@ -478,6 +513,7 @@ export const openFeedbackPerformancesView = 'open_feedback_performances';
 export const topicsTable = 'topics';
 export const openQuestionTopicTable = 'open_question_topic';
 export const openQuestionLikesTable = 'open_question_likes';
+export const openAnswerLikesTable = 'open_answer_likes';
 export const evaluationsTable = 'evaluations';
 
 export type CourseType = CamelCasedPropertiesDeep<definitions['courses']>;
@@ -499,6 +535,7 @@ export type OpenFeedbackPerformanceType = CamelCasedPropertiesDeep<
 export type TopicType = CamelCasedPropertiesDeep<definitions['topics']>;
 export type OpenQuestionTopicType = CamelCasedPropertiesDeep<definitions['open_question_topic']>;
 export type OpenQuestionLikeType = CamelCasedPropertiesDeep<definitions['open_question_likes']>;
+export type OpenAnswerLikeType = CamelCasedPropertiesDeep<definitions['open_answer_likes']>;
 export type EvaluationType = CamelCasedPropertiesDeep<definitions['evaluations']>;
 
 export type CourseTypeDB = definitions['courses'];
@@ -516,4 +553,5 @@ export type OpenFeedbackPerformanceTypeDB = definitions['open_feedback_performan
 export type TopicTypeDB = definitions['topics'];
 export type OpenQuestionTopicTypeDB = definitions['open_question_topic'];
 export type OpenQuestionLikeTypeDB = definitions['open_question_likes'];
+export type OpenAnswerLikeTypeDB = definitions['open_answer_likes'];
 export type EvaluationTypeDB = definitions['evaluations'];

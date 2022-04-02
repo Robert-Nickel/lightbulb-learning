@@ -542,8 +542,8 @@ export interface paths {
           id?: parameters["rowFilter.open_answer_performances.id"];
           open_answer_id?: parameters["rowFilter.open_answer_performances.open_answer_id"];
           answer_text?: parameters["rowFilter.open_answer_performances.answer_text"];
-          version?: parameters["rowFilter.open_answer_performances.version"];
           created_at?: parameters["rowFilter.open_answer_performances.created_at"];
+          likes?: parameters["rowFilter.open_answer_performances.likes"];
           question_text?: parameters["rowFilter.open_answer_performances.question_text"];
           /** Filtering Columns */
           select?: parameters["select"];
@@ -1712,10 +1712,10 @@ export interface definitions {
     open_answer_id?: string;
     /** Format: text */
     answer_text?: string;
-    /** Format: bigint */
-    version?: number;
     /** Format: timestamp with time zone */
     created_at?: string;
+    /** Format: bigint */
+    likes?: number;
     /** Format: text */
     question_text?: string;
   };
@@ -2068,10 +2068,10 @@ export interface parameters {
   "rowFilter.open_answer_performances.open_answer_id": string;
   /** Format: text */
   "rowFilter.open_answer_performances.answer_text": string;
-  /** Format: bigint */
-  "rowFilter.open_answer_performances.version": string;
   /** Format: timestamp with time zone */
   "rowFilter.open_answer_performances.created_at": string;
+  /** Format: bigint */
+  "rowFilter.open_answer_performances.likes": string;
   /** Format: text */
   "rowFilter.open_answer_performances.question_text": string;
   /** @description open_answers */

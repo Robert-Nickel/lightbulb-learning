@@ -849,7 +849,6 @@ GRANT ALL ON TABLE public.open_feedback_performances TO authenticated;
 GRANT ALL ON TABLE public.open_feedback_performances TO service_role;
 
 
---- This contains a bug: stuff shows up, that belongs to a user, but not to this course
 CREATE OR REPLACE VIEW public.open_question_performances
  AS
  SELECT course_user.id,

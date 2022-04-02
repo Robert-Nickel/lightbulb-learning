@@ -4,13 +4,27 @@
 		if (!user) return { status: 302, redirect: '/login' };
 
 		const questionId = params.slug;
-		const openAnswersOfOthersWithNonLatest = await fetchOpenAnswersOfOthers(questionId, user.id);
-		const openAnswersOfOthersDB = await filterNonLatest(openAnswersOfOthersWithNonLatest);
-		const openAnswersOfOthersDBIds = openAnswersOfOthersDB.map((openAnswer) => openAnswer.id);
 		const openQuestion = await fetchOpenQuestion(questionId);
 		const courseDescription = await (await fetchCourse(openQuestion.course)).description;
-		const openAnswerLikes = await fetchOpenAnswerLikes(openAnswersOfOthersDBIds);
-		const myOpenAnswerLikes = await fetchMyOpenAnswerLikes(openAnswersOfOthersDBIds, user.id);
+
+		const openAnswersOfOthersWithNonLatest = await fetchOpenAnswersOfOthers(questionId, user.id);
+		const openAnswersOfOthersDB = await filterNonLatest(openAnswersOfOthersWithNonLatest);
+		const openAnswersOfOthersIds = openAnswersOfOthersDB.map((openAnswer) => openAnswer.id);
+		const myOpenAnswerLikes = await fetchMyOpenAnswerLikes(openAnswersOfOthersIds, user.id);
+
+		const myOpenAnswerWithoutLikes = await fetchLatestOpenAnswer(questionId, user.id);
+
+		const allOpenAnswerIds = myOpenAnswerWithoutLikes
+			? openAnswersOfOthersIds.concat(myOpenAnswerWithoutLikes.id)
+			: openAnswersOfOthersIds;
+		const openAnswerLikes = await fetchOpenAnswerLikes(allOpenAnswerIds);
+
+		const myOpenAnswer = myOpenAnswerWithoutLikes
+			? {
+					...myOpenAnswerWithoutLikes,
+					...{ totalLikes: countLikes(myOpenAnswerWithoutLikes.id) }
+			  }
+			: null;
 
 		type OpenAnswer = OpenAnswerType & { isLiked: boolean; totalLikes: number };
 
@@ -44,7 +58,7 @@
 			props: {
 				user,
 				openQuestion,
-				myOpenAnswer: await fetchLatestOpenAnswer(questionId, user.id),
+				myOpenAnswer,
 				openAnswersOfOthers,
 				courseDescription
 			}
@@ -117,7 +131,7 @@
 		{#if myOpenAnswer}
 			<a href={routes.openAnswer(myOpenAnswer.id)} class="light-link" sveltekit:prefetch>
 				<article class="yours hoverable">
-					<i>Your answer: </i>{myOpenAnswer.answerText}
+					<OpenAnswer openAnswer={myOpenAnswer} />
 				</article>
 			</a>
 		{:else}

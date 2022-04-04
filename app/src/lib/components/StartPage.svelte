@@ -98,7 +98,9 @@
 
 		{#if wantsToReadMore}
 			<Faq />
-			<button class="m-auto mt-16 w-64">Now I want to try it.</button>
+			<a href={routes.login} sveltekit:prefetch>
+				<button class="m-auto mt-16 w-64">I want to try it now.</button>
+			</a>
 		{/if}
 	</div>
 </main>

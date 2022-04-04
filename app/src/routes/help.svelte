@@ -15,4 +15,10 @@
 <div>
 	<h3>FAQ</h3>
 	<Faq />
+
+	<h5>What was the invite code to that example course again?</h5>
+	<p>
+		It's <a href={routes.joinCourse('GNRLWISDOM')}>GNRLWISDOM</a>. Feel free to interact and get a feeling for
+		Lightbulb Learning.
+	</p>
 </div>

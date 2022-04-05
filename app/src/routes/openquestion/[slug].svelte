@@ -145,7 +145,11 @@
 
 			<button
 				on:click={async () => {
-					myOpenAnswer = await saveOpenAnswer(openAnswerText, openQuestion.id);
+					const myOpenAnswerWithoutLikes = await saveOpenAnswer(openAnswerText, openQuestion.id);
+					myOpenAnswer = {
+						...myOpenAnswerWithoutLikes,
+						...{ totalLikes: 0 }
+					};
 					toast.showSuccessToast('Open Answer created!');
 				}}
 				class="w-32"

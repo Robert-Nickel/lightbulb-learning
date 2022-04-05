@@ -148,7 +148,7 @@
 					myOpenAnswer = await saveOpenAnswer(openAnswerText, openQuestion.id);
 					toast.showSuccessToast('Open Answer created!');
 				}}
-				class="w-32 mt-4"
+				class="w-32"
 				disabled={!openAnswerText}>Publish</button
 			>
 		{/if}

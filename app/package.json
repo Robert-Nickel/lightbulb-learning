@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "svelte-kit dev",
-    "build": "svelte-kit build",
+    "build": "npm run genTypes && svelte-kit build",
     "seed": "psql 'postgresql://postgres:postgres@localhost:54322/postgres' -f supabase/seed.sql",
     "test": "npm run seed && npx playwright test",
     "package": "svelte-kit package",
@@ -13,7 +13,7 @@
     "lint": "prettier --ignore-path .gitignore --check --plugin-search-dir=. . && eslint --ignore-path .gitignore .",
     "format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. .",
     "compile": "tsc",
-    "genTypes": "npx openapi-typescript 'http://localhost:54321/rest/v1/?apikey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24ifQ.625_WdcF3KHqz5amU0x2X5WWHP-OEs_4qj0ssLNHzTs' > src/lib/models/supabase.ts",
+    "genTypes": "npx openapi-typescript 'https://ckjsuzpqlhcjbonsnuzp.supabase.co/rest/v1/?apikey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MjA2NjY2MCwiZXhwIjoxOTU3NjQyNjYwfQ.mcsY3yNw8SMmcd_ltjLIRpnvnH2Kr1mq-IC2bXUFuSI' > src/lib/models/supabase.ts",
     "dumpSchema": "dotenv -e .env-prod -- bash -c 'pg_dump --host=$DB_HOST --username=$DB_USER --schema-only --schema=public --no-password > supabase/seed.sql '",
     "sb:start": "supabase start",
     "sb:stop": "supabase stop"

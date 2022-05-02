@@ -42,27 +42,27 @@ CREATE POLICY uni_select_policy_for_authenticated_user
     TO public
     USING ((auth.role() = 'authenticated'::text));
 
-CREATE TABLE IF NOT EXISTS public.evaluations
+CREATE TABLE IF NOT EXISTS public.progresses
 (
     id uuid NOT NULL DEFAULT uuid_generate_v4(),
     course_user uuid NOT NULL,
     percentage smallint NOT NULL DEFAULT 0,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
-    CONSTRAINT evaluations_pkey PRIMARY KEY (id)
+    CONSTRAINT progresses_pkey PRIMARY KEY (id)
 )
 
 TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS public.evaluations
+ALTER TABLE IF EXISTS public.progresses
     OWNER to postgres;
 
-GRANT ALL ON TABLE public.evaluations TO anon;
+GRANT ALL ON TABLE public.progresses TO anon;
 
-GRANT ALL ON TABLE public.evaluations TO authenticated;
+GRANT ALL ON TABLE public.progresses TO authenticated;
 
-GRANT ALL ON TABLE public.evaluations TO postgres;
+GRANT ALL ON TABLE public.progresses TO postgres;
 
-GRANT ALL ON TABLE public.evaluations TO service_role;
+GRANT ALL ON TABLE public.progresses TO service_role;
 
 
 

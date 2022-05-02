@@ -9,13 +9,13 @@
 		let allPerformances: { createdAt: string }[] = (await fetchOpenQuestionPerformances(courseUserId))
 			.concat(await fetchOpenAnswerPerformances(courseUserId))
 			.concat(await fetchOpenFeedbackPerformances(courseUserId))
-			.concat(await fetchEvaluations(courseUserId));
+			.concat(await fetchProgresses(courseUserId));
 		allPerformances = sortChronologically(allPerformances);
 
-		let latestEvaluation;
+		let latestProgress;
 		for (let i = 0; i < allPerformances.length; i++) {
 			if (allPerformances[i].percentage != null) {
-				latestEvaluation = allPerformances[i].percentage;
+				latestProgress = allPerformances[i].percentage;
 				break;
 			}
 		}
@@ -23,7 +23,7 @@
 			props: {
 				member,
 				allPerformances,
-				latestEvaluation
+				latestProgress
 			}
 		};
 	};
@@ -33,10 +33,10 @@
 	import type { Load } from '@sveltejs/kit';
 	import type { Session } from '@supabase/supabase-js';
 	import Back from '$lib/components/Back.svelte';
-	import Evaluation from '$lib/components/Evaluation.svelte';
+	import Progress from '$lib/components/Progress.svelte';
 	import { routes } from '$lib/routes';
 	import {
-		fetchEvaluations,
+		fetchProgresses,
 		fetchMember,
 		fetchOpenAnswerPerformances,
 		fetchOpenFeedbackPerformances,
@@ -46,7 +46,7 @@
 
 	export let member: MemberType;
 	export let allPerformances: { createdAt: string }[];
-	export let latestEvaluation: number;
+	export let latestProgress: number;
 
 	function getDateAndTime(createdAt: string) {
 		const date = new Date(createdAt);
@@ -68,10 +68,10 @@
 {#if member}<h1>Performance of {member.firstName} {member.lastName}</h1>{/if}
 
 {#if member}
-	<Evaluation
+	<Progress
 		courseUserId={member.id}
-		{latestEvaluation}
-		on:evaluationAdded={(event) => {
+		{latestProgress}
+		on:progressAdded={(event) => {
 			allPerformances.push(event.detail);
 			allPerformances = sortChronologically(allPerformances);
 		}}
@@ -106,8 +106,8 @@
 				<p class="my-2"><i>Answer: {performance.answerText}</i></p>
 				<h4 class="mt-2 mb-0">{performance.feedbackText}</h4>
 			{:else if performance.percentage || performance.percentage == 0}
-				<small>- Evaluation </small>
-				<h4 class="mt-2 mb-0" id="evaluation-text">
+				<small>- Progress </small>
+				<h4 class="mt-2 mb-0" id="progress-text">
 					Reached {performance.percentage}%
 				</h4>
 			{/if}

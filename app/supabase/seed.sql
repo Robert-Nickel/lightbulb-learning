@@ -14,7 +14,7 @@ DELETE FROM
     public.course_user;
 
 DELETE FROM
-    public.evaluations;
+    public.progresses;
 
 DELETE FROM
     public.open_questions;

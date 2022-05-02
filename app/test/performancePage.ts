@@ -5,22 +5,22 @@ export const EL_STUDENTO = '4e5e689a-a09c-4e20-858c-14d442251457';
 export class PerformancePage {
   readonly page: Page;
   readonly title: Locator;
-  readonly latestEvaluation: Locator;
+  readonly latestProgress: Locator;
   readonly changeButton: Locator;
   readonly saveButton: Locator;
-  readonly evaluationInput: Locator;
+  readonly progressInput: Locator;
   readonly openQuestionPerformance: OpenQuestionPerformance;
-  readonly evaluation: Evaluation;
+  readonly progress: Progress;
 
   constructor(page: Page) {
     this.page = page;
     this.title = page.locator('h1');
-    this.latestEvaluation = page.locator('id=latest-evaluation');
+    this.latestProgress = page.locator('id=latest-progress');
     this.changeButton = page.locator('text=Change');
     this.saveButton = page.locator('text=Save');
-    this.evaluationInput = page.locator('id=evaluation-input');
+    this.progressInput = page.locator('id=progress-input');
     this.openQuestionPerformance = new OpenQuestionPerformance(this.page);
-    this.evaluation = new Evaluation(this.page);
+    this.progress = new Progress(this.page);
   }
 
   async goto(courseUserId: string) {
@@ -38,12 +38,12 @@ export class OpenQuestionPerformance {
   }
 }
 
-export class Evaluation {
+export class Progress {
   readonly metadata: Locator;
-  readonly evaluationText: Locator;
+  readonly progressText: Locator;
 
   constructor(page: Page) {
     this.metadata = page.locator('text=/.*- Open Question -.*/gm');
-    this.evaluationText = page.locator('id=evaluation-text');
+    this.progressText = page.locator('id=progress-text');
   }
 }

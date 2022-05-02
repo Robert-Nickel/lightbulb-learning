@@ -9,12 +9,12 @@
 		console.log({ user });
 		const courseUser = await fetchCourseUser(courseId, user.id);
 		console.log({ courseUser });
-		const myLatestEvaluation = await fetchMyLatestEvaluation(courseUser.id);
+		const mylatestProgress = await fetchMyLatestProgress(courseUser.id);
 		return {
 			props: {
 				course,
 				routeLastSegment,
-				myLatestEvaluation: myLatestEvaluation ? myLatestEvaluation.percentage : 0
+				mylatestProgress: mylatestProgress ? mylatestProgress.percentage : 0
 			}
 		};
 	};
@@ -22,7 +22,7 @@
 
 <script lang="ts">
 	import Back from '$lib/components/Back.svelte';
-	import { CourseType, fetchCourse, fetchCourseUser, fetchMyLatestEvaluation } from '$lib/supabaseClient';
+	import { CourseType, fetchCourse, fetchCourseUser, fetchMyLatestProgress } from '$lib/supabaseClient';
 	import type { Session } from '@supabase/supabase-js';
 	import type { Load } from '@sveltejs/kit';
 	import { user } from '$lib/stores/user';
@@ -37,7 +37,7 @@
 
 	export let course: CourseType;
 	export let routeLastSegment: string;
-	export let myLatestEvaluation: number;
+	export let mylatestProgress: number;
 	$: activeTab =
 		routeLastSegment == 'settings'
 			? Tab.Settings
@@ -51,14 +51,14 @@
 
 	{#if course}
 		<h1>{course.description}</h1>
-		{#if myLatestEvaluation == 0}
-			<p>
-				Your Evaluation:&nbsp;
-				<em data-tooltip="Ask a good open question to increase it!">{myLatestEvaluation}%.</em>
-			</p>
-		{:else}
-			<p>Your Evaluation:&nbsp;{myLatestEvaluation}%.</p>
-		{/if}
+		<p>
+			Your progress:&nbsp;
+			<em
+				data-tooltip={mylatestProgress == 0
+					? 'Ask a good open question to get started!'
+					: 'Reach 100%, to get the certificate!'}>{mylatestProgress}%.</em
+			>
+		</p>
 
 		{#if $user.id == course.owner}
 			<header class="flex p-2 space-x-4 border-b-2 ">

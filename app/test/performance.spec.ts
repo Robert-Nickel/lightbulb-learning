@@ -15,32 +15,32 @@ test.describe('Performances', () => {
   });
 })
 
-test.describe('Evaluations', () => {
+test.describe('Progresses', () => {
   test('should display correct defaults', async ({ page }) => {
     const performancePage = new PerformancePage(page);
     await performancePage.goto(EL_STUDENTO)
     await expect(performancePage.title).toHaveText('Performance of El Studento');
-    await expect(performancePage.latestEvaluation).toHaveText('0%');
+    await expect(performancePage.latestProgress).toHaveText('0%');
     await expect(performancePage.changeButton).toBeVisible();
   });
 
-  test('should show new evaluation after creating it', async ({ page }) => {
+  test('should show new progress after creating it', async ({ page }) => {
     const performancePage = new PerformancePage(page);
     await performancePage.goto(EL_STUDENTO)
     await page.waitForTimeout(1_000)
     await performancePage.changeButton.click()
-    await performancePage.evaluationInput.fill("33")
+    await performancePage.progressInput.fill("33")
     await performancePage.saveButton.click()
-    // display without page reload as latest evaluation
-    await expect(performancePage.latestEvaluation).toHaveText("33%")
+    // display without page reload as latest progress
+    await expect(performancePage.latestProgress).toHaveText("33%")
     // display without page reload in list
-    await expect(performancePage.evaluation.evaluationText).toHaveText("Reached 33%")
+    await expect(performancePage.progress.progressText).toHaveText("Reached 33%")
 
     await performancePage.goto(EL_STUDENTO)
     await page.waitForTimeout(1_000)
-    // display with page refresh as latest evaluation
-    await expect(performancePage.latestEvaluation).toHaveText("33%")
+    // display with page refresh as latest progress
+    await expect(performancePage.latestProgress).toHaveText("33%")
     // display with page refresh in list
-    await expect(performancePage.evaluation.evaluationText).toHaveText("Reached 33%")
+    await expect(performancePage.progress.progressText).toHaveText("Reached 33%")
   })
 })

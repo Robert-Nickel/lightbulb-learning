@@ -429,18 +429,18 @@ export async function deleteOpenAnswerLike(openAnswerId: string) {
 	printIf(error);
 }
 
-export async function fetchEvaluations(courseUserId: string): Promise<EvaluationType[]> {
+export async function fetchProgresses(courseUserId: string): Promise<ProgressType[]> {
 	const { data, error } = await supabase
-		.from<EvaluationTypeDB>(evaluationsTable)
+		.from<ProgressTypeDB>(progressesTable)
 		.select()
 		.eq('course_user', courseUserId)
 	printIf(error);
 	return keysToCamelCase(data);
 }
 
-export async function saveEvaluation(courseUserId: string, percentage: number): Promise<EvaluationType> {
+export async function saveProgress(courseUserId: string, percentage: number): Promise<ProgressType> {
 	const { data, error } = await supabase
-		.from<EvaluationTypeDB>(evaluationsTable)
+		.from<ProgressTypeDB>(progressesTable)
 		.insert({ course_user: courseUserId, percentage })
 		.single();
 	printIf(error);
@@ -474,7 +474,7 @@ export async function fetchOpenAnswerLikes(openAnswerIds: string[]): Promise<Ope
 	return keysToCamelCase(data);
 }
 
-export async function fetchCourseUser(courseId: string, userId: string): Promise<EvaluationType> {
+export async function fetchCourseUser(courseId: string, userId: string): Promise<ProgressType> {
 	const { data, error } = await supabase.from(courseUserTable)
 		.select()
 		.eq("course", courseId)
@@ -484,9 +484,9 @@ export async function fetchCourseUser(courseId: string, userId: string): Promise
 	return keysToCamelCase(data);
 }
 
-export async function fetchMyLatestEvaluation(courseUserId: string): Promise<EvaluationType> {
+export async function fetchMyLatestProgress(courseUserId: string): Promise<ProgressType> {
 	const { data, error } = await supabase
-		.from<EvaluationTypeDB>(evaluationsTable)
+		.from<ProgressTypeDB>(progressesTable)
 		.select()
 		.eq('course_user', courseUserId)
 		.order("created_at", { ascending: false });
@@ -514,7 +514,7 @@ export const topicsTable = 'topics';
 export const openQuestionTopicTable = 'open_question_topic';
 export const openQuestionLikesTable = 'open_question_likes';
 export const openAnswerLikesTable = 'open_answer_likes';
-export const evaluationsTable = 'evaluations';
+export const progressesTable = 'progresses';
 
 export type CourseType = CamelCasedPropertiesDeep<definitions['courses']>;
 export type OpenQuestionType = CamelCasedPropertiesDeep<definitions['open_questions']>;
@@ -536,7 +536,7 @@ export type TopicType = CamelCasedPropertiesDeep<definitions['topics']>;
 export type OpenQuestionTopicType = CamelCasedPropertiesDeep<definitions['open_question_topic']>;
 export type OpenQuestionLikeType = CamelCasedPropertiesDeep<definitions['open_question_likes']>;
 export type OpenAnswerLikeType = CamelCasedPropertiesDeep<definitions['open_answer_likes']>;
-export type EvaluationType = CamelCasedPropertiesDeep<definitions['evaluations']>;
+export type ProgressType = CamelCasedPropertiesDeep<definitions['progresses']>;
 
 export type CourseTypeDB = definitions['courses'];
 export type OpenQuestionTypeDB = definitions['open_questions'];
@@ -554,4 +554,4 @@ export type TopicTypeDB = definitions['topics'];
 export type OpenQuestionTopicTypeDB = definitions['open_question_topic'];
 export type OpenQuestionLikeTypeDB = definitions['open_question_likes'];
 export type OpenAnswerLikeTypeDB = definitions['open_answer_likes'];
-export type EvaluationTypeDB = definitions['evaluations'];
+export type ProgressTypeDB = definitions['progresses'];

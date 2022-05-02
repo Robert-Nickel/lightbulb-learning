@@ -24,7 +24,7 @@ supabase start
 1. Change everything directly on your local supabase.
 2. Commit the changes with `supabase db commit what_you_did_goes_here`. It shows up in the migrations folder now.
 3. Run `supabase db reset` to verify that the new migration does not generate errors.
-4. Generate the models in the frontend by executing `npm run genTypes`.
+4. Generate the models in the frontend by executing `npm run genTypesLocal`.
 5. Add the constants and functions you need in `src/lib/supabaseClient.ts`.
 6. Theoretically the structural db changes can be pushed with `supabase db push`, but I dont feel safe about that yet, so I run the migrations currently manually on the Dev and Prod environment. TODO: further investigation and improvement of this step.
 

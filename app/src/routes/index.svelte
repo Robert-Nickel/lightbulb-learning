@@ -27,7 +27,7 @@
 	onMount(() => {
 		if (loginInProgress || logoutInProgress) {
 			// this was a redirect from the magic link or logout.
-			// By the time this line executes the supabase client did not yet write/delete the token from localstorage therefore we need to defer the auth evaluation call a little bit
+			// By the time this line executes the supabase client did not yet write/delete the token from localstorage therefore we need to defer the auth progress call a little bit
 			setTimeout(() => location.replace(`${location.origin}${routes.evaluateAuth}`), 1000);
 		}
 	});

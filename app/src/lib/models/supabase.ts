@@ -12,14 +12,14 @@ export interface paths {
       };
     };
   };
-  "/course_user": {
+  "/challenge_pool_user": {
     get: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.course_user.id"];
-          course?: parameters["rowFilter.course_user.course"];
-          user_id?: parameters["rowFilter.course_user.user_id"];
-          created_at?: parameters["rowFilter.course_user.created_at"];
+          id?: parameters["rowFilter.challenge_pool_user.id"];
+          challenge_pool?: parameters["rowFilter.challenge_pool_user.challenge_pool"];
+          user_id?: parameters["rowFilter.challenge_pool_user.user_id"];
+          created_at?: parameters["rowFilter.challenge_pool_user.created_at"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -41,7 +41,7 @@ export interface paths {
       responses: {
         /** OK */
         200: {
-          schema: definitions["course_user"][];
+          schema: definitions["challenge_pool_user"][];
         };
         /** Partial Content */
         206: unknown;
@@ -50,8 +50,8 @@ export interface paths {
     post: {
       parameters: {
         body: {
-          /** course_user */
-          course_user?: definitions["course_user"];
+          /** challenge_pool_user */
+          challenge_pool_user?: definitions["challenge_pool_user"];
         };
         query: {
           /** Filtering Columns */
@@ -70,10 +70,10 @@ export interface paths {
     delete: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.course_user.id"];
-          course?: parameters["rowFilter.course_user.course"];
-          user_id?: parameters["rowFilter.course_user.user_id"];
-          created_at?: parameters["rowFilter.course_user.created_at"];
+          id?: parameters["rowFilter.challenge_pool_user.id"];
+          challenge_pool?: parameters["rowFilter.challenge_pool_user.challenge_pool"];
+          user_id?: parameters["rowFilter.challenge_pool_user.user_id"];
+          created_at?: parameters["rowFilter.challenge_pool_user.created_at"];
         };
         header: {
           /** Preference */
@@ -88,14 +88,14 @@ export interface paths {
     patch: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.course_user.id"];
-          course?: parameters["rowFilter.course_user.course"];
-          user_id?: parameters["rowFilter.course_user.user_id"];
-          created_at?: parameters["rowFilter.course_user.created_at"];
+          id?: parameters["rowFilter.challenge_pool_user.id"];
+          challenge_pool?: parameters["rowFilter.challenge_pool_user.challenge_pool"];
+          user_id?: parameters["rowFilter.challenge_pool_user.user_id"];
+          created_at?: parameters["rowFilter.challenge_pool_user.created_at"];
         };
         body: {
-          /** course_user */
-          course_user?: definitions["course_user"];
+          /** challenge_pool_user */
+          challenge_pool_user?: definitions["challenge_pool_user"];
         };
         header: {
           /** Preference */
@@ -108,14 +108,14 @@ export interface paths {
       };
     };
   };
-  "/courses": {
+  "/challenge_pools": {
     get: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.courses.id"];
-          description?: parameters["rowFilter.courses.description"];
-          owner?: parameters["rowFilter.courses.owner"];
-          created_at?: parameters["rowFilter.courses.created_at"];
+          id?: parameters["rowFilter.challenge_pools.id"];
+          description?: parameters["rowFilter.challenge_pools.description"];
+          owner?: parameters["rowFilter.challenge_pools.owner"];
+          created_at?: parameters["rowFilter.challenge_pools.created_at"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -137,7 +137,7 @@ export interface paths {
       responses: {
         /** OK */
         200: {
-          schema: definitions["courses"][];
+          schema: definitions["challenge_pools"][];
         };
         /** Partial Content */
         206: unknown;
@@ -146,8 +146,8 @@ export interface paths {
     post: {
       parameters: {
         body: {
-          /** courses */
-          courses?: definitions["courses"];
+          /** challenge_pools */
+          challenge_pools?: definitions["challenge_pools"];
         };
         query: {
           /** Filtering Columns */
@@ -166,10 +166,10 @@ export interface paths {
     delete: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.courses.id"];
-          description?: parameters["rowFilter.courses.description"];
-          owner?: parameters["rowFilter.courses.owner"];
-          created_at?: parameters["rowFilter.courses.created_at"];
+          id?: parameters["rowFilter.challenge_pools.id"];
+          description?: parameters["rowFilter.challenge_pools.description"];
+          owner?: parameters["rowFilter.challenge_pools.owner"];
+          created_at?: parameters["rowFilter.challenge_pools.created_at"];
         };
         header: {
           /** Preference */
@@ -184,14 +184,14 @@ export interface paths {
     patch: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.courses.id"];
-          description?: parameters["rowFilter.courses.description"];
-          owner?: parameters["rowFilter.courses.owner"];
-          created_at?: parameters["rowFilter.courses.created_at"];
+          id?: parameters["rowFilter.challenge_pools.id"];
+          description?: parameters["rowFilter.challenge_pools.description"];
+          owner?: parameters["rowFilter.challenge_pools.owner"];
+          created_at?: parameters["rowFilter.challenge_pools.created_at"];
         };
         body: {
-          /** courses */
-          courses?: definitions["courses"];
+          /** challenge_pools */
+          challenge_pools?: definitions["challenge_pools"];
         };
         header: {
           /** Preference */
@@ -204,14 +204,15 @@ export interface paths {
       };
     };
   };
-  "/evaluations": {
+  "/correct_open_answers": {
     get: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.evaluations.id"];
-          course_user?: parameters["rowFilter.evaluations.course_user"];
-          percentage?: parameters["rowFilter.evaluations.percentage"];
-          created_at?: parameters["rowFilter.evaluations.created_at"];
+          id?: parameters["rowFilter.correct_open_answers.id"];
+          answer_text?: parameters["rowFilter.correct_open_answers.answer_text"];
+          open_question?: parameters["rowFilter.correct_open_answers.open_question"];
+          owner?: parameters["rowFilter.correct_open_answers.owner"];
+          created_at?: parameters["rowFilter.correct_open_answers.created_at"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -233,7 +234,7 @@ export interface paths {
       responses: {
         /** OK */
         200: {
-          schema: definitions["evaluations"][];
+          schema: definitions["correct_open_answers"][];
         };
         /** Partial Content */
         206: unknown;
@@ -242,8 +243,8 @@ export interface paths {
     post: {
       parameters: {
         body: {
-          /** evaluations */
-          evaluations?: definitions["evaluations"];
+          /** correct_open_answers */
+          correct_open_answers?: definitions["correct_open_answers"];
         };
         query: {
           /** Filtering Columns */
@@ -262,10 +263,11 @@ export interface paths {
     delete: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.evaluations.id"];
-          course_user?: parameters["rowFilter.evaluations.course_user"];
-          percentage?: parameters["rowFilter.evaluations.percentage"];
-          created_at?: parameters["rowFilter.evaluations.created_at"];
+          id?: parameters["rowFilter.correct_open_answers.id"];
+          answer_text?: parameters["rowFilter.correct_open_answers.answer_text"];
+          open_question?: parameters["rowFilter.correct_open_answers.open_question"];
+          owner?: parameters["rowFilter.correct_open_answers.owner"];
+          created_at?: parameters["rowFilter.correct_open_answers.created_at"];
         };
         header: {
           /** Preference */
@@ -280,14 +282,15 @@ export interface paths {
     patch: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.evaluations.id"];
-          course_user?: parameters["rowFilter.evaluations.course_user"];
-          percentage?: parameters["rowFilter.evaluations.percentage"];
-          created_at?: parameters["rowFilter.evaluations.created_at"];
+          id?: parameters["rowFilter.correct_open_answers.id"];
+          answer_text?: parameters["rowFilter.correct_open_answers.answer_text"];
+          open_question?: parameters["rowFilter.correct_open_answers.open_question"];
+          owner?: parameters["rowFilter.correct_open_answers.owner"];
+          created_at?: parameters["rowFilter.correct_open_answers.created_at"];
         };
         body: {
-          /** evaluations */
-          evaluations?: definitions["evaluations"];
+          /** correct_open_answers */
+          correct_open_answers?: definitions["correct_open_answers"];
         };
         header: {
           /** Preference */
@@ -306,7 +309,7 @@ export interface paths {
         query: {
           id?: parameters["rowFilter.invite_codes.id"];
           code?: parameters["rowFilter.invite_codes.code"];
-          course?: parameters["rowFilter.invite_codes.course"];
+          challenge_pool?: parameters["rowFilter.invite_codes.challenge_pool"];
           owner?: parameters["rowFilter.invite_codes.owner"];
           valid_until?: parameters["rowFilter.invite_codes.valid_until"];
           created_at?: parameters["rowFilter.invite_codes.created_at"];
@@ -362,7 +365,7 @@ export interface paths {
         query: {
           id?: parameters["rowFilter.invite_codes.id"];
           code?: parameters["rowFilter.invite_codes.code"];
-          course?: parameters["rowFilter.invite_codes.course"];
+          challenge_pool?: parameters["rowFilter.invite_codes.challenge_pool"];
           owner?: parameters["rowFilter.invite_codes.owner"];
           valid_until?: parameters["rowFilter.invite_codes.valid_until"];
           created_at?: parameters["rowFilter.invite_codes.created_at"];
@@ -382,7 +385,7 @@ export interface paths {
         query: {
           id?: parameters["rowFilter.invite_codes.id"];
           code?: parameters["rowFilter.invite_codes.code"];
-          course?: parameters["rowFilter.invite_codes.course"];
+          challenge_pool?: parameters["rowFilter.invite_codes.challenge_pool"];
           owner?: parameters["rowFilter.invite_codes.owner"];
           valid_until?: parameters["rowFilter.invite_codes.valid_until"];
           created_at?: parameters["rowFilter.invite_codes.created_at"];
@@ -407,7 +410,7 @@ export interface paths {
       parameters: {
         query: {
           id?: parameters["rowFilter.members.id"];
-          course?: parameters["rowFilter.members.course"];
+          challenge_pool?: parameters["rowFilter.members.challenge_pool"];
           user_id?: parameters["rowFilter.members.user_id"];
           first_name?: parameters["rowFilter.members.first_name"];
           last_name?: parameters["rowFilter.members.last_name"];
@@ -439,14 +442,15 @@ export interface paths {
       };
     };
   };
-  "/open_answer_likes": {
+  "/open_answer_drafts": {
     get: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.open_answer_likes.id"];
-          open_answer?: parameters["rowFilter.open_answer_likes.open_answer"];
-          owner?: parameters["rowFilter.open_answer_likes.owner"];
-          created_at?: parameters["rowFilter.open_answer_likes.created_at"];
+          id?: parameters["rowFilter.open_answer_drafts.id"];
+          answer_text?: parameters["rowFilter.open_answer_drafts.answer_text"];
+          open_question?: parameters["rowFilter.open_answer_drafts.open_question"];
+          owner?: parameters["rowFilter.open_answer_drafts.owner"];
+          created_at?: parameters["rowFilter.open_answer_drafts.created_at"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -468,7 +472,7 @@ export interface paths {
       responses: {
         /** OK */
         200: {
-          schema: definitions["open_answer_likes"][];
+          schema: definitions["open_answer_drafts"][];
         };
         /** Partial Content */
         206: unknown;
@@ -477,8 +481,8 @@ export interface paths {
     post: {
       parameters: {
         body: {
-          /** open_answer_likes */
-          open_answer_likes?: definitions["open_answer_likes"];
+          /** open_answer_drafts */
+          open_answer_drafts?: definitions["open_answer_drafts"];
         };
         query: {
           /** Filtering Columns */
@@ -497,10 +501,11 @@ export interface paths {
     delete: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.open_answer_likes.id"];
-          open_answer?: parameters["rowFilter.open_answer_likes.open_answer"];
-          owner?: parameters["rowFilter.open_answer_likes.owner"];
-          created_at?: parameters["rowFilter.open_answer_likes.created_at"];
+          id?: parameters["rowFilter.open_answer_drafts.id"];
+          answer_text?: parameters["rowFilter.open_answer_drafts.answer_text"];
+          open_question?: parameters["rowFilter.open_answer_drafts.open_question"];
+          owner?: parameters["rowFilter.open_answer_drafts.owner"];
+          created_at?: parameters["rowFilter.open_answer_drafts.created_at"];
         };
         header: {
           /** Preference */
@@ -515,14 +520,15 @@ export interface paths {
     patch: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.open_answer_likes.id"];
-          open_answer?: parameters["rowFilter.open_answer_likes.open_answer"];
-          owner?: parameters["rowFilter.open_answer_likes.owner"];
-          created_at?: parameters["rowFilter.open_answer_likes.created_at"];
+          id?: parameters["rowFilter.open_answer_drafts.id"];
+          answer_text?: parameters["rowFilter.open_answer_drafts.answer_text"];
+          open_question?: parameters["rowFilter.open_answer_drafts.open_question"];
+          owner?: parameters["rowFilter.open_answer_drafts.owner"];
+          created_at?: parameters["rowFilter.open_answer_drafts.created_at"];
         };
         body: {
-          /** open_answer_likes */
-          open_answer_likes?: definitions["open_answer_likes"];
+          /** open_answer_drafts */
+          open_answer_drafts?: definitions["open_answer_drafts"];
         };
         header: {
           /** Preference */
@@ -542,8 +548,8 @@ export interface paths {
           id?: parameters["rowFilter.open_answer_performances.id"];
           open_answer_id?: parameters["rowFilter.open_answer_performances.open_answer_id"];
           answer_text?: parameters["rowFilter.open_answer_performances.answer_text"];
+          version?: parameters["rowFilter.open_answer_performances.version"];
           created_at?: parameters["rowFilter.open_answer_performances.created_at"];
-          likes?: parameters["rowFilter.open_answer_performances.likes"];
           question_text?: parameters["rowFilter.open_answer_performances.question_text"];
           /** Filtering Columns */
           select?: parameters["select"];
@@ -578,12 +584,11 @@ export interface paths {
       parameters: {
         query: {
           id?: parameters["rowFilter.open_answers.id"];
-          open_question?: parameters["rowFilter.open_answers.open_question"];
-          created_at?: parameters["rowFilter.open_answers.created_at"];
           answer_text?: parameters["rowFilter.open_answers.answer_text"];
-          /** Incremented for the new row if the user improves his answer. */
           version?: parameters["rowFilter.open_answers.version"];
+          open_question?: parameters["rowFilter.open_answers.open_question"];
           owner?: parameters["rowFilter.open_answers.owner"];
+          created_at?: parameters["rowFilter.open_answers.created_at"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -635,12 +640,11 @@ export interface paths {
       parameters: {
         query: {
           id?: parameters["rowFilter.open_answers.id"];
-          open_question?: parameters["rowFilter.open_answers.open_question"];
-          created_at?: parameters["rowFilter.open_answers.created_at"];
           answer_text?: parameters["rowFilter.open_answers.answer_text"];
-          /** Incremented for the new row if the user improves his answer. */
           version?: parameters["rowFilter.open_answers.version"];
+          open_question?: parameters["rowFilter.open_answers.open_question"];
           owner?: parameters["rowFilter.open_answers.owner"];
+          created_at?: parameters["rowFilter.open_answers.created_at"];
         };
         header: {
           /** Preference */
@@ -656,12 +660,11 @@ export interface paths {
       parameters: {
         query: {
           id?: parameters["rowFilter.open_answers.id"];
-          open_question?: parameters["rowFilter.open_answers.open_question"];
-          created_at?: parameters["rowFilter.open_answers.created_at"];
           answer_text?: parameters["rowFilter.open_answers.answer_text"];
-          /** Incremented for the new row if the user improves his answer. */
           version?: parameters["rowFilter.open_answers.version"];
+          open_question?: parameters["rowFilter.open_answers.open_question"];
           owner?: parameters["rowFilter.open_answers.owner"];
+          created_at?: parameters["rowFilter.open_answers.created_at"];
         };
         body: {
           /** open_answers */
@@ -683,10 +686,10 @@ export interface paths {
       parameters: {
         query: {
           id?: parameters["rowFilter.open_feedback.id"];
-          open_answer?: parameters["rowFilter.open_feedback.open_answer"];
-          created_at?: parameters["rowFilter.open_feedback.created_at"];
           feedback_text?: parameters["rowFilter.open_feedback.feedback_text"];
+          open_answer?: parameters["rowFilter.open_feedback.open_answer"];
           owner?: parameters["rowFilter.open_feedback.owner"];
+          created_at?: parameters["rowFilter.open_feedback.created_at"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -738,10 +741,10 @@ export interface paths {
       parameters: {
         query: {
           id?: parameters["rowFilter.open_feedback.id"];
-          open_answer?: parameters["rowFilter.open_feedback.open_answer"];
-          created_at?: parameters["rowFilter.open_feedback.created_at"];
           feedback_text?: parameters["rowFilter.open_feedback.feedback_text"];
+          open_answer?: parameters["rowFilter.open_feedback.open_answer"];
           owner?: parameters["rowFilter.open_feedback.owner"];
+          created_at?: parameters["rowFilter.open_feedback.created_at"];
         };
         header: {
           /** Preference */
@@ -757,14 +760,113 @@ export interface paths {
       parameters: {
         query: {
           id?: parameters["rowFilter.open_feedback.id"];
-          open_answer?: parameters["rowFilter.open_feedback.open_answer"];
-          created_at?: parameters["rowFilter.open_feedback.created_at"];
           feedback_text?: parameters["rowFilter.open_feedback.feedback_text"];
+          open_answer?: parameters["rowFilter.open_feedback.open_answer"];
           owner?: parameters["rowFilter.open_feedback.owner"];
+          created_at?: parameters["rowFilter.open_feedback.created_at"];
         };
         body: {
           /** open_feedback */
           open_feedback?: definitions["open_feedback"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
+  "/open_feedback_drafts": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.open_feedback_drafts.id"];
+          feedback_text?: parameters["rowFilter.open_feedback_drafts.feedback_text"];
+          open_answer?: parameters["rowFilter.open_feedback_drafts.open_answer"];
+          owner?: parameters["rowFilter.open_feedback_drafts.owner"];
+          created_at?: parameters["rowFilter.open_feedback_drafts.created_at"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["open_feedback_drafts"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** open_feedback_drafts */
+          open_feedback_drafts?: definitions["open_feedback_drafts"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.open_feedback_drafts.id"];
+          feedback_text?: parameters["rowFilter.open_feedback_drafts.feedback_text"];
+          open_answer?: parameters["rowFilter.open_feedback_drafts.open_answer"];
+          owner?: parameters["rowFilter.open_feedback_drafts.owner"];
+          created_at?: parameters["rowFilter.open_feedback_drafts.created_at"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.open_feedback_drafts.id"];
+          feedback_text?: parameters["rowFilter.open_feedback_drafts.feedback_text"];
+          open_answer?: parameters["rowFilter.open_feedback_drafts.open_answer"];
+          owner?: parameters["rowFilter.open_feedback_drafts.owner"];
+          created_at?: parameters["rowFilter.open_feedback_drafts.created_at"];
+        };
+        body: {
+          /** open_feedback_drafts */
+          open_feedback_drafts?: definitions["open_feedback_drafts"];
         };
         header: {
           /** Preference */
@@ -812,6 +914,108 @@ export interface paths {
         };
         /** Partial Content */
         206: unknown;
+      };
+    };
+  };
+  "/open_question_drafts": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.open_question_drafts.id"];
+          question_text?: parameters["rowFilter.open_question_drafts.question_text"];
+          answer_text?: parameters["rowFilter.open_question_drafts.answer_text"];
+          challenge_pool?: parameters["rowFilter.open_question_drafts.challenge_pool"];
+          owner?: parameters["rowFilter.open_question_drafts.owner"];
+          created_at?: parameters["rowFilter.open_question_drafts.created_at"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["open_question_drafts"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** open_question_drafts */
+          open_question_drafts?: definitions["open_question_drafts"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.open_question_drafts.id"];
+          question_text?: parameters["rowFilter.open_question_drafts.question_text"];
+          answer_text?: parameters["rowFilter.open_question_drafts.answer_text"];
+          challenge_pool?: parameters["rowFilter.open_question_drafts.challenge_pool"];
+          owner?: parameters["rowFilter.open_question_drafts.owner"];
+          created_at?: parameters["rowFilter.open_question_drafts.created_at"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.open_question_drafts.id"];
+          question_text?: parameters["rowFilter.open_question_drafts.question_text"];
+          answer_text?: parameters["rowFilter.open_question_drafts.answer_text"];
+          challenge_pool?: parameters["rowFilter.open_question_drafts.challenge_pool"];
+          owner?: parameters["rowFilter.open_question_drafts.owner"];
+          created_at?: parameters["rowFilter.open_question_drafts.created_at"];
+        };
+        body: {
+          /** open_question_drafts */
+          open_question_drafts?: definitions["open_question_drafts"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
       };
     };
   };
@@ -918,6 +1122,7 @@ export interface paths {
           id?: parameters["rowFilter.open_question_performances.id"];
           open_question_id?: parameters["rowFilter.open_question_performances.open_question_id"];
           question_text?: parameters["rowFilter.open_question_performances.question_text"];
+          answer_text?: parameters["rowFilter.open_question_performances.answer_text"];
           created_at?: parameters["rowFilter.open_question_performances.created_at"];
           likes?: parameters["rowFilter.open_question_performances.likes"];
           /** Filtering Columns */
@@ -1049,10 +1254,10 @@ export interface paths {
       parameters: {
         query: {
           id?: parameters["rowFilter.open_questions.id"];
-          course?: parameters["rowFilter.open_questions.course"];
-          created_at?: parameters["rowFilter.open_questions.created_at"];
           question_text?: parameters["rowFilter.open_questions.question_text"];
+          challenge_pool?: parameters["rowFilter.open_questions.challenge_pool"];
           owner?: parameters["rowFilter.open_questions.owner"];
+          created_at?: parameters["rowFilter.open_questions.created_at"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -1104,10 +1309,10 @@ export interface paths {
       parameters: {
         query: {
           id?: parameters["rowFilter.open_questions.id"];
-          course?: parameters["rowFilter.open_questions.course"];
-          created_at?: parameters["rowFilter.open_questions.created_at"];
           question_text?: parameters["rowFilter.open_questions.question_text"];
+          challenge_pool?: parameters["rowFilter.open_questions.challenge_pool"];
           owner?: parameters["rowFilter.open_questions.owner"];
+          created_at?: parameters["rowFilter.open_questions.created_at"];
         };
         header: {
           /** Preference */
@@ -1123,10 +1328,10 @@ export interface paths {
       parameters: {
         query: {
           id?: parameters["rowFilter.open_questions.id"];
-          course?: parameters["rowFilter.open_questions.course"];
-          created_at?: parameters["rowFilter.open_questions.created_at"];
           question_text?: parameters["rowFilter.open_questions.question_text"];
+          challenge_pool?: parameters["rowFilter.open_questions.challenge_pool"];
           owner?: parameters["rowFilter.open_questions.owner"];
+          created_at?: parameters["rowFilter.open_questions.created_at"];
         };
         body: {
           /** open_questions */
@@ -1249,9 +1454,8 @@ export interface paths {
     get: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.test_tokens.id"];
-          email?: parameters["rowFilter.test_tokens.email"];
           refresh_token?: parameters["rowFilter.test_tokens.refresh_token"];
+          email?: parameters["rowFilter.test_tokens.email"];
           created_at?: parameters["rowFilter.test_tokens.created_at"];
           /** Filtering Columns */
           select?: parameters["select"];
@@ -1303,9 +1507,8 @@ export interface paths {
     delete: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.test_tokens.id"];
-          email?: parameters["rowFilter.test_tokens.email"];
           refresh_token?: parameters["rowFilter.test_tokens.refresh_token"];
+          email?: parameters["rowFilter.test_tokens.email"];
           created_at?: parameters["rowFilter.test_tokens.created_at"];
         };
         header: {
@@ -1321,9 +1524,8 @@ export interface paths {
     patch: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.test_tokens.id"];
-          email?: parameters["rowFilter.test_tokens.email"];
           refresh_token?: parameters["rowFilter.test_tokens.refresh_token"];
+          email?: parameters["rowFilter.test_tokens.email"];
           created_at?: parameters["rowFilter.test_tokens.created_at"];
         };
         body: {
@@ -1347,7 +1549,7 @@ export interface paths {
         query: {
           id?: parameters["rowFilter.topics.id"];
           name?: parameters["rowFilter.topics.name"];
-          course?: parameters["rowFilter.topics.course"];
+          challenge_pool?: parameters["rowFilter.topics.challenge_pool"];
           created_at?: parameters["rowFilter.topics.created_at"];
           /** Filtering Columns */
           select?: parameters["select"];
@@ -1401,7 +1603,7 @@ export interface paths {
         query: {
           id?: parameters["rowFilter.topics.id"];
           name?: parameters["rowFilter.topics.name"];
-          course?: parameters["rowFilter.topics.course"];
+          challenge_pool?: parameters["rowFilter.topics.challenge_pool"];
           created_at?: parameters["rowFilter.topics.created_at"];
         };
         header: {
@@ -1419,7 +1621,7 @@ export interface paths {
         query: {
           id?: parameters["rowFilter.topics.id"];
           name?: parameters["rowFilter.topics.name"];
-          course?: parameters["rowFilter.topics.course"];
+          challenge_pool?: parameters["rowFilter.topics.challenge_pool"];
           created_at?: parameters["rowFilter.topics.created_at"];
         };
         body: {
@@ -1442,8 +1644,8 @@ export interface paths {
       parameters: {
         query: {
           id?: parameters["rowFilter.universities.id"];
-          created_at?: parameters["rowFilter.universities.created_at"];
           name?: parameters["rowFilter.universities.name"];
+          created_at?: parameters["rowFilter.universities.created_at"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -1495,8 +1697,8 @@ export interface paths {
       parameters: {
         query: {
           id?: parameters["rowFilter.universities.id"];
-          created_at?: parameters["rowFilter.universities.created_at"];
           name?: parameters["rowFilter.universities.name"];
+          created_at?: parameters["rowFilter.universities.created_at"];
         };
         header: {
           /** Preference */
@@ -1512,8 +1714,8 @@ export interface paths {
       parameters: {
         query: {
           id?: parameters["rowFilter.universities.id"];
-          created_at?: parameters["rowFilter.universities.created_at"];
           name?: parameters["rowFilter.universities.name"];
+          created_at?: parameters["rowFilter.universities.created_at"];
         };
         body: {
           /** universities */
@@ -1530,15 +1732,13 @@ export interface paths {
       };
     };
   };
-  "/rpc/join_course": {
+  "/rpc/fetch_my_challenge_pools": {
     post: {
       parameters: {
         body: {
           args: {
             /** Format: uuid */
             user_id_input: string;
-            /** Format: text */
-            invite_code_input: string;
           };
         };
         header: {
@@ -1552,11 +1752,13 @@ export interface paths {
       };
     };
   };
-  "/rpc/fetch_my_courses": {
+  "/rpc/join_challenge_pool": {
     post: {
       parameters: {
         body: {
           args: {
+            /** Format: text */
+            invite_code_input: string;
             /** Format: uuid */
             user_id_input: string;
           };
@@ -1575,7 +1777,7 @@ export interface paths {
 }
 
 export interface definitions {
-  course_user: {
+  challenge_pool_user: {
     /**
      * Format: uuid
      * @description Note:
@@ -1586,9 +1788,9 @@ export interface definitions {
     /**
      * Format: uuid
      * @description Note:
-     * This is a Foreign Key to `courses.id`.<fk table='courses' column='id'/>
+     * This is a Foreign Key to `challenge_pools.id`.<fk table='challenge_pools' column='id'/>
      */
-    course: string;
+    challenge_pool: string;
     /** Format: uuid */
     user_id: string;
     /**
@@ -1597,7 +1799,7 @@ export interface definitions {
      */
     created_at: string;
   };
-  courses: {
+  challenge_pools: {
     /**
      * Format: uuid
      * @description Note:
@@ -1615,7 +1817,7 @@ export interface definitions {
      */
     created_at: string;
   };
-  evaluations: {
+  correct_open_answers: {
     /**
      * Format: uuid
      * @description Note:
@@ -1623,10 +1825,16 @@ export interface definitions {
      * @default extensions.uuid_generate_v4()
      */
     id: string;
+    /** Format: text */
+    answer_text: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `open_questions.id`.<fk table='open_questions' column='id'/>
+     */
+    open_question: string;
     /** Format: uuid */
-    course_user: string;
-    /** Format: smallint */
-    percentage: number;
+    owner: string;
     /**
      * Format: timestamp with time zone
      * @default now()
@@ -1643,8 +1851,12 @@ export interface definitions {
     id: string;
     /** Format: text */
     code: string;
-    /** Format: uuid */
-    course: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `challenge_pools.id`.<fk table='challenge_pools' column='id'/>
+     */
+    challenge_pool: string;
     /** Format: uuid */
     owner: string;
     /** Format: timestamp without time zone */
@@ -1665,9 +1877,9 @@ export interface definitions {
     /**
      * Format: uuid
      * @description Note:
-     * This is a Foreign Key to `courses.id`.<fk table='courses' column='id'/>
+     * This is a Foreign Key to `challenge_pools.id`.<fk table='challenge_pools' column='id'/>
      */
-    course?: string;
+    challenge_pool?: string;
     /** Format: uuid */
     user_id?: string;
     /** Format: text */
@@ -1675,7 +1887,7 @@ export interface definitions {
     /** Format: text */
     last_name?: string;
   };
-  open_answer_likes: {
+  open_answer_drafts: {
     /**
      * Format: uuid
      * @description Note:
@@ -1683,12 +1895,14 @@ export interface definitions {
      * @default extensions.uuid_generate_v4()
      */
     id: string;
+    /** Format: text */
+    answer_text: string;
     /**
      * Format: uuid
      * @description Note:
-     * This is a Foreign Key to `open_answers.id`.<fk table='open_answers' column='id'/>
+     * This is a Foreign Key to `open_questions.id`.<fk table='open_questions' column='id'/>
      */
-    open_answer: string;
+    open_question: string;
     /** Format: uuid */
     owner: string;
     /**
@@ -1712,10 +1926,10 @@ export interface definitions {
     open_answer_id?: string;
     /** Format: text */
     answer_text?: string;
+    /** Format: bigint */
+    version?: number;
     /** Format: timestamp with time zone */
     created_at?: string;
-    /** Format: bigint */
-    likes?: number;
     /** Format: text */
     question_text?: string;
   };
@@ -1727,26 +1941,23 @@ export interface definitions {
      * @default extensions.uuid_generate_v4()
      */
     id: string;
+    /** Format: text */
+    answer_text: string;
+    /** Format: bigint */
+    version: number;
     /**
      * Format: uuid
      * @description Note:
      * This is a Foreign Key to `open_questions.id`.<fk table='open_questions' column='id'/>
      */
     open_question: string;
+    /** Format: uuid */
+    owner: string;
     /**
      * Format: timestamp with time zone
      * @default now()
      */
     created_at: string;
-    /** Format: text */
-    answer_text: string;
-    /**
-     * Format: bigint
-     * @description Incremented for the new row if the user improves his answer.
-     */
-    version: number;
-    /** Format: uuid */
-    owner: string;
   };
   open_feedback: {
     /**
@@ -1756,21 +1967,45 @@ export interface definitions {
      * @default extensions.uuid_generate_v4()
      */
     id: string;
+    /** Format: text */
+    feedback_text: string;
     /**
      * Format: uuid
      * @description Note:
      * This is a Foreign Key to `open_answers.id`.<fk table='open_answers' column='id'/>
      */
     open_answer: string;
+    /** Format: uuid */
+    owner: string;
     /**
      * Format: timestamp with time zone
      * @default now()
      */
     created_at: string;
+  };
+  open_feedback_drafts: {
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     * @default extensions.uuid_generate_v4()
+     */
+    id: string;
     /** Format: text */
     feedback_text: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `open_answers.id`.<fk table='open_answers' column='id'/>
+     */
+    open_answer: string;
     /** Format: uuid */
     owner: string;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at: string;
   };
   open_feedback_performances: {
     /**
@@ -1793,6 +2028,32 @@ export interface definitions {
     answer_text?: string;
     /** Format: text */
     question_text?: string;
+  };
+  open_question_drafts: {
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     * @default extensions.uuid_generate_v4()
+     */
+    id: string;
+    /** Format: text */
+    question_text: string;
+    /** Format: text */
+    answer_text?: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `challenge_pools.id`.<fk table='challenge_pools' column='id'/>
+     */
+    challenge_pool: string;
+    /** Format: uuid */
+    owner: string;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at: string;
   };
   open_question_likes: {
     /**
@@ -1831,6 +2092,8 @@ export interface definitions {
     open_question_id?: string;
     /** Format: text */
     question_text?: string;
+    /** Format: text */
+    answer_text?: string;
     /** Format: timestamp with time zone */
     created_at?: string;
     /** Format: bigint */
@@ -1870,21 +2133,21 @@ export interface definitions {
      * @default extensions.uuid_generate_v4()
      */
     id: string;
+    /** Format: text */
+    question_text: string;
     /**
      * Format: uuid
      * @description Note:
-     * This is a Foreign Key to `courses.id`.<fk table='courses' column='id'/>
+     * This is a Foreign Key to `challenge_pools.id`.<fk table='challenge_pools' column='id'/>
      */
-    course: string;
+    challenge_pool: string;
+    /** Format: uuid */
+    owner: string;
     /**
      * Format: timestamp with time zone
      * @default now()
      */
     created_at: string;
-    /** Format: text */
-    question_text: string;
-    /** Format: uuid */
-    owner: string;
   };
   profiles: {
     /**
@@ -1912,18 +2175,16 @@ export interface definitions {
      */
     created_at: string;
   };
-  /** @description Used to sync refresh_tokens for cypress tests */
+  /** @description Used to sync refresh_tokens across cypress test executions */
   test_tokens: {
+    /** Format: text */
+    refresh_token?: string;
     /**
-     * Format: bigint
+     * Format: text
      * @description Note:
      * This is a Primary Key.<pk/>
      */
-    id: number;
-    /** Format: text */
     email: string;
-    /** Format: text */
-    refresh_token?: string;
     /**
      * Format: timestamp with time zone
      * @default now()
@@ -1943,9 +2204,9 @@ export interface definitions {
     /**
      * Format: uuid
      * @description Note:
-     * This is a Foreign Key to `courses.id`.<fk table='courses' column='id'/>
+     * This is a Foreign Key to `challenge_pools.id`.<fk table='challenge_pools' column='id'/>
      */
-    course: string;
+    challenge_pool: string;
     /**
      * Format: timestamp with time zone
      * @default now()
@@ -1960,13 +2221,13 @@ export interface definitions {
      * @default extensions.uuid_generate_v4()
      */
     id: string;
+    /** Format: text */
+    name: string;
     /**
      * Format: timestamp with time zone
      * @default now()
      */
-    created_at?: string;
-    /** Format: text */
-    name: string;
+    created_at: string;
   };
 }
 
@@ -1994,36 +2255,38 @@ export interface parameters {
   offset: string;
   /** @description Limiting and Pagination */
   limit: string;
-  /** @description course_user */
-  "body.course_user": definitions["course_user"];
+  /** @description challenge_pool_user */
+  "body.challenge_pool_user": definitions["challenge_pool_user"];
   /** Format: uuid */
-  "rowFilter.course_user.id": string;
+  "rowFilter.challenge_pool_user.id": string;
   /** Format: uuid */
-  "rowFilter.course_user.course": string;
+  "rowFilter.challenge_pool_user.challenge_pool": string;
   /** Format: uuid */
-  "rowFilter.course_user.user_id": string;
+  "rowFilter.challenge_pool_user.user_id": string;
   /** Format: timestamp with time zone */
-  "rowFilter.course_user.created_at": string;
-  /** @description courses */
-  "body.courses": definitions["courses"];
+  "rowFilter.challenge_pool_user.created_at": string;
+  /** @description challenge_pools */
+  "body.challenge_pools": definitions["challenge_pools"];
   /** Format: uuid */
-  "rowFilter.courses.id": string;
+  "rowFilter.challenge_pools.id": string;
   /** Format: text */
-  "rowFilter.courses.description": string;
+  "rowFilter.challenge_pools.description": string;
   /** Format: uuid */
-  "rowFilter.courses.owner": string;
+  "rowFilter.challenge_pools.owner": string;
   /** Format: timestamp with time zone */
-  "rowFilter.courses.created_at": string;
-  /** @description evaluations */
-  "body.evaluations": definitions["evaluations"];
+  "rowFilter.challenge_pools.created_at": string;
+  /** @description correct_open_answers */
+  "body.correct_open_answers": definitions["correct_open_answers"];
   /** Format: uuid */
-  "rowFilter.evaluations.id": string;
+  "rowFilter.correct_open_answers.id": string;
+  /** Format: text */
+  "rowFilter.correct_open_answers.answer_text": string;
   /** Format: uuid */
-  "rowFilter.evaluations.course_user": string;
-  /** Format: smallint */
-  "rowFilter.evaluations.percentage": string;
+  "rowFilter.correct_open_answers.open_question": string;
+  /** Format: uuid */
+  "rowFilter.correct_open_answers.owner": string;
   /** Format: timestamp with time zone */
-  "rowFilter.evaluations.created_at": string;
+  "rowFilter.correct_open_answers.created_at": string;
   /** @description invite_codes */
   "body.invite_codes": definitions["invite_codes"];
   /** Format: uuid */
@@ -2031,7 +2294,7 @@ export interface parameters {
   /** Format: text */
   "rowFilter.invite_codes.code": string;
   /** Format: uuid */
-  "rowFilter.invite_codes.course": string;
+  "rowFilter.invite_codes.challenge_pool": string;
   /** Format: uuid */
   "rowFilter.invite_codes.owner": string;
   /** Format: timestamp without time zone */
@@ -2043,23 +2306,25 @@ export interface parameters {
   /** Format: uuid */
   "rowFilter.members.id": string;
   /** Format: uuid */
-  "rowFilter.members.course": string;
+  "rowFilter.members.challenge_pool": string;
   /** Format: uuid */
   "rowFilter.members.user_id": string;
   /** Format: text */
   "rowFilter.members.first_name": string;
   /** Format: text */
   "rowFilter.members.last_name": string;
-  /** @description open_answer_likes */
-  "body.open_answer_likes": definitions["open_answer_likes"];
+  /** @description open_answer_drafts */
+  "body.open_answer_drafts": definitions["open_answer_drafts"];
   /** Format: uuid */
-  "rowFilter.open_answer_likes.id": string;
+  "rowFilter.open_answer_drafts.id": string;
+  /** Format: text */
+  "rowFilter.open_answer_drafts.answer_text": string;
   /** Format: uuid */
-  "rowFilter.open_answer_likes.open_answer": string;
+  "rowFilter.open_answer_drafts.open_question": string;
   /** Format: uuid */
-  "rowFilter.open_answer_likes.owner": string;
+  "rowFilter.open_answer_drafts.owner": string;
   /** Format: timestamp with time zone */
-  "rowFilter.open_answer_likes.created_at": string;
+  "rowFilter.open_answer_drafts.created_at": string;
   /** @description open_answer_performances */
   "body.open_answer_performances": definitions["open_answer_performances"];
   /** Format: uuid */
@@ -2068,41 +2333,50 @@ export interface parameters {
   "rowFilter.open_answer_performances.open_answer_id": string;
   /** Format: text */
   "rowFilter.open_answer_performances.answer_text": string;
+  /** Format: bigint */
+  "rowFilter.open_answer_performances.version": string;
   /** Format: timestamp with time zone */
   "rowFilter.open_answer_performances.created_at": string;
-  /** Format: bigint */
-  "rowFilter.open_answer_performances.likes": string;
   /** Format: text */
   "rowFilter.open_answer_performances.question_text": string;
   /** @description open_answers */
   "body.open_answers": definitions["open_answers"];
   /** Format: uuid */
   "rowFilter.open_answers.id": string;
-  /** Format: uuid */
-  "rowFilter.open_answers.open_question": string;
-  /** Format: timestamp with time zone */
-  "rowFilter.open_answers.created_at": string;
   /** Format: text */
   "rowFilter.open_answers.answer_text": string;
-  /**
-   * Format: bigint
-   * @description Incremented for the new row if the user improves his answer.
-   */
+  /** Format: bigint */
   "rowFilter.open_answers.version": string;
   /** Format: uuid */
+  "rowFilter.open_answers.open_question": string;
+  /** Format: uuid */
   "rowFilter.open_answers.owner": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.open_answers.created_at": string;
   /** @description open_feedback */
   "body.open_feedback": definitions["open_feedback"];
   /** Format: uuid */
   "rowFilter.open_feedback.id": string;
-  /** Format: uuid */
-  "rowFilter.open_feedback.open_answer": string;
-  /** Format: timestamp with time zone */
-  "rowFilter.open_feedback.created_at": string;
   /** Format: text */
   "rowFilter.open_feedback.feedback_text": string;
   /** Format: uuid */
+  "rowFilter.open_feedback.open_answer": string;
+  /** Format: uuid */
   "rowFilter.open_feedback.owner": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.open_feedback.created_at": string;
+  /** @description open_feedback_drafts */
+  "body.open_feedback_drafts": definitions["open_feedback_drafts"];
+  /** Format: uuid */
+  "rowFilter.open_feedback_drafts.id": string;
+  /** Format: text */
+  "rowFilter.open_feedback_drafts.feedback_text": string;
+  /** Format: uuid */
+  "rowFilter.open_feedback_drafts.open_answer": string;
+  /** Format: uuid */
+  "rowFilter.open_feedback_drafts.owner": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.open_feedback_drafts.created_at": string;
   /** @description open_feedback_performances */
   "body.open_feedback_performances": definitions["open_feedback_performances"];
   /** Format: uuid */
@@ -2117,6 +2391,20 @@ export interface parameters {
   "rowFilter.open_feedback_performances.answer_text": string;
   /** Format: text */
   "rowFilter.open_feedback_performances.question_text": string;
+  /** @description open_question_drafts */
+  "body.open_question_drafts": definitions["open_question_drafts"];
+  /** Format: uuid */
+  "rowFilter.open_question_drafts.id": string;
+  /** Format: text */
+  "rowFilter.open_question_drafts.question_text": string;
+  /** Format: text */
+  "rowFilter.open_question_drafts.answer_text": string;
+  /** Format: uuid */
+  "rowFilter.open_question_drafts.challenge_pool": string;
+  /** Format: uuid */
+  "rowFilter.open_question_drafts.owner": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.open_question_drafts.created_at": string;
   /** @description open_question_likes */
   "body.open_question_likes": definitions["open_question_likes"];
   /** Format: uuid */
@@ -2135,6 +2423,8 @@ export interface parameters {
   "rowFilter.open_question_performances.open_question_id": string;
   /** Format: text */
   "rowFilter.open_question_performances.question_text": string;
+  /** Format: text */
+  "rowFilter.open_question_performances.answer_text": string;
   /** Format: timestamp with time zone */
   "rowFilter.open_question_performances.created_at": string;
   /** Format: bigint */
@@ -2153,14 +2443,14 @@ export interface parameters {
   "body.open_questions": definitions["open_questions"];
   /** Format: uuid */
   "rowFilter.open_questions.id": string;
-  /** Format: uuid */
-  "rowFilter.open_questions.course": string;
-  /** Format: timestamp with time zone */
-  "rowFilter.open_questions.created_at": string;
   /** Format: text */
   "rowFilter.open_questions.question_text": string;
   /** Format: uuid */
+  "rowFilter.open_questions.challenge_pool": string;
+  /** Format: uuid */
   "rowFilter.open_questions.owner": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.open_questions.created_at": string;
   /** @description profiles */
   "body.profiles": definitions["profiles"];
   /** Format: uuid */
@@ -2177,12 +2467,10 @@ export interface parameters {
   "rowFilter.profiles.created_at": string;
   /** @description test_tokens */
   "body.test_tokens": definitions["test_tokens"];
-  /** Format: bigint */
-  "rowFilter.test_tokens.id": string;
-  /** Format: text */
-  "rowFilter.test_tokens.email": string;
   /** Format: text */
   "rowFilter.test_tokens.refresh_token": string;
+  /** Format: text */
+  "rowFilter.test_tokens.email": string;
   /** Format: timestamp with time zone */
   "rowFilter.test_tokens.created_at": string;
   /** @description topics */
@@ -2192,17 +2480,17 @@ export interface parameters {
   /** Format: text */
   "rowFilter.topics.name": string;
   /** Format: uuid */
-  "rowFilter.topics.course": string;
+  "rowFilter.topics.challenge_pool": string;
   /** Format: timestamp with time zone */
   "rowFilter.topics.created_at": string;
   /** @description universities */
   "body.universities": definitions["universities"];
   /** Format: uuid */
   "rowFilter.universities.id": string;
-  /** Format: timestamp with time zone */
-  "rowFilter.universities.created_at": string;
   /** Format: text */
   "rowFilter.universities.name": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.universities.created_at": string;
 }
 
 export interface operations {}

@@ -854,14 +854,12 @@ CREATE OR REPLACE VIEW public.open_question_performances
  SELECT course_user.id,
     open_questions.id AS open_question_id,
     open_questions.question_text,
-    correct_open_answers.answer_text,
     open_questions.created_at,
     ( SELECT count(*) AS count
            FROM open_question_likes
           WHERE open_question_likes.open_question = open_questions.id) AS likes
    FROM course_user
-     JOIN open_questions ON open_questions.owner = course_user.user_id AND open_questions.course = course_user.course
-     JOIN correct_open_answers ON correct_open_answers.open_question = open_questions.id;
+     JOIN open_questions ON open_questions.owner = course_user.user_id AND open_questions.course = course_user.course;
 
 ALTER TABLE public.open_question_performances
     OWNER TO supabase_admin;

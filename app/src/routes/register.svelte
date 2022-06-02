@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-
 	import { user } from '$lib/stores/user';
+
+	// TODO
 
 	let loading = false;
 	let email;
@@ -15,17 +16,6 @@
 			alert(error.message);
 		} else {
 			alert('Check your email for the login link!');
-		}
-		loading = false;
-	};
-
-	const resetPassword = async () => {
-		loading = true;
-		const { data, error } = await user.resetPassword(email);
-		if (error) {
-			alert(error.message);
-		} else {
-			alert('Check your email.');
 		}
 		loading = false;
 	};

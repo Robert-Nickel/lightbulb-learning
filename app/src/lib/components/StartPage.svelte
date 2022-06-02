@@ -38,7 +38,7 @@
 
 <div class="bg-center bg-contain bg-no-repeat" style="background-image: url('/images/lightbulb.jpeg');">
 	<p class="text-5xl max-w-screen-sm mx-auto px-8 leading-snug pt-32 pb-8 text-white font-bold">
-		A learning evaluation system that scales.
+		Learning evaluation that scales.
 	</p>
 </div>
 

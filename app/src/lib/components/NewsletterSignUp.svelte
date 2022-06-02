@@ -14,7 +14,7 @@
 				This is a monthly curated newsletter about the product, stories of success and failure, lessons
 				learned and my insights on this journey.
 			</p>
-			<p>I won't send you spam and you can unsubscribe at any time. I know that your time is valuable.</p>
+			<p>No bullshit - unsubscribe at any time.</p>
 		</form>
 	</div>
 </div>

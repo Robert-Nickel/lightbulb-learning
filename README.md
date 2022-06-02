@@ -2,21 +2,26 @@
 
 # Lightbulb Learning
 
+Learning evaluation that scales.
 
-💡  Some people just want to see the world learn. We believe: That works best in a friendly, collaborative environment without pressure. That is why Lightbulb Learning is about growth through	understanding instead of grades through memorization.
+Lightbulb Learning is a learning evaluation system that scales for groups with many participants. Students challenge each other by asking and discussing questions, while you get insight into their current level of understanding and their learning curve - which is gold for your evaluation of their performance.
 
-🥋  Lightbulb Learning is a dialogue platform: it lets your students challenge each other by asking good open questions, answering them precisely and providing feedback for each others work - all of that being a part of their educational process and performance.
+## How does it work?
+Learning is more than answering questions. Formulating a question means framing a problem, and is a more effective way of learning than just answering one. Giving constructive feedback means to have not only expertise, but also empathy - and is one of the most underrated skills in modern (working) life. That's why we believe that contemplating every contribution to the discussion gives a clearer view on learning performance.
 
-📈  Observe and evaluate your students path through the learning curve over weeks or months, because growth takes more time than a 90 minute exam.
+Watch your students thinking about and discussing interesting questions, while getting realtime insight into all aspects of their performance.
 
-🔥  It is all free and open source. [Get your hands on Lightbulb Learning to learn more.](https://lightbulb-learning.io)
+## Who is it for?
+
+Lightbulb Learning is for you, if...
+
+- ...you are a teacher or professor and want to get a more rational insight into your students learning adventure.
+- ...are tired of marking exam papers for days and need a more scalable and justifiable approach of defining grades.
+- ...are an author of an online course and want to reward those that reach a certain level with a certificate.
 
 ## Stay in the loop?
 Join the [mailing list](https://tinyletter.com/RobertNickel).
 
 This is a monthly curated newsletter about the product, stories of success and failure, lessons learned and my insights on this journey.
 
-I won't send you spam and you can unsubscribe at any time.
-
-I know that your time is valuable.
-
+No bullshit - unsubscribe at any time.

@@ -3,20 +3,13 @@
 	import type { Session } from '@supabase/supabase-js';
 
 	export const load: Load = async ({ session, url }) => {
-		console.log('---');
-		console.log(url.href);
-		console.log('---');
-
 		const { user } = session as Session;
 		if (url.href.includes(routes.logout)) {
 			return {};
-		} else if (url.href.includes(routes.resetPassword)) {
-			goto('/resetPassword');
 		}
 		if (user) {
 			return { status: 302, redirect: routes.evaluateAuth };
 		}
-		console.log(url.href);
 		return {};
 	};
 </script>
@@ -26,7 +19,6 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { routes } from '$lib/routes';
-	import { goto } from '$app/navigation';
 
 	let loginInProgress = $page.url.hash.includes('#access_token=');
 	let logoutInProgress = $page.url.href.includes(routes.logout);

@@ -16,12 +16,11 @@ supabase.auth.onAuthStateChange(async (event, session) => {
 });
 
 export const user = {
-	signIn: (email: string, password: string = null) => supabase.auth.signIn({ email, password }),
+	signIn: (email: string) => supabase.auth.signIn({ email }),
 	signInGitHub: () => supabase.auth.signIn({
 		provider: 'github',
 	}),
 	signOut: () => supabase.auth.signOut(),
-	resetPassword: (email: string) => supabase.auth.api.resetPasswordForEmail(email),
 	subscribe,
 	set
 };

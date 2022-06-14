@@ -36,14 +36,14 @@ GRANT ALL ON TABLE public.profiles TO service_role;
 
 GRANT ALL ON TABLE public.profiles TO postgres;
 
-REVOKE ALL ON TABLE public.open_answer_likes FROM anon;
-REVOKE ALL ON TABLE public.open_answer_likes FROM postgres;
-REVOKE ALL ON TABLE public.open_answer_likes FROM service_role;
-GRANT ALL ON TABLE public.open_answer_likes TO anon;
+REVOKE ALL ON TABLE public.answer_likes FROM anon;
+REVOKE ALL ON TABLE public.answer_likes FROM postgres;
+REVOKE ALL ON TABLE public.answer_likes FROM service_role;
+GRANT ALL ON TABLE public.answer_likes TO anon;
 
-GRANT ALL ON TABLE public.open_answer_likes TO service_role;
+GRANT ALL ON TABLE public.answer_likes TO service_role;
 
-GRANT ALL ON TABLE public.open_answer_likes TO postgres;
+GRANT ALL ON TABLE public.answer_likes TO postgres;
 
 REVOKE ALL ON TABLE public.question_topic FROM anon;
 REVOKE ALL ON TABLE public.question_topic FROM postgres;
@@ -54,14 +54,14 @@ GRANT ALL ON TABLE public.question_topic TO service_role;
 
 GRANT ALL ON TABLE public.question_topic TO postgres;
 
-REVOKE ALL ON TABLE public.open_answers FROM anon;
-REVOKE ALL ON TABLE public.open_answers FROM postgres;
-REVOKE ALL ON TABLE public.open_answers FROM service_role;
-GRANT ALL ON TABLE public.open_answers TO anon;
+REVOKE ALL ON TABLE public.answers FROM anon;
+REVOKE ALL ON TABLE public.answers FROM postgres;
+REVOKE ALL ON TABLE public.answers FROM service_role;
+GRANT ALL ON TABLE public.answers TO anon;
 
-GRANT ALL ON TABLE public.open_answers TO service_role;
+GRANT ALL ON TABLE public.answers TO service_role;
 
-GRANT ALL ON TABLE public.open_answers TO postgres;
+GRANT ALL ON TABLE public.answers TO postgres;
 
 REVOKE ALL ON TABLE public.question_likes FROM anon;
 REVOKE ALL ON TABLE public.question_likes FROM postgres;

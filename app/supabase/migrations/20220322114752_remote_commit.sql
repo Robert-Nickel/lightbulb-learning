@@ -156,39 +156,39 @@ GRANT ALL ON TABLE public.test_tokens TO supabase_admin;
 COMMENT ON TABLE public.test_tokens
     IS 'Used to sync refresh_tokens for cypress tests';
 
-CREATE TABLE IF NOT EXISTS public.correct_open_answers
+CREATE TABLE IF NOT EXISTS public.correct_answers
 (
     id uuid NOT NULL DEFAULT uuid_generate_v4(),
     answer_text text COLLATE pg_catalog."default" NOT NULL,
     question uuid NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     owner uuid NOT NULL,
-    CONSTRAINT correct_open_answers_pkey PRIMARY KEY (id)
+    CONSTRAINT correct_answers_pkey PRIMARY KEY (id)
 )
 
 TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS public.correct_open_answers
+ALTER TABLE IF EXISTS public.correct_answers
     OWNER to postgres;
 
-ALTER TABLE IF EXISTS public.correct_open_answers
+ALTER TABLE IF EXISTS public.correct_answers
     ENABLE ROW LEVEL SECURITY;
 
-GRANT ALL ON TABLE public.correct_open_answers TO anon;
+GRANT ALL ON TABLE public.correct_answers TO anon;
 
-GRANT ALL ON TABLE public.correct_open_answers TO authenticated;
+GRANT ALL ON TABLE public.correct_answers TO authenticated;
 
-GRANT ALL ON TABLE public.correct_open_answers TO postgres;
+GRANT ALL ON TABLE public.correct_answers TO postgres;
 
-GRANT ALL ON TABLE public.correct_open_answers TO service_role;
+GRANT ALL ON TABLE public.correct_answers TO service_role;
 CREATE POLICY coa_insert_policy_for_authenticated_user
-    ON public.correct_open_answers
+    ON public.correct_answers
     AS PERMISSIVE
     FOR INSERT
     TO public
     WITH CHECK ((auth.role() = 'authenticated'::text));
 CREATE POLICY coa_select_policy_for_owner
-    ON public.correct_open_answers
+    ON public.correct_answers
     AS PERMISSIVE
     FOR SELECT
     TO public
@@ -395,7 +395,7 @@ CREATE POLICY oq_select_policy_for_authenticated_user
     TO public
     USING ((auth.role() = 'authenticated'::text));
 
-CREATE TABLE IF NOT EXISTS public.open_answers
+CREATE TABLE IF NOT EXISTS public.answers
 (
     id uuid NOT NULL DEFAULT uuid_generate_v4(),
     question uuid NOT NULL,
@@ -403,16 +403,16 @@ CREATE TABLE IF NOT EXISTS public.open_answers
     answer_text text COLLATE pg_catalog."default" NOT NULL,
     version bigint NOT NULL,
     owner uuid NOT NULL,
-    CONSTRAINT open_answers_pkey1 PRIMARY KEY (id),
-    CONSTRAINT open_answers_question_fkey FOREIGN KEY (question)
+    CONSTRAINT answers_pkey1 PRIMARY KEY (id),
+    CONSTRAINT answers_question_fkey FOREIGN KEY (question)
         REFERENCES public.questions (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION,
-    CONSTRAINT open_answers_question_fkey1 FOREIGN KEY (question)
+    CONSTRAINT answers_question_fkey1 FOREIGN KEY (question)
         REFERENCES public.questions (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE CASCADE,
-    CONSTRAINT open_answers_owner_fkey FOREIGN KEY (owner)
+    CONSTRAINT answers_owner_fkey FOREIGN KEY (owner)
         REFERENCES auth.users (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
@@ -420,30 +420,30 @@ CREATE TABLE IF NOT EXISTS public.open_answers
 
 TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS public.open_answers
+ALTER TABLE IF EXISTS public.answers
     OWNER to postgres;
 
-ALTER TABLE IF EXISTS public.open_answers
+ALTER TABLE IF EXISTS public.answers
     ENABLE ROW LEVEL SECURITY;
 
-GRANT ALL ON TABLE public.open_answers TO authenticated;
+GRANT ALL ON TABLE public.answers TO authenticated;
 
-GRANT ALL ON TABLE public.open_answers TO anon;
+GRANT ALL ON TABLE public.answers TO anon;
 
-GRANT ALL ON TABLE public.open_answers TO service_role;
+GRANT ALL ON TABLE public.answers TO service_role;
 
-GRANT ALL ON TABLE public.open_answers TO postgres;
+GRANT ALL ON TABLE public.answers TO postgres;
 
-COMMENT ON COLUMN public.open_answers.version
+COMMENT ON COLUMN public.answers.version
     IS 'Incremented for the new row if the user improves his answer.';
 CREATE POLICY oa_insert_policy_for_authenticated_user
-    ON public.open_answers
+    ON public.answers
     AS PERMISSIVE
     FOR INSERT
     TO public
     WITH CHECK ((auth.role() = 'authenticated'::text));
 CREATE POLICY oa_select_policy_for_authenticated_user
-    ON public.open_answers
+    ON public.answers
     AS PERMISSIVE
     FOR SELECT
     TO public
@@ -452,13 +452,13 @@ CREATE POLICY oa_select_policy_for_authenticated_user
 CREATE TABLE IF NOT EXISTS public.open_feedback
 (
     id uuid NOT NULL DEFAULT uuid_generate_v4(),
-    open_answer uuid NOT NULL,
+    answer uuid NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     feedback_text text COLLATE pg_catalog."default" NOT NULL,
     owner uuid NOT NULL,
     CONSTRAINT open_feedback_pkey1 PRIMARY KEY (id),
-    CONSTRAINT open_feedback_open_answer_fkey FOREIGN KEY (open_answer)
-        REFERENCES public.open_answers (id) MATCH SIMPLE
+    CONSTRAINT open_feedback_answer_fkey FOREIGN KEY (answer)
+        REFERENCES public.answers (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE CASCADE,
     CONSTRAINT open_feedback_owner_fkey FOREIGN KEY (owner)
@@ -499,16 +499,16 @@ CREATE TABLE IF NOT EXISTS public.open_feedback_drafts
 (
     id uuid NOT NULL DEFAULT uuid_generate_v4(),
     feedback_text text COLLATE pg_catalog."default" NOT NULL,
-    open_answer uuid NOT NULL,
+    answer uuid NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     owner uuid NOT NULL,
     CONSTRAINT open_feedback_drafts_pkey1 PRIMARY KEY (id),
-    CONSTRAINT open_feedback_drafts_open_answer_fkey FOREIGN KEY (open_answer)
-        REFERENCES public.open_answers (id) MATCH SIMPLE
+    CONSTRAINT open_feedback_drafts_answer_fkey FOREIGN KEY (answer)
+        REFERENCES public.answers (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION,
-    CONSTRAINT open_feedback_drafts_open_answer_fkey1 FOREIGN KEY (open_answer)
-        REFERENCES public.open_answers (id) MATCH SIMPLE
+    CONSTRAINT open_feedback_drafts_answer_fkey1 FOREIGN KEY (answer)
+        REFERENCES public.answers (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE CASCADE,
     CONSTRAINT open_feedback_drafts_owner_fkey FOREIGN KEY (owner)
@@ -607,23 +607,23 @@ GRANT ALL ON TABLE public.question_topic TO postgres;
 
 GRANT ALL ON TABLE public.question_topic TO service_role;
 
-CREATE TABLE IF NOT EXISTS public.open_answer_drafts
+CREATE TABLE IF NOT EXISTS public.answer_drafts
 (
     id uuid NOT NULL DEFAULT uuid_generate_v4(),
     answer_text text COLLATE pg_catalog."default" NOT NULL,
     question uuid NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     owner uuid NOT NULL,
-    CONSTRAINT open_answer_drafts_pkey1 PRIMARY KEY (id),
-    CONSTRAINT open_answer_drafts_question_fkey FOREIGN KEY (question)
+    CONSTRAINT answer_drafts_pkey1 PRIMARY KEY (id),
+    CONSTRAINT answer_drafts_question_fkey FOREIGN KEY (question)
         REFERENCES public.questions (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION,
-    CONSTRAINT open_answer_drafts_question_fkey1 FOREIGN KEY (question)
+    CONSTRAINT answer_drafts_question_fkey1 FOREIGN KEY (question)
         REFERENCES public.questions (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE CASCADE,
-    CONSTRAINT open_answer_drafts_owner_fkey FOREIGN KEY (owner)
+    CONSTRAINT answer_drafts_owner_fkey FOREIGN KEY (owner)
         REFERENCES auth.users (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
@@ -631,33 +631,33 @@ CREATE TABLE IF NOT EXISTS public.open_answer_drafts
 
 TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS public.open_answer_drafts
+ALTER TABLE IF EXISTS public.answer_drafts
     OWNER to postgres;
 
-ALTER TABLE IF EXISTS public.open_answer_drafts
+ALTER TABLE IF EXISTS public.answer_drafts
     ENABLE ROW LEVEL SECURITY;
 
-GRANT ALL ON TABLE public.open_answer_drafts TO authenticated;
+GRANT ALL ON TABLE public.answer_drafts TO authenticated;
 
-GRANT ALL ON TABLE public.open_answer_drafts TO anon;
+GRANT ALL ON TABLE public.answer_drafts TO anon;
 
-GRANT ALL ON TABLE public.open_answer_drafts TO service_role;
+GRANT ALL ON TABLE public.answer_drafts TO service_role;
 
-GRANT ALL ON TABLE public.open_answer_drafts TO postgres;
+GRANT ALL ON TABLE public.answer_drafts TO postgres;
 CREATE POLICY oad_delete_policy_for_owner
-    ON public.open_answer_drafts
+    ON public.answer_drafts
     AS PERMISSIVE
     FOR DELETE
     TO public
     USING ((auth.uid() = owner));
 CREATE POLICY oad_insert_policy_for_authenticated_user
-    ON public.open_answer_drafts
+    ON public.answer_drafts
     AS PERMISSIVE
     FOR INSERT
     TO public
     WITH CHECK ((auth.role() = 'authenticated'::text));
 CREATE POLICY oad_select_policy_for_owner
-    ON public.open_answer_drafts
+    ON public.answer_drafts
     AS PERMISSIVE
     FOR SELECT
     TO public
@@ -805,26 +805,26 @@ CREATE POLICY ic_select_policy_for_owner
 
 
 
-CREATE OR REPLACE VIEW public.open_answer_performances
+CREATE OR REPLACE VIEW public.answer_performances
  AS
  SELECT course_user.id,
-    open_answers.id AS open_answer_id,
-    open_answers.answer_text,
-    open_answers.version,
-    open_answers.created_at,
+    answers.id AS answer_id,
+    answers.answer_text,
+    answers.version,
+    answers.created_at,
     questions.question_text
    FROM course_user
-     JOIN open_answers ON open_answers.owner = course_user.user_id
-     JOIN questions ON questions.id = open_answers.question AND questions.course = course_user.course;
+     JOIN answers ON answers.owner = course_user.user_id
+     JOIN questions ON questions.id = answers.question AND questions.course = course_user.course;
 
-ALTER TABLE public.open_answer_performances
+ALTER TABLE public.answer_performances
     OWNER TO supabase_admin;
 
-GRANT ALL ON TABLE public.open_answer_performances TO anon;
-GRANT ALL ON TABLE public.open_answer_performances TO postgres;
-GRANT ALL ON TABLE public.open_answer_performances TO supabase_admin;
-GRANT ALL ON TABLE public.open_answer_performances TO authenticated;
-GRANT ALL ON TABLE public.open_answer_performances TO service_role;
+GRANT ALL ON TABLE public.answer_performances TO anon;
+GRANT ALL ON TABLE public.answer_performances TO postgres;
+GRANT ALL ON TABLE public.answer_performances TO supabase_admin;
+GRANT ALL ON TABLE public.answer_performances TO authenticated;
+GRANT ALL ON TABLE public.answer_performances TO service_role;
 
 CREATE OR REPLACE VIEW public.open_feedback_performances
  AS
@@ -832,12 +832,12 @@ CREATE OR REPLACE VIEW public.open_feedback_performances
     open_feedback.id AS open_feedback_id,
     open_feedback.feedback_text,
     open_feedback.created_at,
-    open_answers.answer_text,
+    answers.answer_text,
     questions.question_text
    FROM course_user
      JOIN open_feedback ON open_feedback.owner = course_user.user_id
-     JOIN open_answers ON open_answers.id = open_feedback.open_answer
-     JOIN questions ON questions.id = open_answers.question AND questions.course = course_user.course;
+     JOIN answers ON answers.id = open_feedback.answer
+     JOIN questions ON questions.id = answers.question AND questions.course = course_user.course;
 
 ALTER TABLE public.open_feedback_performances
     OWNER TO supabase_admin;

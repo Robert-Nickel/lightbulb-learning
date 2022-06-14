@@ -3,58 +3,58 @@
 	import { page } from '$app/stores';
 	import Toast from '$lib/components/Toast.svelte';
 	import Back from '$lib/components/Back.svelte';
-	import ImproveOpenAnswer from '$lib/components/ImproveOpenAnswer.svelte';
+	import ImproveAnswer from '$lib/components/ImproveAnswer.svelte';
 	import {
 		fetchMyOpenFeedback,
-		fetchOpenAnswer,
+		fetchAnswer,
 		fetchQuestion,
 		fetchOpenFeedbackOfOthers,
-		OpenAnswerType,
+		AnswerType,
 		OpenFeedbackType,
 		QuestionType,
 		saveOpenFeedback,
-		fetchLatestOpenAnswer
+		fetchLatestAnswer
 	} from '$lib/supabaseClient';
 	import { goto } from '$app/navigation';
 	import { user } from '$lib/stores/user';
-	import autosize from '../../../node_modules/autosize';
+	import autosize from 'autosize';
 	import { routes } from '$lib/routes';
 
 	let question: QuestionType;
-	let openAnswer: OpenAnswerType;
+	let answer: AnswerType;
 	let myOpenFeedback: OpenFeedbackType;
 	let openFeedbackOfOthers: Array<OpenFeedbackType> = [];
 	let openFeedbackText;
 	let toast;
 	let improvingAnswer = false;
-	let latestOpenAnswer;
+	let latestAnswer;
 	let isLatest = false;
 
 	onMount(async () => {
 		refresh($page.params.slug);
 	});
 
-	async function refresh(openAnswerId) {
-		openAnswer = await fetchOpenAnswer(openAnswerId);
-		latestOpenAnswer = await fetchLatestOpenAnswer(openAnswer.question, openAnswer.owner);
-		if (latestOpenAnswer) {
-			isLatest = latestOpenAnswer.version == openAnswer.version;
+	async function refresh(answerId) {
+		answer = await fetchAnswer(answerId);
+		latestAnswer = await fetchLatestAnswer(answer.question, answer.owner);
+		if (latestAnswer) {
+			isLatest = latestAnswer.version == answer.version;
 		}
 
-		question = await fetchQuestion(openAnswer.question);
-		myOpenFeedback = await fetchMyOpenFeedback(openAnswer.id);
-		openFeedbackOfOthers = await fetchOpenFeedbackOfOthers(openAnswer.id);
+		question = await fetchQuestion(answer.question);
+		myOpenFeedback = await fetchMyOpenFeedback(answer.id);
+		openFeedbackOfOthers = await fetchOpenFeedbackOfOthers(answer.id);
 	}
 
 	async function publishOpenFeedback() {
-		myOpenFeedback = await saveOpenFeedback(openFeedbackText, openAnswer.id);
+		myOpenFeedback = await saveOpenFeedback(openFeedbackText, answer.id);
 		openFeedbackText = null;
 		toast.showSuccessToast('Thanks for your Feedback!');
 	}
 </script>
 
 <main class="container">
-	{#if openAnswer && question}
+	{#if answer && question}
 		<Back text="Back to Question" route="/question/{question.id}" />
 
 		{#if question.owner == $user.id}
@@ -63,8 +63,8 @@
 			<div class="mb-4">Question: {question.questionText}</div>
 		{/if}
 
-		{#if openAnswer.owner == $user.id}
-			<h1 class="yours pl-4">Your Answer: {openAnswer.answerText}</h1>
+		{#if answer.owner == $user.id}
+			<h1 class="yours pl-4">Your Answer: {answer.answerText}</h1>
 
 			{#if openFeedbackOfOthers.length == 0}
 				<i>No one has provided any feedback for your answer.</i>
@@ -77,7 +77,7 @@
 				{/each}
 				{#if isLatest}
 					{#if improvingAnswer}
-						<ImproveOpenAnswer {openAnswer} on:openAnswerImproved={(e) => refresh(e.detail)} />
+						<ImproveAnswer {answer} on:answerImproved={(e) => refresh(e.detail)} />
 					{:else}
 						<div class="mb-4">Do you want to improve your answer based on this feedback?</div>
 						<button class="outline w-48" on:click={() => (improvingAnswer = !improvingAnswer)}
@@ -89,14 +89,14 @@
 					<button
 						class="w-48"
 						on:click={() => {
-							goto(routes.openAnswer(latestOpenAnswer.id));
-							refresh(latestOpenAnswer.id);
+							goto(routes.answer(latestAnswer.id));
+							refresh(latestAnswer.id);
 						}}>Go to Latest Version</button
 					>
 				{/if}
 			{/if}
 		{:else}
-			<h1>{openAnswer.answerText}</h1>
+			<h1>{answer.answerText}</h1>
 
 			{#if myOpenFeedback}
 				<article class="yours">

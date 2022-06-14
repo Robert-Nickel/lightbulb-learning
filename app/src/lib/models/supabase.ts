@@ -343,14 +343,14 @@ export interface paths {
       };
     };
   };
-  "/open_answer_likes": {
+  "/answer_likes": {
     get: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.open_answer_likes.id"];
-          open_answer?: parameters["rowFilter.open_answer_likes.open_answer"];
-          owner?: parameters["rowFilter.open_answer_likes.owner"];
-          created_at?: parameters["rowFilter.open_answer_likes.created_at"];
+          id?: parameters["rowFilter.answer_likes.id"];
+          answer?: parameters["rowFilter.answer_likes.answer"];
+          owner?: parameters["rowFilter.answer_likes.owner"];
+          created_at?: parameters["rowFilter.answer_likes.created_at"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -372,7 +372,7 @@ export interface paths {
       responses: {
         /** OK */
         200: {
-          schema: definitions["open_answer_likes"][];
+          schema: definitions["answer_likes"][];
         };
         /** Partial Content */
         206: unknown;
@@ -381,8 +381,8 @@ export interface paths {
     post: {
       parameters: {
         body: {
-          /** open_answer_likes */
-          open_answer_likes?: definitions["open_answer_likes"];
+          /** answer_likes */
+          answer_likes?: definitions["answer_likes"];
         };
         query: {
           /** Filtering Columns */
@@ -401,10 +401,10 @@ export interface paths {
     delete: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.open_answer_likes.id"];
-          open_answer?: parameters["rowFilter.open_answer_likes.open_answer"];
-          owner?: parameters["rowFilter.open_answer_likes.owner"];
-          created_at?: parameters["rowFilter.open_answer_likes.created_at"];
+          id?: parameters["rowFilter.answer_likes.id"];
+          answer?: parameters["rowFilter.answer_likes.answer"];
+          owner?: parameters["rowFilter.answer_likes.owner"];
+          created_at?: parameters["rowFilter.answer_likes.created_at"];
         };
         header: {
           /** Preference */
@@ -419,14 +419,14 @@ export interface paths {
     patch: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.open_answer_likes.id"];
-          open_answer?: parameters["rowFilter.open_answer_likes.open_answer"];
-          owner?: parameters["rowFilter.open_answer_likes.owner"];
-          created_at?: parameters["rowFilter.open_answer_likes.created_at"];
+          id?: parameters["rowFilter.answer_likes.id"];
+          answer?: parameters["rowFilter.answer_likes.answer"];
+          owner?: parameters["rowFilter.answer_likes.owner"];
+          created_at?: parameters["rowFilter.answer_likes.created_at"];
         };
         body: {
-          /** open_answer_likes */
-          open_answer_likes?: definitions["open_answer_likes"];
+          /** answer_likes */
+          answer_likes?: definitions["answer_likes"];
         };
         header: {
           /** Preference */
@@ -439,16 +439,16 @@ export interface paths {
       };
     };
   };
-  "/open_answer_performances": {
+  "/answer_performances": {
     get: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.open_answer_performances.id"];
-          open_answer_id?: parameters["rowFilter.open_answer_performances.open_answer_id"];
-          answer_text?: parameters["rowFilter.open_answer_performances.answer_text"];
-          created_at?: parameters["rowFilter.open_answer_performances.created_at"];
-          likes?: parameters["rowFilter.open_answer_performances.likes"];
-          question_text?: parameters["rowFilter.open_answer_performances.question_text"];
+          id?: parameters["rowFilter.answer_performances.id"];
+          answer_id?: parameters["rowFilter.answer_performances.answer_id"];
+          answer_text?: parameters["rowFilter.answer_performances.answer_text"];
+          created_at?: parameters["rowFilter.answer_performances.created_at"];
+          likes?: parameters["rowFilter.answer_performances.likes"];
+          question_text?: parameters["rowFilter.answer_performances.question_text"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -470,24 +470,24 @@ export interface paths {
       responses: {
         /** OK */
         200: {
-          schema: definitions["open_answer_performances"][];
+          schema: definitions["answer_performances"][];
         };
         /** Partial Content */
         206: unknown;
       };
     };
   };
-  "/open_answers": {
+  "/answers": {
     get: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.open_answers.id"];
-          open_question?: parameters["rowFilter.open_answers.open_question"];
-          created_at?: parameters["rowFilter.open_answers.created_at"];
-          answer_text?: parameters["rowFilter.open_answers.answer_text"];
+          id?: parameters["rowFilter.answers.id"];
+          open_question?: parameters["rowFilter.answers.open_question"];
+          created_at?: parameters["rowFilter.answers.created_at"];
+          answer_text?: parameters["rowFilter.answers.answer_text"];
           /** Incremented for the new row if the user improves his answer. */
-          version?: parameters["rowFilter.open_answers.version"];
-          owner?: parameters["rowFilter.open_answers.owner"];
+          version?: parameters["rowFilter.answers.version"];
+          owner?: parameters["rowFilter.answers.owner"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -509,7 +509,7 @@ export interface paths {
       responses: {
         /** OK */
         200: {
-          schema: definitions["open_answers"][];
+          schema: definitions["answers"][];
         };
         /** Partial Content */
         206: unknown;
@@ -518,8 +518,8 @@ export interface paths {
     post: {
       parameters: {
         body: {
-          /** open_answers */
-          open_answers?: definitions["open_answers"];
+          /** answers */
+          answers?: definitions["answers"];
         };
         query: {
           /** Filtering Columns */
@@ -538,13 +538,13 @@ export interface paths {
     delete: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.open_answers.id"];
-          open_question?: parameters["rowFilter.open_answers.open_question"];
-          created_at?: parameters["rowFilter.open_answers.created_at"];
-          answer_text?: parameters["rowFilter.open_answers.answer_text"];
+          id?: parameters["rowFilter.answers.id"];
+          open_question?: parameters["rowFilter.answers.open_question"];
+          created_at?: parameters["rowFilter.answers.created_at"];
+          answer_text?: parameters["rowFilter.answers.answer_text"];
           /** Incremented for the new row if the user improves his answer. */
-          version?: parameters["rowFilter.open_answers.version"];
-          owner?: parameters["rowFilter.open_answers.owner"];
+          version?: parameters["rowFilter.answers.version"];
+          owner?: parameters["rowFilter.answers.owner"];
         };
         header: {
           /** Preference */
@@ -559,17 +559,17 @@ export interface paths {
     patch: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.open_answers.id"];
-          open_question?: parameters["rowFilter.open_answers.open_question"];
-          created_at?: parameters["rowFilter.open_answers.created_at"];
-          answer_text?: parameters["rowFilter.open_answers.answer_text"];
+          id?: parameters["rowFilter.answers.id"];
+          open_question?: parameters["rowFilter.answers.open_question"];
+          created_at?: parameters["rowFilter.answers.created_at"];
+          answer_text?: parameters["rowFilter.answers.answer_text"];
           /** Incremented for the new row if the user improves his answer. */
-          version?: parameters["rowFilter.open_answers.version"];
-          owner?: parameters["rowFilter.open_answers.owner"];
+          version?: parameters["rowFilter.answers.version"];
+          owner?: parameters["rowFilter.answers.owner"];
         };
         body: {
-          /** open_answers */
-          open_answers?: definitions["open_answers"];
+          /** answers */
+          answers?: definitions["answers"];
         };
         header: {
           /** Preference */
@@ -587,7 +587,7 @@ export interface paths {
       parameters: {
         query: {
           id?: parameters["rowFilter.open_feedback.id"];
-          open_answer?: parameters["rowFilter.open_feedback.open_answer"];
+          answer?: parameters["rowFilter.open_feedback.answer"];
           created_at?: parameters["rowFilter.open_feedback.created_at"];
           feedback_text?: parameters["rowFilter.open_feedback.feedback_text"];
           owner?: parameters["rowFilter.open_feedback.owner"];
@@ -642,7 +642,7 @@ export interface paths {
       parameters: {
         query: {
           id?: parameters["rowFilter.open_feedback.id"];
-          open_answer?: parameters["rowFilter.open_feedback.open_answer"];
+          answer?: parameters["rowFilter.open_feedback.answer"];
           created_at?: parameters["rowFilter.open_feedback.created_at"];
           feedback_text?: parameters["rowFilter.open_feedback.feedback_text"];
           owner?: parameters["rowFilter.open_feedback.owner"];
@@ -661,7 +661,7 @@ export interface paths {
       parameters: {
         query: {
           id?: parameters["rowFilter.open_feedback.id"];
-          open_answer?: parameters["rowFilter.open_feedback.open_answer"];
+          answer?: parameters["rowFilter.open_feedback.answer"];
           created_at?: parameters["rowFilter.open_feedback.created_at"];
           feedback_text?: parameters["rowFilter.open_feedback.feedback_text"];
           owner?: parameters["rowFilter.open_feedback.owner"];
@@ -1661,7 +1661,7 @@ export interface definitions {
     /** Format: text */
     last_name?: string;
   };
-  open_answer_likes: {
+  answer_likes: {
     /**
      * Format: uuid
      * @description Note:
@@ -1672,9 +1672,9 @@ export interface definitions {
     /**
      * Format: uuid
      * @description Note:
-     * This is a Foreign Key to `open_answers.id`.<fk table='open_answers' column='id'/>
+     * This is a Foreign Key to `answers.id`.<fk table='answers' column='id'/>
      */
-    open_answer: string;
+    answer: string;
     /** Format: uuid */
     owner: string;
     /**
@@ -1683,7 +1683,7 @@ export interface definitions {
      */
     created_at: string;
   };
-  open_answer_performances: {
+  answer_performances: {
     /**
      * Format: uuid
      * @description Note:
@@ -1695,7 +1695,7 @@ export interface definitions {
      * @description Note:
      * This is a Primary Key.<pk/>
      */
-    open_answer_id?: string;
+    answer_id?: string;
     /** Format: text */
     answer_text?: string;
     /** Format: timestamp with time zone */
@@ -1705,7 +1705,7 @@ export interface definitions {
     /** Format: text */
     question_text?: string;
   };
-  open_answers: {
+  answers: {
     /**
      * Format: uuid
      * @description Note:
@@ -1745,9 +1745,9 @@ export interface definitions {
     /**
      * Format: uuid
      * @description Note:
-     * This is a Foreign Key to `open_answers.id`.<fk table='open_answers' column='id'/>
+     * This is a Foreign Key to `answers.id`.<fk table='answers' column='id'/>
      */
-    open_answer: string;
+    answer: string;
     /**
      * Format: timestamp with time zone
      * @default now()
@@ -2044,53 +2044,53 @@ export interface parameters {
   "rowFilter.members.first_name": string;
   /** Format: text */
   "rowFilter.members.last_name": string;
-  /** @description open_answer_likes */
-  "body.open_answer_likes": definitions["open_answer_likes"];
+  /** @description answer_likes */
+  "body.answer_likes": definitions["answer_likes"];
   /** Format: uuid */
-  "rowFilter.open_answer_likes.id": string;
+  "rowFilter.answer_likes.id": string;
   /** Format: uuid */
-  "rowFilter.open_answer_likes.open_answer": string;
+  "rowFilter.answer_likes.answer": string;
   /** Format: uuid */
-  "rowFilter.open_answer_likes.owner": string;
+  "rowFilter.answer_likes.owner": string;
   /** Format: timestamp with time zone */
-  "rowFilter.open_answer_likes.created_at": string;
-  /** @description open_answer_performances */
-  "body.open_answer_performances": definitions["open_answer_performances"];
+  "rowFilter.answer_likes.created_at": string;
+  /** @description answer_performances */
+  "body.answer_performances": definitions["answer_performances"];
   /** Format: uuid */
-  "rowFilter.open_answer_performances.id": string;
+  "rowFilter.answer_performances.id": string;
   /** Format: uuid */
-  "rowFilter.open_answer_performances.open_answer_id": string;
+  "rowFilter.answer_performances.answer_id": string;
   /** Format: text */
-  "rowFilter.open_answer_performances.answer_text": string;
+  "rowFilter.answer_performances.answer_text": string;
   /** Format: timestamp with time zone */
-  "rowFilter.open_answer_performances.created_at": string;
+  "rowFilter.answer_performances.created_at": string;
   /** Format: bigint */
-  "rowFilter.open_answer_performances.likes": string;
+  "rowFilter.answer_performances.likes": string;
   /** Format: text */
-  "rowFilter.open_answer_performances.question_text": string;
-  /** @description open_answers */
-  "body.open_answers": definitions["open_answers"];
+  "rowFilter.answer_performances.question_text": string;
+  /** @description answers */
+  "body.answers": definitions["answers"];
   /** Format: uuid */
-  "rowFilter.open_answers.id": string;
+  "rowFilter.answers.id": string;
   /** Format: uuid */
-  "rowFilter.open_answers.open_question": string;
+  "rowFilter.answers.open_question": string;
   /** Format: timestamp with time zone */
-  "rowFilter.open_answers.created_at": string;
+  "rowFilter.answers.created_at": string;
   /** Format: text */
-  "rowFilter.open_answers.answer_text": string;
+  "rowFilter.answers.answer_text": string;
   /**
    * Format: bigint
    * @description Incremented for the new row if the user improves his answer.
    */
-  "rowFilter.open_answers.version": string;
+  "rowFilter.answers.version": string;
   /** Format: uuid */
-  "rowFilter.open_answers.owner": string;
+  "rowFilter.answers.owner": string;
   /** @description open_feedback */
   "body.open_feedback": definitions["open_feedback"];
   /** Format: uuid */
   "rowFilter.open_feedback.id": string;
   /** Format: uuid */
-  "rowFilter.open_feedback.open_answer": string;
+  "rowFilter.open_feedback.answer": string;
   /** Format: timestamp with time zone */
   "rowFilter.open_feedback.created_at": string;
   /** Format: text */

@@ -3,18 +3,18 @@
 -- and may require manual changes to the script to ensure changes are applied in the correct order.
 -- Please report an issue for any failure with the reproduction steps.
 
-CREATE TABLE IF NOT EXISTS public.open_answer_likes
+CREATE TABLE IF NOT EXISTS public.answer_likes
 (
     id uuid NOT NULL DEFAULT uuid_generate_v4(),
-    open_answer uuid NOT NULL,
+    answer uuid NOT NULL,
     owner uuid NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
-    CONSTRAINT open_answer_likes_pkey PRIMARY KEY (id),
-    CONSTRAINT open_answer_likes_open_answer_fkey FOREIGN KEY (open_answer)
-        REFERENCES public.open_answers (id) MATCH SIMPLE
+    CONSTRAINT answer_likes_pkey PRIMARY KEY (id),
+    CONSTRAINT answer_likes_answer_fkey FOREIGN KEY (answer)
+        REFERENCES public.answers (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE CASCADE,
-    CONSTRAINT open_answer_likes_owner_fkey FOREIGN KEY (owner)
+    CONSTRAINT answer_likes_owner_fkey FOREIGN KEY (owner)
         REFERENCES auth.users (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE CASCADE
@@ -22,13 +22,13 @@ CREATE TABLE IF NOT EXISTS public.open_answer_likes
 
 TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS public.open_answer_likes
+ALTER TABLE IF EXISTS public.answer_likes
     OWNER to postgres;
 
-GRANT ALL ON TABLE public.open_answer_likes TO anon;
+GRANT ALL ON TABLE public.answer_likes TO anon;
 
-GRANT ALL ON TABLE public.open_answer_likes TO authenticated;
+GRANT ALL ON TABLE public.answer_likes TO authenticated;
 
-GRANT ALL ON TABLE public.open_answer_likes TO postgres;
+GRANT ALL ON TABLE public.answer_likes TO postgres;
 
-GRANT ALL ON TABLE public.open_answer_likes TO service_role;
+GRANT ALL ON TABLE public.answer_likes TO service_role;

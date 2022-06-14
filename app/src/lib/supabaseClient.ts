@@ -161,9 +161,9 @@ export async function saveQuestion(
 	return keysToCamelCase(data);
 }
 
-export async function fetchOpenAnswer(id: string): Promise<OpenAnswerType> {
+export async function fetchAnswer(id: string): Promise<AnswerType> {
 	const { data, error } = await supabase
-		.from<OpenAnswerTypeDB>(openAnswersTable)
+		.from<AnswerTypeDB>(answersTable)
 		.select()
 		.eq('id', id)
 		.maybeSingle();
@@ -171,9 +171,9 @@ export async function fetchOpenAnswer(id: string): Promise<OpenAnswerType> {
 	return keysToCamelCase(data);
 }
 
-export async function fetchMyOpenAnswers(questionId): Promise<OpenAnswerType[]> {
+export async function fetchMyAnswers(questionId): Promise<AnswerType[]> {
 	const { data, error } = await supabase
-		.from<OpenAnswerTypeDB>(openAnswersTable)
+		.from<AnswerTypeDB>(answersTable)
 		.select()
 		.eq('question', questionId)
 		.eq('owner', supabase.auth.user().id);
@@ -181,9 +181,9 @@ export async function fetchMyOpenAnswers(questionId): Promise<OpenAnswerType[]> 
 	return keysToCamelCase(data);
 }
 
-export async function fetchLatestOpenAnswer(questionId, userId): Promise<OpenAnswerType> {
+export async function fetchLatestAnswer(questionId, userId): Promise<AnswerType> {
 	const { data, error } = await supabase
-		.from<OpenAnswerTypeDB>(openAnswersTable)
+		.from<AnswerTypeDB>(answersTable)
 		.select()
 		.eq('question', questionId)
 		.eq('owner', userId)
@@ -193,12 +193,12 @@ export async function fetchLatestOpenAnswer(questionId, userId): Promise<OpenAns
 	return keysToCamelCase(data[0]);
 }
 
-export async function fetchOpenAnswersOfOthers(
+export async function fetchAnswersOfOthers(
 	questionId: string,
 	userId: string
-): Promise<OpenAnswerType[]> {
+): Promise<AnswerType[]> {
 	const { data, error } = await supabase
-		.from<OpenAnswerTypeDB>(openAnswersTable)
+		.from<AnswerTypeDB>(answersTable)
 		.select()
 		.eq('question', questionId)
 		.neq('owner', userId);
@@ -206,13 +206,13 @@ export async function fetchOpenAnswersOfOthers(
 	return keysToCamelCase(data);
 }
 
-export async function saveOpenAnswer(
+export async function saveAnswer(
 	answerText: string,
 	questionId: string,
 	version = 1
-): Promise<OpenAnswerType> {
+): Promise<AnswerType> {
 	const { data, error } = await supabase
-		.from<OpenAnswerTypeDB>(openAnswersTable)
+		.from<AnswerTypeDB>(answersTable)
 		.insert({
 			answer_text: answerText,
 			question: questionId,
@@ -224,22 +224,22 @@ export async function saveOpenAnswer(
 	return keysToCamelCase(data);
 }
 
-export async function fetchMyOpenFeedback(openAnswerId: string): Promise<OpenFeedbackType> {
+export async function fetchMyOpenFeedback(answerId: string): Promise<OpenFeedbackType> {
 	const { data, error } = await supabase
 		.from<OpenFeedbackTypeDB>(openFeedbackTable)
 		.select()
 		.eq('owner', supabase.auth.user().id)
-		.eq('open_answer', openAnswerId)
+		.eq('answer', answerId)
 		.maybeSingle();
 	printIf(error);
 	return keysToCamelCase(data);
 }
 
-export async function fetchOpenFeedbackOfOthers(openAnswerId: string): Promise<OpenFeedbackType[]> {
+export async function fetchOpenFeedbackOfOthers(answerId: string): Promise<OpenFeedbackType[]> {
 	const { data, error } = await supabase
 		.from<OpenFeedbackTypeDB>(openFeedbackTable)
 		.select()
-		.eq('open_answer', openAnswerId)
+		.eq('answer', answerId)
 		.neq('owner', supabase.auth.user().id);
 	printIf(error);
 	return keysToCamelCase(data);
@@ -247,13 +247,13 @@ export async function fetchOpenFeedbackOfOthers(openAnswerId: string): Promise<O
 
 export async function saveOpenFeedback(
 	feedbackText: string,
-	openAnswerId: string
+	answerId: string
 ): Promise<OpenFeedbackType> {
 	const { data, error } = await supabase
 		.from<OpenFeedbackTypeDB>(openFeedbackTable)
 		.insert({
 			feedback_text: feedbackText,
-			open_answer: openAnswerId,
+			answer: answerId,
 			owner: supabase.auth.user().id
 		})
 		.single();
@@ -314,9 +314,9 @@ export async function fetchQuestionPerformances(courseUserId: string): Promise<Q
 	return keysToCamelCase(data);
 }
 
-export async function fetchOpenAnswerPerformances(courseUserId: string): Promise<OpenAnswerPerformanceType[]> {
+export async function fetchAnswerPerformances(courseUserId: string): Promise<AnswerPerformanceType[]> {
 	const { data, error } = await supabase
-		.from<OpenAnswerPerformanceTypeDB>(openAnswerPerformancesView)
+		.from<AnswerPerformanceTypeDB>(answerPerformancesView)
 		.select()
 		.eq('id', courseUserId);
 	printIf(error);
@@ -382,10 +382,10 @@ export async function saveQuestionLike(questionId: string): Promise<QuestionLike
 	printIf(error);
 	return keysToCamelCase(data);
 }
-export async function saveOpenAnswerLike(openAnswerId: string): Promise<OpenAnswerLikeType> {
+export async function saveAnswerLike(answerId: string): Promise<AnswerLikeType> {
 	const { data, error } = await supabase
-		.from<OpenAnswerLikeTypeDB>(openAnswerLikesTable)
-		.insert({ open_answer: openAnswerId, owner: supabase.auth.user().id })
+		.from<AnswerLikeTypeDB>(answerLikesTable)
+		.insert({ answer: answerId, owner: supabase.auth.user().id })
 		.single();
 	printIf(error);
 	return keysToCamelCase(data);
@@ -401,12 +401,12 @@ export async function fetchMyQuestionLikes(questionIds: string[], userId: string
 	return keysToCamelCase(data);
 }
 
-export async function fetchMyOpenAnswerLikes(openAnswerIds: string[], userId: string): Promise<OpenAnswerLikeType[]> {
+export async function fetchMyAnswerLikes(answerIds: string[], userId: string): Promise<AnswerLikeType[]> {
 	const { data, error } = await supabase
-		.from<OpenAnswerLikeTypeDB>(openAnswerLikesTable)
+		.from<AnswerLikeTypeDB>(answerLikesTable)
 		.select()
 		.eq('owner', userId)
-		.in('open_answer', openAnswerIds);
+		.in('answer', answerIds);
 	printIf(error);
 	return keysToCamelCase(data);
 }
@@ -420,12 +420,12 @@ export async function deleteQuestionLike(questionId: string) {
 	printIf(error);
 }
 
-export async function deleteOpenAnswerLike(openAnswerId: string) {
+export async function deleteAnswerLike(answerId: string) {
 	// TODO: doesn't this delete too much?!?! Or is this regulated by RLS?
 	const { error } = await supabase
-		.from<OpenAnswerLikeTypeDB>(openAnswerLikesTable)
+		.from<AnswerLikeTypeDB>(answerLikesTable)
 		.delete()
-		.eq('open_answer', openAnswerId);
+		.eq('answer', answerId);
 	printIf(error);
 }
 
@@ -447,9 +447,9 @@ export async function saveProgress(courseUserId: string, percentage: number): Pr
 	return keysToCamelCase(data);
 }
 
-export async function fetchOpenAnswers(questionIds: string[]): Promise<OpenAnswerType[]> {
+export async function fetchAnswers(questionIds: string[]): Promise<AnswerType[]> {
 	const { data, error } = await supabase
-		.from<OpenAnswerTypeDB>(openAnswersTable)
+		.from<AnswerTypeDB>(answersTable)
 		.select()
 		.in('question', questionIds);
 	printIf(error);
@@ -465,11 +465,11 @@ export async function fetchQuestionLikes(questionIds: string[]): Promise<Questio
 	return keysToCamelCase(data);
 }
 
-export async function fetchOpenAnswerLikes(openAnswerIds: string[]): Promise<OpenAnswerLikeType[]> {
+export async function fetchAnswerLikes(answerIds: string[]): Promise<AnswerLikeType[]> {
 	const { data, error } = await supabase
-		.from<OpenAnswerLikeTypeDB>(openAnswerLikesTable)
+		.from<AnswerLikeTypeDB>(answerLikesTable)
 		.select()
-		.in('open_answer', openAnswerIds);
+		.in('answer', answerIds);
 	printIf(error);
 	return keysToCamelCase(data);
 }
@@ -500,7 +500,7 @@ function printIf(error) {
 
 export const coursesTable = 'courses';
 export const questionsTable = 'questions';
-export const openAnswersTable = 'open_answers';
+export const answersTable = 'answers';
 export const openFeedbackTable = 'open_feedback';
 export const profilesTable = 'profiles';
 export const universitiesTable = 'universities';
@@ -508,17 +508,17 @@ export const courseUserTable = 'course_user';
 export const inviteCodesTable = 'invite_codes';
 export const membersView = 'members';
 export const questionPerformancesView = 'question_performances';
-export const openAnswerPerformancesView = 'open_answer_performances';
+export const answerPerformancesView = 'answer_performances';
 export const openFeedbackPerformancesView = 'open_feedback_performances';
 export const topicsTable = 'topics';
 export const questionTopicTable = 'question_topic';
 export const questionLikesTable = 'question_likes';
-export const openAnswerLikesTable = 'open_answer_likes';
+export const answerLikesTable = 'answer_likes';
 export const progressesTable = 'progresses';
 
 export type CourseType = CamelCasedPropertiesDeep<definitions['courses']>;
 export type QuestionType = CamelCasedPropertiesDeep<definitions['questions']>;
-export type OpenAnswerType = CamelCasedPropertiesDeep<definitions['open_answers']>;
+export type AnswerType = CamelCasedPropertiesDeep<definitions['answers']>;
 export type OpenFeedbackType = CamelCasedPropertiesDeep<definitions['open_feedback']>;
 export type ProfileType = CamelCasedPropertiesDeep<definitions['profiles']>;
 export type UniversityType = CamelCasedPropertiesDeep<definitions['universities']>;
@@ -528,19 +528,19 @@ export type MemberType = CamelCasedPropertiesDeep<definitions['members']>;
 export type QuestionPerformanceType = CamelCasedPropertiesDeep<
 	definitions['question_performances']
 >;
-export type OpenAnswerPerformanceType = CamelCasedPropertiesDeep<definitions['open_answer_performances']>;
+export type AnswerPerformanceType = CamelCasedPropertiesDeep<definitions['answer_performances']>;
 export type OpenFeedbackPerformanceType = CamelCasedPropertiesDeep<
 	definitions['open_feedback_performances']
 >;
 export type TopicType = CamelCasedPropertiesDeep<definitions['topics']>;
 export type QuestionTopicType = CamelCasedPropertiesDeep<definitions['question_topic']>;
 export type QuestionLikeType = CamelCasedPropertiesDeep<definitions['question_likes']>;
-export type OpenAnswerLikeType = CamelCasedPropertiesDeep<definitions['open_answer_likes']>;
+export type AnswerLikeType = CamelCasedPropertiesDeep<definitions['answer_likes']>;
 export type ProgressType = CamelCasedPropertiesDeep<definitions['progresses']>;
 
 export type CourseTypeDB = definitions['courses'];
 export type QuestionTypeDB = definitions['questions'];
-export type OpenAnswerTypeDB = definitions['open_answers'];
+export type AnswerTypeDB = definitions['answers'];
 export type OpenFeedbackTypeDB = definitions['open_feedback'];
 export type ProfileTypeDB = definitions['profiles'];
 export type UniversityTypeDB = definitions['universities'];
@@ -548,10 +548,10 @@ export type CourseUserTypeDB = definitions['course_user'];
 export type InviteCodeTypeDB = definitions['invite_codes'];
 export type MemberTypeDB = definitions['members'];
 export type QuestionPerformanceTypeDB = definitions['question_performances'];
-export type OpenAnswerPerformanceTypeDB = definitions['open_answer_performances'];
+export type AnswerPerformanceTypeDB = definitions['answer_performances'];
 export type OpenFeedbackPerformanceTypeDB = definitions['open_feedback_performances'];
 export type TopicTypeDB = definitions['topics'];
 export type QuestionTopicTypeDB = definitions['question_topic'];
 export type QuestionLikeTypeDB = definitions['question_likes'];
-export type OpenAnswerLikeTypeDB = definitions['open_answer_likes'];
+export type AnswerLikeTypeDB = definitions['answer_likes'];
 export type ProgressTypeDB = definitions['progresses'];

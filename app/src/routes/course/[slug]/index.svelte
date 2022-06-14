@@ -12,7 +12,7 @@
 		const questionTopics = await fetchQuestionTopics(questionIds);
 		const myQuestionLikes = await fetchMyQuestionLikes(questionIds, user.id);
 		const questionLikes = await fetchQuestionLikes(questionIds);
-		const openAnswers = await fetchOpenAnswers(questionIds);
+		const answers = await fetchAnswers(questionIds);
 		type Question = QuestionType & { isLiked: boolean; amountOfAnswers: number; totalLikes: number };
 
 		const questions: Question[] = questionsDB.map((question) => {
@@ -37,8 +37,8 @@
 		}
 
 		function countAnswers(questionId: string): number {
-			return openAnswers.filter((openAnswer) => {
-				return openAnswer.question == questionId;
+			return answers.filter((answer) => {
+				return answer.question == questionId;
 			}).length;
 		}
 
@@ -68,7 +68,7 @@
 		deleteQuestionLike,
 		fetchCourse,
 		fetchMyQuestionLikes,
-		fetchOpenAnswers,
+		fetchAnswers,
 		fetchQuestionLikes,
 		fetchQuestions,
 		fetchQuestionTopics,

@@ -3,4 +3,4 @@
 -- and may require manual changes to the script to ensure changes are applied in the correct order.
 -- Please report an issue for any failure with the reproduction steps.
 
-DROP TABLE IF EXISTS public.open_answer_drafts CASCADE;
+DROP TABLE IF EXISTS public.answer_drafts CASCADE;

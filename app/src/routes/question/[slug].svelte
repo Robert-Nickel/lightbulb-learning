@@ -7,50 +7,50 @@
 		const question = await fetchQuestion(questionId);
 		const courseDescription = await (await fetchCourse(question.course)).description;
 
-		const openAnswersOfOthersWithNonLatest = await fetchOpenAnswersOfOthers(questionId, user.id);
-		const openAnswersOfOthersDB = await filterNonLatest(openAnswersOfOthersWithNonLatest);
-		const openAnswersOfOthersIds = openAnswersOfOthersDB.map((openAnswer) => openAnswer.id);
-		const myOpenAnswerLikes = await fetchMyOpenAnswerLikes(openAnswersOfOthersIds, user.id);
+		const answersOfOthersWithNonLatest = await fetchAnswersOfOthers(questionId, user.id);
+		const answersOfOthersDB = await filterNonLatest(answersOfOthersWithNonLatest);
+		const answersOfOthersIds = answersOfOthersDB.map((answer) => answer.id);
+		const myAnswerLikes = await fetchMyAnswerLikes(answersOfOthersIds, user.id);
 
-		const myOpenAnswerWithoutLikes = await fetchLatestOpenAnswer(questionId, user.id);
+		const myAnswerWithoutLikes = await fetchLatestAnswer(questionId, user.id);
 
-		const allOpenAnswerIds = myOpenAnswerWithoutLikes
-			? openAnswersOfOthersIds.concat(myOpenAnswerWithoutLikes.id)
-			: openAnswersOfOthersIds;
-		const openAnswerLikes = await fetchOpenAnswerLikes(allOpenAnswerIds);
+		const allAnswerIds = myAnswerWithoutLikes
+			? answersOfOthersIds.concat(myAnswerWithoutLikes.id)
+			: answersOfOthersIds;
+		const answerLikes = await fetchAnswerLikes(allAnswerIds);
 
-		const myOpenAnswer = myOpenAnswerWithoutLikes
+		const myAnswer = myAnswerWithoutLikes
 			? {
-					...myOpenAnswerWithoutLikes,
-					...{ totalLikes: countLikes(myOpenAnswerWithoutLikes.id) }
+					...myAnswerWithoutLikes,
+					...{ totalLikes: countLikes(myAnswerWithoutLikes.id) }
 			  }
 			: null;
 
-		type OpenAnswer = OpenAnswerType & { isLiked: boolean; totalLikes: number };
+		type Answer = AnswerType & { isLiked: boolean; totalLikes: number };
 
-		const openAnswersOfOthers: OpenAnswer[] = openAnswersOfOthersDB.map((openAnswer) => {
-			const totalLikes = countLikes(openAnswer.id);
+		const answersOfOthers: Answer[] = answersOfOthersDB.map((answer) => {
+			const totalLikes = countLikes(answer.id);
 			return {
-				...openAnswer,
+				...answer,
 				...{
-					isLiked: isLiked(openAnswer.id),
+					isLiked: isLiked(answer.id),
 					totalLikes
 				}
 			};
 		});
 
-		function isLiked(openAnswerId: string): boolean {
-			for (let myOpenAnswerLike of myOpenAnswerLikes) {
-				if (openAnswerId == myOpenAnswerLike.openAnswer) {
+		function isLiked(answerId: string): boolean {
+			for (let myAnswerLike of myAnswerLikes) {
+				if (answerId == myAnswerLike.answer) {
 					return true;
 				}
 			}
 			return false;
 		}
 
-		function countLikes(openAnswerId: string): number {
-			return openAnswerLikes.filter((openAnswerLike) => {
-				return openAnswerLike.openAnswer == openAnswerId;
+		function countLikes(answerId: string): number {
+			return answerLikes.filter((answerLike) => {
+				return answerLike.answer == answerId;
 			}).length;
 		}
 
@@ -58,23 +58,23 @@
 			props: {
 				user,
 				question,
-				myOpenAnswer,
-				openAnswersOfOthers,
+				myAnswer,
+				answersOfOthers,
 				courseDescription
 			}
 		};
 	};
 
-	async function filterNonLatest(openAnswersOfOthers) {
+	async function filterNonLatest(answersOfOthers) {
 		// O(n^2) <- thats though, isn't there a better way?
-		// It filters out the non-latest open answers
-		let openAnswers = openAnswersOfOthers;
+		// It filters out the non-latest answers
+		let answers = answersOfOthers;
 		let indizesToRemove: number[] = [];
-		for (let i = 0; i < openAnswers.length; i++) {
-			let openAnswer = openAnswers[i];
-			for (let otherOpenAnswer of openAnswers) {
-				if (openAnswer.owner == otherOpenAnswer.owner) {
-					if (openAnswer.version < otherOpenAnswer.version) {
+		for (let i = 0; i < answers.length; i++) {
+			let answer = answers[i];
+			for (let otherAnswer of answers) {
+				if (answer.owner == otherAnswer.owner) {
+					if (answer.version < otherAnswer.version) {
 						indizesToRemove.push(i);
 						break;
 					}
@@ -84,9 +84,9 @@
 		indizesToRemove
 			.sort((a, b) => 0 - (a > b ? 1 : -1)) // sort descending
 			.forEach((index) => {
-				openAnswers.splice(index, 1);
+				answers.splice(index, 1);
 			});
-		return openAnswers;
+		return answers;
 	}
 </script>
 
@@ -94,31 +94,31 @@
 	import Back from '$lib/components/Back.svelte';
 	import Toast from '$lib/components/Toast.svelte';
 	import {
-		fetchOpenAnswersOfOthers,
+		fetchAnswersOfOthers,
 		fetchQuestion,
-		OpenAnswerType,
+		AnswerType,
 		QuestionType,
-		saveOpenAnswer,
-		fetchLatestOpenAnswer,
+		saveAnswer,
+		fetchLatestAnswer,
 		fetchCourse,
-		fetchOpenAnswerLikes,
-		fetchMyOpenAnswerLikes,
-		deleteOpenAnswerLike,
-		saveOpenAnswerLike
+		fetchAnswerLikes,
+		fetchMyAnswerLikes,
+		deleteAnswerLike,
+		saveAnswerLike
 	} from '$lib/supabaseClient';
 	import { user } from '$lib/stores/user';
 	import autosize from '../../../node_modules/autosize';
 	import type { Load } from '@sveltejs/kit';
 	import type { Session } from '@supabase/supabase-js';
 	import { routes } from '$lib/routes';
-	import OpenAnswer from '$lib/components/OpenAnswer.svelte';
+	import Answer from '$lib/components/Answer.svelte';
 
 	export let question: QuestionType;
-	export let myOpenAnswer: OpenAnswerType;
-	export let openAnswersOfOthers;
+	export let myAnswer: AnswerType;
+	export let answersOfOthers;
 	export let courseDescription: string;
 
-	let openAnswerText;
+	let answerText;
 	let toast;
 </script>
 
@@ -128,16 +128,16 @@
 
 		<h1 class={question.owner == $user.id ? 'yours pl-4' : ''}>{question.questionText}</h1>
 
-		{#if myOpenAnswer}
-			<a href={routes.openAnswer(myOpenAnswer.id)} class="light-link" sveltekit:prefetch>
+		{#if myAnswer}
+			<a href={routes.answer(myAnswer.id)} class="light-link" sveltekit:prefetch>
 				<article class="yours hoverable">
-					<OpenAnswer openAnswer={myOpenAnswer} />
+					<Answer answer={myAnswer} />
 				</article>
 			</a>
 		{:else}
 			<textarea
 				id="textarea-answer"
-				bind:value={openAnswerText}
+				bind:value={answerText}
 				class="w-full h-12"
 				placeholder="Answer this question"
 				on:load={autosize(document.getElementById('textarea-answer'))}
@@ -145,50 +145,50 @@
 
 			<button
 				on:click={async () => {
-					const myOpenAnswerWithoutLikes = await saveOpenAnswer(openAnswerText, question.id);
-					myOpenAnswer = {
-						...myOpenAnswerWithoutLikes,
+					const myAnswerWithoutLikes = await saveAnswer(answerText, question.id);
+					myAnswer = {
+						...myAnswerWithoutLikes,
 						...{ totalLikes: 0 }
 					};
-					toast.showSuccessToast('Open Answer created!');
+					toast.showSuccessToast('Answer created!');
 				}}
 				class="w-32"
-				disabled={!openAnswerText}>Publish</button
+				disabled={!answerText}>Publish</button
 			>
 		{/if}
 
 		<!-- This shows the old and the new versions of the answers! -->
-		{#if openAnswersOfOthers}
-			{#each openAnswersOfOthers as openAnswerOfOther}
-				<a href={routes.openAnswer(openAnswerOfOther.id)} class="light-link" sveltekit:prefetch>
+		{#if answersOfOthers}
+			{#each answersOfOthers as answerOfOther}
+				<a href={routes.answer(answerOfOther.id)} class="light-link" sveltekit:prefetch>
 					<article class="hoverable flex justify-between">
-						<OpenAnswer openAnswer={openAnswerOfOther} />
-						{#if openAnswerOfOther.isLiked}
+						<Answer answer={answerOfOther} />
+						{#if answerOfOther.isLiked}
 							<button
 								class="outline h-12 ml-4 mb-0 p-2 w-16"
 								on:click|preventDefault={async () => {
-									await deleteOpenAnswerLike(openAnswerOfOther.id);
-									openAnswersOfOthers.map((oa) => {
-										if (oa.id == openAnswerOfOther.id) {
+									await deleteAnswerLike(answerOfOther.id);
+									answersOfOthers.map((oa) => {
+										if (oa.id == answerOfOther.id) {
 											oa.isLiked = false;
 											oa.totalLikes--;
 										}
 										return oa;
 									});
-									openAnswersOfOthers = openAnswersOfOthers;
+									answersOfOthers = answersOfOthers;
 								}}>Unlike</button
 							>{:else}<button
 								class="outline h-12 ml-4 mb-0 p-2 w-16"
 								on:click|preventDefault={async () => {
-									await saveOpenAnswerLike(openAnswerOfOther.id);
-									openAnswersOfOthers.map((oa) => {
-										if (oa.id == openAnswerOfOther.id) {
+									await saveAnswerLike(answerOfOther.id);
+									answersOfOthers.map((oa) => {
+										if (oa.id == answerOfOther.id) {
 											oa.isLiked = true;
 											oa.totalLikes++;
 										}
 										return oa;
 									});
-									openAnswersOfOthers = openAnswersOfOthers;
+									answersOfOthers = answersOfOthers;
 								}}>Like!</button
 							>
 						{/if}

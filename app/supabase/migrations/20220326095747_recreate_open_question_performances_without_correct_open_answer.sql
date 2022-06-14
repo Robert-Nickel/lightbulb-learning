@@ -24,4 +24,4 @@ FROM
        JOIN questions ON questions.owner = course_user.user_id
        AND questions.course = course_user.course;
 
-DROP TABLE public.correct_open_answers;
+DROP TABLE public.correct_answers;

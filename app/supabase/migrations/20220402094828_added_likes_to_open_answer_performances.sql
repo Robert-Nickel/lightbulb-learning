@@ -3,14 +3,14 @@
 -- and may require manual changes to the script to ensure changes are applied in the correct order.
 -- Please report an issue for any failure with the reproduction steps.
 
-REVOKE ALL ON TABLE public.open_answer_likes FROM authenticated;
-REVOKE ALL ON TABLE public.open_answer_likes FROM postgres;
-REVOKE ALL ON TABLE public.open_answer_likes FROM service_role;
-GRANT ALL ON TABLE public.open_answer_likes TO authenticated;
+REVOKE ALL ON TABLE public.answer_likes FROM authenticated;
+REVOKE ALL ON TABLE public.answer_likes FROM postgres;
+REVOKE ALL ON TABLE public.answer_likes FROM service_role;
+GRANT ALL ON TABLE public.answer_likes TO authenticated;
 
-GRANT ALL ON TABLE public.open_answer_likes TO service_role;
+GRANT ALL ON TABLE public.answer_likes TO service_role;
 
-GRANT ALL ON TABLE public.open_answer_likes TO postgres;
+GRANT ALL ON TABLE public.answer_likes TO postgres;
 
 REVOKE ALL ON TABLE public.course_user FROM anon;
 REVOKE ALL ON TABLE public.course_user FROM authenticated;
@@ -45,14 +45,14 @@ GRANT ALL ON TABLE public.open_feedback TO service_role;
 
 GRANT ALL ON TABLE public.open_feedback TO postgres;
 
-REVOKE ALL ON TABLE public.open_answers FROM authenticated;
-REVOKE ALL ON TABLE public.open_answers FROM postgres;
-REVOKE ALL ON TABLE public.open_answers FROM service_role;
-GRANT ALL ON TABLE public.open_answers TO authenticated;
+REVOKE ALL ON TABLE public.answers FROM authenticated;
+REVOKE ALL ON TABLE public.answers FROM postgres;
+REVOKE ALL ON TABLE public.answers FROM service_role;
+GRANT ALL ON TABLE public.answers TO authenticated;
 
-GRANT ALL ON TABLE public.open_answers TO service_role;
+GRANT ALL ON TABLE public.answers TO service_role;
 
-GRANT ALL ON TABLE public.open_answers TO postgres;
+GRANT ALL ON TABLE public.answers TO postgres;
 
 REVOKE ALL ON TABLE public.question_likes FROM authenticated;
 REVOKE ALL ON TABLE public.question_likes FROM postgres;
@@ -76,24 +76,24 @@ GRANT ALL ON TABLE public.question_topic TO postgres;
 -- This may fail if other objects are dependent upon this view,
 -- or may cause procedural functions to fail if they are not modified to
 -- take account of the changes.
-DROP VIEW public.open_answer_performances;
-CREATE OR REPLACE VIEW public.open_answer_performances
+DROP VIEW public.answer_performances;
+CREATE OR REPLACE VIEW public.answer_performances
     AS
      SELECT course_user.id,
-    open_answers.id AS open_answer_id,
-    open_answers.answer_text,
-    open_answers.created_at,
+    answers.id AS answer_id,
+    answers.answer_text,
+    answers.created_at,
     ( SELECT count(*) AS count
-           FROM open_answer_likes
-          WHERE open_answer_likes.open_answer = open_answers.id) AS likes,
+           FROM answer_likes
+          WHERE answer_likes.answer = answers.id) AS likes,
     questions.question_text
    FROM course_user
-     JOIN open_answers ON open_answers.owner = course_user.user_id AND (( SELECT questions_1.course
+     JOIN answers ON answers.owner = course_user.user_id AND (( SELECT questions_1.course
            FROM questions questions_1
-          WHERE open_answers.question = questions_1.id)) = course_user.course
-     JOIN questions ON questions.id = open_answers.question AND questions.course = course_user.course;
-GRANT ALL ON TABLE public.open_answer_performances TO anon;
-GRANT ALL ON TABLE public.open_answer_performances TO postgres;
-GRANT ALL ON TABLE public.open_answer_performances TO supabase_admin;
-GRANT ALL ON TABLE public.open_answer_performances TO authenticated;
-GRANT ALL ON TABLE public.open_answer_performances TO service_role;
+          WHERE answers.question = questions_1.id)) = course_user.course
+     JOIN questions ON questions.id = answers.question AND questions.course = course_user.course;
+GRANT ALL ON TABLE public.answer_performances TO anon;
+GRANT ALL ON TABLE public.answer_performances TO postgres;
+GRANT ALL ON TABLE public.answer_performances TO supabase_admin;
+GRANT ALL ON TABLE public.answer_performances TO authenticated;
+GRANT ALL ON TABLE public.answer_performances TO service_role;

@@ -7,7 +7,7 @@
 		const member = await fetchMember(courseUserId);
 
 		let allPerformances: { createdAt: string }[] = (await fetchQuestionPerformances(courseUserId))
-			.concat(await fetchOpenAnswerPerformances(courseUserId))
+			.concat(await fetchAnswerPerformances(courseUserId))
 			.concat(await fetchOpenFeedbackPerformances(courseUserId))
 			.concat(await fetchProgresses(courseUserId));
 		allPerformances = sortChronologically(allPerformances);
@@ -38,7 +38,7 @@
 	import {
 		fetchProgresses,
 		fetchMember,
-		fetchOpenAnswerPerformances,
+		fetchAnswerPerformances,
 		fetchOpenFeedbackPerformances,
 		fetchQuestionPerformances,
 		MemberType
@@ -91,9 +91,9 @@
 					{/if}</small
 				>
 				<h4 class="mt-2 mb-2" id="oqp-question-text">{performance.questionText}</h4>
-			{:else if performance.openAnswerId}
+			{:else if performance.answerId}
 				<small
-					>- Open Answer {#if performance.version > 1}Improvement{/if} - {performance.likes}
+					>- Answer {#if performance.version > 1}Improvement{/if} - {performance.likes}
 					{#if performance.likes == 1}
 						like{:else}likes
 					{/if}</small

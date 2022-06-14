@@ -11,3 +11,4 @@ aws-secrets.yaml
 **/supabase/.branches
 **/supabase/.temp
 **/supabase/.env
+backups/*.sql

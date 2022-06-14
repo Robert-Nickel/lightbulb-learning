@@ -54,11 +54,6 @@ npm run dev
 
 ## Connect to hosted supabase
 
-Connect to LightbulbLearningDev
-```bash
-psql -h db.ckjsuzpqlhcjbonsnuzp.supabase.co -U postgres
-```
-
 Connect to LightbulbLearning (PROD)
 ```bash
 psql -h db.rkpsxesguhibbzhylmsd.supabase.co -U postgres

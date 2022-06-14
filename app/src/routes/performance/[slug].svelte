@@ -8,7 +8,7 @@
 
 		let allPerformances: { createdAt: string }[] = (await fetchQuestionPerformances(courseUserId))
 			.concat(await fetchAnswerPerformances(courseUserId))
-			.concat(await fetchOpenFeedbackPerformances(courseUserId))
+			.concat(await fetchfeedbackPerformances(courseUserId))
 			.concat(await fetchProgresses(courseUserId));
 		allPerformances = sortChronologically(allPerformances);
 
@@ -39,7 +39,7 @@
 		fetchProgresses,
 		fetchMember,
 		fetchAnswerPerformances,
-		fetchOpenFeedbackPerformances,
+		fetchfeedbackPerformances,
 		fetchQuestionPerformances,
 		MemberType
 	} from '$lib/supabaseClient';
@@ -100,8 +100,8 @@
 				>
 				<p class="my-2"><i>Question: {performance.questionText}</i></p>
 				<h4 class="mt-2 mb-0">{performance.answerText}</h4>
-			{:else if performance.openFeedbackId}
-				<small>- Open Feedback </small>
+			{:else if performance.feedbackId}
+				<small>- Feedback </small>
 				<p class="my-2"><i>Question: {performance.questionText}</i></p>
 				<p class="my-2"><i>Answer: {performance.answerText}</i></p>
 				<h4 class="mt-2 mb-0">{performance.feedbackText}</h4>

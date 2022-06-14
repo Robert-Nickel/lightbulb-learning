@@ -449,19 +449,19 @@ CREATE POLICY oa_select_policy_for_authenticated_user
     TO public
     USING ((auth.role() = 'authenticated'::text));
 
-CREATE TABLE IF NOT EXISTS public.open_feedback
+CREATE TABLE IF NOT EXISTS public.feedback
 (
     id uuid NOT NULL DEFAULT uuid_generate_v4(),
     answer uuid NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     feedback_text text COLLATE pg_catalog."default" NOT NULL,
     owner uuid NOT NULL,
-    CONSTRAINT open_feedback_pkey1 PRIMARY KEY (id),
-    CONSTRAINT open_feedback_answer_fkey FOREIGN KEY (answer)
+    CONSTRAINT feedback_pkey1 PRIMARY KEY (id),
+    CONSTRAINT feedback_answer_fkey FOREIGN KEY (answer)
         REFERENCES public.answers (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE CASCADE,
-    CONSTRAINT open_feedback_owner_fkey FOREIGN KEY (owner)
+    CONSTRAINT feedback_owner_fkey FOREIGN KEY (owner)
         REFERENCES auth.users (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
@@ -469,49 +469,49 @@ CREATE TABLE IF NOT EXISTS public.open_feedback
 
 TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS public.open_feedback
+ALTER TABLE IF EXISTS public.feedback
     OWNER to postgres;
 
-ALTER TABLE IF EXISTS public.open_feedback
+ALTER TABLE IF EXISTS public.feedback
     ENABLE ROW LEVEL SECURITY;
 
-GRANT ALL ON TABLE public.open_feedback TO authenticated;
+GRANT ALL ON TABLE public.feedback TO authenticated;
 
-GRANT ALL ON TABLE public.open_feedback TO anon;
+GRANT ALL ON TABLE public.feedback TO anon;
 
-GRANT ALL ON TABLE public.open_feedback TO service_role;
+GRANT ALL ON TABLE public.feedback TO service_role;
 
-GRANT ALL ON TABLE public.open_feedback TO postgres;
+GRANT ALL ON TABLE public.feedback TO postgres;
 CREATE POLICY of_insert_policy_for_authenticated_user
-    ON public.open_feedback
+    ON public.feedback
     AS PERMISSIVE
     FOR INSERT
     TO public
     WITH CHECK ((auth.role() = 'authenticated'::text));
 CREATE POLICY of_select_policy_for_authenticated_user
-    ON public.open_feedback
+    ON public.feedback
     AS PERMISSIVE
     FOR SELECT
     TO public
     USING ((auth.role() = 'authenticated'::text));
 
-CREATE TABLE IF NOT EXISTS public.open_feedback_drafts
+CREATE TABLE IF NOT EXISTS public.feedback_drafts
 (
     id uuid NOT NULL DEFAULT uuid_generate_v4(),
     feedback_text text COLLATE pg_catalog."default" NOT NULL,
     answer uuid NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     owner uuid NOT NULL,
-    CONSTRAINT open_feedback_drafts_pkey1 PRIMARY KEY (id),
-    CONSTRAINT open_feedback_drafts_answer_fkey FOREIGN KEY (answer)
+    CONSTRAINT feedback_drafts_pkey1 PRIMARY KEY (id),
+    CONSTRAINT feedback_drafts_answer_fkey FOREIGN KEY (answer)
         REFERENCES public.answers (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION,
-    CONSTRAINT open_feedback_drafts_answer_fkey1 FOREIGN KEY (answer)
+    CONSTRAINT feedback_drafts_answer_fkey1 FOREIGN KEY (answer)
         REFERENCES public.answers (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE CASCADE,
-    CONSTRAINT open_feedback_drafts_owner_fkey FOREIGN KEY (owner)
+    CONSTRAINT feedback_drafts_owner_fkey FOREIGN KEY (owner)
         REFERENCES auth.users (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
@@ -519,33 +519,33 @@ CREATE TABLE IF NOT EXISTS public.open_feedback_drafts
 
 TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS public.open_feedback_drafts
+ALTER TABLE IF EXISTS public.feedback_drafts
     OWNER to postgres;
 
-ALTER TABLE IF EXISTS public.open_feedback_drafts
+ALTER TABLE IF EXISTS public.feedback_drafts
     ENABLE ROW LEVEL SECURITY;
 
-GRANT ALL ON TABLE public.open_feedback_drafts TO authenticated;
+GRANT ALL ON TABLE public.feedback_drafts TO authenticated;
 
-GRANT ALL ON TABLE public.open_feedback_drafts TO anon;
+GRANT ALL ON TABLE public.feedback_drafts TO anon;
 
-GRANT ALL ON TABLE public.open_feedback_drafts TO service_role;
+GRANT ALL ON TABLE public.feedback_drafts TO service_role;
 
-GRANT ALL ON TABLE public.open_feedback_drafts TO postgres;
+GRANT ALL ON TABLE public.feedback_drafts TO postgres;
 CREATE POLICY ofd_delete_policy_for_owner
-    ON public.open_feedback_drafts
+    ON public.feedback_drafts
     AS PERMISSIVE
     FOR DELETE
     TO public
     USING ((auth.uid() = owner));
 CREATE POLICY ofd_insert_policy_for_authenticated_user
-    ON public.open_feedback_drafts
+    ON public.feedback_drafts
     AS PERMISSIVE
     FOR INSERT
     TO public
     WITH CHECK ((auth.role() = 'authenticated'::text));
 CREATE POLICY ofd_select_policy_for_owner
-    ON public.open_feedback_drafts
+    ON public.feedback_drafts
     AS PERMISSIVE
     FOR SELECT
     TO public
@@ -826,27 +826,27 @@ GRANT ALL ON TABLE public.answer_performances TO supabase_admin;
 GRANT ALL ON TABLE public.answer_performances TO authenticated;
 GRANT ALL ON TABLE public.answer_performances TO service_role;
 
-CREATE OR REPLACE VIEW public.open_feedback_performances
+CREATE OR REPLACE VIEW public.feedback_performances
  AS
  SELECT course_user.id,
-    open_feedback.id AS open_feedback_id,
-    open_feedback.feedback_text,
-    open_feedback.created_at,
+    feedback.id AS feedback_id,
+    feedback.feedback_text,
+    feedback.created_at,
     answers.answer_text,
     questions.question_text
    FROM course_user
-     JOIN open_feedback ON open_feedback.owner = course_user.user_id
-     JOIN answers ON answers.id = open_feedback.answer
+     JOIN feedback ON feedback.owner = course_user.user_id
+     JOIN answers ON answers.id = feedback.answer
      JOIN questions ON questions.id = answers.question AND questions.course = course_user.course;
 
-ALTER TABLE public.open_feedback_performances
+ALTER TABLE public.feedback_performances
     OWNER TO supabase_admin;
 
-GRANT ALL ON TABLE public.open_feedback_performances TO anon;
-GRANT ALL ON TABLE public.open_feedback_performances TO postgres;
-GRANT ALL ON TABLE public.open_feedback_performances TO supabase_admin;
-GRANT ALL ON TABLE public.open_feedback_performances TO authenticated;
-GRANT ALL ON TABLE public.open_feedback_performances TO service_role;
+GRANT ALL ON TABLE public.feedback_performances TO anon;
+GRANT ALL ON TABLE public.feedback_performances TO postgres;
+GRANT ALL ON TABLE public.feedback_performances TO supabase_admin;
+GRANT ALL ON TABLE public.feedback_performances TO authenticated;
+GRANT ALL ON TABLE public.feedback_performances TO service_role;
 
 
 CREATE OR REPLACE VIEW public.question_performances

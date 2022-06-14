@@ -36,14 +36,14 @@ GRANT ALL ON TABLE public.profiles TO service_role;
 
 GRANT ALL ON TABLE public.profiles TO postgres;
 
-REVOKE ALL ON TABLE public.open_feedback FROM authenticated;
-REVOKE ALL ON TABLE public.open_feedback FROM postgres;
-REVOKE ALL ON TABLE public.open_feedback FROM service_role;
-GRANT ALL ON TABLE public.open_feedback TO authenticated;
+REVOKE ALL ON TABLE public.feedback FROM authenticated;
+REVOKE ALL ON TABLE public.feedback FROM postgres;
+REVOKE ALL ON TABLE public.feedback FROM service_role;
+GRANT ALL ON TABLE public.feedback TO authenticated;
 
-GRANT ALL ON TABLE public.open_feedback TO service_role;
+GRANT ALL ON TABLE public.feedback TO service_role;
 
-GRANT ALL ON TABLE public.open_feedback TO postgres;
+GRANT ALL ON TABLE public.feedback TO postgres;
 
 REVOKE ALL ON TABLE public.answers FROM authenticated;
 REVOKE ALL ON TABLE public.answers FROM postgres;

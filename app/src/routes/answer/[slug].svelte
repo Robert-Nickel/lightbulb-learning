@@ -5,14 +5,14 @@
 	import Back from '$lib/components/Back.svelte';
 	import ImproveAnswer from '$lib/components/ImproveAnswer.svelte';
 	import {
-		fetchMyOpenFeedback,
+		fetchMyfeedback,
 		fetchAnswer,
 		fetchQuestion,
-		fetchOpenFeedbackOfOthers,
+		fetchfeedbackOfOthers,
 		AnswerType,
-		OpenFeedbackType,
+		feedbackType,
 		QuestionType,
-		saveOpenFeedback,
+		savefeedback,
 		fetchLatestAnswer
 	} from '$lib/supabaseClient';
 	import { goto } from '$app/navigation';
@@ -22,9 +22,9 @@
 
 	let question: QuestionType;
 	let answer: AnswerType;
-	let myOpenFeedback: OpenFeedbackType;
-	let openFeedbackOfOthers: Array<OpenFeedbackType> = [];
-	let openFeedbackText;
+	let myfeedback: feedbackType;
+	let feedbackOfOthers: Array<feedbackType> = [];
+	let feedbackText;
 	let toast;
 	let improvingAnswer = false;
 	let latestAnswer;
@@ -42,13 +42,13 @@
 		}
 
 		question = await fetchQuestion(answer.question);
-		myOpenFeedback = await fetchMyOpenFeedback(answer.id);
-		openFeedbackOfOthers = await fetchOpenFeedbackOfOthers(answer.id);
+		myfeedback = await fetchMyfeedback(answer.id);
+		feedbackOfOthers = await fetchfeedbackOfOthers(answer.id);
 	}
 
-	async function publishOpenFeedback() {
-		myOpenFeedback = await saveOpenFeedback(openFeedbackText, answer.id);
-		openFeedbackText = null;
+	async function publishfeedback() {
+		myfeedback = await savefeedback(feedbackText, answer.id);
+		feedbackText = null;
 		toast.showSuccessToast('Thanks for your Feedback!');
 	}
 </script>
@@ -66,13 +66,13 @@
 		{#if answer.owner == $user.id}
 			<h1 class="yours pl-4">Your Answer: {answer.answerText}</h1>
 
-			{#if openFeedbackOfOthers.length == 0}
+			{#if feedbackOfOthers.length == 0}
 				<i>No one has provided any feedback for your answer.</i>
 			{:else}
 				<i>Here is the feedback you received for your answer:</i>
-				{#each openFeedbackOfOthers as openFeedbackOfOther}
+				{#each feedbackOfOthers as feedbackOfOther}
 					<article>
-						{openFeedbackOfOther.feedbackText}
+						{feedbackOfOther.feedbackText}
 					</article>
 				{/each}
 				{#if isLatest}
@@ -98,14 +98,14 @@
 		{:else}
 			<h1>{answer.answerText}</h1>
 
-			{#if myOpenFeedback}
+			{#if myfeedback}
 				<article class="yours">
-					{myOpenFeedback.feedbackText}
+					{myfeedback.feedbackText}
 				</article>
 			{:else}
 				<textarea
 					id="textarea-feedback"
-					bind:value={openFeedbackText}
+					bind:value={feedbackText}
 					class="w-full h-12"
 					placeholder="Give feedback to this answer"
 					on:load={autosize(document.getElementById('textarea-feedback'))}
@@ -114,7 +114,7 @@
 					>The feedback is private - only you, the owner of the answer and the owner of the course can see it.</i
 				>
 
-				<button on:click={publishOpenFeedback} class="w-32 mt-4">Publish</button>
+				<button on:click={publishfeedback} class="w-32 mt-4">Publish</button>
 			{/if}
 		{/if}
 	{/if}

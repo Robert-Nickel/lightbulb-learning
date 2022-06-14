@@ -3,14 +3,14 @@
 -- and may require manual changes to the script to ensure changes are applied in the correct order.
 -- Please report an issue for any failure with the reproduction steps.
 
-REVOKE ALL ON TABLE public.open_feedback FROM anon;
-REVOKE ALL ON TABLE public.open_feedback FROM postgres;
-REVOKE ALL ON TABLE public.open_feedback FROM service_role;
-GRANT ALL ON TABLE public.open_feedback TO anon;
+REVOKE ALL ON TABLE public.feedback FROM anon;
+REVOKE ALL ON TABLE public.feedback FROM postgres;
+REVOKE ALL ON TABLE public.feedback FROM service_role;
+GRANT ALL ON TABLE public.feedback TO anon;
 
-GRANT ALL ON TABLE public.open_feedback TO service_role;
+GRANT ALL ON TABLE public.feedback TO service_role;
 
-GRANT ALL ON TABLE public.open_feedback TO postgres;
+GRANT ALL ON TABLE public.feedback TO postgres;
 
 REVOKE ALL ON TABLE public.course_user FROM anon;
 REVOKE ALL ON TABLE public.course_user FROM authenticated;

@@ -1,5 +1,6 @@
 <script>
 	import Faq from '$lib/components/FAQ.svelte';
+	import { routes } from '$lib/routes';
 </script>
 
 <h1>Even the bravest and strongest...</h1>

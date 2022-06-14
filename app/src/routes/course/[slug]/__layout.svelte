@@ -30,7 +30,7 @@
 	import { routes } from '$lib/routes';
 
 	enum Tab {
-		OpenQuestions,
+		Questions,
 		Performances,
 		Settings
 	}
@@ -43,7 +43,7 @@
 			? Tab.Settings
 			: routeLastSegment == 'performances'
 			? Tab.Performances
-			: Tab.OpenQuestions;
+			: Tab.Questions;
 </script>
 
 <main class="container">
@@ -55,7 +55,7 @@
 			Your progress:&nbsp;
 			<em
 				data-tooltip={mylatestProgress == 0
-					? 'Ask a good open question to get started!'
+					? 'Ask a good question to get started!'
 					: 'Reach 100%, to get the certificate!'}>{mylatestProgress}%.</em
 			>
 		</p>
@@ -63,13 +63,13 @@
 		{#if $user.id == course.owner}
 			<header class="flex p-2 space-x-4 border-b-2 ">
 				<nav
-					class={activeTab == Tab.OpenQuestions ? 'activeNavElement' : ''}
+					class={activeTab == Tab.Questions ? 'activeNavElement' : ''}
 					on:click={() => {
 						goto(routes.course(course.id));
-						activeTab = Tab.OpenQuestions;
+						activeTab = Tab.Questions;
 					}}
 				>
-					Open Questions
+					Questions
 				</nav>
 				<nav
 					class={activeTab == Tab.Performances ? 'activeNavElement' : ''}

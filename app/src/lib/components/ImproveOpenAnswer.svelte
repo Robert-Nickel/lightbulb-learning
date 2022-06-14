@@ -26,7 +26,7 @@
 	on:click={async () => {
 		const improvedOpenAnswer = await saveOpenAnswer(
 			improvedAnswerText,
-			openAnswer.openQuestion,
+			openAnswer.question,
 			openAnswer.version + 1
 		);
 		improvedAnswerText = null;

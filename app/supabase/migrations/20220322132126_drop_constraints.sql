@@ -5,10 +5,10 @@
 
 ALTER TABLE IF EXISTS public.courses DROP CONSTRAINT IF EXISTS challenge_pools_owner_fkey;
 
-ALTER TABLE IF EXISTS public.open_questions DROP CONSTRAINT IF EXISTS open_questions_new_owner_fkey;
+ALTER TABLE IF EXISTS public.questions DROP CONSTRAINT IF EXISTS questions_new_owner_fkey;
 
-ALTER TABLE IF EXISTS public.open_questions DROP CONSTRAINT IF EXISTS open_questions_course_fkey;
+ALTER TABLE IF EXISTS public.questions DROP CONSTRAINT IF EXISTS questions_course_fkey;
 
-ALTER TABLE IF EXISTS public.open_questions DROP CONSTRAINT IF EXISTS open_questions_owner_fkey;
+ALTER TABLE IF EXISTS public.questions DROP CONSTRAINT IF EXISTS questions_owner_fkey;
 
 ALTER TABLE IF EXISTS public.invite_codes DROP CONSTRAINT IF EXISTS invite_codes_course_fkey;

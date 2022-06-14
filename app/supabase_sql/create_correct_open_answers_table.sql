@@ -1,7 +1,7 @@
 create table if not exists public.correct_open_answers (
     id uuid not null primary key DEFAULT uuid_generate_v4(),
     answer_text text not null,
-    open_question uuid references public.open_questions on delete cascade not null,
+    question uuid references public.questions on delete cascade not null,
     owner uuid references auth.users on delete cascade not null,
     created_at timestamp with time zone default now() not null
 );

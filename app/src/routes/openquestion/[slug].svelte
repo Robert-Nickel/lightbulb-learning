@@ -4,8 +4,8 @@
 		if (!user) return { status: 302, redirect: '/login' };
 
 		const questionId = params.slug;
-		const openQuestion = await fetchOpenQuestion(questionId);
-		const courseDescription = await (await fetchCourse(openQuestion.course)).description;
+		const question = await fetchQuestion(questionId);
+		const courseDescription = await (await fetchCourse(question.course)).description;
 
 		const openAnswersOfOthersWithNonLatest = await fetchOpenAnswersOfOthers(questionId, user.id);
 		const openAnswersOfOthersDB = await filterNonLatest(openAnswersOfOthersWithNonLatest);
@@ -57,7 +57,7 @@
 		return {
 			props: {
 				user,
-				openQuestion,
+				question,
 				myOpenAnswer,
 				openAnswersOfOthers,
 				courseDescription
@@ -95,9 +95,9 @@
 	import Toast from '$lib/components/Toast.svelte';
 	import {
 		fetchOpenAnswersOfOthers,
-		fetchOpenQuestion,
+		fetchQuestion,
 		OpenAnswerType,
-		OpenQuestionType,
+		QuestionType,
 		saveOpenAnswer,
 		fetchLatestOpenAnswer,
 		fetchCourse,
@@ -113,7 +113,7 @@
 	import { routes } from '$lib/routes';
 	import OpenAnswer from '$lib/components/OpenAnswer.svelte';
 
-	export let openQuestion: OpenQuestionType;
+	export let question: QuestionType;
 	export let myOpenAnswer: OpenAnswerType;
 	export let openAnswersOfOthers;
 	export let courseDescription: string;
@@ -123,10 +123,10 @@
 </script>
 
 <main class="container">
-	{#if openQuestion}
-		<Back text="Back to {courseDescription}" route="/course/{openQuestion.course}" />
+	{#if question}
+		<Back text="Back to {courseDescription}" route="/course/{question.course}" />
 
-		<h1 class={openQuestion.owner == $user.id ? 'yours pl-4' : ''}>{openQuestion.questionText}</h1>
+		<h1 class={question.owner == $user.id ? 'yours pl-4' : ''}>{question.questionText}</h1>
 
 		{#if myOpenAnswer}
 			<a href={routes.openAnswer(myOpenAnswer.id)} class="light-link" sveltekit:prefetch>
@@ -145,7 +145,7 @@
 
 			<button
 				on:click={async () => {
-					const myOpenAnswerWithoutLikes = await saveOpenAnswer(openAnswerText, openQuestion.id);
+					const myOpenAnswerWithoutLikes = await saveOpenAnswer(openAnswerText, question.id);
 					myOpenAnswer = {
 						...myOpenAnswerWithoutLikes,
 						...{ totalLikes: 0 }

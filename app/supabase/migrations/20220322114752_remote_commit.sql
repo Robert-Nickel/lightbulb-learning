@@ -160,7 +160,7 @@ CREATE TABLE IF NOT EXISTS public.correct_open_answers
 (
     id uuid NOT NULL DEFAULT uuid_generate_v4(),
     answer_text text COLLATE pg_catalog."default" NOT NULL,
-    open_question uuid NOT NULL,
+    question uuid NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     owner uuid NOT NULL,
     CONSTRAINT correct_open_answers_pkey PRIMARY KEY (id)
@@ -341,27 +341,27 @@ CREATE POLICY cp_select_policy_for_owner
 
 
 
-CREATE TABLE IF NOT EXISTS public.open_questions
+CREATE TABLE IF NOT EXISTS public.questions
 (
     id uuid NOT NULL DEFAULT uuid_generate_v4(),
     course uuid NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     question_text text COLLATE pg_catalog."default" NOT NULL,
     owner uuid NOT NULL,
-    CONSTRAINT open_questions_new_pkey PRIMARY KEY (id),
-    CONSTRAINT open_questions_course_fkey FOREIGN KEY (course)
+    CONSTRAINT questions_new_pkey PRIMARY KEY (id),
+    CONSTRAINT questions_course_fkey FOREIGN KEY (course)
         REFERENCES public.courses (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION,
-    CONSTRAINT open_questions_new_challenge_pool_fkey FOREIGN KEY (course)
+    CONSTRAINT questions_new_challenge_pool_fkey FOREIGN KEY (course)
         REFERENCES public.courses (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE CASCADE,
-    CONSTRAINT open_questions_new_owner_fkey FOREIGN KEY (owner)
+    CONSTRAINT questions_new_owner_fkey FOREIGN KEY (owner)
         REFERENCES auth.users (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION,
-    CONSTRAINT open_questions_owner_fkey FOREIGN KEY (owner)
+    CONSTRAINT questions_owner_fkey FOREIGN KEY (owner)
         REFERENCES auth.users (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
@@ -369,27 +369,27 @@ CREATE TABLE IF NOT EXISTS public.open_questions
 
 TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS public.open_questions
+ALTER TABLE IF EXISTS public.questions
     OWNER to postgres;
 
-ALTER TABLE IF EXISTS public.open_questions
+ALTER TABLE IF EXISTS public.questions
     ENABLE ROW LEVEL SECURITY;
 
-GRANT ALL ON TABLE public.open_questions TO authenticated;
+GRANT ALL ON TABLE public.questions TO authenticated;
 
-GRANT ALL ON TABLE public.open_questions TO anon;
+GRANT ALL ON TABLE public.questions TO anon;
 
-GRANT ALL ON TABLE public.open_questions TO service_role;
+GRANT ALL ON TABLE public.questions TO service_role;
 
-GRANT ALL ON TABLE public.open_questions TO postgres;
+GRANT ALL ON TABLE public.questions TO postgres;
 CREATE POLICY oq_insert_policy_for_authenticated_user
-    ON public.open_questions
+    ON public.questions
     AS PERMISSIVE
     FOR INSERT
     TO public
     WITH CHECK ((auth.role() = 'authenticated'::text));
 CREATE POLICY oq_select_policy_for_authenticated_user
-    ON public.open_questions
+    ON public.questions
     AS PERMISSIVE
     FOR SELECT
     TO public
@@ -398,18 +398,18 @@ CREATE POLICY oq_select_policy_for_authenticated_user
 CREATE TABLE IF NOT EXISTS public.open_answers
 (
     id uuid NOT NULL DEFAULT uuid_generate_v4(),
-    open_question uuid NOT NULL,
+    question uuid NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     answer_text text COLLATE pg_catalog."default" NOT NULL,
     version bigint NOT NULL,
     owner uuid NOT NULL,
     CONSTRAINT open_answers_pkey1 PRIMARY KEY (id),
-    CONSTRAINT open_answers_open_question_fkey FOREIGN KEY (open_question)
-        REFERENCES public.open_questions (id) MATCH SIMPLE
+    CONSTRAINT open_answers_question_fkey FOREIGN KEY (question)
+        REFERENCES public.questions (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION,
-    CONSTRAINT open_answers_open_question_fkey1 FOREIGN KEY (open_question)
-        REFERENCES public.open_questions (id) MATCH SIMPLE
+    CONSTRAINT open_answers_question_fkey1 FOREIGN KEY (question)
+        REFERENCES public.questions (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE CASCADE,
     CONSTRAINT open_answers_owner_fkey FOREIGN KEY (owner)
@@ -577,18 +577,18 @@ GRANT ALL ON TABLE public.topics TO postgres;
 
 GRANT ALL ON TABLE public.topics TO service_role;
 
-CREATE TABLE IF NOT EXISTS public.open_question_topic
+CREATE TABLE IF NOT EXISTS public.question_topic
 (
     id uuid NOT NULL DEFAULT uuid_generate_v4(),
-    open_question uuid NOT NULL,
+    question uuid NOT NULL,
     topic uuid NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
-    CONSTRAINT open_question_topic_pkey PRIMARY KEY (id),
-    CONSTRAINT open_question_topic_open_question_fkey FOREIGN KEY (open_question)
-        REFERENCES public.open_questions (id) MATCH SIMPLE
+    CONSTRAINT question_topic_pkey PRIMARY KEY (id),
+    CONSTRAINT question_topic_question_fkey FOREIGN KEY (question)
+        REFERENCES public.questions (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE CASCADE,
-    CONSTRAINT open_question_topic_topic_fkey FOREIGN KEY (topic)
+    CONSTRAINT question_topic_topic_fkey FOREIGN KEY (topic)
         REFERENCES public.topics (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE CASCADE
@@ -596,31 +596,31 @@ CREATE TABLE IF NOT EXISTS public.open_question_topic
 
 TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS public.open_question_topic
+ALTER TABLE IF EXISTS public.question_topic
     OWNER to postgres;
 
-GRANT ALL ON TABLE public.open_question_topic TO anon;
+GRANT ALL ON TABLE public.question_topic TO anon;
 
-GRANT ALL ON TABLE public.open_question_topic TO authenticated;
+GRANT ALL ON TABLE public.question_topic TO authenticated;
 
-GRANT ALL ON TABLE public.open_question_topic TO postgres;
+GRANT ALL ON TABLE public.question_topic TO postgres;
 
-GRANT ALL ON TABLE public.open_question_topic TO service_role;
+GRANT ALL ON TABLE public.question_topic TO service_role;
 
 CREATE TABLE IF NOT EXISTS public.open_answer_drafts
 (
     id uuid NOT NULL DEFAULT uuid_generate_v4(),
     answer_text text COLLATE pg_catalog."default" NOT NULL,
-    open_question uuid NOT NULL,
+    question uuid NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     owner uuid NOT NULL,
     CONSTRAINT open_answer_drafts_pkey1 PRIMARY KEY (id),
-    CONSTRAINT open_answer_drafts_open_question_fkey FOREIGN KEY (open_question)
-        REFERENCES public.open_questions (id) MATCH SIMPLE
+    CONSTRAINT open_answer_drafts_question_fkey FOREIGN KEY (question)
+        REFERENCES public.questions (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION,
-    CONSTRAINT open_answer_drafts_open_question_fkey1 FOREIGN KEY (open_question)
-        REFERENCES public.open_questions (id) MATCH SIMPLE
+    CONSTRAINT open_answer_drafts_question_fkey1 FOREIGN KEY (question)
+        REFERENCES public.questions (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE CASCADE,
     CONSTRAINT open_answer_drafts_owner_fkey FOREIGN KEY (owner)
@@ -663,18 +663,18 @@ CREATE POLICY oad_select_policy_for_owner
     TO public
     USING ((auth.uid() = owner));
 
-CREATE TABLE IF NOT EXISTS public.open_question_likes
+CREATE TABLE IF NOT EXISTS public.question_likes
 (
     id uuid NOT NULL DEFAULT uuid_generate_v4(),
-    open_question uuid NOT NULL,
+    question uuid NOT NULL,
     owner uuid NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
-    CONSTRAINT open_question_likes_pkey PRIMARY KEY (id),
-    CONSTRAINT open_question_likes_open_question_fkey FOREIGN KEY (open_question)
-        REFERENCES public.open_questions (id) MATCH SIMPLE
+    CONSTRAINT question_likes_pkey PRIMARY KEY (id),
+    CONSTRAINT question_likes_question_fkey FOREIGN KEY (question)
+        REFERENCES public.questions (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE CASCADE,
-    CONSTRAINT open_question_likes_owner_fkey FOREIGN KEY (owner)
+    CONSTRAINT question_likes_owner_fkey FOREIGN KEY (owner)
         REFERENCES auth.users (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
@@ -682,18 +682,18 @@ CREATE TABLE IF NOT EXISTS public.open_question_likes
 
 TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS public.open_question_likes
+ALTER TABLE IF EXISTS public.question_likes
     OWNER to postgres;
 
-GRANT ALL ON TABLE public.open_question_likes TO anon;
+GRANT ALL ON TABLE public.question_likes TO anon;
 
-GRANT ALL ON TABLE public.open_question_likes TO authenticated;
+GRANT ALL ON TABLE public.question_likes TO authenticated;
 
-GRANT ALL ON TABLE public.open_question_likes TO postgres;
+GRANT ALL ON TABLE public.question_likes TO postgres;
 
-GRANT ALL ON TABLE public.open_question_likes TO service_role;
+GRANT ALL ON TABLE public.question_likes TO service_role;
 
-CREATE TABLE IF NOT EXISTS public.open_question_drafts
+CREATE TABLE IF NOT EXISTS public.question_drafts
 (
     id uuid NOT NULL DEFAULT uuid_generate_v4(),
     question_text text COLLATE pg_catalog."default" NOT NULL,
@@ -701,16 +701,16 @@ CREATE TABLE IF NOT EXISTS public.open_question_drafts
     course uuid NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     owner uuid NOT NULL,
-    CONSTRAINT open_question_drafts_pkey1 PRIMARY KEY (id),
-    CONSTRAINT open_question_drafts_challenge_pool_fkey1 FOREIGN KEY (course)
+    CONSTRAINT question_drafts_pkey1 PRIMARY KEY (id),
+    CONSTRAINT question_drafts_challenge_pool_fkey1 FOREIGN KEY (course)
         REFERENCES public.courses (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE CASCADE,
-    CONSTRAINT open_question_drafts_course_fkey FOREIGN KEY (course)
+    CONSTRAINT question_drafts_course_fkey FOREIGN KEY (course)
         REFERENCES public.courses (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION,
-    CONSTRAINT open_question_drafts_owner_fkey FOREIGN KEY (owner)
+    CONSTRAINT question_drafts_owner_fkey FOREIGN KEY (owner)
         REFERENCES auth.users (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
@@ -718,39 +718,39 @@ CREATE TABLE IF NOT EXISTS public.open_question_drafts
 
 TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS public.open_question_drafts
+ALTER TABLE IF EXISTS public.question_drafts
     OWNER to postgres;
 
-ALTER TABLE IF EXISTS public.open_question_drafts
+ALTER TABLE IF EXISTS public.question_drafts
     ENABLE ROW LEVEL SECURITY;
 
-GRANT ALL ON TABLE public.open_question_drafts TO authenticated;
+GRANT ALL ON TABLE public.question_drafts TO authenticated;
 
-GRANT ALL ON TABLE public.open_question_drafts TO anon;
+GRANT ALL ON TABLE public.question_drafts TO anon;
 
-GRANT ALL ON TABLE public.open_question_drafts TO service_role;
+GRANT ALL ON TABLE public.question_drafts TO service_role;
 
-GRANT ALL ON TABLE public.open_question_drafts TO postgres;
+GRANT ALL ON TABLE public.question_drafts TO postgres;
 CREATE POLICY oqd_delete_policy_for_owner
-    ON public.open_question_drafts
+    ON public.question_drafts
     AS PERMISSIVE
     FOR DELETE
     TO public
     USING ((auth.uid() = owner));
 CREATE POLICY oqd_insert_policy_for_authenticated_user
-    ON public.open_question_drafts
+    ON public.question_drafts
     AS PERMISSIVE
     FOR INSERT
     TO public
     WITH CHECK ((auth.role() = 'authenticated'::text));
 CREATE POLICY oqd_select_policy_for_owner
-    ON public.open_question_drafts
+    ON public.question_drafts
     AS PERMISSIVE
     FOR SELECT
     TO public
     USING ((auth.uid() = owner));
 CREATE POLICY oqd_update_policy_for_owner
-    ON public.open_question_drafts
+    ON public.question_drafts
     AS PERMISSIVE
     FOR UPDATE
     TO public
@@ -812,10 +812,10 @@ CREATE OR REPLACE VIEW public.open_answer_performances
     open_answers.answer_text,
     open_answers.version,
     open_answers.created_at,
-    open_questions.question_text
+    questions.question_text
    FROM course_user
      JOIN open_answers ON open_answers.owner = course_user.user_id
-     JOIN open_questions ON open_questions.id = open_answers.open_question AND open_questions.course = course_user.course;
+     JOIN questions ON questions.id = open_answers.question AND questions.course = course_user.course;
 
 ALTER TABLE public.open_answer_performances
     OWNER TO supabase_admin;
@@ -833,11 +833,11 @@ CREATE OR REPLACE VIEW public.open_feedback_performances
     open_feedback.feedback_text,
     open_feedback.created_at,
     open_answers.answer_text,
-    open_questions.question_text
+    questions.question_text
    FROM course_user
      JOIN open_feedback ON open_feedback.owner = course_user.user_id
      JOIN open_answers ON open_answers.id = open_feedback.open_answer
-     JOIN open_questions ON open_questions.id = open_answers.open_question AND open_questions.course = course_user.course;
+     JOIN questions ON questions.id = open_answers.question AND questions.course = course_user.course;
 
 ALTER TABLE public.open_feedback_performances
     OWNER TO supabase_admin;
@@ -849,26 +849,26 @@ GRANT ALL ON TABLE public.open_feedback_performances TO authenticated;
 GRANT ALL ON TABLE public.open_feedback_performances TO service_role;
 
 
-CREATE OR REPLACE VIEW public.open_question_performances
+CREATE OR REPLACE VIEW public.question_performances
  AS
  SELECT course_user.id,
-    open_questions.id AS open_question_id,
-    open_questions.question_text,
-    open_questions.created_at,
+    questions.id AS question_id,
+    questions.question_text,
+    questions.created_at,
     ( SELECT count(*) AS count
-           FROM open_question_likes
-          WHERE open_question_likes.open_question = open_questions.id) AS likes
+           FROM question_likes
+          WHERE question_likes.question = questions.id) AS likes
    FROM course_user
-     JOIN open_questions ON open_questions.owner = course_user.user_id AND open_questions.course = course_user.course;
+     JOIN questions ON questions.owner = course_user.user_id AND questions.course = course_user.course;
 
-ALTER TABLE public.open_question_performances
+ALTER TABLE public.question_performances
     OWNER TO supabase_admin;
 
-GRANT ALL ON TABLE public.open_question_performances TO anon;
-GRANT ALL ON TABLE public.open_question_performances TO postgres;
-GRANT ALL ON TABLE public.open_question_performances TO supabase_admin;
-GRANT ALL ON TABLE public.open_question_performances TO authenticated;
-GRANT ALL ON TABLE public.open_question_performances TO service_role;
+GRANT ALL ON TABLE public.question_performances TO anon;
+GRANT ALL ON TABLE public.question_performances TO postgres;
+GRANT ALL ON TABLE public.question_performances TO supabase_admin;
+GRANT ALL ON TABLE public.question_performances TO authenticated;
+GRANT ALL ON TABLE public.question_performances TO service_role;
 
 CREATE OR REPLACE FUNCTION public.join_course(
 	invite_code_input text,

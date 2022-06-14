@@ -14,7 +14,7 @@
 />
 <small>Length: 3:03</small>
 
-<h5>How to ask a great open question?</h5>
+<h5>How to ask a great question?</h5>
 <iframe
 	width="560"
 	height="315"

@@ -1,17 +1,17 @@
 <script lang="ts">
-	export let openQuestion;
+	export let question;
 </script>
 
-{#if openQuestion}
+{#if question}
 	<div class="w-full">
-		<p id="open-question-text" class="light-link">{openQuestion.questionText}</p>
+		<p id="open-question-text" class="light-link">{question.questionText}</p>
 		<hr class="my-2 border-t-1" />
 		<small id="amount-of-answers-small"
-			>{openQuestion.amountOfAnswers} Answer{#if openQuestion.amountOfAnswers != 1}s{/if}</small
+			>{question.amountOfAnswers} Answer{#if question.amountOfAnswers != 1}s{/if}</small
 		>
 		-
 		<small id="amount-of-likes-small"
-			>{openQuestion.totalLikes} Like{#if openQuestion.totalLikes != 1}s{/if}</small
+			>{question.totalLikes} Like{#if question.totalLikes != 1}s{/if}</small
 		>
 	</div>
 {/if}

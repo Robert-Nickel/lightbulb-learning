@@ -6,7 +6,7 @@
 		const courseUserId = params.slug;
 		const member = await fetchMember(courseUserId);
 
-		let allPerformances: { createdAt: string }[] = (await fetchOpenQuestionPerformances(courseUserId))
+		let allPerformances: { createdAt: string }[] = (await fetchQuestionPerformances(courseUserId))
 			.concat(await fetchOpenAnswerPerformances(courseUserId))
 			.concat(await fetchOpenFeedbackPerformances(courseUserId))
 			.concat(await fetchProgresses(courseUserId));
@@ -40,7 +40,7 @@
 		fetchMember,
 		fetchOpenAnswerPerformances,
 		fetchOpenFeedbackPerformances,
-		fetchOpenQuestionPerformances,
+		fetchQuestionPerformances,
 		MemberType
 	} from '$lib/supabaseClient';
 
@@ -83,9 +83,9 @@
 		<article>
 			<small>{getDateAndTime(performance.createdAt)}</small>
 
-			{#if performance.openQuestionId}
+			{#if performance.questionId}
 				<small
-					>- Open Question - {performance.likes}
+					>- Question - {performance.likes}
 					{#if performance.likes == 1}
 						like{:else}likes
 					{/if}</small

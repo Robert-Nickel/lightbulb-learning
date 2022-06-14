@@ -7,7 +7,7 @@ export const routes = {
 	course: (id: string) => `/course/${id}`,
 	courseSettings: (id: string) => `/course/${id}/settings`,
 	coursePerformances: (id: string) => `/course/${id}/performances`,
-	openQuestion: (id: string) => `/openquestion/${id}`,
+	question: (id: string) => `/question/${id}`,
 	openAnswer: (id: string) => `/openanswer/${id}`,
 	performance: (id: string) => `/performance/${id}`,
 	evaluateAuth: '/evaluateAuth',

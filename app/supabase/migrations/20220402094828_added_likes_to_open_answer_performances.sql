@@ -54,23 +54,23 @@ GRANT ALL ON TABLE public.open_answers TO service_role;
 
 GRANT ALL ON TABLE public.open_answers TO postgres;
 
-REVOKE ALL ON TABLE public.open_question_likes FROM authenticated;
-REVOKE ALL ON TABLE public.open_question_likes FROM postgres;
-REVOKE ALL ON TABLE public.open_question_likes FROM service_role;
-GRANT ALL ON TABLE public.open_question_likes TO authenticated;
+REVOKE ALL ON TABLE public.question_likes FROM authenticated;
+REVOKE ALL ON TABLE public.question_likes FROM postgres;
+REVOKE ALL ON TABLE public.question_likes FROM service_role;
+GRANT ALL ON TABLE public.question_likes TO authenticated;
 
-GRANT ALL ON TABLE public.open_question_likes TO service_role;
+GRANT ALL ON TABLE public.question_likes TO service_role;
 
-GRANT ALL ON TABLE public.open_question_likes TO postgres;
+GRANT ALL ON TABLE public.question_likes TO postgres;
 
-REVOKE ALL ON TABLE public.open_question_topic FROM authenticated;
-REVOKE ALL ON TABLE public.open_question_topic FROM postgres;
-REVOKE ALL ON TABLE public.open_question_topic FROM service_role;
-GRANT ALL ON TABLE public.open_question_topic TO authenticated;
+REVOKE ALL ON TABLE public.question_topic FROM authenticated;
+REVOKE ALL ON TABLE public.question_topic FROM postgres;
+REVOKE ALL ON TABLE public.question_topic FROM service_role;
+GRANT ALL ON TABLE public.question_topic TO authenticated;
 
-GRANT ALL ON TABLE public.open_question_topic TO service_role;
+GRANT ALL ON TABLE public.question_topic TO service_role;
 
-GRANT ALL ON TABLE public.open_question_topic TO postgres;
+GRANT ALL ON TABLE public.question_topic TO postgres;
 
 -- Changing the columns in a view requires dropping and re-creating the view.
 -- This may fail if other objects are dependent upon this view,
@@ -86,12 +86,12 @@ CREATE OR REPLACE VIEW public.open_answer_performances
     ( SELECT count(*) AS count
            FROM open_answer_likes
           WHERE open_answer_likes.open_answer = open_answers.id) AS likes,
-    open_questions.question_text
+    questions.question_text
    FROM course_user
-     JOIN open_answers ON open_answers.owner = course_user.user_id AND (( SELECT open_questions_1.course
-           FROM open_questions open_questions_1
-          WHERE open_answers.open_question = open_questions_1.id)) = course_user.course
-     JOIN open_questions ON open_questions.id = open_answers.open_question AND open_questions.course = course_user.course;
+     JOIN open_answers ON open_answers.owner = course_user.user_id AND (( SELECT questions_1.course
+           FROM questions questions_1
+          WHERE open_answers.question = questions_1.id)) = course_user.course
+     JOIN questions ON questions.id = open_answers.question AND questions.course = course_user.course;
 GRANT ALL ON TABLE public.open_answer_performances TO anon;
 GRANT ALL ON TABLE public.open_answer_performances TO postgres;
 GRANT ALL ON TABLE public.open_answer_performances TO supabase_admin;

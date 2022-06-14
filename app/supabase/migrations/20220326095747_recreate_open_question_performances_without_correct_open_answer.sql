@@ -2,26 +2,26 @@
 -- For the circular dependencies, the order in which Schema Diff writes the objects is not very sophisticated
 -- and may require manual changes to the script to ensure changes are applied in the correct order.
 -- Please report an issue for any failure with the reproduction steps.
-DROP VIEW public.open_question_performances;
+DROP VIEW public.question_performances;
 
 CREATE
-OR REPLACE VIEW public.open_question_performances AS
+OR REPLACE VIEW public.question_performances AS
 SELECT
        course_user.id,
-       open_questions.id AS open_question_id,
-       open_questions.question_text,
-       open_questions.created_at,
+       questions.id AS question_id,
+       questions.question_text,
+       questions.created_at,
        (
               SELECT
                      count(*) AS count
               FROM
-                     open_question_likes
+                     question_likes
               WHERE
-                     open_question_likes.open_question = open_questions.id
+                     question_likes.question = questions.id
        ) AS likes
 FROM
        course_user
-       JOIN open_questions ON open_questions.owner = course_user.user_id
-       AND open_questions.course = course_user.course;
+       JOIN questions ON questions.owner = course_user.user_id
+       AND questions.course = course_user.course;
 
 DROP TABLE public.correct_open_answers;

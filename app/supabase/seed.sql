@@ -17,7 +17,7 @@ DELETE FROM
     public.progresses;
 
 DELETE FROM
-    public.open_questions;
+    public.questions;
 
 INSERT INTO
     auth.users (
@@ -181,7 +181,7 @@ VALUES
 
 
 INSERT INTO
-    public.open_questions(id, question_text, "owner", course)
+    public.questions(id, question_text, "owner", course)
 VALUES
     (
         'f7143606-7831-4e4a-ae4c-936265bcbc73' :: uuid,

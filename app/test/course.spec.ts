@@ -34,8 +34,8 @@ test.describe('Delete Course', () => {
   });
 })
 
-test.describe('Open Questions', () => {
-  test('should display open question and amount of answers and likes', async ({ page }) => {
+test.describe('Questions', () => {
+  test('should display question and amount of answers and likes', async ({ page }) => {
     // given
     const coursePage = new CoursePage(page);
 
@@ -43,7 +43,7 @@ test.describe('Open Questions', () => {
     await coursePage.goto("57d1c1f0-f1cb-4e3f-b3eb-5ce53b593958")
 
     // then
-    await expect(coursePage.openQuestions).toHaveText("Whats up?")
+    await expect(coursePage.questions).toHaveText("Whats up?")
     await expect(coursePage.amountsOfAnswers).toHaveText("0 Answers")
     await expect(coursePage.amountsOfLikes).toHaveText("0 Likes")
   });

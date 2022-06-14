@@ -4,96 +4,96 @@
 		if (!user) return { status: 302, redirect: '/login' };
 		const courseId = params.slug;
 		const course = await fetchCourse(courseId);
-		const openQuestionsDB = await fetchOpenQuestions(courseId);
+		const questionsDB = await fetchQuestions(courseId);
 		const topics = await fetchTopics(courseId);
-		const openQuestionIds = openQuestionsDB.map((openQuestion) => {
-			return openQuestion.id;
+		const questionIds = questionsDB.map((question) => {
+			return question.id;
 		});
-		const openQuestionTopics = await fetchOpenQuestionTopics(openQuestionIds);
-		const myOpenQuestionLikes = await fetchMyOpenQuestionLikes(openQuestionIds, user.id);
-		const openQuestionLikes = await fetchOpenQuestionLikes(openQuestionIds);
-		const openAnswers = await fetchOpenAnswers(openQuestionIds);
-		type OpenQuestion = OpenQuestionType & { isLiked: boolean; amountOfAnswers: number; totalLikes: number };
+		const questionTopics = await fetchQuestionTopics(questionIds);
+		const myQuestionLikes = await fetchMyQuestionLikes(questionIds, user.id);
+		const questionLikes = await fetchQuestionLikes(questionIds);
+		const openAnswers = await fetchOpenAnswers(questionIds);
+		type Question = QuestionType & { isLiked: boolean; amountOfAnswers: number; totalLikes: number };
 
-		const openQuestions: OpenQuestion[] = openQuestionsDB.map((openQuestion) => {
-			const totalLikes = countLikes(openQuestion.id);
+		const questions: Question[] = questionsDB.map((question) => {
+			const totalLikes = countLikes(question.id);
 			return {
-				...openQuestion,
+				...question,
 				...{
-					isLiked: isLiked(openQuestion.id),
-					amountOfAnswers: countAnswers(openQuestion.id),
+					isLiked: isLiked(question.id),
+					amountOfAnswers: countAnswers(question.id),
 					totalLikes
 				}
 			};
 		});
 
-		function isLiked(openQuestionId: string): boolean {
-			for (let myOpenQuestionLike of myOpenQuestionLikes) {
-				if (openQuestionId == myOpenQuestionLike.openQuestion) {
+		function isLiked(questionId: string): boolean {
+			for (let myQuestionLike of myQuestionLikes) {
+				if (questionId == myQuestionLike.question) {
 					return true;
 				}
 			}
 			return false;
 		}
 
-		function countAnswers(openQuestionId: string): number {
+		function countAnswers(questionId: string): number {
 			return openAnswers.filter((openAnswer) => {
-				return openAnswer.openQuestion == openQuestionId;
+				return openAnswer.question == questionId;
 			}).length;
 		}
 
-		function countLikes(openQuestionId: string): number {
-			return openQuestionLikes.filter((openQuestionLike) => {
-				return openQuestionLike.openQuestion == openQuestionId;
+		function countLikes(questionId: string): number {
+			return questionLikes.filter((questionLike) => {
+				return questionLike.question == questionId;
 			}).length;
 		}
 
 		return {
 			props: {
 				course,
-				openQuestions,
+				questions,
 				topics,
-				openQuestionTopics
+				questionTopics
 			}
 		};
 	};
 </script>
 
 <script lang="ts">
-	import CreateOpenQuestion from '$lib/components/CreateOpenQuestion.svelte';
+	import CreateQuestion from '$lib/components/CreateQuestion.svelte';
 	import { routes } from '$lib/routes';
 	import { user } from '$lib/stores/user';
 	import {
 		CourseType,
-		deleteOpenQuestionLike,
+		deleteQuestionLike,
 		fetchCourse,
-		fetchMyOpenQuestionLikes,
+		fetchMyQuestionLikes,
 		fetchOpenAnswers,
-		fetchOpenQuestionLikes,
-		fetchOpenQuestions,
-		fetchOpenQuestionTopics,
+		fetchQuestionLikes,
+		fetchQuestions,
+		fetchQuestionTopics,
 		fetchTopics,
-		OpenQuestionTopicType,
-		OpenQuestionType,
-		saveOpenQuestionLike,
+		QuestionTopicType,
+		QuestionType,
+		saveQuestionLike,
 		TopicType
 	} from '$lib/supabaseClient';
 	import type { Load } from '@sveltejs/kit';
 	import type { Session } from '@supabase/supabase-js';
 	import FilterByTopics from '$lib/components/FilterByTopics.svelte';
-	import OpenQuestion from '$lib/components/OpenQuestion.svelte';
+	import Question from '$lib/components/Question.svelte';
 
 	export let course: CourseType;
-	export let openQuestions;
+	export let questions;
 	export let topics: TopicType[];
-	export let openQuestionTopics: OpenQuestionTopicType[];
+	export let questionTopics: QuestionTopicType[];
 
 	let filteredTopics: string[] = [];
 
-	function isFiltered(openQuestion: OpenQuestionType): boolean {
+	function isFiltered(question: QuestionType): boolean {
 		for (let filteredTopic of filteredTopics) {
-			for (let openQuestionTopic of openQuestionTopics) {
-				if (filteredTopic == openQuestionTopic.topic && openQuestionTopic.openQuestion == openQuestion.id) {
+			for (let questionTopic of questionTopics) {
+				if (filteredTopic == questionTopic.topic && questionTopic.question == question.id) {
 					return true;
 				}
 			}
@@ -103,54 +103,54 @@
 </script>
 
 {#if course}
-	<CreateOpenQuestion {course} />
+	<CreateQuestion {course} />
 
-	{#if openQuestions.length > 0}
-		<h3 class="mt-10">Open Questions</h3>
+	{#if questions.length > 0}
+		<h3 class="mt-10">Questions</h3>
 		<FilterByTopics
 			{topics}
 			on:filterTopicsChanged={(event) => {
 				filteredTopics = event.detail.filteredTopics;
-				openQuestions = openQuestions;
+				questions = questions;
 			}}
 		/>
-		{#each openQuestions as openQuestion}
-			{#if isFiltered(openQuestion) || filteredTopics.length == 0}
-				<a href={routes.openQuestion(openQuestion.id)} class="light-link" sveltekit:prefetch>
-					{#if openQuestion.owner == $user.id}
+		{#each questions as question}
+			{#if isFiltered(question) || filteredTopics.length == 0}
+				<a href={routes.question(question.id)} class="light-link" sveltekit:prefetch>
+					{#if question.owner == $user.id}
 						<article class="yours hoverable">
-							<OpenQuestion {openQuestion} />
+							<Question {question} />
 						</article>
 					{:else}
 						<article class="hoverable flex justify-between">
-							<OpenQuestion {openQuestion} />
+							<Question {question} />
 
-							{#if openQuestion.isLiked}
+							{#if question.isLiked}
 								<button
 									class="outline h-12 ml-4 mb-0 p-2 w-16"
 									on:click|preventDefault={async () => {
-										await deleteOpenQuestionLike(openQuestion.id);
-										openQuestions.map((oq) => {
-											if (oq.id == openQuestion.id) {
+										await deleteQuestionLike(question.id);
+										questions.map((oq) => {
+											if (oq.id == question.id) {
 												oq.isLiked = false;
 												oq.totalLikes--;
 											}
 											return oq;
 										});
-										openQuestions = openQuestions;
+										questions = questions;
 									}}>Unlike</button
 								>{:else}<button
 									class="outline h-12 ml-4 mb-0 p-2 w-16"
 									on:click|preventDefault={async () => {
-										await saveOpenQuestionLike(openQuestion.id);
-										openQuestions.map((oq) => {
-											if (oq.id == openQuestion.id) {
+										await saveQuestionLike(question.id);
+										questions.map((oq) => {
+											if (oq.id == question.id) {
 												oq.isLiked = true;
 												oq.totalLikes++;
 											}
 											return oq;
 										});
-										openQuestions = openQuestions;
+										questions = questions;
 									}}>Like!</button
 								>
 							{/if}

@@ -9,7 +9,7 @@ export class PerformancePage {
   readonly changeButton: Locator;
   readonly saveButton: Locator;
   readonly progressInput: Locator;
-  readonly openQuestionPerformance: OpenQuestionPerformance;
+  readonly questionPerformance: QuestionPerformance;
   readonly progress: Progress;
 
   constructor(page: Page) {
@@ -19,7 +19,7 @@ export class PerformancePage {
     this.changeButton = page.locator('text=Change');
     this.saveButton = page.locator('text=Save');
     this.progressInput = page.locator('id=progress-input');
-    this.openQuestionPerformance = new OpenQuestionPerformance(this.page);
+    this.questionPerformance = new QuestionPerformance(this.page);
     this.progress = new Progress(this.page);
   }
 
@@ -28,12 +28,12 @@ export class PerformancePage {
   }
 }
 
-export class OpenQuestionPerformance {
+export class QuestionPerformance {
   readonly metadata: Locator;
   readonly questionText: Locator;
 
   constructor(page: Page) {
-    this.metadata = page.locator('text=/.*- Open Question -.*/gm').first();
+    this.metadata = page.locator('text=/.*- Question -.*/gm').first();
     this.questionText = page.locator('id=oqp-question-text').first();
   }
 }
@@ -43,7 +43,7 @@ export class Progress {
   readonly progressText: Locator;
 
   constructor(page: Page) {
-    this.metadata = page.locator('text=/.*- Open Question -.*/gm');
+    this.metadata = page.locator('text=/.*- Question -.*/gm');
     this.progressText = page.locator('id=progress-text');
   }
 }

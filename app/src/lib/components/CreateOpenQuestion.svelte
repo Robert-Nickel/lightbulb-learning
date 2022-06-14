@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Toast from './Toast.svelte';
-	import { CourseType, saveOpenQuestion, saveOpenQuestionTopics } from '$lib/supabaseClient';
+	import { CourseType, saveQuestion, saveQuestionTopics } from '$lib/supabaseClient';
 	import autosize from '../../../node_modules/autosize';
 	import SelectTopics from './SelectTopics.svelte';
 	import { goto } from '$app/navigation';
@@ -8,21 +8,21 @@
 
 	export let course: CourseType;
 
-	let openQuestionText;
+	let questionText;
 	let toast;
 	let selectedTopics;
 </script>
 
 <div class="mt-4">
-	<h3 class="mt-8">New Open Question</h3>
+	<h3 class="mt-8">New Question</h3>
 	<textarea
 		id="textarea-question"
 		class="w-full h-12"
-		placeholder="Create an open question"
-		bind:value={openQuestionText}
+		placeholder="Create an question"
+		bind:value={questionText}
 		on:load={autosize(document.getElementById('textarea-question'))}
 	/>
-	{#if openQuestionText}
+	{#if questionText}
 		<SelectTopics
 			courseId={course.id}
 			on:selectedTopicsChanged={(event) => {
@@ -32,14 +32,14 @@
 	{/if}
 	<button
 		id="button-publish"
-		disabled={!openQuestionText}
+		disabled={!questionText}
 		on:click={async () => {
-			const openQuestion = await saveOpenQuestion(openQuestionText, course.id);
+			const question = await saveQuestion(questionText, course.id);
 			if (selectedTopics && selectedTopics.length > 0) {
-				await saveOpenQuestionTopics(openQuestion.id, selectedTopics);
+				await saveQuestionTopics(question.id, selectedTopics);
 			}
 			selectedTopics = [];
-			goto(routes.openQuestion(openQuestion.id));
+			goto(routes.question(question.id));
 		}}
 		class="w-32 h-12 mb-0"
 	>

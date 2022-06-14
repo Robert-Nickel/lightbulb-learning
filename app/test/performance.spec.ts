@@ -7,11 +7,11 @@ test.beforeEach(async ({ page }) => {
 });
 
 test.describe('Performances', () => {
-  test('should display open question performance', async ({ page }) => {
+  test('should display question performance', async ({ page }) => {
     const performancePage = new PerformancePage(page);
     await performancePage.goto(EL_STUDENTO)
-    await expect(performancePage.openQuestionPerformance.metadata).toHaveText("- Open Question - 0 likes") // ignore date and time
-    await expect(performancePage.openQuestionPerformance.questionText).toHaveText("Whats up?")
+    await expect(performancePage.questionPerformance.metadata).toHaveText("- Question - 0 likes") // ignore date and time
+    await expect(performancePage.questionPerformance.questionText).toHaveText("Whats up?")
   });
 })
 

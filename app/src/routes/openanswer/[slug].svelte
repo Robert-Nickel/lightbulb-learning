@@ -7,11 +7,11 @@
 	import {
 		fetchMyOpenFeedback,
 		fetchOpenAnswer,
-		fetchOpenQuestion,
+		fetchQuestion,
 		fetchOpenFeedbackOfOthers,
 		OpenAnswerType,
 		OpenFeedbackType,
-		OpenQuestionType,
+		QuestionType,
 		saveOpenFeedback,
 		fetchLatestOpenAnswer
 	} from '$lib/supabaseClient';
@@ -20,7 +20,7 @@
 	import autosize from '../../../node_modules/autosize';
 	import { routes } from '$lib/routes';
 
-	let openQuestion: OpenQuestionType;
+	let question: QuestionType;
 	let openAnswer: OpenAnswerType;
 	let myOpenFeedback: OpenFeedbackType;
 	let openFeedbackOfOthers: Array<OpenFeedbackType> = [];
@@ -36,12 +36,12 @@
 
 	async function refresh(openAnswerId) {
 		openAnswer = await fetchOpenAnswer(openAnswerId);
-		latestOpenAnswer = await fetchLatestOpenAnswer(openAnswer.openQuestion, openAnswer.owner);
+		latestOpenAnswer = await fetchLatestOpenAnswer(openAnswer.question, openAnswer.owner);
 		if (latestOpenAnswer) {
 			isLatest = latestOpenAnswer.version == openAnswer.version;
 		}
 
-		openQuestion = await fetchOpenQuestion(openAnswer.openQuestion);
+		question = await fetchQuestion(openAnswer.question);
 		myOpenFeedback = await fetchMyOpenFeedback(openAnswer.id);
 		openFeedbackOfOthers = await fetchOpenFeedbackOfOthers(openAnswer.id);
 	}
@@ -54,13 +54,13 @@
 </script>
 
 <main class="container">
-	{#if openAnswer && openQuestion}
-		<Back text="Back to Open Question" route="/openquestion/{openQuestion.id}" />
+	{#if openAnswer && question}
+		<Back text="Back to Question" route="/question/{question.id}" />
 
-		{#if openQuestion.owner == $user.id}
-			<div class="mb-4 yours pl-4">Your Question: {openQuestion.questionText}</div>
+		{#if question.owner == $user.id}
+			<div class="mb-4 yours pl-4">Your Question: {question.questionText}</div>
 		{:else}
-			<div class="mb-4">Question: {openQuestion.questionText}</div>
+			<div class="mb-4">Question: {question.questionText}</div>
 		{/if}
 
 		{#if openAnswer.owner == $user.id}

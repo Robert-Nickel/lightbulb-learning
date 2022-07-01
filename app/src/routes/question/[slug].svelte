@@ -1,18 +1,17 @@
 <script lang="ts" context="module">
-	export const load: Load = async ({ session, params }) => {
-		const { user } = session as Session;
-		if (!user) return { status: 302, redirect: '/login' };
+	import { supabaseServerClient, withPageAuth } from '@supabase/auth-helpers-sveltekit';
 
+	export const load = async ({ session, params }) => {
 		const questionId = params.slug;
-		const question = await fetchQuestion(questionId);
-		const courseDescription = await (await fetchCourse(question.course)).description;
+		const question = await fetchQuestion(questionId, session);
+		const courseDescription = await (await fetchCourse(question.course, session)).description;
 
-		const answersOfOthersWithNonLatest = await fetchAnswersOfOthers(questionId, user.id);
+		const answersOfOthersWithNonLatest = await fetchAnswersOfOthers(questionId, session);
 		const answersOfOthersDB = await filterNonLatest(answersOfOthersWithNonLatest);
-		const answersOfOthersIds = answersOfOthersDB.map((answer) => answer.id);
-		const myAnswerLikes = await fetchMyAnswerLikes(answersOfOthersIds, user.id);
+		const answersOfOthersIds = answersOfOthersDB?.map((answer) => answer.id);
+		const myAnswerLikes = await fetchMyAnswerLikes(answersOfOthersIds, session);
 
-		const myAnswerWithoutLikes = await fetchLatestAnswer(questionId, user.id);
+		const myAnswerWithoutLikes = await fetchLatestAnswer(questionId, session);
 
 		const allAnswerIds = myAnswerWithoutLikes
 			? answersOfOthersIds.concat(myAnswerWithoutLikes.id)
@@ -28,7 +27,7 @@
 
 		type Answer = AnswerType & { isLiked: boolean; totalLikes: number };
 
-		const answersOfOthers: Answer[] = answersOfOthersDB.map((answer) => {
+		const answersOfOthers: Answer[] = answersOfOthersDB?.map((answer) => {
 			const totalLikes = countLikes(answer.id);
 			return {
 				...answer,
@@ -40,23 +39,24 @@
 		});
 
 		function isLiked(answerId: string): boolean {
-			for (let myAnswerLike of myAnswerLikes) {
-				if (answerId == myAnswerLike.answer) {
-					return true;
+			if (myAnswerLikes) {
+				for (let myAnswerLike of myAnswerLikes) {
+					if (answerId == myAnswerLike.answer) {
+						return true;
+					}
 				}
 			}
 			return false;
 		}
 
 		function countLikes(answerId: string): number {
-			return answerLikes.filter((answerLike) => {
+			return answerLikes?.filter((answerLike) => {
 				return answerLike.answer == answerId;
-			}).length;
+			})?.length;
 		}
 
 		return {
 			props: {
-				user,
 				question,
 				myAnswer,
 				answersOfOthers,
@@ -70,7 +70,7 @@
 		// It filters out the non-latest answers
 		let answers = answersOfOthers;
 		let indizesToRemove: number[] = [];
-		for (let i = 0; i < answers.length; i++) {
+		for (let i = 0; i < answers?.length; i++) {
 			let answer = answers[i];
 			for (let otherAnswer of answers) {
 				if (answer.owner == otherAnswer.owner) {
@@ -107,8 +107,6 @@
 		saveAnswerLike
 	} from '$lib/supabaseQueries';
 	import autosize from '../../../node_modules/autosize';
-	import type { Load } from '@sveltejs/kit';
-	import type { Session } from '@supabase/supabase-js';
 	import { routes } from '$lib/routes';
 	import Answer from '$lib/components/Answer.svelte';
 	import { session } from '$app/stores';
@@ -168,7 +166,7 @@
 								class="outline h-12 ml-4 mb-0 p-2 w-16"
 								on:click|preventDefault={async () => {
 									await deleteAnswerLike(answerOfOther.id);
-									answersOfOthers.map((oa) => {
+									answersOfOthers?.map((oa) => {
 										if (oa.id == answerOfOther.id) {
 											oa.isLiked = false;
 											oa.totalLikes--;
@@ -181,7 +179,7 @@
 								class="outline h-12 ml-4 mb-0 p-2 w-16"
 								on:click|preventDefault={async () => {
 									await saveAnswerLike(answerOfOther.id);
-									answersOfOthers.map((oa) => {
+									answersOfOthers?.map((oa) => {
 										if (oa.id == answerOfOther.id) {
 											oa.isLiked = true;
 											oa.totalLikes++;

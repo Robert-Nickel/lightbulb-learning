@@ -139,8 +139,8 @@ export async function fetchQuestions(courseId: string, session: Session): Promis
 	return keysToCamelCase(data);
 }
 
-export async function fetchQuestion(id: string): Promise<QuestionType> {
-	const { data, error } = await supabase
+export async function fetchQuestion(id: string, session: Session): Promise<QuestionType> {
+	const { data, error } = await supabaseServerClient(session.accessToken)
 		.from<QuestionTypeDB>(questionsTable)
 		.select()
 		.eq('id', id)
@@ -185,12 +185,12 @@ export async function fetchMyAnswers(questionId): Promise<AnswerType[]> {
 	return keysToCamelCase(data);
 }
 
-export async function fetchLatestAnswer(questionId, userId): Promise<AnswerType> {
-	const { data, error } = await supabase
+export async function fetchLatestAnswer(questionId: string, session: Session): Promise<AnswerType> {
+	const { data, error } = await supabaseServerClient(session.accessToken)
 		.from<AnswerTypeDB>(answersTable)
 		.select()
 		.eq('question', questionId)
-		.eq('owner', userId)
+		.eq('owner', session.user.id)
 		.order('version', { ascending: false })
 		.limit(1);
 	printIf(error);
@@ -199,13 +199,13 @@ export async function fetchLatestAnswer(questionId, userId): Promise<AnswerType>
 
 export async function fetchAnswersOfOthers(
 	questionId: string,
-	userId: string
+	session: Session
 ): Promise<AnswerType[]> {
-	const { data, error } = await supabase
+	const { data, error } = await supabaseServerClient(session.accessToken)
 		.from<AnswerTypeDB>(answersTable)
 		.select()
 		.eq('question', questionId)
-		.neq('owner', userId);
+		.neq('owner', session.user.id);
 	printIf(error);
 	return keysToCamelCase(data);
 }
@@ -405,11 +405,11 @@ export async function fetchMyQuestionLikes(questionIds: string[], session: Sessi
 	return keysToCamelCase(data);
 }
 
-export async function fetchMyAnswerLikes(answerIds: string[], userId: string): Promise<AnswerLikeType[]> {
-	const { data, error } = await supabase
+export async function fetchMyAnswerLikes(answerIds: string[], session: Session): Promise<AnswerLikeType[]> {
+	const { data, error } = await supabaseServerClient(session.accessToken)
 		.from<AnswerLikeTypeDB>(answerLikesTable)
 		.select()
-		.eq('owner', userId)
+		.eq('owner', session.user.id)
 		.in('answer', answerIds);
 	printIf(error);
 	return keysToCamelCase(data);

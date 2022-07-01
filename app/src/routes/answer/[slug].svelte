@@ -1,4 +1,4 @@
-<script context="module">
+<script lang="ts" context="module">
 	import { supabaseServerClient, withPageAuth } from '@supabase/auth-helpers-sveltekit';
 
 	export const load = async ({ session, params }) =>
@@ -15,7 +15,7 @@
 				const myFeedback = await fetchMyFeedback(answerId, session);
 				const feedbackOfOthers = await fetchFeedbackOfOthers(answerId, session);
 
-				return { props: { question, answer, myFeedback, feedbackOfOthers} };
+				return { props: { question, answer, myFeedback, feedbackOfOthers, latestAnswer } };
 			}
 		);
 </script>
@@ -47,7 +47,7 @@
 	let feedbackText;
 	let toast;
 	let improvingAnswer = false;
-	let latestAnswer;
+	export let latestAnswer;
 	$: isLatest = latestAnswer.version == answer.version;
 
 	async function publishfeedback() {

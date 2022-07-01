@@ -11,7 +11,7 @@
 	let sidebarOpen = false;
 
 	const onUserUpdate = async (user) => {
-		if (user) await goto('/');
+		if (user) await goto('/course');
 	};
 </script>
 

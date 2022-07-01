@@ -1,7 +1,6 @@
 export const routes = {
 	root: '/',
 	login: '/login',
-	logout: '/?logout=true',
 	welcome: '/welcome',
 	courses: '/course',
 	course: (id: string) => `/course/${id}`,

@@ -1,17 +1,10 @@
 <script>
 	import { goto } from '$app/navigation';
 	import { routes } from '$lib/routes';
+	import { session } from '$app/stores';
+	import { supabaseClient } from '$lib/db';
 
 	export let open = false;
-
-	async function logout() {
-		open = false;
-		try {
-			// TODO: This throws an error. We don't handle it. See https://github.com/supabase/supabase/discussions/3468?sort=top
-			user.signOut();
-		} catch {}
-		goto(routes.logout);
-	}
 
 	function close() {
 		open = false;
@@ -23,19 +16,25 @@
 	class:open
 >
 	<div>
-		<!--{#if $user}
+		{#if $session.user}
 			<nav on:click={close}><a href={routes.root} sveltekit:prefetch>My Courses</a></nav>
 			<nav on:click={close}><a href={routes.newCourse} sveltekit:prefetch>New Course</a></nav>
 			<nav on:click={close}><a href={routes.joinCourse()} sveltekit:prefetch>Join Course</a></nav>
 			<nav on:click={close}><a href={routes.help} sveltekit:prefetch>Help</a></nav>
 		{:else}
 			<nav on:click={close}><a href={routes.login} sveltekit:prefetch>Login</a></nav>
-		{/if}-->
+		{/if}
 	</div>
 
-	<!--{#if $user}
-		<button on:click={logout} class="outline">Logout</button>
-	{/if}-->
+	{#if $session.user}
+		<button
+			on:click={() => {
+				supabaseClient.auth.signOut();
+				close();
+			}}
+			class="outline">Logout</button
+		>
+	{/if}
 </aside>
 
 <style>

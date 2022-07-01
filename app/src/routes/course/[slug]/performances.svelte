@@ -1,21 +1,23 @@
 <script lang="ts" context="module">
-	export const load: Load = async ({ session, params }) => {
-		const { user } = session as Session;
-		if (!user) return { status: 302, redirect: '/login' };
-		const course = await fetchCourse(params.slug);
-		return {
-			props: {
-				course
+	export const load = async ({ session, params }) => {
+		withPageAuth(
+			{ redirectTo: '/', user: session.user },
+
+			async () => {
+				return {
+					props: {
+						course: await fetchCourse(params.slug, session)
+					}
+				};
 			}
-		};
+		);
 	};
 </script>
 
 <script lang="ts">
 	import Performances from '$lib/components/Performances.svelte';
 	import { CourseType, fetchCourse } from '$lib/supabaseQueries';
-	import type { Session } from '@supabase/supabase-js';
-	import type { Load } from '@sveltejs/kit';
+	import { withPageAuth } from '@supabase/auth-helpers-sveltekit';
 
 	export let course: CourseType;
 </script>

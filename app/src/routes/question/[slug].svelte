@@ -2,67 +2,69 @@
 	import { supabaseServerClient, withPageAuth } from '@supabase/auth-helpers-sveltekit';
 
 	export const load = async ({ session, params }) => {
-		const questionId = params.slug;
-		const question = await fetchQuestion(questionId, session);
-		const courseDescription = await (await fetchCourse(question.course, session)).description;
+		withPageAuth({ redirectTo: '/', user: session.user }, async () => {
+			const questionId = params.slug;
+			const question = await fetchQuestion(questionId, session);
+			const courseDescription = await (await fetchCourse(question.course, session)).description;
 
-		const answersOfOthersWithNonLatest = await fetchAnswersOfOthers(questionId, session);
-		const answersOfOthersDB = await filterNonLatest(answersOfOthersWithNonLatest);
-		const answersOfOthersIds = answersOfOthersDB?.map((answer) => answer.id);
-		const myAnswerLikes = await fetchMyAnswerLikes(answersOfOthersIds, session);
+			const answersOfOthersWithNonLatest = await fetchAnswersOfOthers(questionId, session);
+			const answersOfOthersDB = await filterNonLatest(answersOfOthersWithNonLatest);
+			const answersOfOthersIds = answersOfOthersDB?.map((answer) => answer.id);
+			const myAnswerLikes = await fetchMyAnswerLikes(answersOfOthersIds, session);
 
-		const myAnswerWithoutLikes = await fetchLatestAnswer(questionId, session);
+			const myAnswerWithoutLikes = await fetchLatestAnswer(questionId, session);
 
-		const allAnswerIds = myAnswerWithoutLikes
-			? answersOfOthersIds.concat(myAnswerWithoutLikes.id)
-			: answersOfOthersIds;
-		const answerLikes = await fetchAnswerLikes(allAnswerIds);
+			const allAnswerIds = myAnswerWithoutLikes
+				? answersOfOthersIds.concat(myAnswerWithoutLikes.id)
+				: answersOfOthersIds;
+			const answerLikes = await fetchAnswerLikes(allAnswerIds, session);
 
-		const myAnswer = myAnswerWithoutLikes
-			? {
-					...myAnswerWithoutLikes,
-					...{ totalLikes: countLikes(myAnswerWithoutLikes.id) }
-			  }
-			: null;
+			const myAnswer = myAnswerWithoutLikes
+				? {
+						...myAnswerWithoutLikes,
+						...{ totalLikes: countLikes(myAnswerWithoutLikes.id) }
+				  }
+				: null;
 
-		type Answer = AnswerType & { isLiked: boolean; totalLikes: number };
+			type Answer = AnswerType & { isLiked: boolean; totalLikes: number };
 
-		const answersOfOthers: Answer[] = answersOfOthersDB?.map((answer) => {
-			const totalLikes = countLikes(answer.id);
+			const answersOfOthers: Answer[] = answersOfOthersDB?.map((answer) => {
+				const totalLikes = countLikes(answer.id);
+				return {
+					...answer,
+					...{
+						isLiked: isLiked(answer.id),
+						totalLikes
+					}
+				};
+			});
+
+			function isLiked(answerId: string): boolean {
+				if (myAnswerLikes) {
+					for (let myAnswerLike of myAnswerLikes) {
+						if (answerId == myAnswerLike.answer) {
+							return true;
+						}
+					}
+				}
+				return false;
+			}
+
+			function countLikes(answerId: string): number {
+				return answerLikes?.filter((answerLike) => {
+					return answerLike.answer == answerId;
+				})?.length;
+			}
+
 			return {
-				...answer,
-				...{
-					isLiked: isLiked(answer.id),
-					totalLikes
+				props: {
+					question,
+					myAnswer,
+					answersOfOthers,
+					courseDescription
 				}
 			};
 		});
-
-		function isLiked(answerId: string): boolean {
-			if (myAnswerLikes) {
-				for (let myAnswerLike of myAnswerLikes) {
-					if (answerId == myAnswerLike.answer) {
-						return true;
-					}
-				}
-			}
-			return false;
-		}
-
-		function countLikes(answerId: string): number {
-			return answerLikes?.filter((answerLike) => {
-				return answerLike.answer == answerId;
-			})?.length;
-		}
-
-		return {
-			props: {
-				question,
-				myAnswer,
-				answersOfOthers,
-				courseDescription
-			}
-		};
 	};
 
 	async function filterNonLatest(answersOfOthers) {

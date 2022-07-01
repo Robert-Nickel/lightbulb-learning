@@ -1,52 +1,57 @@
+<script context="module">
+	import { supabaseServerClient, withPageAuth } from '@supabase/auth-helpers-sveltekit';
+
+	export const load = async ({ session, params }) =>
+		withPageAuth(
+			{
+				redirectTo: '/login',
+				user: session.user
+			},
+			async () => {
+				const answerId = params.slug;
+				const answer = await fetchAnswer(answerId, session);
+				const latestAnswer = await fetchLatestAnswer(answer.question, session);
+				const question = await fetchQuestion(answer.question, session);
+				const myFeedback = await fetchMyFeedback(answerId, session);
+				const feedbackOfOthers = await fetchFeedbackOfOthers(answerId, session);
+
+				return { props: { question, answer, myFeedback, feedbackOfOthers} };
+			}
+		);
+</script>
+
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { page } from '$app/stores';
 	import Toast from '$lib/components/Toast.svelte';
 	import Back from '$lib/components/Back.svelte';
 	import ImproveAnswer from '$lib/components/ImproveAnswer.svelte';
 	import {
-		fetchMyfeedback,
+		fetchMyFeedback,
 		fetchAnswer,
 		fetchQuestion,
-		fetchfeedbackOfOthers,
+		fetchFeedbackOfOthers,
 		AnswerType,
-		feedbackType,
+		FeedbackType,
 		QuestionType,
-		savefeedback,
+		saveFeedback,
 		fetchLatestAnswer
 	} from '$lib/supabaseQueries';
 	import { goto } from '$app/navigation';
 	import autosize from 'autosize';
 	import { routes } from '$lib/routes';
+	import { page, session } from '$app/stores';
 
-	let question: QuestionType;
-	let answer: AnswerType;
-	let myfeedback: feedbackType;
-	let feedbackOfOthers: Array<feedbackType> = [];
+	export let question: QuestionType;
+	export let answer: AnswerType;
+	export let myFeedback: FeedbackType;
+	export let feedbackOfOthers: Array<FeedbackType>;
 	let feedbackText;
 	let toast;
 	let improvingAnswer = false;
 	let latestAnswer;
-	let isLatest = false;
-
-	onMount(async () => {
-		refresh($page.params.slug);
-	});
-
-	async function refresh(answerId) {
-		answer = await fetchAnswer(answerId);
-		latestAnswer = await fetchLatestAnswer(answer.question, answer.owner);
-		if (latestAnswer) {
-			isLatest = latestAnswer.version == answer.version;
-		}
-
-		question = await fetchQuestion(answer.question);
-		myfeedback = await fetchMyfeedback(answer.id);
-		feedbackOfOthers = await fetchfeedbackOfOthers(answer.id);
-	}
+	$: isLatest = latestAnswer.version == answer.version;
 
 	async function publishfeedback() {
-		myfeedback = await savefeedback(feedbackText, answer.id);
+		myFeedback = await saveFeedback(feedbackText, answer.id);
 		feedbackText = null;
 		toast.showSuccessToast('Thanks for your Feedback!');
 	}
@@ -54,15 +59,15 @@
 
 <main class="container">
 	{#if answer && question}
-		<Back text="Back to Question" route="/question/{question.id}" />
+		<Back text="Back to Question" route="/question/{question?.id}" />
 
-		<!--{#if question.owner == $user.id}
+		{#if question.owner == $session.user?.id}
 			<div class="mb-4 yours pl-4">Your Question: {question.questionText}</div>
 		{:else}
 			<div class="mb-4">Question: {question.questionText}</div>
 		{/if}
 
-		{#if answer.owner == $user.id}
+		{#if answer.owner == $session.user.id}
 			<h1 class="yours pl-4">Your Answer: {answer.answerText}</h1>
 
 			{#if feedbackOfOthers.length == 0}
@@ -76,7 +81,7 @@
 				{/each}
 				{#if isLatest}
 					{#if improvingAnswer}
-						<ImproveAnswer {answer} on:answerImproved={(e) => refresh(e.detail)} />
+						<ImproveAnswer {answer} />
 					{:else}
 						<div class="mb-4">Do you want to improve your answer based on this feedback?</div>
 						<button class="outline w-48" on:click={() => (improvingAnswer = !improvingAnswer)}
@@ -89,7 +94,6 @@
 						class="w-48"
 						on:click={() => {
 							goto(routes.answer(latestAnswer.id));
-							refresh(latestAnswer.id);
 						}}>Go to Latest Version</button
 					>
 				{/if}
@@ -97,9 +101,9 @@
 		{:else}
 			<h1>{answer.answerText}</h1>
 
-			{#if myfeedback}
+			{#if myFeedback}
 				<article class="yours">
-					{myfeedback.feedbackText}
+					{myFeedback.feedbackText}
 				</article>
 			{:else}
 				<textarea

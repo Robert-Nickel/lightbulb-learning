@@ -1,18 +1,30 @@
+<script context="module">
+	import { withPageAuth } from '@supabase/auth-helpers-sveltekit';
+	// TODO: get this from the path: export let courseId: string;
+	const courseId = 'abc';
+	export const load = async ({ session }) =>
+		withPageAuth(
+			{
+				redirectTo: '/',
+				user: session.user
+			},
+			async () => {
+				const topics = await fetchTopics(courseId, session);
+				return { props: { topics } };
+			}
+		);
+</script>
+
 <script lang="ts">
 	import { fetchTopics, saveTopic, TopicType } from '$lib/supabaseQueries';
-	import { onMount } from 'svelte';
 
-	export let courseId: string;
-	let topics: TopicType[] = [];
+	export let topics: TopicType[];
 	let newTopicName = '';
-	onMount(async () => {
-		topics = await fetchTopics(courseId);
-	});
 
 	async function createTopic() {
 		for (let topic of topics) {
 			if (topic.name == newTopicName) {
-				alert("Topic already exists.");
+				alert('Topic already exists.');
 				return;
 			}
 		}

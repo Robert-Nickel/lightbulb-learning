@@ -7,109 +7,34 @@ import type { Session } from '@supabase/auth-helpers-svelte';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-// auth_helper
 const supabase = createClient(supabaseUrl.toString(), supabaseAnonKey.toString());
 
-export async function fetchProfile(userId: string, supabaseClient?: SupabaseClient): Promise<ProfileType> {
-	const client = supabaseClient ? supabaseClient : supabase;
-	const { data, error } = await client
-		.from<ProfileTypeDB>(profilesTable)
-		.select()
-		.eq('user_id', userId)
-		.maybeSingle();
-	printIf(error);
-	return keysToCamelCase(data);
-}
-
-export async function saveProfile(
-	firstName: string,
-	lastName: string,
-	university: UniversityType
-): Promise<ProfileType> {
-	const { data, error } = await supabase
-		.from<ProfileTypeDB>(profilesTable)
-		.insert({
-			user_id: supabase.auth.user().id,
-			first_name: firstName,
-			last_name: lastName,
-			university: university.id
-		})
-		.single();
-	printIf(error);
-	return keysToCamelCase(data);
-}
-
-export async function updateProfile(
-	id: string,
-	firstName: string,
-	lastName: string,
-	university: UniversityType
-): Promise<ProfileType> {
-	const { data, error } = await supabase
-		.from<ProfileTypeDB>(profilesTable)
-		.update({
-			id,
-			user_id: supabase.auth.user().id,
-			first_name: firstName,
-			last_name: lastName,
-			university: university.id
-		})
-		.single();
-	printIf(error);
-	return keysToCamelCase(data);
-}
-
-export async function fetchUniversity(id: string): Promise<UniversityType> {
-	const { data, error } = await supabase
-		.from<UniversityTypeDB>(universitiesTable)
-		.select()
-		.eq('id', id)
-		.maybeSingle();
-	printIf(error);
-	return keysToCamelCase(data);
-}
-export async function fetchUniversityByName(name: string): Promise<UniversityType> {
-	const { data, error } = await supabase
-		.from<UniversityTypeDB>(universitiesTable)
-		.select()
-		.eq('name', name)
-		.maybeSingle();
-	printIf(error);
-	return keysToCamelCase(data);
-}
-
-export async function saveUniversity(name: string) {
-	const { data, error } = await supabase.from<UniversityTypeDB>(universitiesTable).insert({ name }).single();
-	printIf(error);
-	return keysToCamelCase(data);
-}
-
-export async function fetchCourses(userId: string): Promise<CourseType[]> {
+export async function fetchCourses(session: Session): Promise<CourseType[]> {
 	const { data, error } = await supabase.rpc('fetch_my_courses', {
-		user_id_input: userId
+		user_id_input: session.user.id
 	});
 
 	printIf(error);
 	return keysToCamelCase(data);
 }
 
-export async function saveCourse(description: string): Promise<CourseType> {
+export async function saveCourse(description: string, session: Session): Promise<CourseType> {
 	const { data, error } = await supabase
 		.from<CourseTypeDB>(coursesTable)
-		.insert({ description, owner: supabase.auth.user().id })
+		.insert({ description, owner: session.user.id })
 		.single();
 	printIf(error);
 	const course: CourseType = keysToCamelCase(data);
-	await saveCourseUser(course.id);
+	await saveCourseUser(course.id, session);
 	return course;
 }
 
 // only for the owner of a course.
 // Regular member must use the join course function.
-async function saveCourseUser(courseId: string) {
+async function saveCourseUser(courseId: string, session: Session) {
 	const { data, error } = await supabase
 		.from<CourseUserTypeDB>(courseUserTable)
-		.insert({ course: courseId, user_id: supabase.auth.user().id })
+		.insert({ course: courseId, user_id: session.user.id })
 		.single();
 	printIf(error);
 	return keysToCamelCase(data);
@@ -151,36 +76,26 @@ export async function fetchQuestion(id: string, session: Session): Promise<Quest
 
 export async function saveQuestion(
 	questionText: string,
-	courseId: string
+	courseId: string, session: Session
 ): Promise<QuestionType> {
 	const { data, error } = await supabase
 		.from<QuestionTypeDB>(questionsTable)
 		.insert({
 			question_text: questionText,
 			course: courseId,
-			owner: supabase.auth.user().id
+			owner: session.user.id
 		})
 		.single();
 	printIf(error);
 	return keysToCamelCase(data);
 }
 
-export async function fetchAnswer(id: string): Promise<AnswerType> {
-	const { data, error } = await supabase
+export async function fetchAnswer(id: string, session: Session): Promise<AnswerType> {
+	const { data, error } = await supabaseServerClient(session.accessToken)
 		.from<AnswerTypeDB>(answersTable)
 		.select()
 		.eq('id', id)
 		.maybeSingle();
-	printIf(error);
-	return keysToCamelCase(data);
-}
-
-export async function fetchMyAnswers(questionId): Promise<AnswerType[]> {
-	const { data, error } = await supabase
-		.from<AnswerTypeDB>(answersTable)
-		.select()
-		.eq('question', questionId)
-		.eq('owner', supabase.auth.user().id);
 	printIf(error);
 	return keysToCamelCase(data);
 }
@@ -213,14 +128,14 @@ export async function fetchAnswersOfOthers(
 export async function saveAnswer(
 	answerText: string,
 	questionId: string,
-	version = 1
+	version = 1, session: Session
 ): Promise<AnswerType> {
 	const { data, error } = await supabase
 		.from<AnswerTypeDB>(answersTable)
 		.insert({
 			answer_text: answerText,
 			question: questionId,
-			owner: supabase.auth.user().id,
+			owner: session.user.id,
 			version
 		})
 		.single();
@@ -228,56 +143,56 @@ export async function saveAnswer(
 	return keysToCamelCase(data);
 }
 
-export async function fetchMyfeedback(answerId: string): Promise<feedbackType> {
-	const { data, error } = await supabase
-		.from<feedbackTypeDB>(feedbackTable)
+export async function fetchMyFeedback(answerId: string, session: Session): Promise<FeedbackType> {
+	const { data, error } = await supabaseServerClient(session.accessToken)
+		.from<FeedbackTypeDB>(feedbackTable)
 		.select()
-		.eq('owner', supabase.auth.user().id)
+		.eq('owner', session.user.id)
 		.eq('answer', answerId)
 		.maybeSingle();
 	printIf(error);
 	return keysToCamelCase(data);
 }
 
-export async function fetchfeedbackOfOthers(answerId: string): Promise<feedbackType[]> {
-	const { data, error } = await supabase
-		.from<feedbackTypeDB>(feedbackTable)
+export async function fetchFeedbackOfOthers(answerId: string, session: Session): Promise<FeedbackType[]> {
+	const { data, error } = await supabaseServerClient(session.accessToken)
+		.from<FeedbackTypeDB>(feedbackTable)
 		.select()
 		.eq('answer', answerId)
-		.neq('owner', supabase.auth.user().id);
+		.neq('owner', session.user.id);
 	printIf(error);
 	return keysToCamelCase(data);
 }
 
-export async function savefeedback(
+export async function saveFeedback(
 	feedbackText: string,
-	answerId: string
-): Promise<feedbackType> {
+	answerId: string, session: Session
+): Promise<FeedbackType> {
 	const { data, error } = await supabase
-		.from<feedbackTypeDB>(feedbackTable)
+		.from<FeedbackTypeDB>(feedbackTable)
 		.insert({
 			feedback_text: feedbackText,
 			answer: answerId,
-			owner: supabase.auth.user().id
+			owner: session.user.id
 		})
 		.single();
 	printIf(error);
 	return keysToCamelCase(data);
 }
 
-export async function joinCourse(inviteCode: string): Promise<string> {
+export async function joinCourse(inviteCode: string, session: Session): Promise<string> {
 	if (!inviteCode || inviteCode.length != 10) {
 		console.error('invalid invite code: ' + inviteCode);
 	}
 	const { data, error } = await supabase.rpc('join_course', {
 		invite_code_input: inviteCode,
-		user_id_input: supabase.auth.user().id
+		user_id_input: session.user.id
 	});
 	printIf(error);
 	return data.toString();
 }
 
-export async function saveInviteCode(courseId: string, code: string): Promise<InviteCodeType> {
+export async function saveInviteCode(courseId: string, code: string, session: Session): Promise<InviteCodeType> {
 	const validUntil = new Date();
 	validUntil.setFullYear(2100); // do not expire links for now
 
@@ -287,15 +202,15 @@ export async function saveInviteCode(courseId: string, code: string): Promise<In
 			course: courseId,
 			code,
 			valid_until: validUntil.toISOString(),
-			owner: supabase.auth.user().id
+			owner: session.user.id
 		})
 		.single();
 	printIf(error);
 	return keysToCamelCase(data);
 }
 
-export async function fetchMembers(courseId: string): Promise<MemberType[]> {
-	const { data, error } = await supabase
+export async function fetchMembers(courseId: string, session: Session): Promise<MemberType[]> {
+	const { data, error } = await supabaseServerClient(session.accessToken)
 		.from<MemberTypeDB>(membersView)
 		.select()
 		.eq('course', courseId);
@@ -303,14 +218,18 @@ export async function fetchMembers(courseId: string): Promise<MemberType[]> {
 	return keysToCamelCase(data);
 }
 
-export async function fetchMember(courseUserId: string): Promise<MemberType> {
-	const { data, error } = await supabase.from<MemberTypeDB>(membersView).select().eq('id', courseUserId).single();
+export async function fetchMember(courseUserId: string, session: Session): Promise<MemberType> {
+	const { data, error } = await supabaseServerClient(session.accessToken)
+		.from<MemberTypeDB>(membersView)
+		.select()
+		.eq('id', courseUserId)
+		.single();
 	printIf(error);
 	return keysToCamelCase(data);
 }
 
-export async function fetchQuestionPerformances(courseUserId: string): Promise<QuestionPerformanceType[]> {
-	const { data, error } = await supabase
+export async function fetchQuestionPerformances(courseUserId: string, session: Session): Promise<QuestionPerformanceType[]> {
+	const { data, error } = await supabaseServerClient(session.accessToken)
 		.from<QuestionPerformanceTypeDB>(questionPerformancesView)
 		.select()
 		.eq('id', courseUserId);
@@ -318,8 +237,8 @@ export async function fetchQuestionPerformances(courseUserId: string): Promise<Q
 	return keysToCamelCase(data);
 }
 
-export async function fetchAnswerPerformances(courseUserId: string): Promise<AnswerPerformanceType[]> {
-	const { data, error } = await supabase
+export async function fetchAnswerPerformances(courseUserId: string, session: Session): Promise<AnswerPerformanceType[]> {
+	const { data, error } = await supabaseServerClient(session.accessToken)
 		.from<AnswerPerformanceTypeDB>(answerPerformancesView)
 		.select()
 		.eq('id', courseUserId);
@@ -327,8 +246,8 @@ export async function fetchAnswerPerformances(courseUserId: string): Promise<Ans
 	return keysToCamelCase(data);
 }
 
-export async function fetchfeedbackPerformances(courseUserId: string): Promise<feedbackPerformanceType[]> {
-	const { data, error } = await supabase
+export async function fetchFeedbackPerformances(courseUserId: string, session: Session): Promise<feedbackPerformanceType[]> {
+	const { data, error } = await supabaseServerClient(session.accessToken)
 		.from<feedbackPerformanceTypeDB>(feedbackPerformancesView)
 		.select()
 		.eq('id', courseUserId);
@@ -378,18 +297,18 @@ export async function fetchQuestionTopics(questionIds: string[], session: Sessio
 	return keysToCamelCase(data);
 }
 
-export async function saveQuestionLike(questionId: string): Promise<QuestionLikeType> {
+export async function saveQuestionLike(questionId: string, session: Session): Promise<QuestionLikeType> {
 	const { data, error } = await supabase
 		.from<QuestionLikeTypeDB>(questionLikesTable)
-		.insert({ question: questionId, owner: supabase.auth.user().id })
+		.insert({ question: questionId, owner: session.user.id })
 		.single();
 	printIf(error);
 	return keysToCamelCase(data);
 }
-export async function saveAnswerLike(answerId: string): Promise<AnswerLikeType> {
+export async function saveAnswerLike(answerId: string, session: Session): Promise<AnswerLikeType> {
 	const { data, error } = await supabase
 		.from<AnswerLikeTypeDB>(answerLikesTable)
-		.insert({ answer: answerId, owner: supabase.auth.user().id })
+		.insert({ answer: answerId, owner: session.user.id })
 		.single();
 	printIf(error);
 	return keysToCamelCase(data);
@@ -433,8 +352,8 @@ export async function deleteAnswerLike(answerId: string) {
 	printIf(error);
 }
 
-export async function fetchProgresses(courseUserId: string): Promise<ProgressType[]> {
-	const { data, error } = await supabase
+export async function fetchProgresses(courseUserId: string, session: Session): Promise<ProgressType[]> {
+	const { data, error } = await supabaseServerClient(session.accessToken)
 		.from<ProgressTypeDB>(progressesTable)
 		.select()
 		.eq('course_user', courseUserId)
@@ -469,8 +388,8 @@ export async function fetchQuestionLikes(questionIds: string[], session: Session
 	return keysToCamelCase(data);
 }
 
-export async function fetchAnswerLikes(answerIds: string[]): Promise<AnswerLikeType[]> {
-	const { data, error } = await supabase
+export async function fetchAnswerLikes(answerIds: string[], session: Session): Promise<AnswerLikeType[]> {
+	const { data, error } = await supabaseServerClient(session.accessToken)
 		.from<AnswerLikeTypeDB>(answerLikesTable)
 		.select()
 		.in('answer', answerIds);
@@ -524,7 +443,7 @@ export const progressesTable = 'progresses';
 export type CourseType = CamelCasedPropertiesDeep<definitions['courses']>;
 export type QuestionType = CamelCasedPropertiesDeep<definitions['questions']>;
 export type AnswerType = CamelCasedPropertiesDeep<definitions['answers']>;
-export type feedbackType = CamelCasedPropertiesDeep<definitions['feedback']>;
+export type FeedbackType = CamelCasedPropertiesDeep<definitions['feedback']>;
 export type ProfileType = CamelCasedPropertiesDeep<definitions['profiles']>;
 export type UniversityType = CamelCasedPropertiesDeep<definitions['universities']>;
 export type CourseUserType = CamelCasedPropertiesDeep<definitions['course_user']>;
@@ -546,7 +465,7 @@ export type ProgressType = CamelCasedPropertiesDeep<definitions['progresses']>;
 export type CourseTypeDB = definitions['courses'];
 export type QuestionTypeDB = definitions['questions'];
 export type AnswerTypeDB = definitions['answers'];
-export type feedbackTypeDB = definitions['feedback'];
+export type FeedbackTypeDB = definitions['feedback'];
 export type ProfileTypeDB = definitions['profiles'];
 export type UniversityTypeDB = definitions['universities'];
 export type CourseUserTypeDB = definitions['course_user'];

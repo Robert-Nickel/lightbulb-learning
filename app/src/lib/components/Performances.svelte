@@ -1,18 +1,27 @@
+<script context="module">
+	import { withPageAuth } from '@supabase/auth-helpers-sveltekit';
+	export let course;
+
+	export const load = async ({ session, params }) =>
+		withPageAuth(
+			{
+				redirectTo: '/',
+				user: session.user
+			},
+			async () => {
+				console.log('Find course id from params');
+				console.log({ params });
+				const members = await fetchMembers(course.id, session);
+
+				return { props: { members } };
+			}
+		);
+</script>
+
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { CourseType, fetchMembers, MemberType } from '$lib/supabaseQueries';
 	import { routes } from '$lib/routes';
-
-	export let course: CourseType;
-	let members: MemberType[] = [];
-
-	onMount(() => {
-		refresh();
-	});
-
-	async function refresh() {
-		members = await fetchMembers(course.id);
-	}
+	import { fetchMembers } from '$lib/supabaseQueries';
+	export let members;
 </script>
 
 <main class="container">

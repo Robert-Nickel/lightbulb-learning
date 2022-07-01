@@ -1,21 +1,21 @@
 <script lang="ts" context="module">
-	export const load: Load = async ({ session }) => {
-		const { user } = session as Session;
-		if (!user) return { status: 302, redirect: routes.login };
-		return {
-			props: {
-				user,
-				courses: await fetchCourses(user.id)
+	import { withPageAuth } from '@supabase/auth-helpers-sveltekit';
+
+	export const load = async ({ session }) =>
+		withPageAuth(
+			{
+				redirectTo: '/',
+				user: session.user
+			},
+			async () => {
+				return { props: { courses: await fetchCourses(session) } };
 			}
-		};
-	};
+		);
 </script>
 
 <script lang="ts">
 	import { routes } from '$lib/routes';
 	import { fetchCourses, CourseType } from '$lib/supabaseQueries';
-	import type { Session } from '@supabase/supabase-js';
-	import type { Load } from '@sveltejs/kit';
 
 	export let courses: CourseType[] = [];
 

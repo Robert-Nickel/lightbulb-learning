@@ -1,14 +1,16 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import type { definitions } from '$lib/models/supabase';
 import { CamelCasedPropertiesDeep, keysToCamelCase } from 'object-key-convert';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-export const supabase = createClient(supabaseUrl.toString(), supabaseAnonKey.toString());
+// auth_helper
+const supabase = createClient(supabaseUrl.toString(), supabaseAnonKey.toString());
 
-export async function fetchProfile(userId: string): Promise<ProfileType> {
-	const { data, error } = await supabase
+export async function fetchProfile(userId: string, supabaseClient?: SupabaseClient): Promise<ProfileType> {
+	const client = supabaseClient ? supabaseClient : supabase;
+	const { data, error } = await client
 		.from<ProfileTypeDB>(profilesTable)
 		.select()
 		.eq('user_id', userId)

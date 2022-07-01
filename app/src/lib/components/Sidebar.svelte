@@ -1,7 +1,6 @@
 <script>
 	import { goto } from '$app/navigation';
 	import { routes } from '$lib/routes';
-	import { user } from '$lib/stores/user';
 
 	export let open = false;
 
@@ -24,19 +23,19 @@
 	class:open
 >
 	<div>
-		{#if $user}
+		<!--{#if $user}
 			<nav on:click={close}><a href={routes.root} sveltekit:prefetch>My Courses</a></nav>
 			<nav on:click={close}><a href={routes.newCourse} sveltekit:prefetch>New Course</a></nav>
 			<nav on:click={close}><a href={routes.joinCourse()} sveltekit:prefetch>Join Course</a></nav>
 			<nav on:click={close}><a href={routes.help} sveltekit:prefetch>Help</a></nav>
 		{:else}
 			<nav on:click={close}><a href={routes.login} sveltekit:prefetch>Login</a></nav>
-		{/if}
+		{/if}-->
 	</div>
 
-	{#if $user}
+	<!--{#if $user}
 		<button on:click={logout} class="outline">Logout</button>
-	{/if}
+	{/if}-->
 </aside>
 
 <style>

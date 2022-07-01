@@ -12,6 +12,245 @@ export interface paths {
       };
     };
   };
+  "/answer_likes": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.answer_likes.id"];
+          answer?: parameters["rowFilter.answer_likes.answer"];
+          owner?: parameters["rowFilter.answer_likes.owner"];
+          created_at?: parameters["rowFilter.answer_likes.created_at"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["answer_likes"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** answer_likes */
+          answer_likes?: definitions["answer_likes"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.answer_likes.id"];
+          answer?: parameters["rowFilter.answer_likes.answer"];
+          owner?: parameters["rowFilter.answer_likes.owner"];
+          created_at?: parameters["rowFilter.answer_likes.created_at"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.answer_likes.id"];
+          answer?: parameters["rowFilter.answer_likes.answer"];
+          owner?: parameters["rowFilter.answer_likes.owner"];
+          created_at?: parameters["rowFilter.answer_likes.created_at"];
+        };
+        body: {
+          /** answer_likes */
+          answer_likes?: definitions["answer_likes"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
+  "/answer_performances": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.answer_performances.id"];
+          answer_id?: parameters["rowFilter.answer_performances.answer_id"];
+          answer_text?: parameters["rowFilter.answer_performances.answer_text"];
+          version?: parameters["rowFilter.answer_performances.version"];
+          created_at?: parameters["rowFilter.answer_performances.created_at"];
+          question_text?: parameters["rowFilter.answer_performances.question_text"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["answer_performances"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+  };
+  "/answers": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.answers.id"];
+          question?: parameters["rowFilter.answers.question"];
+          created_at?: parameters["rowFilter.answers.created_at"];
+          answer_text?: parameters["rowFilter.answers.answer_text"];
+          /** Incremented for the new row if the user improves his answer. */
+          version?: parameters["rowFilter.answers.version"];
+          owner?: parameters["rowFilter.answers.owner"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["answers"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** answers */
+          answers?: definitions["answers"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.answers.id"];
+          question?: parameters["rowFilter.answers.question"];
+          created_at?: parameters["rowFilter.answers.created_at"];
+          answer_text?: parameters["rowFilter.answers.answer_text"];
+          /** Incremented for the new row if the user improves his answer. */
+          version?: parameters["rowFilter.answers.version"];
+          owner?: parameters["rowFilter.answers.owner"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.answers.id"];
+          question?: parameters["rowFilter.answers.question"];
+          created_at?: parameters["rowFilter.answers.created_at"];
+          answer_text?: parameters["rowFilter.answers.answer_text"];
+          /** Incremented for the new row if the user improves his answer. */
+          version?: parameters["rowFilter.answers.version"];
+          owner?: parameters["rowFilter.answers.owner"];
+        };
+        body: {
+          /** answers */
+          answers?: definitions["answers"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
   "/course_user": {
     get: {
       parameters: {
@@ -204,6 +443,143 @@ export interface paths {
       };
     };
   };
+  "/feedback": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.feedback.id"];
+          answer?: parameters["rowFilter.feedback.answer"];
+          created_at?: parameters["rowFilter.feedback.created_at"];
+          feedback_text?: parameters["rowFilter.feedback.feedback_text"];
+          owner?: parameters["rowFilter.feedback.owner"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["feedback"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** feedback */
+          feedback?: definitions["feedback"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.feedback.id"];
+          answer?: parameters["rowFilter.feedback.answer"];
+          created_at?: parameters["rowFilter.feedback.created_at"];
+          feedback_text?: parameters["rowFilter.feedback.feedback_text"];
+          owner?: parameters["rowFilter.feedback.owner"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.feedback.id"];
+          answer?: parameters["rowFilter.feedback.answer"];
+          created_at?: parameters["rowFilter.feedback.created_at"];
+          feedback_text?: parameters["rowFilter.feedback.feedback_text"];
+          owner?: parameters["rowFilter.feedback.owner"];
+        };
+        body: {
+          /** feedback */
+          feedback?: definitions["feedback"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
+  "/feedback_performances": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.feedback_performances.id"];
+          feedback_id?: parameters["rowFilter.feedback_performances.feedback_id"];
+          feedback_text?: parameters["rowFilter.feedback_performances.feedback_text"];
+          created_at?: parameters["rowFilter.feedback_performances.created_at"];
+          answer_text?: parameters["rowFilter.feedback_performances.answer_text"];
+          question_text?: parameters["rowFilter.feedback_performances.question_text"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["feedback_performances"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+  };
   "/invite_codes": {
     get: {
       parameters: {
@@ -343,14 +719,16 @@ export interface paths {
       };
     };
   };
-  "/answer_likes": {
+  "/profiles": {
     get: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.answer_likes.id"];
-          answer?: parameters["rowFilter.answer_likes.answer"];
-          owner?: parameters["rowFilter.answer_likes.owner"];
-          created_at?: parameters["rowFilter.answer_likes.created_at"];
+          id?: parameters["rowFilter.profiles.id"];
+          first_name?: parameters["rowFilter.profiles.first_name"];
+          last_name?: parameters["rowFilter.profiles.last_name"];
+          university?: parameters["rowFilter.profiles.university"];
+          user_id?: parameters["rowFilter.profiles.user_id"];
+          created_at?: parameters["rowFilter.profiles.created_at"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -372,7 +750,7 @@ export interface paths {
       responses: {
         /** OK */
         200: {
-          schema: definitions["answer_likes"][];
+          schema: definitions["profiles"][];
         };
         /** Partial Content */
         206: unknown;
@@ -381,8 +759,8 @@ export interface paths {
     post: {
       parameters: {
         body: {
-          /** answer_likes */
-          answer_likes?: definitions["answer_likes"];
+          /** profiles */
+          profiles?: definitions["profiles"];
         };
         query: {
           /** Filtering Columns */
@@ -401,10 +779,12 @@ export interface paths {
     delete: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.answer_likes.id"];
-          answer?: parameters["rowFilter.answer_likes.answer"];
-          owner?: parameters["rowFilter.answer_likes.owner"];
-          created_at?: parameters["rowFilter.answer_likes.created_at"];
+          id?: parameters["rowFilter.profiles.id"];
+          first_name?: parameters["rowFilter.profiles.first_name"];
+          last_name?: parameters["rowFilter.profiles.last_name"];
+          university?: parameters["rowFilter.profiles.university"];
+          user_id?: parameters["rowFilter.profiles.user_id"];
+          created_at?: parameters["rowFilter.profiles.created_at"];
         };
         header: {
           /** Preference */
@@ -419,14 +799,16 @@ export interface paths {
     patch: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.answer_likes.id"];
-          answer?: parameters["rowFilter.answer_likes.answer"];
-          owner?: parameters["rowFilter.answer_likes.owner"];
-          created_at?: parameters["rowFilter.answer_likes.created_at"];
+          id?: parameters["rowFilter.profiles.id"];
+          first_name?: parameters["rowFilter.profiles.first_name"];
+          last_name?: parameters["rowFilter.profiles.last_name"];
+          university?: parameters["rowFilter.profiles.university"];
+          user_id?: parameters["rowFilter.profiles.user_id"];
+          created_at?: parameters["rowFilter.profiles.created_at"];
         };
         body: {
-          /** answer_likes */
-          answer_likes?: definitions["answer_likes"];
+          /** profiles */
+          profiles?: definitions["profiles"];
         };
         header: {
           /** Preference */
@@ -439,16 +821,14 @@ export interface paths {
       };
     };
   };
-  "/answer_performances": {
+  "/progresses": {
     get: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.answer_performances.id"];
-          answer_id?: parameters["rowFilter.answer_performances.answer_id"];
-          answer_text?: parameters["rowFilter.answer_performances.answer_text"];
-          created_at?: parameters["rowFilter.answer_performances.created_at"];
-          likes?: parameters["rowFilter.answer_performances.likes"];
-          question_text?: parameters["rowFilter.answer_performances.question_text"];
+          id?: parameters["rowFilter.progresses.id"];
+          course_user?: parameters["rowFilter.progresses.course_user"];
+          percentage?: parameters["rowFilter.progresses.percentage"];
+          created_at?: parameters["rowFilter.progresses.created_at"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -470,46 +850,7 @@ export interface paths {
       responses: {
         /** OK */
         200: {
-          schema: definitions["answer_performances"][];
-        };
-        /** Partial Content */
-        206: unknown;
-      };
-    };
-  };
-  "/answers": {
-    get: {
-      parameters: {
-        query: {
-          id?: parameters["rowFilter.answers.id"];
-          question?: parameters["rowFilter.answers.question"];
-          created_at?: parameters["rowFilter.answers.created_at"];
-          answer_text?: parameters["rowFilter.answers.answer_text"];
-          /** Incremented for the new row if the user improves his answer. */
-          version?: parameters["rowFilter.answers.version"];
-          owner?: parameters["rowFilter.answers.owner"];
-          /** Filtering Columns */
-          select?: parameters["select"];
-          /** Ordering */
-          order?: parameters["order"];
-          /** Limiting and Pagination */
-          offset?: parameters["offset"];
-          /** Limiting and Pagination */
-          limit?: parameters["limit"];
-        };
-        header: {
-          /** Limiting and Pagination */
-          Range?: parameters["range"];
-          /** Limiting and Pagination */
-          "Range-Unit"?: parameters["rangeUnit"];
-          /** Preference */
-          Prefer?: parameters["preferCount"];
-        };
-      };
-      responses: {
-        /** OK */
-        200: {
-          schema: definitions["answers"][];
+          schema: definitions["progresses"][];
         };
         /** Partial Content */
         206: unknown;
@@ -518,8 +859,8 @@ export interface paths {
     post: {
       parameters: {
         body: {
-          /** answers */
-          answers?: definitions["answers"];
+          /** progresses */
+          progresses?: definitions["progresses"];
         };
         query: {
           /** Filtering Columns */
@@ -538,13 +879,10 @@ export interface paths {
     delete: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.answers.id"];
-          question?: parameters["rowFilter.answers.question"];
-          created_at?: parameters["rowFilter.answers.created_at"];
-          answer_text?: parameters["rowFilter.answers.answer_text"];
-          /** Incremented for the new row if the user improves his answer. */
-          version?: parameters["rowFilter.answers.version"];
-          owner?: parameters["rowFilter.answers.owner"];
+          id?: parameters["rowFilter.progresses.id"];
+          course_user?: parameters["rowFilter.progresses.course_user"];
+          percentage?: parameters["rowFilter.progresses.percentage"];
+          created_at?: parameters["rowFilter.progresses.created_at"];
         };
         header: {
           /** Preference */
@@ -559,17 +897,14 @@ export interface paths {
     patch: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.answers.id"];
-          question?: parameters["rowFilter.answers.question"];
-          created_at?: parameters["rowFilter.answers.created_at"];
-          answer_text?: parameters["rowFilter.answers.answer_text"];
-          /** Incremented for the new row if the user improves his answer. */
-          version?: parameters["rowFilter.answers.version"];
-          owner?: parameters["rowFilter.answers.owner"];
+          id?: parameters["rowFilter.progresses.id"];
+          course_user?: parameters["rowFilter.progresses.course_user"];
+          percentage?: parameters["rowFilter.progresses.percentage"];
+          created_at?: parameters["rowFilter.progresses.created_at"];
         };
         body: {
-          /** answers */
-          answers?: definitions["answers"];
+          /** progresses */
+          progresses?: definitions["progresses"];
         };
         header: {
           /** Preference */
@@ -579,143 +914,6 @@ export interface paths {
       responses: {
         /** No Content */
         204: never;
-      };
-    };
-  };
-  "/feedback": {
-    get: {
-      parameters: {
-        query: {
-          id?: parameters["rowFilter.feedback.id"];
-          answer?: parameters["rowFilter.feedback.answer"];
-          created_at?: parameters["rowFilter.feedback.created_at"];
-          feedback_text?: parameters["rowFilter.feedback.feedback_text"];
-          owner?: parameters["rowFilter.feedback.owner"];
-          /** Filtering Columns */
-          select?: parameters["select"];
-          /** Ordering */
-          order?: parameters["order"];
-          /** Limiting and Pagination */
-          offset?: parameters["offset"];
-          /** Limiting and Pagination */
-          limit?: parameters["limit"];
-        };
-        header: {
-          /** Limiting and Pagination */
-          Range?: parameters["range"];
-          /** Limiting and Pagination */
-          "Range-Unit"?: parameters["rangeUnit"];
-          /** Preference */
-          Prefer?: parameters["preferCount"];
-        };
-      };
-      responses: {
-        /** OK */
-        200: {
-          schema: definitions["feedback"][];
-        };
-        /** Partial Content */
-        206: unknown;
-      };
-    };
-    post: {
-      parameters: {
-        body: {
-          /** feedback */
-          feedback?: definitions["feedback"];
-        };
-        query: {
-          /** Filtering Columns */
-          select?: parameters["select"];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters["preferReturn"];
-        };
-      };
-      responses: {
-        /** Created */
-        201: unknown;
-      };
-    };
-    delete: {
-      parameters: {
-        query: {
-          id?: parameters["rowFilter.feedback.id"];
-          answer?: parameters["rowFilter.feedback.answer"];
-          created_at?: parameters["rowFilter.feedback.created_at"];
-          feedback_text?: parameters["rowFilter.feedback.feedback_text"];
-          owner?: parameters["rowFilter.feedback.owner"];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters["preferReturn"];
-        };
-      };
-      responses: {
-        /** No Content */
-        204: never;
-      };
-    };
-    patch: {
-      parameters: {
-        query: {
-          id?: parameters["rowFilter.feedback.id"];
-          answer?: parameters["rowFilter.feedback.answer"];
-          created_at?: parameters["rowFilter.feedback.created_at"];
-          feedback_text?: parameters["rowFilter.feedback.feedback_text"];
-          owner?: parameters["rowFilter.feedback.owner"];
-        };
-        body: {
-          /** feedback */
-          feedback?: definitions["feedback"];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters["preferReturn"];
-        };
-      };
-      responses: {
-        /** No Content */
-        204: never;
-      };
-    };
-  };
-  "/feedback_performances": {
-    get: {
-      parameters: {
-        query: {
-          id?: parameters["rowFilter.feedback_performances.id"];
-          feedback_id?: parameters["rowFilter.feedback_performances.feedback_id"];
-          feedback_text?: parameters["rowFilter.feedback_performances.feedback_text"];
-          created_at?: parameters["rowFilter.feedback_performances.created_at"];
-          answer_text?: parameters["rowFilter.feedback_performances.answer_text"];
-          question_text?: parameters["rowFilter.feedback_performances.question_text"];
-          /** Filtering Columns */
-          select?: parameters["select"];
-          /** Ordering */
-          order?: parameters["order"];
-          /** Limiting and Pagination */
-          offset?: parameters["offset"];
-          /** Limiting and Pagination */
-          limit?: parameters["limit"];
-        };
-        header: {
-          /** Limiting and Pagination */
-          Range?: parameters["range"];
-          /** Limiting and Pagination */
-          "Range-Unit"?: parameters["rangeUnit"];
-          /** Preference */
-          Prefer?: parameters["preferCount"];
-        };
-      };
-      responses: {
-        /** OK */
-        200: {
-          schema: definitions["feedback_performances"][];
-        };
-        /** Partial Content */
-        206: unknown;
       };
     };
   };
@@ -936,204 +1134,6 @@ export interface paths {
         body: {
           /** question_topic */
           question_topic?: definitions["question_topic"];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters["preferReturn"];
-        };
-      };
-      responses: {
-        /** No Content */
-        204: never;
-      };
-    };
-  };
-  "/profiles": {
-    get: {
-      parameters: {
-        query: {
-          id?: parameters["rowFilter.profiles.id"];
-          first_name?: parameters["rowFilter.profiles.first_name"];
-          last_name?: parameters["rowFilter.profiles.last_name"];
-          university?: parameters["rowFilter.profiles.university"];
-          user_id?: parameters["rowFilter.profiles.user_id"];
-          created_at?: parameters["rowFilter.profiles.created_at"];
-          /** Filtering Columns */
-          select?: parameters["select"];
-          /** Ordering */
-          order?: parameters["order"];
-          /** Limiting and Pagination */
-          offset?: parameters["offset"];
-          /** Limiting and Pagination */
-          limit?: parameters["limit"];
-        };
-        header: {
-          /** Limiting and Pagination */
-          Range?: parameters["range"];
-          /** Limiting and Pagination */
-          "Range-Unit"?: parameters["rangeUnit"];
-          /** Preference */
-          Prefer?: parameters["preferCount"];
-        };
-      };
-      responses: {
-        /** OK */
-        200: {
-          schema: definitions["profiles"][];
-        };
-        /** Partial Content */
-        206: unknown;
-      };
-    };
-    post: {
-      parameters: {
-        body: {
-          /** profiles */
-          profiles?: definitions["profiles"];
-        };
-        query: {
-          /** Filtering Columns */
-          select?: parameters["select"];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters["preferReturn"];
-        };
-      };
-      responses: {
-        /** Created */
-        201: unknown;
-      };
-    };
-    delete: {
-      parameters: {
-        query: {
-          id?: parameters["rowFilter.profiles.id"];
-          first_name?: parameters["rowFilter.profiles.first_name"];
-          last_name?: parameters["rowFilter.profiles.last_name"];
-          university?: parameters["rowFilter.profiles.university"];
-          user_id?: parameters["rowFilter.profiles.user_id"];
-          created_at?: parameters["rowFilter.profiles.created_at"];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters["preferReturn"];
-        };
-      };
-      responses: {
-        /** No Content */
-        204: never;
-      };
-    };
-    patch: {
-      parameters: {
-        query: {
-          id?: parameters["rowFilter.profiles.id"];
-          first_name?: parameters["rowFilter.profiles.first_name"];
-          last_name?: parameters["rowFilter.profiles.last_name"];
-          university?: parameters["rowFilter.profiles.university"];
-          user_id?: parameters["rowFilter.profiles.user_id"];
-          created_at?: parameters["rowFilter.profiles.created_at"];
-        };
-        body: {
-          /** profiles */
-          profiles?: definitions["profiles"];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters["preferReturn"];
-        };
-      };
-      responses: {
-        /** No Content */
-        204: never;
-      };
-    };
-  };
-  "/progresses": {
-    get: {
-      parameters: {
-        query: {
-          id?: parameters["rowFilter.progresses.id"];
-          course_user?: parameters["rowFilter.progresses.course_user"];
-          percentage?: parameters["rowFilter.progresses.percentage"];
-          created_at?: parameters["rowFilter.progresses.created_at"];
-          /** Filtering Columns */
-          select?: parameters["select"];
-          /** Ordering */
-          order?: parameters["order"];
-          /** Limiting and Pagination */
-          offset?: parameters["offset"];
-          /** Limiting and Pagination */
-          limit?: parameters["limit"];
-        };
-        header: {
-          /** Limiting and Pagination */
-          Range?: parameters["range"];
-          /** Limiting and Pagination */
-          "Range-Unit"?: parameters["rangeUnit"];
-          /** Preference */
-          Prefer?: parameters["preferCount"];
-        };
-      };
-      responses: {
-        /** OK */
-        200: {
-          schema: definitions["progresses"][];
-        };
-        /** Partial Content */
-        206: unknown;
-      };
-    };
-    post: {
-      parameters: {
-        body: {
-          /** progresses */
-          progresses?: definitions["progresses"];
-        };
-        query: {
-          /** Filtering Columns */
-          select?: parameters["select"];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters["preferReturn"];
-        };
-      };
-      responses: {
-        /** Created */
-        201: unknown;
-      };
-    };
-    delete: {
-      parameters: {
-        query: {
-          id?: parameters["rowFilter.progresses.id"];
-          course_user?: parameters["rowFilter.progresses.course_user"];
-          percentage?: parameters["rowFilter.progresses.percentage"];
-          created_at?: parameters["rowFilter.progresses.created_at"];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters["preferReturn"];
-        };
-      };
-      responses: {
-        /** No Content */
-        204: never;
-      };
-    };
-    patch: {
-      parameters: {
-        query: {
-          id?: parameters["rowFilter.progresses.id"];
-          course_user?: parameters["rowFilter.progresses.course_user"];
-          percentage?: parameters["rowFilter.progresses.percentage"];
-          created_at?: parameters["rowFilter.progresses.created_at"];
-        };
-        body: {
-          /** progresses */
-          progresses?: definitions["progresses"];
         };
         header: {
           /** Preference */
@@ -1575,6 +1575,79 @@ export interface paths {
 }
 
 export interface definitions {
+  answer_likes: {
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     * @default extensions.uuid_generate_v4()
+     */
+    id: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `answers.id`.<fk table='answers' column='id'/>
+     */
+    answer: string;
+    /** Format: uuid */
+    owner: string;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at: string;
+  };
+  answer_performances: {
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    id?: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    answer_id?: string;
+    /** Format: text */
+    answer_text?: string;
+    /** Format: bigint */
+    version?: number;
+    /** Format: timestamp with time zone */
+    created_at?: string;
+    /** Format: text */
+    question_text?: string;
+  };
+  answers: {
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     * @default extensions.uuid_generate_v4()
+     */
+    id: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `questions.id`.<fk table='questions' column='id'/>
+     */
+    question: string;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at: string;
+    /** Format: text */
+    answer_text: string;
+    /**
+     * Format: bigint
+     * @description Incremented for the new row if the user improves his answer.
+     */
+    version: number;
+    /** Format: uuid */
+    owner: string;
+  };
   course_user: {
     /**
      * Format: uuid
@@ -1614,6 +1687,52 @@ export interface definitions {
      * @default now()
      */
     created_at: string;
+  };
+  feedback: {
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     * @default extensions.uuid_generate_v4()
+     */
+    id: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `answers.id`.<fk table='answers' column='id'/>
+     */
+    answer: string;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at: string;
+    /** Format: text */
+    feedback_text: string;
+    /** Format: uuid */
+    owner: string;
+  };
+  feedback_performances: {
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    id?: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    feedback_id?: string;
+    /** Format: text */
+    feedback_text?: string;
+    /** Format: timestamp with time zone */
+    created_at?: string;
+    /** Format: text */
+    answer_text?: string;
+    /** Format: text */
+    question_text?: string;
   };
   invite_codes: {
     /**
@@ -1661,7 +1780,7 @@ export interface definitions {
     /** Format: text */
     last_name?: string;
   };
-  answer_likes: {
+  profiles: {
     /**
      * Format: uuid
      * @description Note:
@@ -1669,43 +1788,25 @@ export interface definitions {
      * @default extensions.uuid_generate_v4()
      */
     id: string;
+    /** Format: text */
+    first_name: string;
+    /** Format: text */
+    last_name: string;
     /**
      * Format: uuid
      * @description Note:
-     * This is a Foreign Key to `answers.id`.<fk table='answers' column='id'/>
+     * This is a Foreign Key to `universities.id`.<fk table='universities' column='id'/>
      */
-    answer: string;
+    university: string;
     /** Format: uuid */
-    owner: string;
+    user_id: string;
     /**
      * Format: timestamp with time zone
      * @default now()
      */
     created_at: string;
   };
-  answer_performances: {
-    /**
-     * Format: uuid
-     * @description Note:
-     * This is a Primary Key.<pk/>
-     */
-    id?: string;
-    /**
-     * Format: uuid
-     * @description Note:
-     * This is a Primary Key.<pk/>
-     */
-    answer_id?: string;
-    /** Format: text */
-    answer_text?: string;
-    /** Format: timestamp with time zone */
-    created_at?: string;
-    /** Format: bigint */
-    likes?: number;
-    /** Format: text */
-    question_text?: string;
-  };
-  answers: {
+  progresses: {
     /**
      * Format: uuid
      * @description Note:
@@ -1713,72 +1814,15 @@ export interface definitions {
      * @default extensions.uuid_generate_v4()
      */
     id: string;
-    /**
-     * Format: uuid
-     * @description Note:
-     * This is a Foreign Key to `questions.id`.<fk table='questions' column='id'/>
-     */
-    question: string;
+    /** Format: uuid */
+    course_user: string;
+    /** Format: smallint */
+    percentage: number;
     /**
      * Format: timestamp with time zone
      * @default now()
      */
     created_at: string;
-    /** Format: text */
-    answer_text: string;
-    /**
-     * Format: bigint
-     * @description Incremented for the new row if the user improves his answer.
-     */
-    version: number;
-    /** Format: uuid */
-    owner: string;
-  };
-  feedback: {
-    /**
-     * Format: uuid
-     * @description Note:
-     * This is a Primary Key.<pk/>
-     * @default extensions.uuid_generate_v4()
-     */
-    id: string;
-    /**
-     * Format: uuid
-     * @description Note:
-     * This is a Foreign Key to `answers.id`.<fk table='answers' column='id'/>
-     */
-    answer: string;
-    /**
-     * Format: timestamp with time zone
-     * @default now()
-     */
-    created_at: string;
-    /** Format: text */
-    feedback_text: string;
-    /** Format: uuid */
-    owner: string;
-  };
-  feedback_performances: {
-    /**
-     * Format: uuid
-     * @description Note:
-     * This is a Primary Key.<pk/>
-     */
-    id?: string;
-    /**
-     * Format: uuid
-     * @description Note:
-     * This is a Primary Key.<pk/>
-     */
-    feedback_id?: string;
-    /** Format: text */
-    feedback_text?: string;
-    /** Format: timestamp with time zone */
-    created_at?: string;
-    /** Format: text */
-    answer_text?: string;
-    /** Format: text */
-    question_text?: string;
   };
   question_likes: {
     /**
@@ -1842,50 +1886,6 @@ export interface definitions {
      * This is a Foreign Key to `topics.id`.<fk table='topics' column='id'/>
      */
     topic: string;
-    /**
-     * Format: timestamp with time zone
-     * @default now()
-     */
-    created_at: string;
-  };
-  profiles: {
-    /**
-     * Format: uuid
-     * @description Note:
-     * This is a Primary Key.<pk/>
-     * @default extensions.uuid_generate_v4()
-     */
-    id: string;
-    /** Format: text */
-    first_name: string;
-    /** Format: text */
-    last_name: string;
-    /**
-     * Format: uuid
-     * @description Note:
-     * This is a Foreign Key to `universities.id`.<fk table='universities' column='id'/>
-     */
-    university: string;
-    /** Format: uuid */
-    user_id: string;
-    /**
-     * Format: timestamp with time zone
-     * @default now()
-     */
-    created_at: string;
-  };
-  progresses: {
-    /**
-     * Format: uuid
-     * @description Note:
-     * This is a Primary Key.<pk/>
-     * @default extensions.uuid_generate_v4()
-     */
-    id: string;
-    /** Format: uuid */
-    course_user: string;
-    /** Format: smallint */
-    percentage: number;
     /**
      * Format: timestamp with time zone
      * @default now()
@@ -1998,6 +1998,47 @@ export interface parameters {
   offset: string;
   /** @description Limiting and Pagination */
   limit: string;
+  /** @description answer_likes */
+  "body.answer_likes": definitions["answer_likes"];
+  /** Format: uuid */
+  "rowFilter.answer_likes.id": string;
+  /** Format: uuid */
+  "rowFilter.answer_likes.answer": string;
+  /** Format: uuid */
+  "rowFilter.answer_likes.owner": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.answer_likes.created_at": string;
+  /** @description answer_performances */
+  "body.answer_performances": definitions["answer_performances"];
+  /** Format: uuid */
+  "rowFilter.answer_performances.id": string;
+  /** Format: uuid */
+  "rowFilter.answer_performances.answer_id": string;
+  /** Format: text */
+  "rowFilter.answer_performances.answer_text": string;
+  /** Format: bigint */
+  "rowFilter.answer_performances.version": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.answer_performances.created_at": string;
+  /** Format: text */
+  "rowFilter.answer_performances.question_text": string;
+  /** @description answers */
+  "body.answers": definitions["answers"];
+  /** Format: uuid */
+  "rowFilter.answers.id": string;
+  /** Format: uuid */
+  "rowFilter.answers.question": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.answers.created_at": string;
+  /** Format: text */
+  "rowFilter.answers.answer_text": string;
+  /**
+   * Format: bigint
+   * @description Incremented for the new row if the user improves his answer.
+   */
+  "rowFilter.answers.version": string;
+  /** Format: uuid */
+  "rowFilter.answers.owner": string;
   /** @description course_user */
   "body.course_user": definitions["course_user"];
   /** Format: uuid */
@@ -2018,73 +2059,6 @@ export interface parameters {
   "rowFilter.courses.owner": string;
   /** Format: timestamp with time zone */
   "rowFilter.courses.created_at": string;
-  /** @description invite_codes */
-  "body.invite_codes": definitions["invite_codes"];
-  /** Format: uuid */
-  "rowFilter.invite_codes.id": string;
-  /** Format: text */
-  "rowFilter.invite_codes.code": string;
-  /** Format: uuid */
-  "rowFilter.invite_codes.course": string;
-  /** Format: uuid */
-  "rowFilter.invite_codes.owner": string;
-  /** Format: timestamp without time zone */
-  "rowFilter.invite_codes.valid_until": string;
-  /** Format: timestamp with time zone */
-  "rowFilter.invite_codes.created_at": string;
-  /** @description members */
-  "body.members": definitions["members"];
-  /** Format: uuid */
-  "rowFilter.members.id": string;
-  /** Format: uuid */
-  "rowFilter.members.course": string;
-  /** Format: uuid */
-  "rowFilter.members.user_id": string;
-  /** Format: text */
-  "rowFilter.members.first_name": string;
-  /** Format: text */
-  "rowFilter.members.last_name": string;
-  /** @description answer_likes */
-  "body.answer_likes": definitions["answer_likes"];
-  /** Format: uuid */
-  "rowFilter.answer_likes.id": string;
-  /** Format: uuid */
-  "rowFilter.answer_likes.answer": string;
-  /** Format: uuid */
-  "rowFilter.answer_likes.owner": string;
-  /** Format: timestamp with time zone */
-  "rowFilter.answer_likes.created_at": string;
-  /** @description answer_performances */
-  "body.answer_performances": definitions["answer_performances"];
-  /** Format: uuid */
-  "rowFilter.answer_performances.id": string;
-  /** Format: uuid */
-  "rowFilter.answer_performances.answer_id": string;
-  /** Format: text */
-  "rowFilter.answer_performances.answer_text": string;
-  /** Format: timestamp with time zone */
-  "rowFilter.answer_performances.created_at": string;
-  /** Format: bigint */
-  "rowFilter.answer_performances.likes": string;
-  /** Format: text */
-  "rowFilter.answer_performances.question_text": string;
-  /** @description answers */
-  "body.answers": definitions["answers"];
-  /** Format: uuid */
-  "rowFilter.answers.id": string;
-  /** Format: uuid */
-  "rowFilter.answers.question": string;
-  /** Format: timestamp with time zone */
-  "rowFilter.answers.created_at": string;
-  /** Format: text */
-  "rowFilter.answers.answer_text": string;
-  /**
-   * Format: bigint
-   * @description Incremented for the new row if the user improves his answer.
-   */
-  "rowFilter.answers.version": string;
-  /** Format: uuid */
-  "rowFilter.answers.owner": string;
   /** @description feedback */
   "body.feedback": definitions["feedback"];
   /** Format: uuid */
@@ -2111,6 +2085,56 @@ export interface parameters {
   "rowFilter.feedback_performances.answer_text": string;
   /** Format: text */
   "rowFilter.feedback_performances.question_text": string;
+  /** @description invite_codes */
+  "body.invite_codes": definitions["invite_codes"];
+  /** Format: uuid */
+  "rowFilter.invite_codes.id": string;
+  /** Format: text */
+  "rowFilter.invite_codes.code": string;
+  /** Format: uuid */
+  "rowFilter.invite_codes.course": string;
+  /** Format: uuid */
+  "rowFilter.invite_codes.owner": string;
+  /** Format: timestamp without time zone */
+  "rowFilter.invite_codes.valid_until": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.invite_codes.created_at": string;
+  /** @description members */
+  "body.members": definitions["members"];
+  /** Format: uuid */
+  "rowFilter.members.id": string;
+  /** Format: uuid */
+  "rowFilter.members.course": string;
+  /** Format: uuid */
+  "rowFilter.members.user_id": string;
+  /** Format: text */
+  "rowFilter.members.first_name": string;
+  /** Format: text */
+  "rowFilter.members.last_name": string;
+  /** @description profiles */
+  "body.profiles": definitions["profiles"];
+  /** Format: uuid */
+  "rowFilter.profiles.id": string;
+  /** Format: text */
+  "rowFilter.profiles.first_name": string;
+  /** Format: text */
+  "rowFilter.profiles.last_name": string;
+  /** Format: uuid */
+  "rowFilter.profiles.university": string;
+  /** Format: uuid */
+  "rowFilter.profiles.user_id": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.profiles.created_at": string;
+  /** @description progresses */
+  "body.progresses": definitions["progresses"];
+  /** Format: uuid */
+  "rowFilter.progresses.id": string;
+  /** Format: uuid */
+  "rowFilter.progresses.course_user": string;
+  /** Format: smallint */
+  "rowFilter.progresses.percentage": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.progresses.created_at": string;
   /** @description question_likes */
   "body.question_likes": definitions["question_likes"];
   /** Format: uuid */
@@ -2143,30 +2167,6 @@ export interface parameters {
   "rowFilter.question_topic.topic": string;
   /** Format: timestamp with time zone */
   "rowFilter.question_topic.created_at": string;
-  /** @description profiles */
-  "body.profiles": definitions["profiles"];
-  /** Format: uuid */
-  "rowFilter.profiles.id": string;
-  /** Format: text */
-  "rowFilter.profiles.first_name": string;
-  /** Format: text */
-  "rowFilter.profiles.last_name": string;
-  /** Format: uuid */
-  "rowFilter.profiles.university": string;
-  /** Format: uuid */
-  "rowFilter.profiles.user_id": string;
-  /** Format: timestamp with time zone */
-  "rowFilter.profiles.created_at": string;
-  /** @description progresses */
-  "body.progresses": definitions["progresses"];
-  /** Format: uuid */
-  "rowFilter.progresses.id": string;
-  /** Format: uuid */
-  "rowFilter.progresses.course_user": string;
-  /** Format: smallint */
-  "rowFilter.progresses.percentage": string;
-  /** Format: timestamp with time zone */
-  "rowFilter.progresses.created_at": string;
   /** @description questions */
   "body.questions": definitions["questions"];
   /** Format: uuid */

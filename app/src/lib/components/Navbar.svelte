@@ -2,7 +2,6 @@
 	import { goto } from '$app/navigation';
 	import { routes } from '$lib/routes';
 	import Hamburger from './Hamburger.svelte';
-	import { user } from '$lib/stores/user';
 
 	export let sidebar = false;
 </script>
@@ -21,7 +20,7 @@
 			>
 		</nav>
 	</div>
-	{#if !$user}
+	<!--{#if !$user}
 		<nav>
 			<button
 				class="outline"
@@ -30,7 +29,7 @@
 				}}>Login</button
 			>
 		</nav>
-	{/if}
+	{/if}-->
 </header>
 
 <!--

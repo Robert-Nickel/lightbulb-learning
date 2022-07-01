@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { saveInviteCode } from '$lib/supabaseClient';
+	import { saveInviteCode } from '$lib/supabaseQueries';
 	export let courseId;
 	let inviteCode: string;
 </script>

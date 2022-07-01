@@ -13,7 +13,7 @@
 
 <script lang="ts">
 	import { routes } from '$lib/routes';
-	import { fetchCourses, CourseType } from '$lib/supabaseClient';
+	import { fetchCourses, CourseType } from '$lib/supabaseQueries';
 	import type { Session } from '@supabase/supabase-js';
 	import type { Load } from '@sveltejs/kit';
 

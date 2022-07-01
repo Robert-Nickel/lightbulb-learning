@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { fetchTopics } from '$lib/supabaseClient';
+	import { fetchTopics } from '$lib/supabaseQueries';
 	import { onMount } from 'svelte';
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();

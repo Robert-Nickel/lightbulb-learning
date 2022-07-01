@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { TopicType } from '$lib/supabaseClient';
+	import type { TopicType } from '$lib/supabaseQueries';
 	import { onMount } from 'svelte';
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();

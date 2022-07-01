@@ -42,7 +42,7 @@
 		fetchfeedbackPerformances,
 		fetchQuestionPerformances,
 		MemberType
-	} from '$lib/supabaseClient';
+	} from '$lib/supabaseQueries';
 
 	export let member: MemberType;
 	export let allPerformances: { createdAt: string }[];

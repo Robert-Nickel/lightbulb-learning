@@ -105,7 +105,7 @@
 		fetchMyAnswerLikes,
 		deleteAnswerLike,
 		saveAnswerLike
-	} from '$lib/supabaseClient';
+	} from '$lib/supabaseQueries';
 	import { user } from '$lib/stores/user';
 	import autosize from '../../../node_modules/autosize';
 	import type { Load } from '@sveltejs/kit';
@@ -126,7 +126,7 @@
 	{#if question}
 		<Back text="Back to {courseDescription}" route="/course/{question.course}" />
 
-		<h1 class={question.owner == $user.id ? 'yours pl-4' : ''}>{question.questionText}</h1>
+		<!--<h1 class={question.owner == $user.id ? 'yours pl-4' : ''}>{question.questionText}</h1>-->
 
 		{#if myAnswer}
 			<a href={routes.answer(myAnswer.id)} class="light-link" sveltekit:prefetch>

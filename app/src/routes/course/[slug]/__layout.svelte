@@ -22,10 +22,9 @@
 
 <script lang="ts">
 	import Back from '$lib/components/Back.svelte';
-	import { CourseType, fetchCourse, fetchCourseUser, fetchMyLatestProgress } from '$lib/supabaseClient';
+	import { CourseType, fetchCourse, fetchCourseUser, fetchMyLatestProgress } from '$lib/supabaseQueries';
 	import type { Session } from '@supabase/supabase-js';
 	import type { Load } from '@sveltejs/kit';
-	import { user } from '$lib/stores/user';
 	import { goto } from '$app/navigation';
 	import { routes } from '$lib/routes';
 
@@ -60,7 +59,7 @@
 			>
 		</p>
 
-		{#if $user.id == course.owner}
+		<!--{#if $user.id == course.owner}
 			<header class="flex p-2 space-x-4 border-b-2 ">
 				<nav
 					class={activeTab == Tab.Questions ? 'activeNavElement' : ''}
@@ -90,7 +89,7 @@
 					Settings
 				</nav>
 			</header>
-		{/if}
+		{/if}-->
 
 		<slot />
 	{/if}

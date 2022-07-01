@@ -77,7 +77,7 @@
 		QuestionType,
 		saveQuestionLike,
 		TopicType
-	} from '$lib/supabaseClient';
+	} from '$lib/supabaseQueries';
 	import type { Load } from '@sveltejs/kit';
 	import type { Session } from '@supabase/supabase-js';
 	import FilterByTopics from '$lib/components/FilterByTopics.svelte';
@@ -117,7 +117,7 @@
 		{#each questions as question}
 			{#if isFiltered(question) || filteredTopics.length == 0}
 				<a href={routes.question(question.id)} class="light-link" sveltekit:prefetch>
-					{#if question.owner == $user.id}
+					<!--{#if question.owner == $user.id}
 						<article class="yours hoverable">
 							<Question {question} />
 						</article>
@@ -155,7 +155,7 @@
 								>
 							{/if}
 						</article>
-					{/if}</a
+					{/if}--></a
 				>
 			{/if}
 		{/each}

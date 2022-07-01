@@ -2,7 +2,7 @@
 	import {
 		AnswerType,
 		saveAnswer,
-	} from '$lib/supabaseClient';
+	} from '$lib/supabaseQueries';
 	import Toast from './Toast.svelte';
 	import autosize from '../../../node_modules/autosize';
 	import { createEventDispatcher, onMount } from 'svelte';

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { CourseType, fetchMembers, MemberType } from '$lib/supabaseClient';
+	import { CourseType, fetchMembers, MemberType } from '$lib/supabaseQueries';
 	import { routes } from '$lib/routes';
 
 	export let course: CourseType;

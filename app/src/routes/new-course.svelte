@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import Back from '$lib/components/Back.svelte';
 	import { routes } from '$lib/routes';
-	import { saveCourse } from '$lib/supabaseClient';
+	import { saveCourse } from '$lib/supabaseQueries';
 
 	let createCourseDescription = '';
 </script>

@@ -13,7 +13,7 @@
 
 <script lang="ts">
 	import Performances from '$lib/components/Performances.svelte';
-	import { CourseType, fetchCourse } from '$lib/supabaseClient';
+	import { CourseType, fetchCourse } from '$lib/supabaseQueries';
 	import type { Session } from '@supabase/supabase-js';
 	import type { Load } from '@sveltejs/kit';
 

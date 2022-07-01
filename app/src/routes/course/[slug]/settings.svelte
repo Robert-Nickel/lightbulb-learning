@@ -15,7 +15,7 @@
 	import DeleteCourse from '$lib/components/DeleteCourse.svelte';
 	import ManageTopics from '$lib/components/ManageTopics.svelte';
 	import GenerateInviteCode from '$lib/components/GenerateInviteCode.svelte';
-	import { fetchCourse } from '$lib/supabaseClient';
+	import { fetchCourse } from '$lib/supabaseQueries';
 	import type { Session } from '@supabase/supabase-js';
 	import type { Load } from '@sveltejs/kit';
 

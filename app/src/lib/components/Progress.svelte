@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { saveProgress } from '$lib/supabaseClient';
+	import { saveProgress } from '$lib/supabaseQueries';
 	import { createEventDispatcher } from 'svelte';
 
 	const dispatch = createEventDispatcher();

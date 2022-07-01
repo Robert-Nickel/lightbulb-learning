@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Toast from './Toast.svelte';
-	import { CourseType, saveQuestion, saveQuestionTopics } from '$lib/supabaseClient';
+	import { CourseType, saveQuestion, saveQuestionTopics } from '$lib/supabaseQueries';
 	import autosize from '../../../node_modules/autosize';
 	import SelectTopics from './SelectTopics.svelte';
 	import { goto } from '$app/navigation';

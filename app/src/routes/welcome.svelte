@@ -1,5 +1,22 @@
+<script context="module">
+	import { supabaseServerClient, withPageAuth } from '@supabase/auth-helpers-sveltekit';
+	import { fetchProfile } from '$lib/supabaseQueries';
+	export const load = async ({ session }) =>
+		withPageAuth(
+			{
+				redirectTo: '/',
+				user: session.user
+			},
+			async () => {
+				const { data } = await fetchProfile(session.user.id, supabaseServerClient(session.accessToken));
+
+				return { props: { data, user: session.user } };
+			}
+		);
+</script>
+
 <script lang="ts">
-	import { goto } from '$app/navigation';
+	/*import { goto } from '$app/navigation';
 	import { routes } from '$lib/routes';
 	import { user } from '$lib/stores/user';
 	import {
@@ -9,21 +26,25 @@
 		saveUniversity,
 		saveProfile,
 		fetchUniversity
-	} from '$lib/supabaseClient';
+	} from '$lib/supabaseQueries';
 	import { onMount } from 'svelte';
 
 	const other = 'other';
 	const name = 'name';
 	const university = 'university';
+	*/
+	export let user;
+	export let data;
 
+	/*
 	let firstName;
 	let lastName;
 	let universityName;
 	let otherUniversityName;
 	let step = name;
 	let profileId: string;
-
-	onMount(async () => {
+*/
+	/*onMount(async () => {
 		const profile = await fetchProfile($user.id);
 		console.log({ profile });
 		if (profile) {
@@ -34,9 +55,13 @@
 			universityName = await (await fetchUniversity(profile.university)).name;
 			goto(routes.courses)
 		}
-	});
+	});*/
 </script>
 
+<pre>{JSON.stringify(data, null, 2)}</pre>
+<pre>{JSON.stringify(user, null, 2)}</pre>
+
+<!--
 {#if step == name}
 	<h1>What is your name?</h1>
 
@@ -100,3 +125,4 @@
 		class="w-48">Done</button
 	>
 {/if}
+	-->

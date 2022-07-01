@@ -14,7 +14,7 @@
 		QuestionType,
 		savefeedback,
 		fetchLatestAnswer
-	} from '$lib/supabaseClient';
+	} from '$lib/supabaseQueries';
 	import { goto } from '$app/navigation';
 	import { user } from '$lib/stores/user';
 	import autosize from 'autosize';
@@ -57,7 +57,7 @@
 	{#if answer && question}
 		<Back text="Back to Question" route="/question/{question.id}" />
 
-		{#if question.owner == $user.id}
+		<!--{#if question.owner == $user.id}
 			<div class="mb-4 yours pl-4">Your Question: {question.questionText}</div>
 		{:else}
 			<div class="mb-4">Question: {question.questionText}</div>
@@ -116,7 +116,7 @@
 
 				<button on:click={publishfeedback} class="w-32 mt-4">Publish</button>
 			{/if}
-		{/if}
+		{/if}-->
 	{/if}
 </main>
 

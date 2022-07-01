@@ -3,7 +3,7 @@
 	import Back from '$lib/components/Back.svelte';
 	import { routes } from '$lib/routes';
 
-	import { joinCourse } from '$lib/supabaseClient';
+	import { joinCourse } from '$lib/supabaseQueries';
 
 	export let inviteCode: string = '';
 </script>

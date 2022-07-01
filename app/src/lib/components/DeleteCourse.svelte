@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { routes } from '$lib/routes';
-	import { deleteCourse } from '$lib/supabaseClient';
+	import { deleteCourse } from '$lib/supabaseQueries';
 
 	export let course;
 </script>

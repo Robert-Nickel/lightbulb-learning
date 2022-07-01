@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { fetchTopics, saveTopic, TopicType } from '$lib/supabaseClient';
+	import { fetchTopics, saveTopic, TopicType } from '$lib/supabaseQueries';
 	import { onMount } from 'svelte';
 
 	export let courseId: string;

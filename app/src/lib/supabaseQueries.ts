@@ -1,6 +1,8 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import type { definitions } from '$lib/models/supabase';
 import { CamelCasedPropertiesDeep, keysToCamelCase } from 'object-key-convert';
+import { supabaseServerClient } from '@supabase/auth-helpers-sveltekit';
+import type { Session } from '@supabase/auth-helpers-svelte';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
@@ -113,8 +115,8 @@ async function saveCourseUser(courseId: string) {
 	return keysToCamelCase(data);
 }
 
-export async function fetchCourse(id: string): Promise<CourseType> {
-	const { data, error } = await supabase
+export async function fetchCourse(id: string, session: Session): Promise<CourseType> {
+	const { data, error } = await supabaseServerClient(session.accessToken)
 		.from<CourseTypeDB>(coursesTable)
 		.select()
 		.eq('id', id)
@@ -128,8 +130,8 @@ export async function deleteCourse(id: string) {
 	printIf(error);
 }
 
-export async function fetchQuestions(courseId): Promise<QuestionType[]> {
-	const { data, error } = await supabase
+export async function fetchQuestions(courseId: string, session: Session): Promise<QuestionType[]> {
+	const { data, error } = await supabaseServerClient(session.accessToken)
 		.from<QuestionTypeDB>(questionsTable)
 		.select()
 		.eq('course', courseId);
@@ -334,8 +336,8 @@ export async function fetchfeedbackPerformances(courseUserId: string): Promise<f
 	return keysToCamelCase(data);
 }
 
-export async function fetchTopics(courseId: string): Promise<TopicType[]> {
-	const { data, error } = await supabase
+export async function fetchTopics(courseId: string, session: Session): Promise<TopicType[]> {
+	const { data, error } = await supabaseServerClient(session.accessToken)
 		.from<TopicTypeDB>(topicsTable)
 		.select()
 		.eq('course', courseId);
@@ -367,8 +369,8 @@ export async function saveQuestionTopics(questionId: string, topics: string[]): 
 	return keysToCamelCase(data);
 }
 
-export async function fetchQuestionTopics(questionIds: string[]): Promise<QuestionTopicType[]> {
-	const { data, error } = await supabase
+export async function fetchQuestionTopics(questionIds: string[], session: Session): Promise<QuestionTopicType[]> {
+	const { data, error } = await supabaseServerClient(session.accessToken)
 		.from<QuestionTopicTypeDB>(questionTopicTable)
 		.select()
 		.in('question', questionIds);
@@ -393,11 +395,11 @@ export async function saveAnswerLike(answerId: string): Promise<AnswerLikeType> 
 	return keysToCamelCase(data);
 }
 
-export async function fetchMyQuestionLikes(questionIds: string[], userId: string): Promise<QuestionLikeType[]> {
-	const { data, error } = await supabase
+export async function fetchMyQuestionLikes(questionIds: string[], session: Session): Promise<QuestionLikeType[]> {
+	const { data, error } = await supabaseServerClient(session.accessToken)
 		.from<QuestionLikeTypeDB>(questionLikesTable)
 		.select()
-		.eq('owner', userId)
+		.eq('owner', session.user.id)
 		.in('question', questionIds);
 	printIf(error);
 	return keysToCamelCase(data);
@@ -449,8 +451,8 @@ export async function saveProgress(courseUserId: string, percentage: number): Pr
 	return keysToCamelCase(data);
 }
 
-export async function fetchAnswers(questionIds: string[]): Promise<AnswerType[]> {
-	const { data, error } = await supabase
+export async function fetchAnswers(questionIds: string[], session: Session): Promise<AnswerType[]> {
+	const { data, error } = await supabaseServerClient(session.accessToken)
 		.from<AnswerTypeDB>(answersTable)
 		.select()
 		.in('question', questionIds);
@@ -458,8 +460,8 @@ export async function fetchAnswers(questionIds: string[]): Promise<AnswerType[]>
 	return keysToCamelCase(data);
 }
 
-export async function fetchQuestionLikes(questionIds: string[]): Promise<QuestionLikeType[]> {
-	const { data, error } = await supabase
+export async function fetchQuestionLikes(questionIds: string[], session: Session): Promise<QuestionLikeType[]> {
+	const { data, error } = await supabaseServerClient(session.accessToken)
 		.from<QuestionLikeTypeDB>(questionLikesTable)
 		.select()
 		.in('question', questionIds);
@@ -476,18 +478,19 @@ export async function fetchAnswerLikes(answerIds: string[]): Promise<AnswerLikeT
 	return keysToCamelCase(data);
 }
 
-export async function fetchCourseUser(courseId: string, userId: string): Promise<ProgressType> {
-	const { data, error } = await supabase.from(courseUserTable)
+export async function fetchCourseUser(courseId: string, session: Session): Promise<ProgressType> {
+	const { data, error } = await supabaseServerClient(session.accessToken)
+		.from(courseUserTable)
 		.select()
 		.eq("course", courseId)
-		.eq("user_id", userId)
+		.eq("user_id", session.user.id)
 		.single()
 	printIf(error);
 	return keysToCamelCase(data);
 }
 
-export async function fetchMyLatestProgress(courseUserId: string): Promise<ProgressType> {
-	const { data, error } = await supabase
+export async function fetchMyLatestProgress(courseUserId: string, session: Session): Promise<ProgressType> {
+	const { data, error } = await supabaseServerClient(session.accessToken)
 		.from<ProgressTypeDB>(progressesTable)
 		.select()
 		.eq('course_user', courseUserId)

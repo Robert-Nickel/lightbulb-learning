@@ -106,12 +106,12 @@
 		deleteAnswerLike,
 		saveAnswerLike
 	} from '$lib/supabaseQueries';
-	import { user } from '$lib/stores/user';
 	import autosize from '../../../node_modules/autosize';
 	import type { Load } from '@sveltejs/kit';
 	import type { Session } from '@supabase/supabase-js';
 	import { routes } from '$lib/routes';
 	import Answer from '$lib/components/Answer.svelte';
+	import { session } from '$app/stores';
 
 	export let question: QuestionType;
 	export let myAnswer: AnswerType;
@@ -126,7 +126,7 @@
 	{#if question}
 		<Back text="Back to {courseDescription}" route="/course/{question.course}" />
 
-		<!--<h1 class={question.owner == $user.id ? 'yours pl-4' : ''}>{question.questionText}</h1>-->
+		<h1 class={question.owner == $session.user.id ? 'yours pl-4' : ''}>{question.questionText}</h1>
 
 		{#if myAnswer}
 			<a href={routes.answer(myAnswer.id)} class="light-link" sveltekit:prefetch>

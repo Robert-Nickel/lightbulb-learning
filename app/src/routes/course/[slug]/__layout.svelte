@@ -1,30 +1,34 @@
-<script lang="ts" context="module">
-	export const load: Load = async ({ session, params, url }) => {
-		const { user } = session as Session;
-		if (!user) return { status: 302, redirect: '/login' };
-		const pathSegments = url.pathname.split('/');
-		const routeLastSegment = pathSegments[pathSegments.length - 1];
-		const courseId = params.slug;
-		const course = await fetchCourse(courseId);
-		console.log({ user });
-		const courseUser = await fetchCourseUser(courseId, user.id);
-		console.log({ courseUser });
-		const mylatestProgress = await fetchMyLatestProgress(courseUser.id);
-		return {
-			props: {
-				course,
-				routeLastSegment,
-				mylatestProgress: mylatestProgress ? mylatestProgress.percentage : 0
+<script context="module">
+	import { supabaseServerClient, withPageAuth } from '@supabase/auth-helpers-sveltekit';
+
+	export const load = async ({ session, params, url }) =>
+		withPageAuth(
+			{
+				redirectTo: '/',
+				user: session.user
+			},
+			async () => {
+				const pathSegments = url.pathname.split('/');
+				const routeLastSegment = pathSegments[pathSegments.length - 1];
+				const courseId = params.slug;
+				const course = await fetchCourse(courseId, session);
+				const courseUser = await fetchCourseUser(courseId, session);
+				const myLatestProgress = await fetchMyLatestProgress(courseUser.id, session);
+				return {
+					props: {
+						course,
+						routeLastSegment,
+						myLatestProgress: myLatestProgress ? myLatestProgress.percentage : 0
+					}
+				};
 			}
-		};
-	};
+		);
 </script>
 
 <script lang="ts">
 	import Back from '$lib/components/Back.svelte';
 	import { CourseType, fetchCourse, fetchCourseUser, fetchMyLatestProgress } from '$lib/supabaseQueries';
-	import type { Session } from '@supabase/supabase-js';
-	import type { Load } from '@sveltejs/kit';
+	import { session } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import { routes } from '$lib/routes';
 
@@ -36,7 +40,7 @@
 
 	export let course: CourseType;
 	export let routeLastSegment: string;
-	export let mylatestProgress: number;
+	export let myLatestProgress: number;
 	$: activeTab =
 		routeLastSegment == 'settings'
 			? Tab.Settings
@@ -53,13 +57,13 @@
 		<p>
 			Your progress:&nbsp;
 			<em
-				data-tooltip={mylatestProgress == 0
+				data-tooltip={myLatestProgress == 0
 					? 'Ask a good question to get started!'
-					: 'Reach 100%, to get the certificate!'}>{mylatestProgress}%.</em
+					: 'Reach 100%, to get the certificate!'}>{myLatestProgress}%.</em
 			>
 		</p>
 
-		<!--{#if $user.id == course.owner}
+		{#if $session.user.id == course.owner}
 			<header class="flex p-2 space-x-4 border-b-2 ">
 				<nav
 					class={activeTab == Tab.Questions ? 'activeNavElement' : ''}
@@ -89,7 +93,7 @@
 					Settings
 				</nav>
 			</header>
-		{/if}-->
+		{/if}
 
 		<slot />
 	{/if}

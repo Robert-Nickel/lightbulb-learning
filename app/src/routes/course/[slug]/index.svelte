@@ -1,68 +1,56 @@
-<script lang="ts" context="module">
-	export const load: Load = async ({ session, params }) => {
-		const { user } = session as Session;
-		if (!user) return { status: 302, redirect: '/login' };
-		const courseId = params.slug;
-		const course = await fetchCourse(courseId);
-		const questionsDB = await fetchQuestions(courseId);
-		const topics = await fetchTopics(courseId);
-		const questionIds = questionsDB.map((question) => {
-			return question.id;
-		});
-		const questionTopics = await fetchQuestionTopics(questionIds);
-		const myQuestionLikes = await fetchMyQuestionLikes(questionIds, user.id);
-		const questionLikes = await fetchQuestionLikes(questionIds);
-		const answers = await fetchAnswers(questionIds);
-		type Question = QuestionType & { isLiked: boolean; amountOfAnswers: number; totalLikes: number };
+<script context="module">
+	import { withPageAuth } from '@supabase/auth-helpers-sveltekit';
 
-		const questions: Question[] = questionsDB.map((question) => {
-			const totalLikes = countLikes(question.id);
-			return {
-				...question,
-				...{
-					isLiked: isLiked(question.id),
-					amountOfAnswers: countAnswers(question.id),
-					totalLikes
-				}
-			};
-		});
+	export const load = async ({ session, params }) =>
+		withPageAuth(
+			{
+				redirectTo: '/login',
+				user: session.user
+			},
+			async () => {
+				const courseId = params.slug;
+				const course = await fetchCourse(courseId, session);
+				const questionsDB = await fetchQuestions(courseId, session);
+				const topics = await fetchTopics(courseId, session);
+				const questionIds = questionsDB.map((question) => {
+					return question.id;
+				});
+				const questionTopics = await fetchQuestionTopics(questionIds, session);
+				const myQuestionLikes = await fetchMyQuestionLikes(questionIds, session);
+				const questionLikes = await fetchQuestionLikes(questionIds, session);
+				const answers = await fetchAnswers(questionIds, session);
 
-		function isLiked(questionId: string): boolean {
-			for (let myQuestionLike of myQuestionLikes) {
-				if (questionId == myQuestionLike.question) {
-					return true;
-				}
+				const questions = questionsDB.map((question) => {
+					const totalLikes = questionLikes?.filter((questionLike) => {
+						return questionLike.question == question.id;
+					}).length;
+					return {
+						...question,
+						...{
+							isLiked: myQuestionLikes?.some((mql) => mql.id == question.id),
+							amountOfAnswers: answers?.filter((answer) => {
+								return answer.question == question.id;
+							}).length,
+							totalLikes
+						}
+					};
+				});
+
+				return {
+					props: {
+						course,
+						questions,
+						topics,
+						questionTopics
+					}
+				};
 			}
-			return false;
-		}
-
-		function countAnswers(questionId: string): number {
-			return answers.filter((answer) => {
-				return answer.question == questionId;
-			}).length;
-		}
-
-		function countLikes(questionId: string): number {
-			return questionLikes.filter((questionLike) => {
-				return questionLike.question == questionId;
-			}).length;
-		}
-
-		return {
-			props: {
-				course,
-				questions,
-				topics,
-				questionTopics
-			}
-		};
-	};
+		);
 </script>
 
 <script lang="ts">
 	import CreateQuestion from '$lib/components/CreateQuestion.svelte';
 	import { routes } from '$lib/routes';
-	import { user } from '$lib/stores/user';
 	import {
 		CourseType,
 		deleteQuestionLike,
@@ -78,10 +66,9 @@
 		saveQuestionLike,
 		TopicType
 	} from '$lib/supabaseQueries';
-	import type { Load } from '@sveltejs/kit';
-	import type { Session } from '@supabase/supabase-js';
 	import FilterByTopics from '$lib/components/FilterByTopics.svelte';
 	import Question from '$lib/components/Question.svelte';
+	import { session } from '$app/stores';
 
 	export let course: CourseType;
 	export let questions;
@@ -117,7 +104,7 @@
 		{#each questions as question}
 			{#if isFiltered(question) || filteredTopics.length == 0}
 				<a href={routes.question(question.id)} class="light-link" sveltekit:prefetch>
-					<!--{#if question.owner == $user.id}
+					{#if question.owner == $session.user.id}
 						<article class="yours hoverable">
 							<Question {question} />
 						</article>
@@ -155,7 +142,7 @@
 								>
 							{/if}
 						</article>
-					{/if}--></a
+					{/if}</a
 				>
 			{/if}
 		{/each}

@@ -16,7 +16,6 @@
 		fetchLatestAnswer
 	} from '$lib/supabaseQueries';
 	import { goto } from '$app/navigation';
-	import { user } from '$lib/stores/user';
 	import autosize from 'autosize';
 	import { routes } from '$lib/routes';
 

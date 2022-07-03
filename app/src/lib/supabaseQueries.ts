@@ -76,14 +76,14 @@ export async function fetchQuestion(id: string, session: Session): Promise<Quest
 
 export async function saveQuestion(
 	questionText: string,
-	courseId: string, session: Session
+	courseId: string, userId: string
 ): Promise<QuestionType> {
 	const { data, error } = await supabase
 		.from<QuestionTypeDB>(questionsTable)
 		.insert({
 			question_text: questionText,
 			course: courseId,
-			owner: session.user.id
+			owner: userId
 		})
 		.single();
 	printIf(error);

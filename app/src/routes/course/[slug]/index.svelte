@@ -87,11 +87,12 @@
 		}
 		return false;
 	}
+
+	console.log({ session });
 </script>
 
 {#if course}
 	<CreateQuestion {course} />
-
 	{#if questions.length > 0}
 		<h3 class="mt-10">Questions</h3>
 		<FilterByTopics

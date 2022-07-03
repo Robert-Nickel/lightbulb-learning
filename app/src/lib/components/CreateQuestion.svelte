@@ -1,15 +1,14 @@
 <script lang="ts">
-	import Toast from './Toast.svelte';
 	import { CourseType, saveQuestion, saveQuestionTopics } from '$lib/supabaseQueries';
 	import autosize from '../../../node_modules/autosize';
 	import SelectTopics from './SelectTopics.svelte';
 	import { goto } from '$app/navigation';
 	import { routes } from '$lib/routes';
+	import { session } from '$app/stores';
 
 	export let course: CourseType;
 
 	let questionText;
-	let toast;
 	let selectedTopics;
 </script>
 
@@ -34,7 +33,7 @@
 		id="button-publish"
 		disabled={!questionText}
 		on:click={async () => {
-			const question = await saveQuestion(questionText, course.id);
+			const question = await saveQuestion(questionText, course.id, $session.user.id);
 			if (selectedTopics && selectedTopics.length > 0) {
 				await saveQuestionTopics(question.id, selectedTopics);
 			}
@@ -46,5 +45,3 @@
 		Publish
 	</button>
 </div>
-
-<Toast bind:this={toast} />

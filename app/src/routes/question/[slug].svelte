@@ -1,7 +1,7 @@
 <script lang="ts" context="module">
 	import { supabaseServerClient, withPageAuth } from '@supabase/auth-helpers-sveltekit';
 
-	export const load = async ({ session, params }) => {
+	export const load = async ({ session, params }) => 
 		withPageAuth({ redirectTo: '/', user: session.user }, async () => {
 			const questionId = params.slug;
 			const question = await fetchQuestion(questionId, session);
@@ -65,7 +65,6 @@
 				}
 			};
 		});
-	};
 
 	async function filterNonLatest(answersOfOthers) {
 		// O(n^2) <- thats though, isn't there a better way?

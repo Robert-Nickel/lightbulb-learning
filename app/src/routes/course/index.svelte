@@ -4,7 +4,7 @@
 	export const load = async ({ session }) =>
 		withPageAuth(
 			{
-				redirectTo: '/',
+				redirectTo: '/login',
 				user: session.user
 			},
 			async () => {

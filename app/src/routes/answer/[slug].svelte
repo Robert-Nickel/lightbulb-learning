@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-	import { supabaseServerClient, withPageAuth } from '@supabase/auth-helpers-sveltekit';
+	import { withPageAuth } from '@supabase/auth-helpers-sveltekit';
 
 	export const load = async ({ session, params }) =>
 		withPageAuth(
@@ -38,7 +38,7 @@
 	import { goto } from '$app/navigation';
 	import autosize from 'autosize';
 	import { routes } from '$lib/routes';
-	import { page, session } from '$app/stores';
+	import { session } from '$app/stores';
 
 	export let question: QuestionType;
 	export let answer: AnswerType;
@@ -48,10 +48,10 @@
 	let toast;
 	let improvingAnswer = false;
 	export let latestAnswer;
-	$: isLatest = latestAnswer.version == answer.version;
+	$: isLatest = latestAnswer?.version == answer.version;
 
 	async function publishfeedback() {
-		myFeedback = await saveFeedback(feedbackText, answer.id);
+		myFeedback = await saveFeedback(feedbackText, answer.id, $session.user.id);
 		feedbackText = null;
 		toast.showSuccessToast('Thanks for your Feedback!');
 	}
@@ -70,15 +70,17 @@
 		{#if answer.owner == $session.user.id}
 			<h1 class="yours pl-4">Your Answer: {answer.answerText}</h1>
 
-			{#if feedbackOfOthers.length == 0}
+			{#if feedbackOfOthers?.length == 0}
 				<i>No one has provided any feedback for your answer.</i>
 			{:else}
 				<i>Here is the feedback you received for your answer:</i>
-				{#each feedbackOfOthers as feedbackOfOther}
-					<article>
-						{feedbackOfOther.feedbackText}
-					</article>
-				{/each}
+				{#if feedbackOfOthers}
+					{#each feedbackOfOthers as feedbackOfOther}
+						<article>
+							{feedbackOfOther.feedbackText}
+						</article>
+					{/each}
+				{/if}
 				{#if isLatest}
 					{#if improvingAnswer}
 						<ImproveAnswer {answer} />
@@ -119,7 +121,7 @@
 
 				<button on:click={publishfeedback} class="w-32 mt-4">Publish</button>
 			{/if}
-		{/if}-->
+		{/if}
 	{/if}
 </main>
 

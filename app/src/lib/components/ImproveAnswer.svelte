@@ -1,16 +1,12 @@
 <script lang="ts">
-	import {
-		AnswerType,
-		saveAnswer,
-	} from '$lib/supabaseQueries';
-	import Toast from './Toast.svelte';
+	import { AnswerType, saveAnswer } from '$lib/supabaseQueries';
 	import autosize from '../../../node_modules/autosize';
-	import { createEventDispatcher, onMount } from 'svelte';
+	import { createEventDispatcher } from 'svelte';
+	import { session } from '$app/stores';
 	const dispatch = createEventDispatcher();
 
 	export let answer: AnswerType;
 	let improvedAnswerText;
-	let toast;
 </script>
 
 <div class="w-full">
@@ -27,14 +23,13 @@
 		const improvedAnswer = await saveAnswer(
 			improvedAnswerText,
 			answer.question,
+			$session.user.id,
 			answer.version + 1
 		);
 		improvedAnswerText = null;
 
-		toast.showSuccessToast('Answer improved!');
 		dispatch('answerImproved', improvedAnswer.id);
 	}}
-	class="w-32 mt-4" disabled={!improvedAnswerText}>Publish</button
+	class="w-32 mt-4"
+	disabled={!improvedAnswerText}>Publish</button
 >
-
-<Toast bind:this={toast} />

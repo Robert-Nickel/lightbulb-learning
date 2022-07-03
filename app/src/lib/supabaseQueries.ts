@@ -167,14 +167,15 @@ export async function fetchFeedbackOfOthers(answerId: string, session: Session):
 
 export async function saveFeedback(
 	feedbackText: string,
-	answerId: string, session: Session
+	answerId: string,
+	userId: string
 ): Promise<FeedbackType> {
 	const { data, error } = await supabase
 		.from<FeedbackTypeDB>(feedbackTable)
 		.insert({
 			feedback_text: feedbackText,
 			answer: answerId,
-			owner: session.user.id
+			owner: userId
 		})
 		.single();
 	printIf(error);

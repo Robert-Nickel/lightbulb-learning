@@ -3,7 +3,7 @@
 	import Back from '$lib/components/Back.svelte';
 	import { routes } from '$lib/routes';
 	import { saveCourse } from '$lib/supabaseQueries';
-
+	import { session } from '$app/stores';
 	let createCourseDescription = '';
 </script>
 
@@ -14,7 +14,7 @@
 <input bind:value={createCourseDescription} class="w-full" placeholder="Course Name" />
 <button
 	on:click={async () => {
-		const course = await saveCourse(createCourseDescription);
+		const course = await saveCourse(createCourseDescription, $session.user.id);
 		createCourseDescription = '';
 		goto(routes.course(course.id));
 	}}

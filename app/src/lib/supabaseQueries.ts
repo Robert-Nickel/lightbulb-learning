@@ -18,23 +18,23 @@ export async function fetchCourses(session: Session): Promise<CourseType[]> {
 	return keysToCamelCase(data);
 }
 
-export async function saveCourse(description: string, session: Session): Promise<CourseType> {
+export async function saveCourse(description: string, userId: string): Promise<CourseType> {
 	const { data, error } = await supabase
 		.from<CourseTypeDB>(coursesTable)
-		.insert({ description, owner: session.user.id })
+		.insert({ description, owner: userId })
 		.single();
 	printIf(error);
 	const course: CourseType = keysToCamelCase(data);
-	await saveCourseUser(course.id, session);
+	await saveCourseUser(course.id, userId);
 	return course;
 }
 
 // only for the owner of a course.
 // Regular member must use the join course function.
-async function saveCourseUser(courseId: string, session: Session) {
+async function saveCourseUser(courseId: string, userId: string) {
 	const { data, error } = await supabase
 		.from<CourseUserTypeDB>(courseUserTable)
-		.insert({ course: courseId, user_id: session.user.id })
+		.insert({ course: courseId, user_id: userId })
 		.single();
 	printIf(error);
 	return keysToCamelCase(data);

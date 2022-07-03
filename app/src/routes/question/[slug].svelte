@@ -144,7 +144,7 @@
 
 			<button
 				on:click={async () => {
-					const myAnswerWithoutLikes = await saveAnswer(answerText, question.id);
+					const myAnswerWithoutLikes = await saveAnswer(answerText, question.id, $session.user.id);
 					myAnswer = {
 						...myAnswerWithoutLikes,
 						...{ totalLikes: 0 }

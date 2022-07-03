@@ -128,14 +128,15 @@ export async function fetchAnswersOfOthers(
 export async function saveAnswer(
 	answerText: string,
 	questionId: string,
-	version = 1, session: Session
+	userId: string,
+	version = 1
 ): Promise<AnswerType> {
 	const { data, error } = await supabase
 		.from<AnswerTypeDB>(answersTable)
 		.insert({
 			answer_text: answerText,
 			question: questionId,
-			owner: session.user.id,
+			owner: userId,
 			version
 		})
 		.single();

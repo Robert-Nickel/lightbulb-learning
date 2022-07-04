@@ -299,18 +299,18 @@ export async function fetchQuestionTopics(questionIds: string[], session: Sessio
 	return keysToCamelCase(data);
 }
 
-export async function saveQuestionLike(questionId: string, session: Session): Promise<QuestionLikeType> {
+export async function saveQuestionLike(questionId: string, userId: string): Promise<QuestionLikeType> {
 	const { data, error } = await supabase
 		.from<QuestionLikeTypeDB>(questionLikesTable)
-		.insert({ question: questionId, owner: session.user.id })
+		.insert({ question: questionId, owner: userId })
 		.single();
 	printIf(error);
 	return keysToCamelCase(data);
 }
-export async function saveAnswerLike(answerId: string, session: Session): Promise<AnswerLikeType> {
+export async function saveAnswerLike(answerId: string, userId: string): Promise<AnswerLikeType> {
 	const { data, error } = await supabase
 		.from<AnswerLikeTypeDB>(answerLikesTable)
-		.insert({ answer: answerId, owner: session.user.id })
+		.insert({ answer: answerId, owner: userId })
 		.single();
 	printIf(error);
 	return keysToCamelCase(data);
@@ -336,21 +336,21 @@ export async function fetchMyAnswerLikes(answerIds: string[], session: Session):
 	return keysToCamelCase(data);
 }
 
-export async function deleteQuestionLike(questionId: string) {
-	// TODO: doesn't this delete too much?!?! Or is this regulated by RLS?
+export async function deleteQuestionLike(questionId: string, userId: string) {
 	const { error } = await supabase
 		.from<QuestionLikeTypeDB>(questionLikesTable)
 		.delete()
-		.eq('question', questionId);
+		.eq('question', questionId)
+		.eq('owner', userId);
 	printIf(error);
 }
 
-export async function deleteAnswerLike(answerId: string) {
-	// TODO: doesn't this delete too much?!?! Or is this regulated by RLS?
+export async function deleteAnswerLike(answerId: string, userId: string) {
 	const { error } = await supabase
 		.from<AnswerLikeTypeDB>(answerLikesTable)
 		.delete()
-		.eq('answer', answerId);
+		.eq('answer', answerId)
+		.eq('owner', userId);
 	printIf(error);
 }
 

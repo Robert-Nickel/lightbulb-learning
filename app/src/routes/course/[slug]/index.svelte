@@ -115,7 +115,7 @@
 								<button
 									class="outline h-12 ml-4 mb-0 p-2 w-16"
 									on:click|preventDefault={async () => {
-										await deleteQuestionLike(question.id);
+										await deleteQuestionLike(question.id, $session.user.id);
 										questions.map((oq) => {
 											if (oq.id == question.id) {
 												oq.isLiked = false;
@@ -128,7 +128,7 @@
 								>{:else}<button
 									class="outline h-12 ml-4 mb-0 p-2 w-16"
 									on:click|preventDefault={async () => {
-										await saveQuestionLike(question.id);
+										await saveQuestionLike(question.id, $session.user.id);
 										questions.map((oq) => {
 											if (oq.id == question.id) {
 												oq.isLiked = true;

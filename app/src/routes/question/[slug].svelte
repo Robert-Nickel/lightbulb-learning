@@ -163,7 +163,7 @@
 							<button
 								class="outline h-12 ml-4 mb-0 p-2 w-16"
 								on:click|preventDefault={async () => {
-									await deleteAnswerLike(answerOfOther.id);
+									await deleteAnswerLike(answerOfOther.id, $session.user.id);
 									answersOfOthers?.map((oa) => {
 										if (oa.id == answerOfOther.id) {
 											oa.isLiked = false;
@@ -176,7 +176,7 @@
 							>{:else}<button
 								class="outline h-12 ml-4 mb-0 p-2 w-16"
 								on:click|preventDefault={async () => {
-									await saveAnswerLike(answerOfOther.id);
+									await saveAnswerLike(answerOfOther.id, $session.user.id);
 									answersOfOthers?.map((oa) => {
 										if (oa.id == answerOfOther.id) {
 											oa.isLiked = true;

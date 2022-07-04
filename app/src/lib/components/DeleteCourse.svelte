@@ -14,7 +14,7 @@
 			)
 		) {
 			await deleteCourse(course.id);
-			goto(routes.root);
+			goto(routes.courses);
 		}
 	}}
 	class="secondary outline w-auto mb-0 hover-red">Delete {course.description}</button

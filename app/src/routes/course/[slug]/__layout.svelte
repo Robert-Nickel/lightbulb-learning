@@ -52,7 +52,7 @@
 <main class="container">
 	<Back route="/course" text="Back to all Courses" />
 
-	{#if course}
+	{#if course && session.user && session.user.id}
 		<h1>{course.description}</h1>
 		<p>
 			Your progress:&nbsp;

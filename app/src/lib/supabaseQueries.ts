@@ -194,7 +194,7 @@ export async function joinCourse(inviteCode: string, session: Session): Promise<
 	return data.toString();
 }
 
-export async function saveInviteCode(courseId: string, code: string, session: Session): Promise<InviteCodeType> {
+export async function saveInviteCode(courseId: string, code: string, userId: string): Promise<InviteCodeType> {
 	const validUntil = new Date();
 	validUntil.setFullYear(2100); // do not expire links for now
 
@@ -204,7 +204,7 @@ export async function saveInviteCode(courseId: string, code: string, session: Se
 			course: courseId,
 			code,
 			valid_until: validUntil.toISOString(),
-			owner: session.user.id
+			owner: userId
 		})
 		.single();
 	printIf(error);
@@ -258,9 +258,6 @@ export async function fetchFeedbackPerformances(courseUserId: string, session: S
 }
 
 export async function fetchTopics(courseId: string, session: Session): Promise<TopicType[]> {
-
-	console.log("fetching topics for course id " + courseId)
-
 	const { data, error } = await supabaseServerClient(session.accessToken)
 		.from<TopicTypeDB>(topicsTable)
 		.select()

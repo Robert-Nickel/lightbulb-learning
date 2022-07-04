@@ -1,4 +1,4 @@
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js';
 import type { definitions } from '$lib/models/supabase';
 import { CamelCasedPropertiesDeep, keysToCamelCase } from 'object-key-convert';
 import { supabaseServerClient } from '@supabase/auth-helpers-sveltekit';
@@ -258,6 +258,9 @@ export async function fetchFeedbackPerformances(courseUserId: string, session: S
 }
 
 export async function fetchTopics(courseId: string, session: Session): Promise<TopicType[]> {
+
+	console.log("fetching topics for course id " + courseId)
+
 	const { data, error } = await supabaseServerClient(session.accessToken)
 		.from<TopicTypeDB>(topicsTable)
 		.select()

@@ -1,29 +1,31 @@
 <script lang="ts" context="module">
-	export const load: Load = async ({ session, params }) => {
-		const { user } = session as Session;
-		if (!user) return { status: 302, redirect: '/login' };
-		const course = await fetchCourse(params.slug);
-		return {
-			props: {
-				course
-			}
-		};
-	};
+	export const load = async ({ session, params }) =>
+		withPageAuth({ redirectTo: '/login', user: session.user }, async () => {
+			const courseId = params.slug;
+			const course = await fetchCourse(courseId, session);
+			const topics = await fetchTopics(courseId, session);
+			return {
+				props: {
+					course,
+					topics
+				}
+			};
+		});
 </script>
 
 <script lang="ts">
 	import DeleteCourse from '$lib/components/DeleteCourse.svelte';
 	import ManageTopics from '$lib/components/ManageTopics.svelte';
 	import GenerateInviteCode from '$lib/components/GenerateInviteCode.svelte';
-	import { fetchCourse } from '$lib/supabaseQueries';
-	import type { Session } from '@supabase/supabase-js';
-	import type { Load } from '@sveltejs/kit';
+	import { fetchCourse, fetchTopics } from '$lib/supabaseQueries';
+	import { withPageAuth } from '@supabase/auth-helpers-sveltekit';
 
 	export let course;
+	export let topics;
 </script>
 
 {#if course}
-	<ManageTopics courseId={course.id} />
+	<ManageTopics courseId={course.id} {topics} />
 	<GenerateInviteCode courseId={course.id} />
 	<DeleteCourse {course} />
 {/if}

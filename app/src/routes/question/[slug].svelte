@@ -1,7 +1,7 @@
 <script lang="ts" context="module">
-	import { supabaseServerClient, withPageAuth } from '@supabase/auth-helpers-sveltekit';
+	import { withPageAuth } from '@supabase/auth-helpers-sveltekit';
 
-	export const load = async ({ session, params }) => 
+	export const load = async ({ session, params }) =>
 		withPageAuth({ redirectTo: '/', user: session.user }, async () => {
 			const questionId = params.slug;
 			const question = await fetchQuestion(questionId, session);
@@ -93,7 +93,6 @@
 
 <script lang="ts">
 	import Back from '$lib/components/Back.svelte';
-	import Toast from '$lib/components/Toast.svelte';
 	import {
 		fetchAnswersOfOthers,
 		fetchQuestion,
@@ -118,7 +117,6 @@
 	export let courseDescription: string;
 
 	let answerText;
-	let toast;
 </script>
 
 <main class="container">
@@ -149,7 +147,6 @@
 						...myAnswerWithoutLikes,
 						...{ totalLikes: 0 }
 					};
-					toast.showSuccessToast('Answer created!');
 				}}
 				class="w-32"
 				disabled={!answerText}>Publish</button
@@ -197,8 +194,6 @@
 		{/if}
 	{/if}
 </main>
-
-<Toast bind:this={toast} />
 
 <style>
 	.yours {

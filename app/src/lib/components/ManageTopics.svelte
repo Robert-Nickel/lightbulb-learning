@@ -1,24 +1,9 @@
-<script context="module">
-	import { withPageAuth } from '@supabase/auth-helpers-sveltekit';
-	// TODO: get this from the path: export let courseId: string;
-	const courseId = 'abc';
-	export const load = async ({ session }) =>
-		withPageAuth(
-			{
-				redirectTo: '/',
-				user: session.user
-			},
-			async () => {
-				const topics = await fetchTopics(courseId, session);
-				return { props: { topics } };
-			}
-		);
-</script>
-
 <script lang="ts">
-	import { fetchTopics, saveTopic, TopicType } from '$lib/supabaseQueries';
+	import { saveTopic } from '$lib/supabaseQueries';
 
-	export let topics: TopicType[];
+	export let courseId;
+	export let topics;
+
 	let newTopicName = '';
 
 	async function createTopic() {

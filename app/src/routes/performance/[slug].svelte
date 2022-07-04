@@ -3,7 +3,7 @@
 	export const load = async ({ session, params }) =>
 		withPageAuth(
 			{
-				redirectTo: '/',
+				redirectTo: '/login',
 				user: session.user
 			},
 			async () => {

@@ -1,5 +1,5 @@
 <script context="module">
-	import { supabaseServerClient, withPageAuth } from '@supabase/auth-helpers-sveltekit';
+	import { withPageAuth } from '@supabase/auth-helpers-sveltekit';
 
 	export const load = async ({ session, params, url }) =>
 		withPageAuth(

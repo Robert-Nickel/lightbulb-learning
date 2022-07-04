@@ -87,8 +87,6 @@
 		}
 		return false;
 	}
-
-	console.log({ session });
 </script>
 
 {#if course}

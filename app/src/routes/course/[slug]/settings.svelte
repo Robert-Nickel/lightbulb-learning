@@ -4,10 +4,12 @@
 			const courseId = params.slug;
 			const course = await fetchCourse(courseId, session);
 			const topics = await fetchTopics(courseId, session);
+			const inviteCode = await fetchInviteCode(courseId, session);
 			return {
 				props: {
 					course,
-					topics
+					topics,
+					inviteCode
 				}
 			};
 		});
@@ -17,15 +19,16 @@
 	import DeleteCourse from '$lib/components/DeleteCourse.svelte';
 	import ManageTopics from '$lib/components/ManageTopics.svelte';
 	import GenerateInviteCode from '$lib/components/GenerateInviteCode.svelte';
-	import { fetchCourse, fetchTopics } from '$lib/supabaseQueries';
+	import { fetchCourse, fetchTopics, fetchInviteCode } from '$lib/supabaseQueries';
 	import { withPageAuth } from '@supabase/auth-helpers-sveltekit';
 
 	export let course;
 	export let topics;
+	export let inviteCode;
 </script>
 
 {#if course}
 	<ManageTopics courseId={course.id} {topics} />
-	<GenerateInviteCode courseId={course.id} />
+	<GenerateInviteCode courseId={course.id} {inviteCode} />
 	<DeleteCourse {course} />
 {/if}

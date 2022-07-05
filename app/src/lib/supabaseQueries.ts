@@ -3,6 +3,7 @@ import type { definitions } from '$lib/models/supabase';
 import { CamelCasedPropertiesDeep, keysToCamelCase } from 'object-key-convert';
 import { supabaseServerClient } from '@supabase/auth-helpers-sveltekit';
 import type { Session } from '@supabase/auth-helpers-svelte';
+import { supabaseClient } from './db';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
@@ -37,6 +38,9 @@ async function saveCourseUser(courseId: string, userId: string) {
 		.insert({ course: courseId, user_id: userId })
 		.single();
 	printIf(error);
+	if (error) {
+		deleteCourse(courseId)
+	}
 	return keysToCamelCase(data);
 }
 
@@ -182,33 +186,57 @@ export async function saveFeedback(
 	return keysToCamelCase(data);
 }
 
-export async function joinCourse(inviteCode: string, session: Session): Promise<string> {
-	if (!inviteCode || inviteCode.length != 10) {
-		console.error('invalid invite code: ' + inviteCode);
+export async function joinCourse(inviteCode: string, userId: string): Promise<CourseUserType> {
+	const courseId: string = await fetchCourseIdFromInviteCode(inviteCode)
+	console.log("Attempting to join: " + courseId)
+
+	const courseUser = await fetchCourseUserIfExists(courseId, userId)
+	if (courseUser) {
+		console.log("course user already exists. Joining process aborted.")
+		return courseUser
 	}
-	const { data, error } = await supabase.rpc('join_course', {
-		invite_code_input: inviteCode,
-		user_id_input: session.user.id
-	});
-	printIf(error);
-	return data.toString();
+	const { data, error } = await supabase.from<CourseUserTypeDB>(courseUserTable)
+		.insert({ course: courseId, user_id: userId })
+		.single()
+	printIf(error)
+	return keysToCamelCase(data)
 }
 
-export async function saveInviteCode(courseId: string, code: string, userId: string): Promise<InviteCodeType> {
-	const validUntil = new Date();
-	validUntil.setFullYear(2100); // do not expire links for now
+async function fetchCourseIdFromInviteCode(inviteCode: string): Promise<string> {
+	const { data, error } = await supabase.from<InviteCodeTypeDB>(inviteCodesTable).select().eq("code", inviteCode).single();
+	printIf(error);
+	return keysToCamelCase(data).course;
+}
 
+async function fetchCourseUserIfExists(userId: string, courseId: string): Promise<CourseUserType> {
+	const { data, error } = await supabase.from<CourseUserTypeDB>(courseUserTable)
+		.select()
+		.eq('course', courseId)
+		.eq('user_id', userId)
+		.maybeSingle()
+	return keysToCamelCase(data)
+}
+
+export async function saveInviteCode(courseId: string, code: string): Promise<InviteCodeType> {
+	// TODO: Check, that no invite code already exists
 	const { data, error } = await supabase
 		.from<InviteCodeTypeDB>(inviteCodesTable)
 		.insert({
 			course: courseId,
-			code,
-			valid_until: validUntil.toISOString(),
-			owner: userId
-		})
-		.single();
-	printIf(error);
-	return keysToCamelCase(data);
+			code
+		}).single()
+	printIf(error)
+	return keysToCamelCase(data)
+}
+
+export async function fetchInviteCode(courseId: string, session: Session): Promise<string> {
+	const { data, error } = await supabaseServerClient(session.accessToken)
+		.from<InviteCodeTypeDB>(inviteCodesTable)
+		.select()
+		.eq('course', courseId)
+		.maybeSingle()
+	printIf(error)
+	return keysToCamelCase(data).code
 }
 
 export async function fetchMembers(courseId: string, session: Session): Promise<MemberType[]> {
@@ -399,9 +427,9 @@ export async function fetchAnswerLikes(answerIds: string[], session: Session): P
 	return keysToCamelCase(data);
 }
 
-export async function fetchCourseUser(courseId: string, session: Session): Promise<ProgressType> {
+export async function fetchCourseUser(courseId: string, session: Session): Promise<CourseUserType> {
 	const { data, error } = await supabaseServerClient(session.accessToken)
-		.from(courseUserTable)
+		.from<CourseUserTypeDB>(courseUserTable)
 		.select()
 		.eq("course", courseId)
 		.eq("user_id", session.user.id)

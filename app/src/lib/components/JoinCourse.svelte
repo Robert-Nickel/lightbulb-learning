@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import Back from '$lib/components/Back.svelte';
 	import { routes } from '$lib/routes';
+	import { session } from '$app/stores';
 
 	import { joinCourse } from '$lib/supabaseQueries';
+	import Back from '$lib/components/Back.svelte';
 
 	export let inviteCode: string = '';
 </script>
@@ -15,10 +16,8 @@
 <button
 	on:click={async () => {
 		if (inviteCode) {
-			const courseId = await joinCourse(inviteCode);
-			if (courseId != 'false') {
-				goto(routes.course(courseId));
-			}
+			const courseUser = await joinCourse(inviteCode, $session.user.id);
+			goto(routes.course(courseUser.course));
 		}
 	}}
 	class="w-32">Join</button

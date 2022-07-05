@@ -1,5 +1,5 @@
 <script>
-	import Auth from 'supabase-ui-svelte';
+	import Auth from '$lib/components/supabase-ui-svelte/Auth.svelte';
 	import { supabaseClient } from '$lib/db';
 	import { session } from '$app/stores';
 </script>

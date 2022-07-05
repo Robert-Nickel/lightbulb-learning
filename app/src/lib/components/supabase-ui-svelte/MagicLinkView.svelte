@@ -26,10 +26,10 @@
 </script>
 
 <form on:submit|preventDefault={submit}>
-  <Input name="email" type="email" label="Email address" placeholder="Your email address" icon="mail" bind:value={email}/>
-  <Button block primary size="large" {loading} icon="inbox">Send magic link</Button>
+  <Input name="email" type="email" label="Email address" placeholder="Your email address" bind:value={email}/>
+  <Button primary {loading}>Send magic link</Button>
 
-  <LinkButton on:click={() => setView('sign_in')}>Sign in with password</LinkButton>
+  <LinkButton on:click={() => setView('sign_in')}>Login with password</LinkButton>
 
   {#if message}
     <Text>{message}</Text>

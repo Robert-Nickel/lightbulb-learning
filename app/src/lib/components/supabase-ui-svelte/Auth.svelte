@@ -11,7 +11,6 @@
   export let style = ''
   export let socialLayout = 'vertical'
   export let socialColors = false
-  export let socialButtonSize = 'medium'
   export let providers = []
   export let view = 'sign_in'
 
@@ -26,7 +25,6 @@
       {supabaseClient}
       {providers}
       {socialLayout}
-      {socialButtonSize}
       {socialColors}
       {view}
     />
@@ -40,14 +38,3 @@
     {/if}
   </div>
 </div>
-
-<style>
-  .component {
-    width: 100%;
-  }
-
-  .container {
-    display: flex;
-    flex-direction: column;
-  }
-</style>

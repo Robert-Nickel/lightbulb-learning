@@ -5,7 +5,6 @@
   export let supabaseClient
   export let providers
   export let socialLayout
-  export let socialButtonSize
   export let socialColors
   export let view
 
@@ -57,11 +56,9 @@
 </script>
 
 {#if hasProviders}
-  <span class="heading">{view == 'sign_up' ? 'Sign up' : 'Sign in'} with</span>
-
   <div class="providers" class:horizontal={socialLayout == 'horizontal'}>
     {#each providers as provider}
-      <Button block shadow icon={provider} size={socialButtonSize} style={socialColors ? buttonStyles[provider] : {}} on:click={() => handleProviderSignIn(provider)}>
+      <Button primary={false} on:click={() => handleProviderSignIn(provider)}>
         {#if socialLayout == 'vertical'}{view == 'sign_up' ? 'Sign up' : 'Sign in'} with {provider}{/if}
       </Button>
     {/each}

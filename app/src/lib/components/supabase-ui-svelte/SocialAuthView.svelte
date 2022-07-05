@@ -59,7 +59,7 @@
   <div class="providers" class:horizontal={socialLayout == 'horizontal'}>
     {#each providers as provider}
       <Button primary={false} on:click={() => handleProviderSignIn(provider)}>
-        {#if socialLayout == 'vertical'}{view == 'sign_up' ? 'Sign up' : 'Sign in'} with {provider}{/if}
+        {#if socialLayout == 'vertical'}{view == 'sign_up' ? 'Sign up' : 'Login'} with {provider}{/if}
       </Button>
     {/each}
   </div>

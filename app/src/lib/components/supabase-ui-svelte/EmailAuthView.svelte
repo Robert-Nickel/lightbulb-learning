@@ -47,7 +47,7 @@
 		<Button primary {loading}>Sign up</Button>
 		<div class="links">
 			<LinkButton on:click={() => setView('magic_link')}>Login with magic link</LinkButton>
-			<LinkButton on:click={() => setView('sign_in')}>Do you have an account? Sign in</LinkButton>
+			<LinkButton on:click={() => setView('sign_in')}>Do you have an account? Login</LinkButton>
 		</div>
 	{:else}
 		<Button primary {loading}>Login</Button>
@@ -66,15 +66,5 @@
 </form>
 
 <style>
-	form {
-		display: flex;
-		flex-direction: column;
-	}
-
-	.links {
-		display: flex;
-		flex-direction: column;
-		margin: 1rem 0;
-		gap: 0.5rem;
-	}
+	
 </style>

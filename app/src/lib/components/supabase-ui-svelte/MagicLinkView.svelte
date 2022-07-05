@@ -26,7 +26,7 @@
 </script>
 
 <form on:submit|preventDefault={submit}>
-  <Input name="email" type="email" label="Email address" placeholder="Your email address" bind:value={email}/>
+  <Input name="email" type="email" label="Email address" bind:value={email}/>
   <Button primary {loading}>Send magic link</Button>
 
   <LinkButton on:click={() => setView('sign_in')}>Login with password</LinkButton>

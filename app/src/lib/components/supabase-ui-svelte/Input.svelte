@@ -21,15 +21,5 @@
 </label>
 
 <style>
-	.icon {
-		position: absolute;
-		margin: 7px;
-		color: #ccc;
-	}
-	.input {
-		position: relative;
-		font-size: 0.875rem;
-		line-height: 1.25rem;
-		display: flex;
-	}
+	
 </style>

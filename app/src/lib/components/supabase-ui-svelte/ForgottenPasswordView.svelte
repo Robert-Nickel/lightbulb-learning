@@ -31,12 +31,11 @@
 		name="email"
 		type="email"
 		label="Email address"
-		placeholder="Your email address"
 		bind:value={email}
 	/>
-	<Button primary {loading}>Send reset password instructions</Button>
+	<Button primary {loading}>Reset password</Button>
 
-	<LinkButton on:click={() => setView('sign_in')}>Go back to sign in</LinkButton>
+	<LinkButton on:click={() => setView('sign_in')}>Back to login</LinkButton>
 
 	{#if message}
 		<Text>{message}</Text>

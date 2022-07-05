@@ -29,6 +29,7 @@
 			<p>Do you have an invite code?</p>
 			<div class="flex space-x-2">
 				<a href={routes.joinCourse()} class="outline w-24" role="button">Yes</a>
+				<!-- svelte-ignore a11y-missing-attribute -->
 				<a
 					on:click={() => {
 						noInviteCode = true;

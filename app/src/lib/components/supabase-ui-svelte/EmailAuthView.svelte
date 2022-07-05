@@ -52,7 +52,9 @@
 	{:else}
 		<Button primary {loading}>Login</Button>
 		<div class="links">
-			<LinkButton on:click={() => setView('sign_up')}>Don't have an account? Sign up</LinkButton>
+			<LinkButton on:click={() => setView('sign_up')}>Sign up</LinkButton>
+			<LinkButton on:click={() => setView('forgotten_password')}>Forgot your password?</LinkButton>
+
 		</div>
 	{/if}
 

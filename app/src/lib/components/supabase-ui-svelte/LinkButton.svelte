@@ -7,4 +7,5 @@ a {
     flex-direction: column;
     cursor: pointer;
     text-align: center;
+    margin-top: 1em;
 }</style>

@@ -2,8 +2,8 @@
 	import Auth from '$lib/components/supabase-ui-svelte/Auth.svelte';
 	import { supabaseClient } from '$lib/db';
 	import { session } from '$app/stores';
-	import { coursesTable } from '$lib/supabaseQueries';
 	import { routes } from '$lib/routes';
+	import { goto } from '$app/navigation';
 
 	$: {
 		if ($session.user && $session.user.id) {

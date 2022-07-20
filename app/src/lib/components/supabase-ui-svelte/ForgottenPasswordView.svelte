@@ -1,6 +1,5 @@
 <script>
 	import LinkButton from './LinkButton.svelte';
-	import Text from './Text.svelte';
 	import Button from './Button.svelte';
 	import Input from './Input.svelte';
 

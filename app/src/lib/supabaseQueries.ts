@@ -204,6 +204,7 @@ export async function joinCourse(inviteCode: string, userId: string): Promise<Co
 
 async function fetchCourseIdFromInviteCode(inviteCode: string): Promise<string> {
 	const { data, error } = await supabase.from<InviteCodeTypeDB>(inviteCodesTable).select().eq("code", inviteCode).single();
+	console.log(JSON.stringify(data))
 	printIf(error);
 	return keysToCamelCase(data).course;
 }

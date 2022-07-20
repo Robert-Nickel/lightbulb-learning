@@ -22,8 +22,8 @@
 		</nav>
 	</div>
 	{#if $session.user}
-		{JSON.stringify($session.user.email)}
 		<nav>
+			{$session.user.email}
 			<!-- svelte-ignore a11y-missing-attribute -->
 			<a
 				on:click={() => {

@@ -22,6 +22,7 @@
 		</nav>
 	</div>
 	{#if $session.user}
+		Logged in as: {JSON.stringify($session.user)}
 		<nav>
 			<button
 				on:click={() => {

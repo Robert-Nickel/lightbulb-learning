@@ -203,7 +203,11 @@ export async function joinCourse(inviteCode: string, userId: string): Promise<Co
 }
 
 async function fetchCourseIdFromInviteCode(inviteCode: string): Promise<string> {
-	const { data, error } = await supabase.from<InviteCodeTypeDB>(inviteCodesTable).select().eq("code", inviteCode).single();
+	const { data, error } = await supabase
+		.from<InviteCodeTypeDB>(inviteCodesTable)
+		.select()
+		.eq("code", inviteCode)
+		.single();
 	console.log(JSON.stringify(data))
 	printIf(error);
 	return keysToCamelCase(data).course;
@@ -237,7 +241,7 @@ export async function fetchInviteCode(courseId: string, session: Session): Promi
 		.eq('course', courseId)
 		.maybeSingle()
 	printIf(error)
-	return keysToCamelCase(data).code
+	return keysToCamelCase(data)?.code
 }
 
 export async function fetchMembers(courseId: string, session: Session): Promise<MemberType[]> {

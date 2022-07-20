@@ -22,13 +22,13 @@
 		</nav>
 	</div>
 	{#if $session.user}
-		Logged in as: {JSON.stringify($session.user)}
+		{JSON.stringify($session.user.email)}
 		<nav>
-			<button
+			<!-- svelte-ignore a11y-missing-attribute -->
+			<a
 				on:click={() => {
 					supabaseClient.auth.signOut();
-				}}
-				class="outline">Logout</button
+				}}>Logout</a
 			>
 		</nav>
 	{/if}

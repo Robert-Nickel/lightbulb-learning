@@ -1,9 +1,10 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import { routes } from '$lib/routes';
 	import Hamburger from './Hamburger.svelte';
+	import { session } from '$app/stores';
 
 	export let sidebar = false;
+	export let supabaseClient;
 </script>
 
 <header class="flex p-2 items-center text-white justify-between">
@@ -20,19 +21,14 @@
 			>
 		</nav>
 	</div>
-	<!--{#if !$user}
+	{#if $session.user}
 		<nav>
 			<button
-				class="outline"
 				on:click={() => {
-					goto(routes.login);
-				}}>Login</button
+					supabaseClient.auth.signOut();
+				}}
+				class="outline">Logout</button
 			>
 		</nav>
-	{/if}-->
+	{/if}
 </header>
-
-<!--
-    References:
-    https://dev.to/joshnuss/creating-a-sidebar-menu-in-svelte-ih2
--->

@@ -1,8 +1,6 @@
 <script>
-	import { goto } from '$app/navigation';
 	import { routes } from '$lib/routes';
 	import { session } from '$app/stores';
-	import { supabaseClient } from '$lib/db';
 
 	export let open = false;
 
@@ -25,16 +23,6 @@
 			<nav on:click={close}><a href={routes.login} sveltekit:prefetch>Login</a></nav>
 		{/if}
 	</div>
-
-	{#if $session.user}
-		<button
-			on:click={() => {
-				supabaseClient.auth.signOut();
-				close();
-			}}
-			class="outline">Logout</button
-		>
-	{/if}
 </aside>
 
 <style>

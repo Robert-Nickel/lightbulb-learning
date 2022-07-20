@@ -18,7 +18,8 @@
 </script>
 
 <Sidebar bind:open={sidebarOpen} />
-<Navbar bind:sidebar={sidebarOpen} />
+
+<Navbar bind:sidebar={sidebarOpen} {supabaseClient} />
 
 <SupaAuthHelper {supabaseClient} {session} {onUserUpdate}>
 	{#if $session.user}

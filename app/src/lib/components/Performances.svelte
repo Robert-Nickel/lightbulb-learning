@@ -9,8 +9,7 @@
 		{#each members as member}
 			<a href={routes.performance(member.id)} class="light-link">
 				<article class="hoverable">
-					{member.firstName}
-					{member.lastName}
+					{member.email}
 				</article>
 			</a>
 		{/each}

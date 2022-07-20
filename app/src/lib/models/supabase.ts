@@ -587,8 +587,6 @@ export interface paths {
           id?: parameters["rowFilter.invite_codes.id"];
           code?: parameters["rowFilter.invite_codes.code"];
           course?: parameters["rowFilter.invite_codes.course"];
-          owner?: parameters["rowFilter.invite_codes.owner"];
-          valid_until?: parameters["rowFilter.invite_codes.valid_until"];
           created_at?: parameters["rowFilter.invite_codes.created_at"];
           /** Filtering Columns */
           select?: parameters["select"];
@@ -643,8 +641,6 @@ export interface paths {
           id?: parameters["rowFilter.invite_codes.id"];
           code?: parameters["rowFilter.invite_codes.code"];
           course?: parameters["rowFilter.invite_codes.course"];
-          owner?: parameters["rowFilter.invite_codes.owner"];
-          valid_until?: parameters["rowFilter.invite_codes.valid_until"];
           created_at?: parameters["rowFilter.invite_codes.created_at"];
         };
         header: {
@@ -663,8 +659,6 @@ export interface paths {
           id?: parameters["rowFilter.invite_codes.id"];
           code?: parameters["rowFilter.invite_codes.code"];
           course?: parameters["rowFilter.invite_codes.course"];
-          owner?: parameters["rowFilter.invite_codes.owner"];
-          valid_until?: parameters["rowFilter.invite_codes.valid_until"];
           created_at?: parameters["rowFilter.invite_codes.created_at"];
         };
         body: {
@@ -689,8 +683,7 @@ export interface paths {
           id?: parameters["rowFilter.members.id"];
           course?: parameters["rowFilter.members.course"];
           user_id?: parameters["rowFilter.members.user_id"];
-          first_name?: parameters["rowFilter.members.first_name"];
-          last_name?: parameters["rowFilter.members.last_name"];
+          email?: parameters["rowFilter.members.email"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -1750,10 +1743,6 @@ export interface definitions {
      * This is a Foreign Key to `courses.id`.<fk table='courses' column='id'/>
      */
     course: string;
-    /** Format: uuid */
-    owner: string;
-    /** Format: timestamp without time zone */
-    valid_until: string;
     /**
      * Format: timestamp with time zone
      * @default now()
@@ -1775,10 +1764,8 @@ export interface definitions {
     course?: string;
     /** Format: uuid */
     user_id?: string;
-    /** Format: text */
-    first_name?: string;
-    /** Format: text */
-    last_name?: string;
+    /** Format: character varying */
+    email?: string;
   };
   profiles: {
     /**
@@ -2093,10 +2080,6 @@ export interface parameters {
   "rowFilter.invite_codes.code": string;
   /** Format: uuid */
   "rowFilter.invite_codes.course": string;
-  /** Format: uuid */
-  "rowFilter.invite_codes.owner": string;
-  /** Format: timestamp without time zone */
-  "rowFilter.invite_codes.valid_until": string;
   /** Format: timestamp with time zone */
   "rowFilter.invite_codes.created_at": string;
   /** @description members */
@@ -2107,10 +2090,8 @@ export interface parameters {
   "rowFilter.members.course": string;
   /** Format: uuid */
   "rowFilter.members.user_id": string;
-  /** Format: text */
-  "rowFilter.members.first_name": string;
-  /** Format: text */
-  "rowFilter.members.last_name": string;
+  /** Format: character varying */
+  "rowFilter.members.email": string;
   /** @description profiles */
   "body.profiles": definitions["profiles"];
   /** Format: uuid */

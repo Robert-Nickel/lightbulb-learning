@@ -13,7 +13,7 @@
 	</div>
 	{#if $session.user}
 		<nav>
-			{$session.user.email}
+			<p class="text-ellipsis truncate" style="max-width: 4em;">{$session.user.email}</p>
 			<!-- svelte-ignore a11y-missing-attribute -->
 			<a
 				on:click={() => {

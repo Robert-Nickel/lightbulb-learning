@@ -2,10 +2,12 @@
 	import LinkButton from './LinkButton.svelte';
 	import Button from './Button.svelte';
 	import Input from './Input.svelte';
+import { goto } from '$app/navigation';
 
 	export let supabaseClient;
 	export let view;
 	export let setView;
+	export let redirectAfterLogin;
 
 	let loading = false,
 		email = '',
@@ -33,6 +35,8 @@
 
 			if (signInError) {
 				alert(signInError.message);
+			} else {
+				goto(redirectAfterLogin)
 			}
 		}
 

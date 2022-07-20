@@ -1,111 +1,78 @@
 <script>
-  import Button from './Button.svelte'
-  import Text from './Text.svelte'
+	import { goto } from '$app/navigation';
 
-  export let supabaseClient
-  export let providers
-  export let socialLayout
-  export let view
+	import Button from './Button.svelte';
 
-  let loading = false
+	export let supabaseClient;
+	export let providers;
+	export let socialLayout;
+	export let view;
+	export let redirectAfterLogin;
 
-  const buttonStyles = {
-    google: {
-      'background-color': '#ce4430',
-      color: 'white',
-    },
-    facebook: {
-      'background-color': '#4267B2',
-      color: 'white',
-    },
-    twitter: {
-      'background-color': '#1DA1F2',
-    },
-    gitlab: {
-      'background-color': '#FC6D27',
-    },
-    github: {
-      'background-color': '#333',
-      color: 'white',
-    },
-    bitbucket: {
-      'background-color': '#205081',
-      color: 'white',
-    },
-    azure: {
-      'background-color': '#0072c6',
-      color: 'white',
-    },
-    discord: {
-      'background-color': '#5865F2',
-      color: 'white',
-    }
-  }
+	let loading = false;
 
-  $: hasProviders = providers && providers.length > 0
+	$: hasProviders = providers && providers.length > 0;
 
-  async function handleProviderSignIn(provider) {
-    loading = true
+	async function handleProviderSignIn(provider) {
+		loading = true;
 
-    const { error: signInError } = await supabaseClient.auth.signIn({ provider })
-    if (signInError) alert(signInError.message)
+		const { error: signInError } = await supabaseClient.auth.signIn({ provider });
+		if (signInError) {
+			alert(signInError.message);
+		} else {
+			goto(redirectAfterLogin);
+		}
 
-    loading = false
-  }
+		loading = false;
+	}
 </script>
 
 {#if hasProviders}
-  <div class="providers" class:horizontal={socialLayout == 'horizontal'}>
-    {#each providers as provider}
-      <Button primary={false} on:click={() => handleProviderSignIn(provider)}>
-        {#if socialLayout == 'vertical'}{view == 'sign_up' ? 'Sign up' : 'Login'} with {provider}{/if}
-      </Button>
-    {/each}
-  </div>
-  <div role="separator" class="divider">
-    <span>or continue with</span>
-  </div>
+	<div class="providers" class:horizontal={socialLayout == 'horizontal'}>
+		{#each providers as provider}
+			<Button primary={false} on:click={() => handleProviderSignIn(provider)}>
+				{#if socialLayout == 'vertical'}{view == 'sign_up' ? 'Sign up' : 'Login'} with {provider}{/if}
+			</Button>
+		{/each}
+	</div>
+	<div role="separator" class="divider">
+		<span>or continue with</span>
+	</div>
 {/if}
 
 <style>
-  .providers {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }
+	.providers {
+		display: flex;
+		flex-direction: column;
+		gap: 5px;
+	}
 
-  .providers.horizontal {
-    flex-direction: row;
-  }
+	.providers.horizontal {
+		flex-direction: row;
+	}
 
-  .divider {
-    color: rgb(187, 187, 187);
-    margin: 1rem 0;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    white-space: nowrap;
-    font-size: 0.9rem;
-  }
+	.divider {
+		color: rgb(187, 187, 187);
+		margin: 1rem 0;
+		width: 100%;
+		display: flex;
+		align-items: center;
+		white-space: nowrap;
+		font-size: 0.9rem;
+	}
 
-  .divider span {
-    margin: 1rem;
-  }
+	.divider span {
+		margin: 1rem;
+	}
 
-  .divider::before, .divider::after {
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
-    top: 50%;
-    content: '';
-    position: relative;
-    display: inline-block;
-    width: 50%;
-  }
-
-  .heading {
-    font-weight: 500;
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-    margin: 0 0 0.5rem 0;
-  }
+	.divider::before,
+	.divider::after {
+		border-bottom-style: solid;
+		border-bottom-width: 1px;
+		top: 50%;
+		content: '';
+		position: relative;
+		display: inline-block;
+		width: 50%;
+	}
 </style>

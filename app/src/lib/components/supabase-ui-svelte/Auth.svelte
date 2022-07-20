@@ -13,6 +13,7 @@
   export let socialColors = false
   export let providers = []
   export let view = 'sign_in'
+  export let redirectAfterLogin = ""
 
   function setView(newView) {
     view = newView
@@ -27,10 +28,11 @@
       {socialLayout}
       {socialColors}
       {view}
+      {redirectAfterLogin}
     />
 
     {#if view == 'sign_in' || view == 'sign_up'}
-      <EmailAuthView {supabaseClient} {view} {setView}/>
+      <EmailAuthView {supabaseClient} {view} {setView} {redirectAfterLogin}/>
     {:else if view == 'magic_link'}
       <MagicLinkView {supabaseClient} {setView}/>
     {:else if view == 'forgotten_password'}

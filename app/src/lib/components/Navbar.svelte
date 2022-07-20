@@ -3,15 +3,11 @@
 	import Hamburger from './Hamburger.svelte';
 	import { session } from '$app/stores';
 
-	export let sidebar = false;
 	export let supabaseClient;
 </script>
 
 <header class="flex p-2 items-center text-white justify-between">
 	<div class="flex">
-		<nav class="flex">
-			<Hamburger bind:open={sidebar} />
-		</nav>
 		<nav>
 			<a
 				href={routes.root}
@@ -28,8 +24,14 @@
 			<a
 				on:click={() => {
 					supabaseClient.auth.signOut();
-				}} style="cursor: pointer">Logout</a
+				}}
+				style="cursor: pointer">Logout</a
 			>
+		</nav>
+	{:else}
+		<nav style="margin-top:0em; margin-bottom: 0.8em;">
+			<!-- svelte-ignore a11y-missing-attribute -->
+			<a href="/login"><button class="outline">Login</button></a>
 		</nav>
 	{/if}
 </header>

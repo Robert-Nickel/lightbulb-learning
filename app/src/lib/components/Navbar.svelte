@@ -15,15 +15,15 @@
 		<nav>
 			<a
 				href={routes.root}
-				class="text-white	"
+				class="text-white"
 				style="margin-top:0em; margin-bottom: 0.8em;"
 				sveltekit:prefetch>Lightbulb Learning</a
 			>
 		</nav>
 	</div>
 	{#if $session.user}
-		<nav>
-			{$session.user.email}
+		<nav style="margin-top:0em; margin-bottom: 0.8em;">
+			{$session.user.email} &nbsp;
 			<!-- svelte-ignore a11y-missing-attribute -->
 			<a
 				on:click={() => {

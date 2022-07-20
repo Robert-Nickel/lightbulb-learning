@@ -6,7 +6,6 @@
 
 	$: {
 		if ($session.user && $session.user.id) {
-			console.log('$session.user exists -> goto courses');
 			goto(routes.courses);
 		}
 	}

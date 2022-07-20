@@ -8,15 +8,11 @@
 	export let view;
 	export let setView;
 
-	let error = '',
-		message = '',
-		loading = false,
+	let loading = false,
 		email = '',
 		password = '';
 
 	async function submit() {
-		error = '';
-		message = '';
 		loading = true;
 
 		if (view == 'sign_up') {
@@ -25,14 +21,20 @@
 				password
 			});
 
-			if (signUpError) error = signUpError.message;
+			if (!signUpError) {
+				alert('Check your email to confirm your signup!');
+			} else {
+				alert(signUpError.message);
+			}
 		} else if (view == 'sign_in') {
 			const { error: signInError } = await supabaseClient.auth.signIn({
 				email,
 				password
 			});
 
-			if (signInError) error = signInError.message;
+			if (signInError) {
+				alert(signInError.message);
+			}
 		}
 
 		loading = false;
@@ -54,19 +56,9 @@
 		<div class="links">
 			<LinkButton on:click={() => setView('sign_up')}>Sign up</LinkButton>
 			<LinkButton on:click={() => setView('forgotten_password')}>Forgot your password?</LinkButton>
-
 		</div>
-	{/if}
-
-	{#if message}
-		<Text>{message}</Text>
-	{/if}
-
-	{#if error}
-		<Text type="danger">{error}</Text>
 	{/if}
 </form>
 
 <style>
-	
 </style>

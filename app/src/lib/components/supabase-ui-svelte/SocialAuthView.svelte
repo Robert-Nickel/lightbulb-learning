@@ -5,10 +5,9 @@
   export let supabaseClient
   export let providers
   export let socialLayout
-  export let socialColors
   export let view
 
-  let loading = false, error = ''
+  let loading = false
 
   const buttonStyles = {
     google: {
@@ -49,7 +48,7 @@
     loading = true
 
     const { error: signInError } = await supabaseClient.auth.signIn({ provider })
-    if (signInError) error = signInError.message
+    if (signInError) alert(signInError.message)
 
     loading = false
   }
@@ -66,10 +65,6 @@
   <div role="separator" class="divider">
     <span>or continue with</span>
   </div>
-{/if}
-
-{#if error}
-  <Text type="danger">{error}</Text>
 {/if}
 
 <style>

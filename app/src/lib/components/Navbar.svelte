@@ -28,7 +28,7 @@
 			<a
 				on:click={() => {
 					supabaseClient.auth.signOut();
-				}}>Logout</a
+				}} style="cursor: pointer">Logout</a
 			>
 		</nav>
 	{/if}

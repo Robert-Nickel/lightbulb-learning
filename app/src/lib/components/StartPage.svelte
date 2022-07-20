@@ -42,66 +42,51 @@
 	</p>
 </div>
 
-<main class="container mx-auto py-4 px-2 leading-normal">
-	<div class="mx-auto max-w-screen-sm">
-		<p>
-			Lightbulb Learning is a learning evaluation system that scales for groups with many participants.
-			Students challenge each other by asking and discussing questions, while you get insight into their
-			current level of understanding and their learning curve - which is gold for your evaluation of their
-			performance.
-		</p>
+<p>
+	Lightbulb Learning is a learning evaluation system that scales for groups with many participants. Students
+	challenge each other by asking and discussing questions, while you get insight into their current level of
+	understanding and their learning curve - which is gold for your evaluation of their performance.
+</p>
 
-		<div class="flex max-w-sm mb-8 mt-16 ">
-			<p class="text-xl">Learning&nbsp;is&nbsp;</p>
-			<div class="text-xl border rounded px-2" style="min-width: 6em; height: 2rem;">{show}</div>
-		</div>
+<div class="flex max-w-sm mb-8 mt-16 ">
+	<p class="text-xl">Learning&nbsp;is&nbsp;</p>
+	<div class="text-xl border rounded px-2" style="min-width: 6em; height: 2rem;">{show}</div>
+</div>
 
-		<h2>How does it work?</h2>
+<a href={routes.login} sveltekit:prefetch>
+	<button class="m-auto mt-16 w-64">Start now</button>
+</a>
 
-		<p>
-			Learning is more than answering questions. Formulating a question means framing a problem, and is a more
-			effective way of learning than just answering one. Giving constructive feedback means to have not only
-			expertise, but also empathy - and is one of the most underrated skills in modern (working) life. That's
-			why we believe that contemplating every contribution to the discussion gives a clearer view on learning
-			performance.
-		</p>
+<h2>How does it work?</h2>
 
-		<p>
-			Watch your students thinking about and discussing interesting questions, while getting realtime insight
-			into all aspects of their performance.
-		</p>
+<p>
+	Learning is more than answering questions. Formulating a question means framing a problem, and is a more
+	effective way of learning than just answering one. Giving constructive feedback means to have not only
+	expertise, but also empathy - and is one of the most underrated skills in modern (working) life. That's why
+	we believe that contemplating every contribution to the discussion gives a clearer view on learning
+	performance.
+</p>
 
-		<h2>Who is it for?</h2>
-		<p>Lightbulb Learning is for you, if...</p>
-		<ul>
-			<li>
-				...you are a teacher or professor and want to get a more rational insight into your students learning
-				adventure.
-			</li>
-			<li>
-				...are tired of marking exam papers for days and need a more scalable and justifiable approach of
-				defining grades.
-			</li>
-			<li>
-				...are an author of an online course and want to reward those that reach a certain level with a
-				certificate.
-			</li>
-		</ul>
+<p>
+	Watch your students thinking about and discussing interesting questions, while getting realtime insight into
+	all aspects of their performance.
+</p>
 
-		<a href={routes.login} sveltekit:prefetch>
-			<button class="m-auto mt-16 w-64">I want to try it.</button>
-		</a>
+<h2>Who is it for?</h2>
+<p>Lightbulb Learning is for you, if...</p>
+<ul>
+	<li>
+		...you are a teacher or professor and want to get a more rational insight into your students learning
+		adventure.
+	</li>
+	<li>
+		...are tired of marking exam papers for days and need a more scalable and justifiable approach of defining
+		grades.
+	</li>
+	<li>
+		...are an author of an online course and want to reward those that reach a certain level with a
+		certificate.
+	</li>
+</ul>
 
-		{#if !wantsToReadMore}<button class="outline m-auto my-4 w-64" on:click={() => (wantsToReadMore = true)}
-				>I want to learn more.</button
-			>{/if}
-
-		{#if wantsToReadMore}
-			<Faq />
-			<a href={routes.login} sveltekit:prefetch>
-				<button class="m-auto mt-16 w-64">I want to try it now.</button>
-			</a>
-		{/if}
-	</div>
-</main>
-<NewsletterSignUp />
+<!--<NewsletterSignUp />-->

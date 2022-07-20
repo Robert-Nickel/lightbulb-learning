@@ -1,37 +1,31 @@
 <script lang="ts">
 	import { routes } from '$lib/routes';
-	import Hamburger from './Hamburger.svelte';
 	import { session } from '$app/stores';
 
 	export let supabaseClient;
 </script>
 
-<header class="flex p-2 items-center text-white justify-between">
-	<div class="flex">
+<header class="flex items-center text-white justify-between mx-6 mt-4">
+	<div class="flex p-0">
 		<nav>
-			<a
-				href={routes.root}
-				class="text-white"
-				style="margin-top:0em; margin-bottom: 0.8em;"
-				sveltekit:prefetch>Lightbulb Learning</a
-			>
+			<a href={routes.root} sveltekit:prefetch>Lightbulb Learning</a>
 		</nav>
 	</div>
 	{#if $session.user}
-		<nav style="margin-top:0em; margin-bottom: 0.8em;">
-			{$session.user.email} &nbsp;
+		<nav>
+			{$session.user.email}
 			<!-- svelte-ignore a11y-missing-attribute -->
 			<a
 				on:click={() => {
 					supabaseClient.auth.signOut();
 				}}
-				style="cursor: pointer">Logout</a
+				class="ml-4">Logout</a
 			>
 		</nav>
 	{:else}
-		<nav style="margin-top:0em; margin-bottom: 0.8em;">
+		<nav>
 			<!-- svelte-ignore a11y-missing-attribute -->
-			<a href="/login"><button class="outline">Login</button></a>
+			<a href="/login" sveltekit:prefetch>Login</a>
 		</nav>
 	{/if}
 </header>

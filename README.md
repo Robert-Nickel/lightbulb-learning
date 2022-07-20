@@ -1,5 +1,3 @@
-[![Playwright Tests](https://github.com/Lightbulb-Learning/lightbulb-learning/actions/workflows/playwright.yml/badge.svg)](https://github.com/Lightbulb-Learning/lightbulb-learning/actions/workflows/playwright.yml)
-
 # Lightbulb Learning
 
 Learning evaluation that scales.

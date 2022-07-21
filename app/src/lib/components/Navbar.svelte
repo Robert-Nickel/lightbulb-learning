@@ -13,7 +13,7 @@
 	</div>
 	{#if $session.user}
 		<nav>
-			<span class="text-ellipsis truncate" style="max-width: 12em;">{$session.user.email}</span>
+			<span class="email">{$session.user.email}</span>
 			<!-- svelte-ignore a11y-missing-attribute -->
 			<a
 				on:click={() => {
@@ -29,3 +29,9 @@
 		</nav>
 	{/if}
 </header>
+
+<style>
+	.email {
+		@apply w-32 md:w-64 lg:w-full truncate text-ellipsis;
+	}
+</style>

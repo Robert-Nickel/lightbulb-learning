@@ -63,7 +63,7 @@
 
 {#if member}
 	<Back text="Back to all Performances" route={routes.coursePerformances(member.course)} />
-	<h1>Performance of {member.firstName} {member.lastName}</h1>
+	<h1>Performance of {member.email}</h1>
 
 	<Progress
 		courseUserId={member.id}

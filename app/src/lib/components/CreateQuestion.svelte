@@ -31,7 +31,7 @@
 	{/if}
 	<button
 		id="button-publish"
-		disabled={!questionText}
+		hidden={!questionText}
 		on:click={async () => {
 			const question = await saveQuestion(questionText, course.id, $session.user.id);
 			if (selectedTopics && selectedTopics.length > 0) {

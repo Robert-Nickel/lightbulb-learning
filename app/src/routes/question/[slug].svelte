@@ -149,7 +149,7 @@
 					};
 				}}
 				class="w-32"
-				disabled={!answerText}>Publish</button
+				hidden={!answerText}>Publish</button
 			>
 		{/if}
 

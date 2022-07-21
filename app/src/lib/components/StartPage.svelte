@@ -1,8 +1,6 @@
 <script lang="ts">
-	import NewsletterSignUp from '$lib/components/NewsletterSignUp.svelte';
 	import { routes } from '$lib/routes';
 	import { onMount } from 'svelte';
-	import Faq from './FAQ.svelte';
 
 	const learningIs = [
 		'asking a question.',

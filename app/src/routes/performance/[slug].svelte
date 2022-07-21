@@ -14,7 +14,6 @@
 					await fetchQuestionPerformances(courseUserId, session)
 				)
 					.concat(await fetchAnswerPerformances(courseUserId, session))
-					.concat(await fetchFeedbackPerformances(courseUserId, session))
 					.concat(await fetchProgresses(courseUserId, session));
 				allPerformances = allPerformances.sort((a, b) => {
 					return new Date(a.createdAt) < new Date(b.createdAt) ? 1 : -1;
@@ -46,7 +45,6 @@
 		fetchProgresses,
 		fetchMember,
 		fetchAnswerPerformances,
-		fetchFeedbackPerformances,
 		fetchQuestionPerformances,
 		MemberType
 	} from '$lib/supabaseQueries';
@@ -96,11 +94,6 @@
 				>
 				<p class="my-2"><i>Question: {performance.questionText}</i></p>
 				<h4 class="mt-2 mb-0">{performance.answerText}</h4>
-			{:else if performance.feedbackId}
-				<small>- Feedback </small>
-				<p class="my-2"><i>Question: {performance.questionText}</i></p>
-				<p class="my-2"><i>Answer: {performance.answerText}</i></p>
-				<h4 class="mt-2 mb-0">{performance.feedbackText}</h4>
 			{:else if performance.percentage || performance.percentage == 0}
 				<small>- Progress </small>
 				<h4 class="mt-2 mb-0" id="progress-text">

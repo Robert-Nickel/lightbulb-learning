@@ -7,7 +7,7 @@
 <main class="container">
 	{#if members && members.length > 0}
 		{#each members as member}
-			<a href={routes.performance(member.id)} class="light-link">
+			<a href={routes.performance(member.id)} class="light-link" sveltekit:prefetch>
 				<article class="hoverable">
 					{member.email}
 				</article>

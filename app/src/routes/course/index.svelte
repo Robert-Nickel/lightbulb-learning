@@ -41,7 +41,7 @@
 		{:else}
 			<p>Would you rather create your own course or join an example course to see what it is like?</p>
 			<div class="flex space-x-2">
-				<a href={routes.newCourse} role="button" class="outline" sveltekit:prefetch>Create own Course</a>
+				<a href={routes.newCourse} role="button" class="outline">Create own Course</a>
 				<a href={routes.joinCourse('GNRLWISDOM')} role="button" class="outline" sveltekit:prefetch
 					>Join example Course</a
 				>

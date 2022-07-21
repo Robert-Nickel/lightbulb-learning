@@ -17,7 +17,7 @@
 	<textarea
 		id="textarea-question"
 		class="w-full h-12"
-		placeholder="Create an question"
+		placeholder="Create a question"
 		bind:value={questionText}
 		on:load={autosize(document.getElementById('textarea-question'))}
 	/>

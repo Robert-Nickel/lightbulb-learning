@@ -254,7 +254,16 @@ export async function fetchAnswerPerformances(courseUserId: string, session: Ses
 	return keysToCamelCase(data);
 }
 
-export async function fetchTopics(courseId: string, session: Session): Promise<TopicType[]> {
+export async function fetchTopics(ids: string[], session: Session): Promise<TopicType[]> {
+	const { data, error } = await supabaseServerClient(session.accessToken)
+		.from<TopicTypeDB>(topicsTable)
+		.select()
+		.in('id', ids);
+	printIf(error);
+	return keysToCamelCase(data);
+}
+
+export async function fetchTopicsForCourse(courseId: string, session: Session): Promise<TopicType[]> {
 	const { data, error } = await supabaseServerClient(session.accessToken)
 		.from<TopicTypeDB>(topicsTable)
 		.select()
@@ -262,6 +271,7 @@ export async function fetchTopics(courseId: string, session: Session): Promise<T
 	printIf(error);
 	return keysToCamelCase(data);
 }
+
 
 export async function saveTopic(courseId: string, name: string): Promise<TopicType> {
 	const { data, error } = await supabase
@@ -287,11 +297,20 @@ export async function saveQuestionTopics(questionId: string, topics: string[]): 
 	return keysToCamelCase(data);
 }
 
-export async function fetchQuestionTopics(questionIds: string[], session: Session): Promise<QuestionTopicType[]> {
+export async function fetchTopicsForQuestions(questionIds: string[], session: Session): Promise<QuestionTopicType[]> {
 	const { data, error } = await supabaseServerClient(session.accessToken)
 		.from<QuestionTopicTypeDB>(questionTopicTable)
 		.select()
 		.in('question', questionIds);
+	printIf(error);
+	return keysToCamelCase(data);
+}
+
+export async function fetchTopicsForQuestion(questionId: string, session: Session): Promise<QuestionTopicType[]> {
+	const { data, error } = await supabaseServerClient(session.accessToken)
+		.from<QuestionTopicTypeDB>(questionTopicTable)
+		.select()
+		.eq('question', questionId);
 	printIf(error);
 	return keysToCamelCase(data);
 }

@@ -11,11 +11,11 @@
 				const courseId = params.slug;
 				const course = await fetchCourse(courseId, session);
 				const questionsDB = await fetchQuestions(courseId, session);
-				const topics = await fetchTopics(courseId, session);
+				const topics = await fetchTopicsForCourse(courseId, session);
 				const questionIds = questionsDB.map((question) => {
 					return question.id;
 				});
-				const questionTopics = await fetchQuestionTopics(questionIds, session);
+				const questionTopics = await fetchTopicsForQuestions(questionIds, session);
 				const myQuestionLikes = await fetchMyQuestionLikes(questionIds, session);
 				const questionLikes = await fetchQuestionLikes(questionIds, session);
 				const answers = await fetchAnswers(questionIds, session);
@@ -59,8 +59,8 @@
 		fetchAnswers,
 		fetchQuestionLikes,
 		fetchQuestions,
-		fetchQuestionTopics,
-		fetchTopics,
+		fetchTopicsForQuestions,
+		fetchTopicsForCourse,
 		QuestionTopicType,
 		QuestionType,
 		saveQuestionLike,
@@ -90,7 +90,7 @@
 </script>
 
 {#if course}
-	<CreateQuestion {course} />
+	<CreateQuestion {course} {topics} />
 	{#if questions.length > 0}
 		<h3 class="mt-10">Questions</h3>
 		<FilterByTopics

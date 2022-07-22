@@ -7,12 +7,16 @@
 			const question = await fetchQuestion(questionId, session);
 			const courseDescription = await (await fetchCourse(question.course, session)).description;
 
-			const answersOfOthersWithNonLatest = await fetchAnswersOfOthers(questionId, session);
-			const answersOfOthersDB = await filterNonLatest(answersOfOthersWithNonLatest);
+			const answersOfOthersDB = await fetchAnswersOfOthers(questionId, session);
 			const answersOfOthersIds = answersOfOthersDB?.map((answer) => answer.id);
 			const myAnswerLikes = await fetchMyAnswerLikes(answersOfOthersIds, session);
 
 			const myAnswerWithoutLikes = await fetchLatestAnswer(questionId, session);
+			const questionTopics: QuestionTopicType[] = await fetchTopicsForQuestion(question.id, session);
+			const topics: TopicType[] = await fetchTopics(
+				questionTopics.map((questionTopic) => questionTopic.topic),
+				session
+			);
 
 			const allAnswerIds = myAnswerWithoutLikes
 				? answersOfOthersIds.concat(myAnswerWithoutLikes.id)
@@ -61,34 +65,11 @@
 					question,
 					myAnswer,
 					answersOfOthers,
-					courseDescription
+					courseDescription,
+					topics
 				}
 			};
 		});
-
-	async function filterNonLatest(answersOfOthers) {
-		// O(n^2) <- thats though, isn't there a better way?
-		// It filters out the non-latest answers
-		let answers = answersOfOthers;
-		let indizesToRemove: number[] = [];
-		for (let i = 0; i < answers?.length; i++) {
-			let answer = answers[i];
-			for (let otherAnswer of answers) {
-				if (answer.owner == otherAnswer.owner) {
-					if (answer.version < otherAnswer.version) {
-						indizesToRemove.push(i);
-						break;
-					}
-				}
-			}
-		}
-		indizesToRemove
-			.sort((a, b) => 0 - (a > b ? 1 : -1)) // sort descending
-			.forEach((index) => {
-				answers.splice(index, 1);
-			});
-		return answers;
-	}
 </script>
 
 <script lang="ts">
@@ -105,17 +86,23 @@
 		fetchMyAnswerLikes,
 		deleteAnswerLike,
 		saveAnswerLike,
-		updateQuestion
+		updateQuestion,
+		TopicType,
+		fetchTopicsForQuestion,
+		QuestionTopicType,
+		fetchTopics
 	} from '$lib/supabaseQueries';
 	import autosize from '../../../node_modules/autosize';
 	import { routes } from '$lib/routes';
 	import Answer from '$lib/components/Answer.svelte';
 	import { session } from '$app/stores';
+	import SelectTopics from '$lib/components/SelectTopics.svelte';
 
 	export let question: QuestionType;
 	export let myAnswer: AnswerType;
 	export let answersOfOthers;
 	export let courseDescription: string;
+	export let topics: TopicType[];
 
 	let answerText;
 	let editing = false;
@@ -150,6 +137,14 @@
 		{:else}
 			<h1>{question.questionText}</h1>
 		{/if}
+
+		<!--<SelectTopics
+			{topics}
+			on:selectedTopicsChanged={() => {
+				console.log('selected topics changed');
+			}}
+		/>-->
+
 		{#if myAnswer}
 			<a href={routes.answer(myAnswer.id)} class="light-link" sveltekit:prefetch>
 				<article class="yours hoverable">
@@ -178,7 +173,6 @@
 			>
 		{/if}
 
-		<!-- This shows the old and the new versions of the answers! -->
 		{#if answersOfOthers}
 			{#each answersOfOthers as answerOfOther}
 				<a href={routes.answer(answerOfOther.id)} class="light-link" sveltekit:prefetch>

@@ -3,7 +3,7 @@
 		withPageAuth({ redirectTo: '/login', user: session.user }, async () => {
 			const courseId = params.slug;
 			const course = await fetchCourse(courseId, session);
-			const topics = await fetchTopics(courseId, session);
+			const topics = await fetchTopicsForCourse(courseId, session);
 			const inviteCode = await fetchInviteCode(courseId, session);
 			return {
 				props: {
@@ -19,7 +19,7 @@
 	import DeleteCourse from '$lib/components/DeleteCourse.svelte';
 	import ManageTopics from '$lib/components/ManageTopics.svelte';
 	import GenerateInviteCode from '$lib/components/GenerateInviteCode.svelte';
-	import { fetchCourse, fetchTopics, fetchInviteCode } from '$lib/supabaseQueries';
+	import { fetchCourse, fetchTopicsForCourse, fetchInviteCode } from '$lib/supabaseQueries';
 	import { withPageAuth } from '@supabase/auth-helpers-sveltekit';
 
 	export let course;

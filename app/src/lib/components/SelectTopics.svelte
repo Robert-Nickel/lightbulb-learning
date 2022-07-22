@@ -1,25 +1,14 @@
 <script lang="ts">
-	import { fetchTopics } from '$lib/supabaseQueries';
-	import { onMount } from 'svelte';
+	import type { TopicType } from '$lib/supabaseQueries';
 	import { createEventDispatcher } from 'svelte';
+	import SelectableTopic from './SelectableTopic.svelte';
 	const dispatch = createEventDispatcher();
 
-
-	export let courseId: string;
+	export let topics: TopicType[];
 
 	type SelectableTopicType = { id: string; name: string; selected: boolean };
-	export let selectableTopics: SelectableTopicType[] = [];
-
-	onMount(async () => {
-		let topics = await fetchTopics(courseId);
-		topics.forEach((topic) => {
-			selectableTopics.push({
-				id: topic.id,
-				name: topic.name,
-				selected: false
-			});
-		});
-		selectableTopics = selectableTopics;
+	export let selectableTopics: SelectableTopicType[] = topics.map((topic) => {
+		return { id: topic.id, name: topic.name, selected: false };
 	});
 
 	async function selectTopic(id: string, selected = true) {
@@ -30,48 +19,25 @@
 		});
 		selectableTopics = selectableTopics;
 
-		let selectedTopics: string[] = []
+		let selectedTopics: string[] = [];
 		selectableTopics.forEach((selectableTopic) => {
 			if (selectableTopic.selected) {
 				selectedTopics.push(selectableTopic.id);
 			}
 		});
 
-		dispatch("selectedTopicsChanged", {selectedTopics})
+		dispatch('selectedTopicsChanged', { selectedTopics });
 	}
 </script>
 
 {#if selectableTopics && selectableTopics.length > 0}
 	<div class="mb-4">
-		Topics: &nbsp;
+		Belongs to: &nbsp;
 		{#each selectableTopics as selectableTopic}
-			{#if selectableTopic.selected}
-				<span
-					class="inline-block border rounded p-2 mr-2 mb-2 selected"
-					on:click={() => {
-						selectTopic(selectableTopic.id, false);
-					}}>{selectableTopic.name}</span
-				>
-			{:else}
-				<span
-					class="inline-block border rounded p-2 mr-2 mb-2 selectable"
-					on:click={() => {
-						selectTopic(selectableTopic.id);
-					}}>{selectableTopic.name}</span
-				>
-			{/if}
+			<SelectableTopic
+				topic={selectableTopic}
+				on:topicSelected={(e) => selectTopic(selectableTopic.id, e.detail)}
+			/>
 		{/each}
 	</div>
 {/if}
-
-<style>
-	.selectable:hover {
-		border-color: var(--primary);
-		color: var(--primary);
-	}
-
-	.selected {
-		border-color: var(--primary);
-		color: var(--primary);
-	}
-</style>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { CourseType, saveQuestion, saveQuestionTopics } from '$lib/supabaseQueries';
+	import { CourseType, saveQuestion, saveQuestionTopics, TopicType } from '$lib/supabaseQueries';
 	import autosize from '../../../node_modules/autosize';
 	import SelectTopics from './SelectTopics.svelte';
 	import { goto } from '$app/navigation';
@@ -7,6 +7,7 @@
 	import { session } from '$app/stores';
 
 	export let course: CourseType;
+	export let topics: TopicType[];
 
 	let questionText;
 	let selectedTopics;
@@ -23,7 +24,7 @@
 	/>
 	{#if questionText}
 		<SelectTopics
-			courseId={course.id}
+			{topics}
 			on:selectedTopicsChanged={(event) => {
 				selectedTopics = event.detail.selectedTopics;
 			}}

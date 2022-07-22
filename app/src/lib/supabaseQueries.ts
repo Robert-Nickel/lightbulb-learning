@@ -3,7 +3,6 @@ import type { definitions } from '$lib/models/supabase';
 import { CamelCasedPropertiesDeep, keysToCamelCase } from 'object-key-convert';
 import { supabaseServerClient } from '@supabase/auth-helpers-sveltekit';
 import type { Session } from '@supabase/auth-helpers-svelte';
-import { supabaseClient } from './db';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
@@ -90,6 +89,18 @@ export async function saveQuestion(
 			owner: userId
 		})
 		.single();
+	printIf(error);
+	return keysToCamelCase(data);
+}
+
+export async function updateQuestion(question: QuestionType): Promise<QuestionType> {
+	const { data, error } = await supabase
+		.from<QuestionTypeDB>(questionsTable)
+		.update({
+			question_text: question.questionText
+		})
+		.eq("id", question.id)
+		.single()
 	printIf(error);
 	return keysToCamelCase(data);
 }

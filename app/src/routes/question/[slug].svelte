@@ -104,7 +104,8 @@
 		fetchAnswerLikes,
 		fetchMyAnswerLikes,
 		deleteAnswerLike,
-		saveAnswerLike
+		saveAnswerLike,
+		updateQuestion
 	} from '$lib/supabaseQueries';
 	import autosize from '../../../node_modules/autosize';
 	import { routes } from '$lib/routes';
@@ -117,14 +118,38 @@
 	export let courseDescription: string;
 
 	let answerText;
+	let editing = false;
+
+	function save() {
+		updateQuestion(question);
+		editing = false;
+	}
 </script>
 
 <main class="container">
 	{#if question}
 		<Back text="Back to {courseDescription}" route="/course/{question.course}" />
 
-		<h1 class={question.owner == $session.user.id ? 'yours pl-4' : ''}>{question.questionText}</h1>
+		{#if question.owner == $session.user.id}
+			{#if editing}
+				<textarea
+					id="textarea-edit-question"
+					bind:value={question.questionText}
+					class="w-full h-12"
+					placeholder="Edit your question"
+					on:load={autosize(document.getElementById('textarea-edit-question'))}
+				/>
+				<button class="outline w-32" on:click={save}>Save</button>
+			{:else}
+				<h1 class="yours pl-4">{question.questionText}</h1>
 
+				{#if answersOfOthers.length == 0}<button class="outline w-32" on:click={() => (editing = true)}
+						>Edit</button
+					>{/if}
+			{/if}
+		{:else}
+			<h1>{question.questionText}</h1>
+		{/if}
 		{#if myAnswer}
 			<a href={routes.answer(myAnswer.id)} class="light-link" sveltekit:prefetch>
 				<article class="yours hoverable">

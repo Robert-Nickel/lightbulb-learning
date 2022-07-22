@@ -13,9 +13,6 @@
 
 <main class="container">
 	<h1>Login</h1>
-	{#if $session.user && $session.user.id}
-		<p>Success!</p>
-	{:else}
-		<Auth {supabaseClient} providers={['GitHub']} redirectAfterLogin={routes.courses} />
-	{/if}
+
+	<Auth {supabaseClient} providers={['GitHub']} redirectAfterLogin={routes.courses} />
 </main>

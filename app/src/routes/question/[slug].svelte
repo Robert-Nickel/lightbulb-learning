@@ -97,6 +97,7 @@
 	import Answer from '$lib/components/Answer.svelte';
 	import { session } from '$app/stores';
 	import SelectTopics from '$lib/components/SelectTopics.svelte';
+	import SelectableTopic from '$lib/components/SelectableTopic.svelte';
 
 	export let question: QuestionType;
 	export let myAnswer: AnswerType;
@@ -126,9 +127,11 @@
 					placeholder="Edit your question"
 					on:load={autosize(document.getElementById('textarea-edit-question'))}
 				/>
+				<!-- TODO: continue here: <SelectTopics></SelectTopics>-->
 				<button class="outline w-32" on:click={save}>Save</button>
 			{:else}
 				<h1 class="yours pl-4">{question.questionText}</h1>
+				{#each topics as topic} <SelectableTopic {topic} selectable={false} />{/each}
 
 				{#if answersOfOthers.length == 0}<button class="outline w-32" on:click={() => (editing = true)}
 						>Edit</button
@@ -136,14 +139,8 @@
 			{/if}
 		{:else}
 			<h1>{question.questionText}</h1>
+			{#each topics as topic} <SelectableTopic {topic} selectable={false} />{/each}
 		{/if}
-
-		<!--<SelectTopics
-			{topics}
-			on:selectedTopicsChanged={() => {
-				console.log('selected topics changed');
-			}}
-		/>-->
 
 		{#if myAnswer}
 			<a href={routes.answer(myAnswer.id)} class="light-link" sveltekit:prefetch>

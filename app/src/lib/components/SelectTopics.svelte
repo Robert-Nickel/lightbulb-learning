@@ -7,7 +7,7 @@
 	export let topics: TopicType[];
 
 	type SelectableTopicType = { id: string; name: string; selected: boolean };
-	export let selectableTopics: SelectableTopicType[] = topics.map((topic) => {
+	let selectableTopics: SelectableTopicType[] = topics.map((topic) => {
 		return { id: topic.id, name: topic.name, selected: false };
 	});
 

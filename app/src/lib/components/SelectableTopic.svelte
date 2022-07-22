@@ -3,15 +3,20 @@
 	const dispatch = createEventDispatcher();
 
 	export let topic;
+	export let selectable = true;
 </script>
 
-<span
-	class={topic.selected ? 'topic selected' : 'topic selectable'}
-	on:click={() => {
-		topic.selected = !topic.selected;
-		dispatch('topicSelected', topic.selected);
-	}}>{topic.name}</span
->
+{#if selectable}
+	<span
+		class={topic.selected ? 'topic selected' : 'topic selectable'}
+		on:click={() => {
+			topic.selected = !topic.selected;
+			dispatch('topicSelected', topic.selected);
+		}}>{topic.name}</span
+	>
+{:else}
+	<span class={topic.selected ? 'topic selected' : 'topic'}>{topic.name}</span>
+{/if}
 
 <style>
 	.topic {

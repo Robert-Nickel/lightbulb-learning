@@ -3,6 +3,12 @@
 	import { supabaseClient } from '$lib/db';
 	import { session } from '$app/stores';
 	import { routes } from '$lib/routes';
+
+	$: {
+		if ($session.user && $session.user.id) {
+			goto(routes.courses);
+		}
+	}
 </script>
 
 <main class="container">

@@ -58,6 +58,11 @@ export async function deleteCourse(id: string) {
 	printIf(error);
 }
 
+export async function leaveCourse(courseId: string, userId: string) {
+	const { error } = await supabase.from<CourseUserTypeDB>(courseUserTable).delete().eq('course', courseId).eq("user_id", userId);
+	printIf(error);
+}
+
 export async function fetchQuestions(courseId: string, session: Session): Promise<QuestionType[]> {
 	const { data, error } = await supabaseServerClient(session.accessToken)
 		.from<QuestionTypeDB>(questionsTable)

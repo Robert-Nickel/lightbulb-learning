@@ -63,17 +63,18 @@
 			>
 		</p>
 
-		{#if $session.user.id == course.owner}
-			<header class="flex p-2 space-x-4 border-b-2 ">
-				<nav
-					class={activeTab == Tab.Questions ? 'activeNavElement' : ''}
-					on:click={() => {
-						goto(routes.course(course.id));
-						activeTab = Tab.Questions;
-					}}
-				>
-					Questions
-				</nav>
+		<header class="flex p-2 space-x-4 border-b-2 ">
+			<nav
+				class={activeTab == Tab.Questions ? 'activeNavElement' : ''}
+				on:click={() => {
+					goto(routes.course(course.id));
+					activeTab = Tab.Questions;
+				}}
+			>
+				Questions
+			</nav>
+			
+			{#if $session.user.id == course.owner}
 				<nav
 					class={activeTab == Tab.Performances ? 'activeNavElement' : ''}
 					on:click={() => {
@@ -83,17 +84,18 @@
 				>
 					Performances
 				</nav>
-				<nav
-					class={activeTab == Tab.Settings ? 'activeNavElement' : ''}
-					on:click={() => {
-						goto(routes.courseSettings(course.id));
-						activeTab = Tab.Settings;
-					}}
-				>
-					Settings
-				</nav>
-			</header>
-		{/if}
+			{/if}
+
+			<nav
+				class={activeTab == Tab.Settings ? 'activeNavElement' : ''}
+				on:click={() => {
+					goto(routes.courseSettings(course.id));
+					activeTab = Tab.Settings;
+				}}
+			>
+				Settings
+			</nav>
+		</header>
 
 		<slot />
 	{/if}

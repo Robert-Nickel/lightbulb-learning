@@ -21,14 +21,18 @@
 	import GenerateInviteCode from '$lib/components/GenerateInviteCode.svelte';
 	import { fetchCourse, fetchTopicsForCourse, fetchInviteCode } from '$lib/supabaseQueries';
 	import { withPageAuth } from '@supabase/auth-helpers-sveltekit';
+	import { session } from '$app/stores';
+	import LeaveCourse from '$lib/components/LeaveCourse.svelte';
 
 	export let course;
 	export let topics;
 	export let inviteCode;
 </script>
 
-{#if course}
+{#if $session.user.id == course.owner}
 	<ManageTopics courseId={course.id} {topics} />
 	<GenerateInviteCode courseId={course.id} {inviteCode} />
 	<DeleteCourse {course} />
+{:else}
+	<LeaveCourse {course} />
 {/if}

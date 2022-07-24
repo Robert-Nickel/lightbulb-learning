@@ -68,17 +68,20 @@
 </script>
 
 {#if member}
-	<Back text="Back to all Performances" route={routes.coursePerformances(member.course)} />
-	<h1>Performance of {member.email}</h1>
-
 	{#if $session.user.id == course.owner}
+		<Back text="Back to all Performances" route={routes.coursePerformances(member.course)} />
+		<h1>Performance of {member.email}</h1>
 		<Progress
 			courseUserId={member.id}
 			{latestProgress}
 			on:progressAdded={(event) => {
 				allPerformances.push(event.detail);
 			}}
-		/>{/if}
+		/>
+	{:else}
+		<Back text="Back to Course" route={routes.course(course.id)} />
+		<h1>Your Performance in {course.description}</h1>
+	{/if}
 {/if}
 
 {#if allPerformances}

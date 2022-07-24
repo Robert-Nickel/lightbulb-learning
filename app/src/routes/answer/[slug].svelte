@@ -10,28 +10,20 @@
 			async () => {
 				const answerId = params.slug;
 				const answer = await fetchAnswer(answerId, session);
-				const latestAnswer = await fetchLatestAnswer(answer.question, session);
 				const question = await fetchQuestion(answer.question, session);
 
-				return { props: { question, answer, latestAnswer } };
+				return { props: { question, answer } };
 			}
 		);
 </script>
 
 <script lang="ts">
 	import Back from '$lib/components/Back.svelte';
-	import {
-		fetchAnswer,
-		fetchQuestion,
-		AnswerType,
-		QuestionType,
-		fetchLatestAnswer
-	} from '$lib/supabaseQueries';
+	import { fetchAnswer, fetchQuestion, AnswerType, QuestionType } from '$lib/supabaseQueries';
 	import { session } from '$app/stores';
 
 	export let question: QuestionType;
 	export let answer: AnswerType;
-
 </script>
 
 <main class="container">

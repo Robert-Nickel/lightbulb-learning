@@ -120,7 +120,7 @@ export async function fetchAnswer(id: string, session: Session): Promise<AnswerT
 	return keysToCamelCase(data);
 }
 
-export async function fetchLatestAnswer(questionId: string, session: Session): Promise<AnswerType> {
+export async function fetchMyAnswer(questionId: string, session: Session): Promise<AnswerType> {
 	const { data, error } = await supabaseServerClient(session.accessToken)
 		.from<AnswerTypeDB>(answersTable)
 		.select()

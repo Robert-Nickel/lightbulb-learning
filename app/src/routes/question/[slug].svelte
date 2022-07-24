@@ -11,7 +11,7 @@
 			const answersOfOthersIds = answersOfOthersDB?.map((answer) => answer.id);
 			const myAnswerLikes = await fetchMyAnswerLikes(answersOfOthersIds, session);
 
-			const myAnswerWithoutLikes = await fetchLatestAnswer(questionId, session);
+			const myAnswerWithoutLikes = await fetchMyAnswer(questionId, session);
 			const questionTopics: QuestionTopicType[] = await fetchTopicsForQuestion(question.id, session);
 			const topics: TopicType[] = await fetchTopics(
 				questionTopics.map((questionTopic) => questionTopic.topic),
@@ -80,7 +80,7 @@
 		AnswerType,
 		QuestionType,
 		saveAnswer,
-		fetchLatestAnswer,
+		fetchMyAnswer,
 		fetchCourse,
 		fetchAnswerLikes,
 		fetchMyAnswerLikes,
@@ -96,7 +96,6 @@
 	import { routes } from '$lib/routes';
 	import Answer from '$lib/components/Answer.svelte';
 	import { session } from '$app/stores';
-	import SelectTopics from '$lib/components/SelectTopics.svelte';
 	import SelectableTopic from '$lib/components/SelectableTopic.svelte';
 
 	export let question: QuestionType;
@@ -127,7 +126,6 @@
 					placeholder="Edit your question"
 					on:load={autosize(document.getElementById('textarea-edit-question'))}
 				/>
-				<!-- TODO: continue here: <SelectTopics></SelectTopics>-->
 				<button class="outline w-32" on:click={save}>Save</button>
 			{:else}
 				<h1 class="yours pl-4">{question.questionText}</h1>

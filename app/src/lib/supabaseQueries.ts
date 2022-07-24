@@ -431,6 +431,16 @@ export async function fetchCourseUser(courseId: string, session: Session): Promi
 	return keysToCamelCase(data);
 }
 
+export async function fetchCourseUserWithId(id: string, session: Session): Promise<CourseUserType> {
+	const { data, error } = await supabaseServerClient(session.accessToken)
+		.from<CourseUserTypeDB>(courseUserTable)
+		.select()
+		.eq("id", id)
+		.single()
+	printIf(error);
+	return keysToCamelCase(data);
+}
+
 export async function fetchMyLatestProgress(courseUserId: string, session: Session): Promise<ProgressType> {
 	const { data, error } = await supabaseServerClient(session.accessToken)
 		.from<ProgressTypeDB>(progressesTable)

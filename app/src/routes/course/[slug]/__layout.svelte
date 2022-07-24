@@ -17,6 +17,7 @@
 				return {
 					props: {
 						course,
+						courseUser,
 						routeLastSegment,
 						myLatestProgress: myLatestProgress ? myLatestProgress.percentage : 0
 					}
@@ -32,21 +33,9 @@
 	import { goto } from '$app/navigation';
 	import { routes } from '$lib/routes';
 
-	enum Tab {
-		Questions,
-		Performances,
-		Settings
-	}
-
 	export let course: CourseType;
 	export let routeLastSegment: string;
 	export let myLatestProgress: number;
-	$: activeTab =
-		routeLastSegment == 'settings'
-			? Tab.Settings
-			: routeLastSegment == 'performances'
-			? Tab.Performances
-			: Tab.Questions;
 </script>
 
 <main class="container">
@@ -65,21 +54,19 @@
 
 		<header class="flex p-2 space-x-4 border-b-2 ">
 			<nav
-				class={activeTab == Tab.Questions ? 'activeNavElement' : ''}
+				class={!['settings', 'performances'].includes(routeLastSegment) ? 'activeNavElement' : ''}
 				on:click={() => {
 					goto(routes.course(course.id));
-					activeTab = Tab.Questions;
 				}}
 			>
 				Questions
 			</nav>
-			
+
 			{#if $session.user.id == course.owner}
 				<nav
-					class={activeTab == Tab.Performances ? 'activeNavElement' : ''}
+					class={routeLastSegment == 'performances' ? 'activeNavElement' : ''}
 					on:click={() => {
 						goto(routes.coursePerformances(course.id));
-						activeTab = Tab.Performances;
 					}}
 				>
 					Performances
@@ -87,10 +74,9 @@
 			{/if}
 
 			<nav
-				class={activeTab == Tab.Settings ? 'activeNavElement' : ''}
+				class={routeLastSegment == 'settings' ? 'activeNavElement' : ''}
 				on:click={() => {
 					goto(routes.courseSettings(course.id));
-					activeTab = Tab.Settings;
 				}}
 			>
 				Settings

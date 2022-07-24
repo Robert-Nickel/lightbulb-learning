@@ -8,6 +8,8 @@
 			},
 			async () => {
 				const courseUserId = params.slug;
+				const courseUser = await fetchCourseUserWithId(courseUserId, session);
+				const course = await fetchCourse(courseUser.course, session);
 				const member = await fetchMember(courseUserId, session);
 
 				let allPerformances: { createdAt: string }[] = (
@@ -30,7 +32,8 @@
 					props: {
 						member,
 						allPerformances,
-						latestProgress
+						latestProgress,
+						course
 					}
 				};
 			}
@@ -46,12 +49,17 @@
 		fetchMember,
 		fetchAnswerPerformances,
 		fetchQuestionPerformances,
-		MemberType
+		MemberType,
+		CourseType,
+		fetchCourseUserWithId,
+		fetchCourse
 	} from '$lib/supabaseQueries';
+	import { session } from '$app/stores';
 
 	export let member: MemberType;
 	export let allPerformances: { createdAt: string }[];
 	export let latestProgress: number;
+	export let course: CourseType;
 
 	function getDateAndTime(createdAt: string) {
 		const date = new Date(createdAt);
@@ -63,13 +71,14 @@
 	<Back text="Back to all Performances" route={routes.coursePerformances(member.course)} />
 	<h1>Performance of {member.email}</h1>
 
-	<Progress
-		courseUserId={member.id}
-		{latestProgress}
-		on:progressAdded={(event) => {
-			allPerformances.push(event.detail);
-		}}
-	/>
+	{#if $session.user.id == course.owner}
+		<Progress
+			courseUserId={member.id}
+			{latestProgress}
+			on:progressAdded={(event) => {
+				allPerformances.push(event.detail);
+			}}
+		/>{/if}
 {/if}
 
 {#if allPerformances}

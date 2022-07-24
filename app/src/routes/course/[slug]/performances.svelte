@@ -7,7 +7,6 @@
 				const courseId = params.slug;
 				return {
 					props: {
-						course: await fetchCourse(courseId, session),
 						members: await fetchMembers(courseId, session)
 					}
 				};
@@ -18,13 +17,10 @@
 <script lang="ts">
 	import Performances from '$lib/components/Performances.svelte';
 
-	import { CourseType, fetchCourse, fetchMembers } from '$lib/supabaseQueries';
+	import { fetchMembers } from '$lib/supabaseQueries';
 	import { withPageAuth } from '@supabase/auth-helpers-sveltekit';
 
-	export let course: CourseType;
 	export let members;
 </script>
 
-{#if course}
-	<Performances {members} />
-{/if}
+<Performances {members} />

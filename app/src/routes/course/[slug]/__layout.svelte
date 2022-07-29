@@ -36,6 +36,7 @@
 	export let course: CourseType;
 	export let routeLastSegment: string;
 	export let myLatestProgress: number;
+	$: isOwner = $session.user.id == course.owner;
 </script>
 
 <main class="container">
@@ -43,14 +44,16 @@
 
 	{#if course && $session.user && $session.user.id}
 		<h1>{course.description}</h1>
-		<p>
-			Your progress:&nbsp;
-			<em
-				data-tooltip={myLatestProgress == 0
-					? 'Ask a good question to get started!'
-					: 'Reach 100%, to get the certificate!'}>{myLatestProgress}%.</em
-			>
-		</p>
+		{#if isOwner}
+			<p>
+				Your progress:&nbsp;
+				<em
+					data-tooltip={myLatestProgress == 0
+						? 'Ask a good question to get started!'
+						: 'Reach 100%, to get the certificate!'}>{myLatestProgress}%.</em
+				>
+			</p>
+		{/if}
 
 		<header class="flex p-2 space-x-4 border-b-2 ">
 			<nav
@@ -62,7 +65,7 @@
 				Questions
 			</nav>
 
-			{#if $session.user.id == course.owner}
+			{#if isOwner}
 				<nav
 					class={routeLastSegment == 'performances' ? 'activeNavElement' : ''}
 					on:click={() => {

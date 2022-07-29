@@ -17,7 +17,7 @@
 		if (err) {
 			alert(err.message);
 		} else {
-			('Check your email for the password reset link');
+			alert('Check your email for the password reset link');
 		}
 		loading = false;
 	}

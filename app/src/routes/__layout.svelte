@@ -20,7 +20,7 @@
 		const hash = $page.url.hash;
 		if (hash.includes('type=recovery')) {
 			const accessToken = hash.slice(1).split('&')[0].split('=')[1];
-			goto('reset-password?resetToken=' + accessToken);
+			goto('reset-password/' + accessToken);
 		}
 	});
 </script>

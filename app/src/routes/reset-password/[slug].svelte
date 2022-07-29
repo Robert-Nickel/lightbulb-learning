@@ -1,14 +1,18 @@
+<script lang="ts" context="module">
+	export const load = async ({ params }) => {
+		const accessToken = params.slug;
+		return { props: { accessToken } };
+	};
+</script>
+
 <script lang="ts">
+	import { goto } from '$app/navigation';
+
 	import { supabaseClient } from '$lib/db';
-	import { page } from '$app/stores';
-	import { onMount } from 'svelte';
+	import { routes } from '$lib/routes';
 
 	let newPassword: string;
-	let accessToken: string;
-
-	onMount(() => {
-		$page.url.pathname.split('?')[1].split('=')[1];
-	});
+	export let accessToken: string;
 </script>
 
 <h1>Reset Password</h1>
@@ -21,6 +25,8 @@
 		const { error } = await supabaseClient.auth.api.updateUser(accessToken, { password: newPassword });
 		if (error) {
 			alert(error);
+		} else {
+			goto(routes.courses);
 		}
 	}}>Reset Password</button
 >

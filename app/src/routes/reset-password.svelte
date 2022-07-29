@@ -7,7 +7,8 @@
 	let accessToken: string;
 
 	onMount(() => {
-		accessToken = $page.url.hash;
+		const pathSegments = $page.url.pathname.split('/');
+		accessToken = pathSegments[pathSegments.length - 1];
 	});
 </script>
 

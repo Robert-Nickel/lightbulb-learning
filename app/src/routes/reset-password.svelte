@@ -1,16 +1,9 @@
 <script lang="ts">
 	import { supabaseClient } from '$lib/db';
 	import { page } from '$app/stores';
-	import { onMount } from 'svelte';
 
 	let newPassword: string;
-	let accessToken: string;
-
-	onMount(() => {
-		const pathname = $page.url.pathname.split('?');
-		accessToken = pathname[pathname.length - 1].split('=')[1];
-		console.log({ accessToken });
-	});
+	$: accessToken = $page.url.pathname.split('?')[1].split('=')[1];
 </script>
 
 <h1>Reset Password</h1>
@@ -19,6 +12,7 @@
 <button
 	class="primary w-64"
 	on:click={async () => {
+		console.log({ accessToken });
 		const { error } = await supabaseClient.auth.api.updateUser(accessToken, { password: newPassword });
 		if (error) {
 			alert(error);

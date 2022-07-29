@@ -21,11 +21,11 @@
 <button
 	class="primary w-64"
 	on:click={async () => {
-		console.log({ accessToken });
 		const { error } = await supabaseClient.auth.api.updateUser(accessToken, { password: newPassword });
 		if (error) {
 			alert(error);
 		} else {
+			alert('New password configured. Please log in again to continue.');
 			goto(routes.courses);
 		}
 	}}>Reset Password</button

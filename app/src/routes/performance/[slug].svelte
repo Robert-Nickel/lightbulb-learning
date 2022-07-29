@@ -99,7 +99,7 @@
 				<h4 class="mt-2 mb-2" id="oqp-question-text">{performance.questionText}</h4>
 			{:else if performance.answerId}
 				<small
-					>- Answer {#if performance.version > 1}Improvement{/if} - {performance.likes}
+					>- Answer - {performance.likes}
 					{#if performance.likes == 1}
 						like{:else}likes
 					{/if}</small

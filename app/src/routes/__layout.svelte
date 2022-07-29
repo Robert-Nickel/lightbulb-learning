@@ -7,11 +7,22 @@
 	import { supabaseClient } from '$lib/db';
 	import { SupaAuthHelper } from '@supabase/auth-helpers-svelte';
 
+	import { page } from '$app/stores';
+	import { onMount } from 'svelte';
+
 	const onUserUpdate = async (user) => {
 		if (user) {
 			goto('/course');
 		}
 	};
+
+	onMount(() => {
+		const hash = $page.url.hash;
+		if (hash.includes('type=recovery')) {
+			const accessToken = hash.slice(1).split('&')[0].split('=')[1];
+			goto('reset-password#' + accessToken);
+		}
+	});
 </script>
 
 <Navbar {supabaseClient} />

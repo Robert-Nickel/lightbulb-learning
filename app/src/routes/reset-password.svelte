@@ -1,9 +1,14 @@
 <script lang="ts">
 	import { supabaseClient } from '$lib/db';
 	import { page } from '$app/stores';
+	import { onMount } from 'svelte';
 
 	let newPassword: string;
-	$: accessToken = $page.url.pathname.split('?')[1].split('=')[1];
+	let accessToken: string;
+
+	onMount(() => {
+		$page.url.pathname.split('?')[1].split('=')[1];
+	});
 </script>
 
 <h1>Reset Password</h1>

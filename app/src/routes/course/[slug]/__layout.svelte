@@ -43,17 +43,15 @@
 	<Back route="/course" text="Back to all Courses" />
 
 	{#if course && $session.user && $session.user.id}
-		<h1>{course.description}</h1>
-		{#if !isOwner}
-			<p>
-				Your progress:&nbsp;
+		<h1>
+			{course.description}{#if !isOwner}&nbsp;
 				<em
 					data-tooltip={myLatestProgress == 0
 						? 'Ask a good question to get started!'
-						: 'Reach 100%, to get the certificate!'}>{myLatestProgress}%.</em
+						: 'Reach 100%, to get the certificate!'}>{myLatestProgress}%</em
 				>
-			</p>
-		{/if}
+			{/if}
+		</h1>
 
 		<header class="flex p-2 space-x-4 border-b-2 ">
 			<nav

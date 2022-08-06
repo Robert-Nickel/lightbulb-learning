@@ -44,7 +44,7 @@
 
 	{#if course && $session.user && $session.user.id}
 		<h1>{course.description}</h1>
-		{#if isOwner}
+		{#if !isOwner}
 			<p>
 				Your progress:&nbsp;
 				<em

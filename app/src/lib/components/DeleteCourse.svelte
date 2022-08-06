@@ -10,12 +10,12 @@
 	on:click={async () => {
 		if (
 			confirm(
-				'Everything within ' + course.description + ' will be gone forever.\nAre you really sure?'
+				'Everything within ' + course.title + ' will be gone forever.\nAre you really sure?'
 			)
 		) {
 			await deleteCourse(course.id);
 			goto(routes.courses);
 		}
 	}}
-	class="secondary outline w-auto mb-0 hover-red">Delete {course.description}</button
+	class="secondary outline w-auto mb-0 hover-red">Delete {course.title}</button
 >

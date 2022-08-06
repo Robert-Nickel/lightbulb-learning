@@ -80,7 +80,7 @@
 		/>
 	{:else}
 		<Back text="Back to Course" route={routes.course(course.id)} />
-		<h1>Your Performance in {course.description}</h1>
+		<h1>Your Performance in {course.title}</h1>
 	{/if}
 {/if}
 

@@ -5,7 +5,7 @@
 		withPageAuth({ redirectTo: '/', user: session.user }, async () => {
 			const questionId = params.slug;
 			const question = await fetchQuestion(questionId, session);
-			const courseDescription = await (await fetchCourse(question.course, session)).description;
+			const courseDescription = await (await fetchCourse(question.course, session)).title;
 
 			const answersOfOthersDB = await fetchAnswersOfOthers(questionId, session);
 			const answersOfOthersIds = answersOfOthersDB?.map((answer) => answer.id);

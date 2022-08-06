@@ -44,7 +44,7 @@
 
 	{#if course && $session.user && $session.user.id}
 		<h1>
-			{course.description}{#if !isOwner}&nbsp;
+			{course.title}{#if !isOwner}&nbsp;
 				<em
 					data-tooltip={myLatestProgress == 0
 						? 'Ask a good question to get started!'

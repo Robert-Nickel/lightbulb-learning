@@ -51,7 +51,7 @@
 		{#each courses as course}
 			<a href={routes.course(course.id)} class="light-link" sveltekit:prefetch>
 				<article class="hoverable">
-					{course.description}
+					{course.title}
 				</article>
 			</a>
 		{/each}

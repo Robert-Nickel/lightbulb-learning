@@ -11,7 +11,7 @@
 <button
 	class="secondary outline w-auto mb-0 hover-red mt-4"
 	on:click={async () => {
-		if (confirm('Do you really want to leave ' + course.description + '?')) {
+		if (confirm('Do you really want to leave ' + course.title + '?')) {
 			await leaveCourse(course.id, $session.user.id);
 			goto(routes.courses);
 		}

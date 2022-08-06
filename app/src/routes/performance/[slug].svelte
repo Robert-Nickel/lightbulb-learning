@@ -17,9 +17,7 @@
 				)
 					.concat(await fetchAnswerPerformances(courseUserId, session))
 					.concat(await fetchProgresses(courseUserId, session));
-				allPerformances = allPerformances.sort((a, b) => {
-					return new Date(a.createdAt) < new Date(b.createdAt) ? 1 : -1;
-				});
+				allPerformances = sortPerformances(allPerformances);
 
 				let latestProgress;
 				for (let i = 0; i < allPerformances.length; i++) {
@@ -55,6 +53,7 @@
 		fetchCourse
 	} from '$lib/supabaseQueries';
 	import { session } from '$app/stores';
+	import { sortPerformances } from '$lib/util';
 
 	export let member: MemberType;
 	export let allPerformances: { createdAt: string }[];
@@ -76,6 +75,7 @@
 			{latestProgress}
 			on:progressAdded={(event) => {
 				allPerformances.push(event.detail);
+				allPerformances = sortPerformances(allPerformances);
 			}}
 		/>
 	{:else}
@@ -84,34 +84,32 @@
 	{/if}
 {/if}
 
-{#if allPerformances}
-	{#each allPerformances as performance}
-		<article>
-			<small>{getDateAndTime(performance.createdAt)}</small>
+{#each allPerformances as performance}
+	<article>
+		<small>{getDateAndTime(performance.createdAt)}</small>
 
-			{#if performance.questionId}
-				<small
-					>- Question - {performance.likes}
-					{#if performance.likes == 1}
-						like{:else}likes
-					{/if}</small
-				>
-				<h4 class="mt-2 mb-2" id="oqp-question-text">{performance.questionText}</h4>
-			{:else if performance.answerId}
-				<small
-					>- Answer - {performance.likes}
-					{#if performance.likes == 1}
-						like{:else}likes
-					{/if}</small
-				>
-				<p class="my-2"><i>Question: {performance.questionText}</i></p>
-				<h4 class="mt-2 mb-0">{performance.answerText}</h4>
-			{:else if performance.percentage || performance.percentage == 0}
-				<small>- Progress </small>
-				<h4 class="mt-2 mb-0" id="progress-text">
-					Reached {performance.percentage}%
-				</h4>
-			{/if}
-		</article>
-	{/each}
-{/if}
+		{#if performance.questionId}
+			<small
+				>- Question - {performance.likes}
+				{#if performance.likes == 1}
+					like{:else}likes
+				{/if}</small
+			>
+			<h4 class="mt-2 mb-2" id="oqp-question-text">{performance.questionText}</h4>
+		{:else if performance.answerId}
+			<small
+				>- Answer - {performance.likes}
+				{#if performance.likes == 1}
+					like{:else}likes
+				{/if}</small
+			>
+			<p class="my-2"><i>Question: {performance.questionText}</i></p>
+			<h4 class="mt-2 mb-0">{performance.answerText}</h4>
+		{:else if performance.percentage || performance.percentage == 0}
+			<small>- Progress </small>
+			<h4 class="mt-2 mb-0" id="progress-text">
+				Reached {performance.percentage}%
+			</h4>
+		{/if}
+	</article>
+{/each}

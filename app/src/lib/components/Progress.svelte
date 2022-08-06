@@ -30,7 +30,6 @@
 				const progressInputAsNumber = +progressInput;
 				if (progressInputAsNumber >= 0 && progressInputAsNumber <= 200) {
 					save(courseUserId, progressInputAsNumber);
-					// TODO: trigger a reload
 					changing = false;
 				} else {
 					alert(progressInputAsNumber + " isn't a number between 0 and 200.");

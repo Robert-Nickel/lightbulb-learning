@@ -380,6 +380,7 @@ export async function fetchProgresses(courseUserId: string, session: Session): P
 		.from<ProgressTypeDB>(progressesTable)
 		.select()
 		.eq('course_user', courseUserId)
+		.order('created_at', { ascending: false })
 	printIf(error);
 	return keysToCamelCase(data);
 }
@@ -473,7 +474,6 @@ export const progressesTable = 'progresses';
 export type CourseType = CamelCasedPropertiesDeep<definitions['courses']>;
 export type QuestionType = CamelCasedPropertiesDeep<definitions['questions']>;
 export type AnswerType = CamelCasedPropertiesDeep<definitions['answers']>;
-export type UniversityType = CamelCasedPropertiesDeep<definitions['universities']>;
 export type CourseUserType = CamelCasedPropertiesDeep<definitions['course_user']>;
 export type InviteCodeType = CamelCasedPropertiesDeep<definitions['invite_codes']>;
 export type MemberType = CamelCasedPropertiesDeep<definitions['members']>;
@@ -490,7 +490,6 @@ export type ProgressType = CamelCasedPropertiesDeep<definitions['progresses']>;
 export type CourseTypeDB = definitions['courses'];
 export type QuestionTypeDB = definitions['questions'];
 export type AnswerTypeDB = definitions['answers'];
-export type UniversityTypeDB = definitions['universities'];
 export type CourseUserTypeDB = definitions['course_user'];
 export type InviteCodeTypeDB = definitions['invite_codes'];
 export type MemberTypeDB = definitions['members'];

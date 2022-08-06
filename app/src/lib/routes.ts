@@ -8,6 +8,7 @@ export const routes = {
 	question: (id: string) => `/question/${id}`,
 	answer: (id: string) => `/answer/${id}`,
 	performance: (id: string) => `/performance/${id}`,
+	certificate: (id: string) => `/certificate/${id}`,
 	newCourse: '/new-course',
 	joinCourse: (inviteCode: string = "") => `/join-course/${inviteCode}`,
 	help: '/help'

@@ -17,7 +17,7 @@
 				)
 					.concat(await fetchAnswerPerformances(courseUserId, session))
 					.concat(await fetchProgresses(courseUserId, session));
-				allPerformances = sortPerformances(allPerformances);
+				allPerformances = sortChronologically(allPerformances);
 
 				let latestProgress;
 				for (let i = 0; i < allPerformances.length; i++) {
@@ -53,7 +53,7 @@
 		fetchCourse
 	} from '$lib/supabaseQueries';
 	import { session } from '$app/stores';
-	import { sortPerformances } from '$lib/util';
+	import { sortChronologically } from '$lib/util';
 
 	export let member: MemberType;
 	export let allPerformances: { createdAt: string }[];
@@ -75,7 +75,7 @@
 			{latestProgress}
 			on:progressAdded={(event) => {
 				allPerformances.push(event.detail);
-				allPerformances = sortPerformances(allPerformances);
+				allPerformances = sortChronologically(allPerformances);
 			}}
 		/>
 	{:else}

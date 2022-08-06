@@ -5,7 +5,7 @@
 	const dispatch = createEventDispatcher();
 	export let courseUserId: string;
 	export let latestProgress: number = 0;
-	let progressInput: string = '0';
+	$: progressInput = latestProgress.toString();
 	let changing = false;
 
 	async function save(courseUserId: string, percentage: number) {

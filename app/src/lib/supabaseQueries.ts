@@ -18,10 +18,10 @@ export async function fetchCourses(session: Session): Promise<CourseType[]> {
 	return keysToCamelCase(data);
 }
 
-export async function saveCourse(description: string, userId: string): Promise<CourseType> {
+export async function saveCourse(title: string, userId: string): Promise<CourseType> {
 	const { data, error } = await supabase
 		.from<CourseTypeDB>(coursesTable)
-		.insert({ description, owner: userId })
+		.insert({ title, owner: userId })
 		.single();
 	printIf(error);
 	const course: CourseType = keysToCamelCase(data);

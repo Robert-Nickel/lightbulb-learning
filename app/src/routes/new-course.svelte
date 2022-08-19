@@ -4,18 +4,18 @@
 	import { routes } from '$lib/routes';
 	import { saveCourse } from '$lib/supabaseQueries';
 	import { session } from '$app/stores';
-	let createCourseDescription = '';
+	let title = '';
 </script>
 
 <Back text="Back to all Courses" route={routes.courses} />
 
 <h1>New Course</h1>
 
-<input bind:value={createCourseDescription} class="w-full" placeholder="Course Name" />
+<input bind:value={title} class="w-full" placeholder="Course Name" />
 <button
 	on:click={async () => {
-		const course = await saveCourse(createCourseDescription, $session.user.id);
-		createCourseDescription = '';
+		const course = await saveCourse(title, $session.user.id);
+		title = '';
 		goto(routes.course(course.id));
 	}}
 	class="w-32">Create</button
